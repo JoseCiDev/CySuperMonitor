@@ -1,6 +1,6 @@
 .env
 node_modules/
-.cypress/
+
 .cypress_cache/
 cypress/reports/
 cypress/images/
