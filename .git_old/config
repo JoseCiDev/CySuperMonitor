@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+	url = https://bitbucket.org/jose-cy-dev/cypress-supermonitor-hkm/src/
+	fetch = +refs/heads/*:refs/remotes/origin/*

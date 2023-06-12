@@ -1,0 +1,9 @@
+.env
+node_modules/
+.cypress/
+.cypress_cache/
+cypress/reports/
+cypress/images/
+cypress/videos/
+*.log
+package-lock.json
