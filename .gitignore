@@ -7,4 +7,3 @@ cypress/reports/
 cypress/images/
 cypress/videos/
 *.log
-package-lock.json
