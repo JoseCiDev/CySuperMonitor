@@ -1,6 +1,5 @@
 .env
 cypress.env.json
-cypress.config.ts
 node_modules/
 .cypress_cache/
 cypress/reports/

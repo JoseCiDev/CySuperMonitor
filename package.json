@@ -185,7 +185,8 @@
     "yauzl": "^2.10.0"
   },
   "scripts": {
-    "cloud": "cypress run --browser chrome --record --key adb70c01-5f71-4776-b9c9-514324d47425"
+    "cloud": "cypress run --browser chrome --record --key adb70c01-5f71-4776-b9c9-514324d47425",
+    "open":"cypress open --browser chrome"
   },
   "keywords": [],
   "author": "",
