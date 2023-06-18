@@ -1,7 +1,3 @@
 {
-    "jira-plugin.workingProject": "",
-    "commentTranslate.source": "Google",
-    "git.showPushSuccessNotification": true,
-    "git.terminalAuthentication": false,
-    "github.gitAuthentication": false
+    "jira-plugin.workingProject": ""
 }

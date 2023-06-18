@@ -20,10 +20,34 @@ declare global {
       dataCy(value: string): Chainable<Element>
 
       /**
-       * Custom command to login.
+       * comando customizado de login.
        * @example cy.login()
        */
       login(user: string , password: string): Chainable<Element>
+
+      /**
+       * comando customizado para adicionar observacao farmaceutica.
+       * @example cy.adicionaObservacaoFarmaceutica()
+       */
+      adicionaObservacaoFarmaceutica(senha: string , observacao: string): Chainable<Element>
+
+      /**
+       * comando customizado para conectar no banco de dados.
+       * @example cy.adicionaObservacaoFarmaceutica()
+       */
+      connectToDatabase(command: string, ...args: any): Chainable<Element>
+
+      /**
+       * comando customizado para executar querys no banco de dados.
+       * @example cy.adicionaObservacaoFarmaceutica()
+       */
+      queryDatabase(command: string, ...args: any): Cypress.Chainable<any>
+
+      /**
+       * comando customizado para desconectar do banco de dados.
+       * @example cy.adicionaObservacaoFarmaceutica()
+       */
+      disconnectFromDatabase(command: string, ...args: any): Chainable<Element>
 
       /**
        * describe
