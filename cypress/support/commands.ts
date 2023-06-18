@@ -54,11 +54,11 @@ Cypress.Commands.add('login', () => {
       .should('be.visible')
       .contains('login')
       .click()
-    cy.url().should('contain', 'http://192.168.0.66:999/lembretes')
+    cy.url().should('contain', `${Cypress.env('baseUrl')}/lembretes`)
   },
     {
       validate() {
-        cy.request('http://192.168.0.66:999/lembretes').its('status').should('eq', 200)
+        cy.request(`${Cypress.env('baseUrl')}/lembretes`).its('status').should('eq', 200)
       }
     })
 })

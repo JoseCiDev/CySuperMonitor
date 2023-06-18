@@ -125,6 +125,7 @@
     "minimatch": "^3.1.2",
     "minimist": "^1.2.8",
     "ms": "^2.1.2",
+    "mysql2": "^3.3.5",
     "node-releases": "^2.0.10",
     "npm-run-path": "^4.0.1",
     "object-inspect": "^1.12.3",
