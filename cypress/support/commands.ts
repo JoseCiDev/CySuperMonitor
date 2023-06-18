@@ -28,7 +28,7 @@
 ///<reference path="./cypress.d.ts" />
 import { ELEMENTS as el } from '../integration/Sm/Hkm/Login/elements';
 import { add } from 'cypress/types/lodash';
-import Database from './Database/database';
+// import Database from './Database/database';
 import mysql from 'mysql';
 
 
@@ -36,7 +36,7 @@ import mysql from 'mysql';
 Cypress.Commands.add('login', () => {
   cy.session([Cypress.env('user'), Cypress.env('password')], () => {
     cy.visit({
-      url: Cypress.env('baseUrl'),
+      url: process.env.DB_HOST_TESTE,
       method: 'POST'
     })
     cy.log(`Carregando ambiente  ${Cypress.env('environment') ? Cypress.env('environment') : 'local'} `)
@@ -68,32 +68,32 @@ Cypress.Commands.add('login', () => {
 
 
 
-Cypress.Commands.add('connectToDatabase', () => {
-  const database = new Database();
-  database.connect();
-});
+// Cypress.Commands.add('connectToDatabase', () => {
+//   const database = new Database();
+//   database.connect();
+// });
 
 
-Cypress.Commands.add('queryDatabase', (query, callback) => {
-  const connection = mysql.createConnection({
-    host: Cypress.env('DB_HOST'),
-    user: Cypress.env('DB_USER'),
-    password: Cypress.env('DB_PASSWORD'),
-    database: Cypress.env('DB_DATABASE')
-  });
-  connection.connect();
-  connection.query(query, (error, results) => {
-    if (error) {
-      throw new Error(`Failed to execute query: ${query}\n${error}`);
-    }
-    connection.end();
-    callback(results);
-  });
-});
+// Cypress.Commands.add('queryDatabase', (query, callback) => {
+//   const connection = mysql.createConnection({
+//     host: Cypress.env('DB_HOST'),
+//     user: Cypress.env('DB_USER'),
+//     password: Cypress.env('DB_PASSWORD'),
+//     database: Cypress.env('DB_DATABASE')
+//   });
+//   connection.connect();
+//   connection.query(query, (error, results) => {
+//     if (error) {
+//       throw new Error(`Failed to execute query: ${query}\n${error}`);
+//     }
+//     connection.end();
+//     callback(results);
+//   });
+// });
 
 
-Cypress.Commands.add('disconnectFromDatabase', () => {
-  const database = new Database();
-  database.disconnect();
-});
+// Cypress.Commands.add('disconnectFromDatabase', () => {
+//   const database = new Database();
+//   database.disconnect();
+// });
 
