@@ -13,6 +13,7 @@
 // the project's config changing)
 const { addMatchImageSnapshotPlugin } = require('cypress-image-snapshot/plugin')
 const { addTypeScriptSupport } = require('cypress-typescript-preprocessor')
+const webpackPreprocessor = require('@cypress/webpack-preprocessor')
 /**
  * @type {Cypress.PluginConfig}
  */
@@ -22,6 +23,18 @@ export default (on, config) => {
   // `config` is the resolved Cypress config
   addTypeScriptSupport(on, config)
   addMatchImageSnapshotPlugin(on, config)
+}
+
+
+module.exports = (on) => {
+  const options = {
+    // send in the options from your webpack.config.js, so it works the same
+    // as your app's code
+    webpackOptions: require('../../webpack.config'),
+    watchOptions: {},
+  }
+
+  on('file:preprocessor', webpackPreprocessor(options))
 }
 
 
