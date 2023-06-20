@@ -119,7 +119,15 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
                 emAndamento:
                     it('Backoffices em Andamento', () => {
                         cy.task('queryDatabase', {
-                            query: 'SELECT * FROM acl_role ar'
+                            query: 'SELECT * from acl_role ar'
+                        }).then((result) => {
+                            // 'result' contém o resultado da consulta ao banco de dados
+
+                            // Faça o que desejar com o resultado, como atribuí-lo a uma variável
+                            const data = result
+
+                            // Realize asserções ou ações adicionais com os dados recuperados
+                            // cy.get(...).should(...) ou cy.wrap(...).click(), por exemplo
                         })
                         // cy.nrorclist('cdfil' , 'nrorc')
                         // cy.nrorclist();
@@ -521,3 +529,10 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
 
 });
+
+
+
+
+
+
+
