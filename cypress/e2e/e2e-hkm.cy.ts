@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
-import { data } from '../fixtures/Sm/Hkm/nrorc-cdfil';
 import mysql from 'mysql';
+import { DatabaseConnection } from '../support/Connections/connection';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -8,7 +8,7 @@ dotenv.config();
 
 
 //BACKOFFICE
-import BackofficeHKM from '../integration/Sm/Hkm/BackofficeHKM';
+import BackofficeHKM from '../integration/Backoffice/EmAndamento';
 
 //ATENDIMENTO
 
@@ -117,18 +117,16 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
             backofficeHkm: {
                 emAndamento:
-                    it('Backoffices em Andamento', () => {
-                        cy.task('queryDatabase', {
-                            query: 'SELECT * from acl_role ar'
-                        }).then((result) => {
-                            // 'result' contém o resultado da consulta ao banco de dados
+                    it('Backoffices em Andamento', async () => {
 
-                            // Faça o que desejar com o resultado, como atribuí-lo a uma variável
-                            const data = result
-
-                            // Realize asserções ou ações adicionais com os dados recuperados
-                            // cy.get(...).should(...) ou cy.wrap(...).click(), por exemplo
-                        })
+                        cy.queryDB(
+                            'homolog',
+                            'SELECT * from acl_role ar')
+                            .then((result) => {
+                                const data = result;
+                                // Faça o que desejar com os dados, como realizar asserções ou ações adicionais
+                                // cy.get(...).should(...) ou cy.wrap(...).click(), por exemplo
+                            });
                         // cy.nrorclist('cdfil' , 'nrorc')
                         // cy.nrorclist();
                         // BackofficeHKM.acessarBackofficeEmAndamento()

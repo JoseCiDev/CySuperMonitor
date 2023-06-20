@@ -69,3 +69,13 @@ Cypress.Commands.add('login', () => {
     }
   });
 });
+
+
+
+
+Cypress.Commands.add('queryDB', (dbName, query) => {
+  return cy.task('queryDB', {
+    dbName,
+    query
+  });
+});

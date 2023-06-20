@@ -41,7 +41,7 @@ declare global {
        * comando customizado para executar querys no banco de dados.
        * @example cy.adicionaObservacaoFarmaceutica()
        */
-      queryDatabase(command: string, ...args: any): Cypress.Chainable<any>
+      queryDB(command: string, ...args: any): Cypress.Chainable<any>
 
       /**
        * comando customizado para desconectar do banco de dados.
