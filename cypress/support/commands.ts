@@ -26,7 +26,7 @@
 /// <reference types="Cypress" />
 // @ts-check
 ///<reference path="./cypress.d.ts" />
-import { ELEMENTS as el } from '../integration/Sm/Hkm/Login/elements';
+import { ELEMENTS as el } from '../integration/Login/elements';
 import { add } from 'cypress/types/lodash';
 // import Database from './Database/database';
 import mysql from 'mysql';
