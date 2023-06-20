@@ -28,72 +28,44 @@
 ///<reference path="./cypress.d.ts" />
 import { ELEMENTS as el } from '../integration/Sm/Hkm/Login/elements';
 import { add } from 'cypress/types/lodash';
-import Database from './Database/database';
+// import Database from './Database/database';
 import mysql from 'mysql';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 
 
 Cypress.Commands.add('login', () => {
-  cy.session([Cypress.env('user'), Cypress.env('password')], () => {
-    cy.visit({
-      url: Cypress.env('baseUrl'),
+  cy.session([Cypress.env('enviroment.user'), Cypress.env('enviroment.password')], () => {
+    const selectedlogin = Cypress.env('enviroment').HOMOLOG_ACESS;
+
+    cy.visit(selectedlogin.BASEURL, {
       method: 'POST'
-    })
-    cy.log(`Carregando ambiente  ${Cypress.env('environment') ? Cypress.env('environment') : 'local'} `)
-    var enviroment = {
-      homolog: 'CYPRESS_homologUser',
-      prod: 'CYPRESS_prodUser',
-      local: 'CYPRESS_localUser'
-    }
-    var selectedlogin = enviroment[Cypress.env('environment')]
-    Cypress.env('user', Cypress.env(selectedlogin))
+    });
+
+    cy.log(`Carregando ambiente ${Cypress.env('environment') ? Cypress.env('environment') : 'LOCAL_ACESS'}`);
+    
     cy.get(el.usuario)
       .should('be.visible')
-      .type(Cypress.env('CYPRESS_localUser').user, { log: false })
+      .type(selectedlogin.user, { log: false });
+    
     cy.get(el.senha)
       .should('be.visible')
-      .type(Cypress.env('CYPRESS_localUser').password, { log: false })
+      .type(selectedlogin.password, { log: false });
+    
     cy.get(el.btlogin)
       .should('be.visible')
       .contains('login')
-      .click()
-    cy.url().should('contain', process.env.DB_HOST_TESTE)
+      .click();
+    
+    cy.url().should('contain', Cypress.env('enviroment').HOMOLOG_ACESS.BASEURL + 'lembretes');
   },
-    {
-      validate() {
-        cy.request(process.env.DB_HOST_TESTE + '/lembretes').its('status').should('eq', 200)
-      }
-    })
-})
-
-
-
-Cypress.Commands.add('connectToDatabase', () => {
-  const database = new Database();
-  database.connect();
-});
-
-
-Cypress.Commands.add('queryDatabase', (query, callback) => {
-  const connection = mysql.createConnection({
-    host: Cypress.env('DB_HOST'),
-    user: Cypress.env('DB_USER'),
-    password: Cypress.env('DB_PASSWORD'),
-    database: Cypress.env('DB_DATABASE')
-  });
-  connection.connect();
-  connection.query(query, (error, results) => {
-    if (error) {
-      throw new Error(`Failed to execute query: ${query}\n${error}`);
+  {
+    validate() {
+      cy.request(Cypress.env('enviroment').HOMOLOG_ACESS.BASEURL + 'lembretes')
+        .then((response) => {
+          expect(response.status).to.equal(200);
+        });
     }
-    connection.end();
-    callback(results);
   });
 });
-
-
-Cypress.Commands.add('disconnectFromDatabase', () => {
-  const database = new Database();
-  database.disconnect();
-});
-

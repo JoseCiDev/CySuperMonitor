@@ -1,6 +1,8 @@
 /// <reference types="Cypress" />
 import { data } from '../fixtures/Sm/Hkm/nrorc-cdfil';
-
+import mysql from 'mysql';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 
 
@@ -77,20 +79,6 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
     // Dentro do arquivo de teste Cypress
 
-
-    it('Deve buscar registros no banco de dados', () => {
-        cy.connectToDatabase('connectToDatabase').then(() => {
-            cy.queryDatabase('SELECT * FROM acl_role ar WHERE ar.id_acl_role = "3"', (results) => {
-                // Use os resultados da consulta no seu teste
-                expect(results.length).to.be.greaterThan(0);
-                expect(results).to.have.lengthOf(1); // Verifica se foi retornado apenas um registro
-                expect(results[0].tipo).to.equal('Atendente'); // Verifica o nome do perfil
-                // ...
-            });
-        });
-        // Desconectar do banco de dados
-        cy.disconnectFromDatabase;
-    });
     const execSm = (tipo) => {
         const moduloSm = {
             // inicio: {
@@ -130,10 +118,9 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
             backofficeHkm: {
                 emAndamento:
                     it('Backoffices em Andamento', () => {
-                        const dbName = 'homolog'
-                        const query = 'SELECT * FROM acl_role ar'
-
-                        cy.task('queryDatabase', { dbName, query })
+                        cy.task('queryDatabase', {
+                            query: 'SELECT * FROM acl_role ar'
+                        })
                         // cy.nrorclist('cdfil' , 'nrorc')
                         // cy.nrorclist();
                         // BackofficeHKM.acessarBackofficeEmAndamento()
