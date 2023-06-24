@@ -1,10 +1,15 @@
 /// <reference types="Cypress" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { data } from '../fixtures/Sm/Hkm/nrorc-cdfil';
 
 =======
 import { Connection, ConnectionOptions } from 'mysql2/promise';
 import * as mysql2 from 'mysql2/promise';
+=======
+import * as mysql from 'mysql';
+import { DatabaseConnection } from '../support/Connections/connection';
+>>>>>>> feature/ECD-3
 import * as dotenv from 'dotenv';
 dotenv.config();
 >>>>>>> feature/ECD-2
@@ -14,11 +19,15 @@ dotenv.config();
 
 //BACKOFFICE
 <<<<<<< HEAD
+<<<<<<< HEAD
 import BackofficeHKM from '../integration/Sm/Hkm/BackofficeHKM';
 =======
 import BackofficeHKM from '../integration/Backoffice/EmAndamento';
 
 >>>>>>> feature/ECD-2
+=======
+import BackofficeHKM from '../integration/Backoffice/EmAndamento';
+>>>>>>> feature/ECD-3
 
 //ATENDIMENTO
 
@@ -144,6 +153,7 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
             backofficeHkm: {
                 emAndamento:
+<<<<<<< HEAD
                     it('Backoffices em Andamento', () => {
 <<<<<<< HEAD
                         const dbName = 'homolog'
@@ -163,6 +173,18 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
                             // cy.get(...).should(...) ou cy.wrap(...).click(), por exemplo
                         })
 >>>>>>> feature/ECD-2
+=======
+                    it('Backoffices em Andamento', async () => {
+
+                        cy.queryDB(
+                            'homolog',
+                            'SELECT * from acl_role ar')
+                            .then((result) => {
+                                const data = result;
+                                // Faça o que desejar com os dados, como realizar asserções ou ações adicionais
+                                // cy.get(...).should(...) ou cy.wrap(...).click(), por exemplo
+                            });
+>>>>>>> feature/ECD-3
                         // cy.nrorclist('cdfil' , 'nrorc')
                         // cy.nrorclist();
                         // BackofficeHKM.acessarBackofficeEmAndamento()

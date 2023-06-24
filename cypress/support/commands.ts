@@ -30,6 +30,7 @@
 import { ELEMENTS as el } from '../integration/Sm/Hkm/Login/elements';
 import { add } from 'cypress/types/lodash';
 // import Database from './Database/database';
+<<<<<<< HEAD
 import mysql from 'mysql';
 =======
 import { ELEMENTS as el } from '../integration/Login/elements';
@@ -37,6 +38,9 @@ import { add } from 'cypress/types/lodash';
 // import Database from './Database/database';
 import { Connection, ConnectionOptions } from 'mysql2/promise';
 import * as mysql2 from 'mysql2/promise';
+=======
+import * as mysql from 'mysql';
+>>>>>>> feature/ECD-3
 import * as dotenv from 'dotenv';
 dotenv.config();
 >>>>>>> feature/ECD-2
@@ -126,4 +130,18 @@ Cypress.Commands.add('login', () => {
     }
   });
 });
+<<<<<<< HEAD
 >>>>>>> feature/ECD-2
+=======
+
+
+Cypress.Commands.add('queryDB', (dbName: string, query: string): Cypress.Chainable<unknown> => {
+  const params = { dbName, query }; // Criando objeto com as propriedades necessárias
+
+  return cy.task("queryDB", params)
+    .then((result: unknown) => {
+      // Faça algo com o resultado da consulta
+      return result;
+    });
+});
+>>>>>>> feature/ECD-3
