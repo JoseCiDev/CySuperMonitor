@@ -29,7 +29,7 @@
 import { ELEMENTS as el } from '../integration/Login/elements';
 import { add } from 'cypress/types/lodash';
 // import Database from './Database/database';
-import mysql from 'mysql';
+import * as mysql from 'mysql';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -71,11 +71,12 @@ Cypress.Commands.add('login', () => {
 });
 
 
+Cypress.Commands.add('queryDB', (dbName: string, query: string): Cypress.Chainable<unknown> => {
+  const params = { dbName, query }; // Criando objeto com as propriedades necessárias
 
-
-Cypress.Commands.add('queryDB', (dbName, query) => {
-  return cy.task('queryDB', {
-    dbName,
-    query
-  });
+  return cy.task("queryDB", params)
+    .then((result: unknown) => {
+      // Faça algo com o resultado da consulta
+      return result;
+    });
 });

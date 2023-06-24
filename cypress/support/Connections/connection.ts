@@ -1,4 +1,4 @@
-import mysql from 'mysql';
+import * as mysql from 'mysql';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

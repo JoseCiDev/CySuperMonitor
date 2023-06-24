@@ -1,5 +1,5 @@
 /// <reference types="Cypress" />
-import mysql from 'mysql';
+import * as mysql from 'mysql';
 import { DatabaseConnection } from '../support/Connections/connection';
 import * as dotenv from 'dotenv';
 dotenv.config();
