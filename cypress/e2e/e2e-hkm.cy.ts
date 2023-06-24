@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
-import { data } from '../fixtures/Sm/Hkm/nrorc-cdfil';
-import mysql from 'mysql';
+import { Connection, ConnectionOptions } from 'mysql2/promise';
+import * as mysql2 from 'mysql2/promise';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -8,7 +8,8 @@ dotenv.config();
 
 
 //BACKOFFICE
-import BackofficeHKM from '../integration/Sm/Hkm/BackofficeHKM';
+import BackofficeHKM from '../integration/Backoffice/EmAndamento';
+
 
 //ATENDIMENTO
 

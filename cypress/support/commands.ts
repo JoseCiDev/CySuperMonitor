@@ -29,7 +29,8 @@
 import { ELEMENTS as el } from '../integration/Login/elements';
 import { add } from 'cypress/types/lodash';
 // import Database from './Database/database';
-import mysql from 'mysql';
+import { Connection, ConnectionOptions } from 'mysql2/promise';
+import * as mysql2 from 'mysql2/promise';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
