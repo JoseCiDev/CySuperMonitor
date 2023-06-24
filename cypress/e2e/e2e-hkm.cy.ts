@@ -1,12 +1,24 @@
 /// <reference types="Cypress" />
+<<<<<<< HEAD
 import { data } from '../fixtures/Sm/Hkm/nrorc-cdfil';
 
+=======
+import { Connection, ConnectionOptions } from 'mysql2/promise';
+import * as mysql2 from 'mysql2/promise';
+import * as dotenv from 'dotenv';
+dotenv.config();
+>>>>>>> feature/ECD-2
 
 
 
 
 //BACKOFFICE
+<<<<<<< HEAD
 import BackofficeHKM from '../integration/Sm/Hkm/BackofficeHKM';
+=======
+import BackofficeHKM from '../integration/Backoffice/EmAndamento';
+
+>>>>>>> feature/ECD-2
 
 //ATENDIMENTO
 
@@ -77,6 +89,7 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
     // Dentro do arquivo de teste Cypress
 
+<<<<<<< HEAD
 
     it('Deve buscar registros no banco de dados', () => {
         cy.connectToDatabase('connectToDatabase').then(() => {
@@ -91,6 +104,8 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
         // Desconectar do banco de dados
         cy.disconnectFromDatabase;
     });
+=======
+>>>>>>> feature/ECD-2
     const execSm = (tipo) => {
         const moduloSm = {
             // inicio: {
@@ -130,10 +145,24 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
             backofficeHkm: {
                 emAndamento:
                     it('Backoffices em Andamento', () => {
+<<<<<<< HEAD
                         const dbName = 'homolog'
                         const query = 'SELECT * FROM acl_role ar'
 
                         cy.task('queryDatabase', { dbName, query })
+=======
+                        cy.task('queryDatabase', {
+                            query: 'SELECT * from acl_role ar'
+                        }).then((result) => {
+                            // 'result' contém o resultado da consulta ao banco de dados
+
+                            // Faça o que desejar com o resultado, como atribuí-lo a uma variável
+                            const data = result
+
+                            // Realize asserções ou ações adicionais com os dados recuperados
+                            // cy.get(...).should(...) ou cy.wrap(...).click(), por exemplo
+                        })
+>>>>>>> feature/ECD-2
                         // cy.nrorclist('cdfil' , 'nrorc')
                         // cy.nrorclist();
                         // BackofficeHKM.acessarBackofficeEmAndamento()
@@ -533,4 +562,15 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
 
 
+<<<<<<< HEAD
 });
+=======
+});
+
+
+
+
+
+
+
+>>>>>>> feature/ECD-2

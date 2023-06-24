@@ -26,36 +26,51 @@
 /// <reference types="Cypress" />
 // @ts-check
 ///<reference path="./cypress.d.ts" />
+<<<<<<< HEAD
 import { ELEMENTS as el } from '../integration/Sm/Hkm/Login/elements';
 import { add } from 'cypress/types/lodash';
 // import Database from './Database/database';
 import mysql from 'mysql';
+=======
+import { ELEMENTS as el } from '../integration/Login/elements';
+import { add } from 'cypress/types/lodash';
+// import Database from './Database/database';
+import { Connection, ConnectionOptions } from 'mysql2/promise';
+import * as mysql2 from 'mysql2/promise';
+import * as dotenv from 'dotenv';
+dotenv.config();
+>>>>>>> feature/ECD-2
 
 
 
 Cypress.Commands.add('login', () => {
+<<<<<<< HEAD
   cy.session([Cypress.env('user'), Cypress.env('password')], () => {
     cy.visit({
       url: process.env.DB_HOST_TESTE,
+=======
+  cy.session([Cypress.env('enviroment.user'), Cypress.env('enviroment.password')], () => {
+    const selectedlogin = Cypress.env('enviroment').HOMOLOG_ACESS;
+
+    cy.visit(selectedlogin.BASEURL, {
+>>>>>>> feature/ECD-2
       method: 'POST'
-    })
-    cy.log(`Carregando ambiente  ${Cypress.env('environment') ? Cypress.env('environment') : 'local'} `)
-    var enviroment = {
-      homolog: 'CYPRESS_homologUser',
-      prod: 'CYPRESS_prodUser',
-      local: 'CYPRESS_localUser'
-    }
-    var selectedlogin = enviroment[Cypress.env('environment')]
-    Cypress.env('user', Cypress.env(selectedlogin))
+    });
+
+    cy.log(`Carregando ambiente ${Cypress.env('environment') ? Cypress.env('environment') : 'LOCAL_ACESS'}`);
+    
     cy.get(el.usuario)
       .should('be.visible')
-      .type(Cypress.env('CYPRESS_localUser').user, { log: false })
+      .type(selectedlogin.user, { log: false });
+    
     cy.get(el.senha)
       .should('be.visible')
-      .type(Cypress.env('CYPRESS_localUser').password, { log: false })
+      .type(selectedlogin.password, { log: false });
+    
     cy.get(el.btlogin)
       .should('be.visible')
       .contains('login')
+<<<<<<< HEAD
       .click()
     cy.url().should('contain', process.env.DB_HOST_TESTE)
   },
@@ -97,3 +112,18 @@ Cypress.Commands.add('login', () => {
 //   database.disconnect();
 // });
 
+=======
+      .click();
+    
+    cy.url().should('contain', Cypress.env('enviroment').HOMOLOG_ACESS.BASEURL + 'lembretes');
+  },
+  {
+    validate() {
+      cy.request(Cypress.env('enviroment').HOMOLOG_ACESS.BASEURL + 'lembretes')
+        .then((response) => {
+          expect(response.status).to.equal(200);
+        });
+    }
+  });
+});
+>>>>>>> feature/ECD-2

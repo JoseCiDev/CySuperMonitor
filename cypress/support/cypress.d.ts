@@ -65,7 +65,28 @@ declare global {
 
 }
 declare module 'dotenv' {
-  export const PROJECT_ID: string;
-  export const PROJECT_KEY: string;
-  export const BASE_URL: string;
+// [DB TESTE]
+export const DB_HOST_TESTE: string;
+export const DBNAME_PRODUCTION: string;
+export const DBNAME_LOCAL: string;
+export const DBNAME_HOMOLOG: string;
+export const FB_DBURL: string;
+export const FB_DBUSER: string;
+export const FB_DBPASS: string;
+
+// [LOCAL CONNECTION]
+export const LOCAL_HOST: string;
+export const LOCAL_USER: string;
+export const LOCAL_PASSWORD: string;
+export const LOCAL_DATABASE: string;
+
+// [HOMOLOG CONNECTION]
+export const HOMOLOG_HOST: string;
+export const HOMOLOG_USER: string;
+export const HOMOLOG_PASSWORD: string;
+export const HOMOLOG_DATABASE: string;
+
+// [CYPRESS CLOUD CREDENTIALS]
+export const PROJECT_ID: string;
+export const PROJECT_KEY: string;
 }
