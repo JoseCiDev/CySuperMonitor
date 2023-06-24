@@ -1,33 +1,21 @@
 /// <reference types="Cypress" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { data } from '../fixtures/Sm/Hkm/nrorc-cdfil';
-
-=======
 import { Connection, ConnectionOptions } from 'mysql2/promise';
 import * as mysql2 from 'mysql2/promise';
-=======
 import * as mysql from 'mysql';
 import { DatabaseConnection } from '../support/Connections/connection';
->>>>>>> feature/ECD-3
 import * as dotenv from 'dotenv';
 dotenv.config();
->>>>>>> feature/ECD-2
+
 
 
 
 
 //BACKOFFICE
-<<<<<<< HEAD
-<<<<<<< HEAD
-import BackofficeHKM from '../integration/Sm/Hkm/BackofficeHKM';
-=======
+
+
 import BackofficeHKM from '../integration/Backoffice/EmAndamento';
 
->>>>>>> feature/ECD-2
-=======
-import BackofficeHKM from '../integration/Backoffice/EmAndamento';
->>>>>>> feature/ECD-3
+
 
 //ATENDIMENTO
 
@@ -98,23 +86,7 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
     // Dentro do arquivo de teste Cypress
 
-<<<<<<< HEAD
 
-    it('Deve buscar registros no banco de dados', () => {
-        cy.connectToDatabase('connectToDatabase').then(() => {
-            cy.queryDatabase('SELECT * FROM acl_role ar WHERE ar.id_acl_role = "3"', (results) => {
-                // Use os resultados da consulta no seu teste
-                expect(results.length).to.be.greaterThan(0);
-                expect(results).to.have.lengthOf(1); // Verifica se foi retornado apenas um registro
-                expect(results[0].tipo).to.equal('Atendente'); // Verifica o nome do perfil
-                // ...
-            });
-        });
-        // Desconectar do banco de dados
-        cy.disconnectFromDatabase;
-    });
-=======
->>>>>>> feature/ECD-2
     const execSm = (tipo) => {
         const moduloSm = {
             // inicio: {
@@ -153,27 +125,8 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
             backofficeHkm: {
                 emAndamento:
-<<<<<<< HEAD
-                    it('Backoffices em Andamento', () => {
-<<<<<<< HEAD
-                        const dbName = 'homolog'
-                        const query = 'SELECT * FROM acl_role ar'
 
-                        cy.task('queryDatabase', { dbName, query })
-=======
-                        cy.task('queryDatabase', {
-                            query: 'SELECT * from acl_role ar'
-                        }).then((result) => {
-                            // 'result' contém o resultado da consulta ao banco de dados
-
-                            // Faça o que desejar com o resultado, como atribuí-lo a uma variável
-                            const data = result
-
-                            // Realize asserções ou ações adicionais com os dados recuperados
-                            // cy.get(...).should(...) ou cy.wrap(...).click(), por exemplo
-                        })
->>>>>>> feature/ECD-2
-=======
+                
                     it('Backoffices em Andamento', async () => {
 
                         cy.queryDB(
@@ -184,7 +137,7 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
                                 // Faça o que desejar com os dados, como realizar asserções ou ações adicionais
                                 // cy.get(...).should(...) ou cy.wrap(...).click(), por exemplo
                             });
->>>>>>> feature/ECD-3
+
                         // cy.nrorclist('cdfil' , 'nrorc')
                         // cy.nrorclist();
                         // BackofficeHKM.acessarBackofficeEmAndamento()
@@ -584,9 +537,7 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
 
 
-<<<<<<< HEAD
-});
-=======
+
 });
 
 
@@ -595,4 +546,5 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
 
 
->>>>>>> feature/ECD-2
+
+

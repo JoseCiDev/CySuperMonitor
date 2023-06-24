@@ -1,12 +1,8 @@
 {
-<<<<<<< HEAD
-    "jira-plugin.workingProject": ""
-=======
     "jira-plugin.workingProject": "",
     "commentTranslate.source": "Google",
     "git.showPushSuccessNotification": true,
     "git.terminalAuthentication": false,
     "github.gitAuthentication": false,
     "commentTranslate.targetLanguage": "pt"
->>>>>>> feature/ECD-2
 }
