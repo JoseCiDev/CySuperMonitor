@@ -11,7 +11,7 @@ import { mount } from 'cypress/react'
 // with a <reference path="./component" /> at the top of your spec.
 declare global {
   namespace Cypress {
-    interface Chainable {
+    interface Chainable<Subject = any> {
       mount: typeof mount
       /**
        * Custom command to select DOM element by data-cy attribute.
@@ -54,40 +54,25 @@ declare global {
        * describe
        * @example cy.nrorclist()
        */
-      nrorclist(): { cdfil: string; nrorc: string; }[]
+      geraFixture(): { imagem: string,nome: string; caminho: string; }[]
 
       /**
        * describe
        * @example ()
        */
       state():Chainable<Element>
+
+      /**
+     * Simula a digitação de texto com suporte a eventos de teclado.
+     *
+     * @param text O texto a ser digitado.
+     * @param options Opções adicionais para a digitação.
+     *
+     * @example
+     * cy.get('input').realType('Hello, World!');
+     */
+    realType(text: string, options?: Partial<TypeOptions>): Chainable<Subject>;
     }
   }
 
-}
-declare module 'dotenv' {
-// [DB TESTE]
-export const DB_HOST_TESTE: string;
-export const DBNAME_PRODUCTION: string;
-export const DBNAME_LOCAL: string;
-export const DBNAME_HOMOLOG: string;
-export const FB_DBURL: string;
-export const FB_DBUSER: string;
-export const FB_DBPASS: string;
-
-// [LOCAL CONNECTION]
-export const LOCAL_HOST: string;
-export const LOCAL_USER: string;
-export const LOCAL_PASSWORD: string;
-export const LOCAL_DATABASE: string;
-
-// [HOMOLOG CONNECTION]
-export const HOMOLOG_HOST: string;
-export const HOMOLOG_USER: string;
-export const HOMOLOG_PASSWORD: string;
-export const HOMOLOG_DATABASE: string;
-
-// [CYPRESS CLOUD CREDENTIALS]
-export const PROJECT_ID: string;
-export const PROJECT_KEY: string;
 }

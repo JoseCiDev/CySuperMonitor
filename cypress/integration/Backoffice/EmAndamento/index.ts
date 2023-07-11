@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /// <reference types="cypress" />
-const el = require('./elements').ELEMENTS;
+import { ELEMENTS } from './elements';
+const el = ELEMENTS;
 
 /*
 backoffice
@@ -13,7 +13,7 @@ backoffice
 
 
 
-class BackofficeHKM {
+class Backoffice {
   acessarBackofficeEmAndamento() {
     cy.get(el.acessarbackoffice)
       .should('be.visible')
@@ -209,4 +209,4 @@ class BackofficeHKM {
   }
 };
 
-export default new BackofficeHKM();
+export default new Backoffice();

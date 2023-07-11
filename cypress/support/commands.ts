@@ -30,57 +30,46 @@
 
 // import Database from './Database/database';
 import { ELEMENTS as el } from '../integration/Login/elements';
-import { add } from 'cypress/types/lodash';
-import { Connection, ConnectionOptions } from 'mysql2/promise';
-import * as mysql2 from 'mysql2/promise';
 import * as mysql from 'mysql';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 
 
+
+
 Cypress.Commands.add('login', () => {
+  const ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
+  cy.visit(ambiente_selecionado.BASEURL, {
+    method: 'GET'
+  });
 
+  cy.get(el.usuario)
+    .should('be.visible')
+    .type(ambiente_selecionado.USER, { log: false });
 
-  cy.session([Cypress.env('enviroment.user'), Cypress.env('enviroment.password')], () => {
-    const selectedlogin = Cypress.env('enviroment').HOMOLOG_ACESS;
+  cy.get(el.senha)
+    .should('be.visible')
+    .type(ambiente_selecionado.PASSWORD, { log: false });
 
-    cy.visit(selectedlogin.BASEURL, {
-      method: 'POST'
-    });
-
-    cy.log(`Carregando ambiente ${Cypress.env('environment') ? Cypress.env('environment') : 'LOCAL_ACESS'}`);
-
-    cy.get(el.usuario)
-      .should('be.visible')
-      .type(selectedlogin.user, { log: false });
-
-    cy.get(el.senha)
-      .should('be.visible')
-      .type(selectedlogin.password, { log: false });
-
-    cy.get(el.btlogin)
-      .should('be.visible')
-      .contains('login')
-
-      .click()
-    cy.url().should('contain', process.env.DB_HOST_TESTE)
-  },
-    {
-      validate() {
-        cy.request(process.env.DB_HOST_TESTE + '/lembretes').its('status').should('eq', 200)
-      }
-    })
+  cy.get(el.btlogin)
+    .should('be.visible')
+    .contains('login')
+    .click()
+  cy.url().should('contain', ambiente_selecionado.BASEURL + 'lembretes')
 })
 
+interface QueryParams {
+  dbName: string;
+  query: string;
+}
 
+Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
+  const params: QueryParams = { dbName, query };
 
-Cypress.Commands.add('queryDB', (dbName: string, query: string): Cypress.Chainable<unknown> => {
-  const params = { dbName, query }; // Criando objeto com as propriedades necessárias
-
-  return cy.task("queryDB", params)
-    .then((result: unknown) => {
-      // Faça algo com o resultado da consulta
-      return result;
-    });
+  // Retorna um objeto Cypress.Chainable envolvendo o resultado da tarefa
+  return cy.task<unknown>('queryDB', params).then((result: unknown) => {
+    // Encadeie asserções ou ações adicionais usando cy.wrap()
+    return cy.wrap(result);
+  });
 });

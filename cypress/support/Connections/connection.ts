@@ -1,5 +1,6 @@
 import * as mysql from 'mysql';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 class DatabaseConnection {
@@ -33,7 +34,7 @@ class DatabaseConnection {
 
     connection.connect();
 
-    return new Promise((resolve, reject) => {
+    return new Cypress.Promise((resolve, reject) => {
       connection.query(query, (error, results) => {
         if (error) {
           return reject(error);

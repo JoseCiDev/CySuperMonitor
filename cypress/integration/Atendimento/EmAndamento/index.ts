@@ -1,9 +1,10 @@
-const el = require('./elements').ELEMENTS
+import { ELEMENTS } from './elements';
+const el = ELEMENTS;
 
 
 
 /// <reference types="cypress" />
-class AtendimentoHKM{
+class Atendimento{
   acessarorcamentoAtendimento(){
     cy.get(el.todosorcamentos)
       .should('be.visible')
@@ -977,4 +978,4 @@ class AtendimentoHKM{
   }
 }
 
-export default new AtendimentoHKM()
+export default new Atendimento()
