@@ -15,7 +15,7 @@ export const ELEMENTS = {
     prescritor: '#modalMedicoRec',
     cdcli_paciente:'#t2_154c',
     paciente: '#modalPacienteRec',
-    autocomplete_paciente: 'div.autocomplete-suggestion[data-index="0"]',
+    autocomplete_paciente: 'body > div:nth-child(323) > div',
     canal_recebimento: '#modalCanalContato',
     cluster: '#modalCluster',
     orcamentista: '',

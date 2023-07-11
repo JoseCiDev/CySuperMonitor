@@ -163,29 +163,43 @@ export class ImportarReceita extends Receita {
             .and('have.id', 'modalPacienteRec')
             .type(cdcli_aleatorio_paciente)
             .then(() => {
+
                 cy.get('.autocomplete-suggestions')
-                    .as('suggestions')
+                    .as('suggestions');
                 cy.get('@suggestions')
-                    .then(($elemento) => {
-                        cy.wrap($elemento)
+                    .should('be.visible')
+                    .then(($suggestions) => {
+                        cy.wrap($suggestions)
                             .should('be.visible')
-                    })
+                            .invoke('attr', 'style', 'display: block')
+                    });
+
                 cy.get('.autocomplete-suggestion')
-                    .as('suggestion')
+                    .as('suggestion');
                 cy.get('@suggestion')
-                    .then(($elemento) => {
-                        // Realizar as ações desejadas com o elemento capturado
-                        cy.wrap($elemento)
-                            .should('be.visible')
-                        //capturar o autocomplete do paciente para selecionar paciente    
+                    .should('be.visible')
+                    .eq(0)
+                    .then(($suggestion) => {
+                        cy.wrap($suggestion)
+                            .should('be.visible');
                         cy.get(el.autocomplete_paciente)
-                            .should('be.visible')
-                            .and('have.class', 'autocomplete-suggestion')
-                            .first()
-                            .click()
-                    })
+                            .should('have.class', 'autocomplete-suggestion')
+                            .then(($autocompletePaciente) => {
+                                cy.wrap($autocompletePaciente)
+                                    .parent('.autocomplete-suggestions')
+                                    .invoke('attr', 'style', 'display: block')
+                                    .should('be.visible')
+                                    .then(($parent) => {
+                                        cy.wrap($parent)
+                                            .scrollIntoView()
+                                            .click();
+                                    });
+                            });
+                    });
             })
             .should('not.be.empty');
+        cy.pause();
+
 
         // informar canal de recebimento
         cy.get<HTMLSelectElement>(el.canal_recebimento) // Captura o campo select
