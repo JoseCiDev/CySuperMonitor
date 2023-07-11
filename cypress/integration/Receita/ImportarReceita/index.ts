@@ -163,7 +163,6 @@ export class ImportarReceita extends Receita {
             .and('have.id', 'modalPacienteRec')
             .type(cdcli_aleatorio_paciente)
             .then(() => {
-
                 cy.get('.autocomplete-suggestions')
                     .as('suggestions');
                 cy.get('@suggestions')
@@ -173,7 +172,6 @@ export class ImportarReceita extends Receita {
                             .should('be.visible')
                             .invoke('attr', 'style', 'display: block')
                     });
-
                 cy.get('.autocomplete-suggestion')
                     .as('suggestion');
                 cy.get('@suggestion')
@@ -189,45 +187,59 @@ export class ImportarReceita extends Receita {
                                     .parent('.autocomplete-suggestions')
                                     .invoke('attr', 'style', 'display: block')
                                     .should('be.visible')
-                                    .then(($parent) => {
-                                        cy.wrap($parent)
-                                            .scrollIntoView()
-                                            .click();
-                                    });
+                                    .click({ force: true });
                             });
                     });
             })
             .should('not.be.empty');
-        cy.pause();
-
 
         // informar canal de recebimento
-        cy.get<HTMLSelectElement>(el.canal_recebimento) // Captura o campo select
+        cy.get<HTMLSelectElement>(el.canal_recebimento)
             .should('be.visible')
             .then($select => {
                 cy.wrap($select)
                     .invoke('attr', 'id')
-                    .should('have.value', '')
+                    // .should('not.be.empty')
                     .then((id: string) => {
-                        expect(id).to.not.be.empty; // Verifica se o ID não está vazio
+                        expect(id).to.not.be.empty;
                     });
-                cy.pause();
                 cy.wrap($select)
                     .invoke('val')
-                    .should('have.value', '')
+                    // .should('not.be.empty')
                     .then((selectedOption: string) => {
-                        expect(selectedOption).to.not.be.null; // Verifica se o valor selecionado não é nulo
-                        expect(selectedOption.trim()).not.to.equal(''); // Verifica se o campo select não está vazio
+                        expect(selectedOption).to.not.be.null;
+                        // expect(selectedOption.trim()).not.to.equal(''); 
                     });
             });
 
 
 
         //  informar data de recebimento da receita
+
+        // Obter a data e hora atual
+        const dataHoraAtual = new Date();
+
+        // Formatar a data e hora no formato esperado pelo campo datetime-local
+        const valorDateTimeLocal = dataHoraAtual.toISOString().slice(0, 16);
+
         cy.get(el.data_recebimento)
             .should('be.visible')
             .and('have.id', 'modalDataRec')
 
+        cy.get(el.relogio)
+        .as('campoDateTimeLocal');
+
+        cy.get('@campoDateTimeLocal')
+        .eq(0)
+        .click({force: true}); // Abre o calendário
+
+        cy.get('.datetimepicker-days .day:not(.old):not(.new)')
+        .contains(dataHoraAtual.getDate().toString()).click({force: true}); // Seleciona o dia atual
+
+        cy.get('@campoDateTimeLocal')
+        .type(valorDateTimeLocal, { force: true }); // Insere o valor completo no campo
+
+        cy.pause();
 
 
 

@@ -21,6 +21,7 @@ export const ELEMENTS = {
     orcamentista: '',
     atendente_responsavel: '#modalAtendenteRec',
     data_recebimento: '#modalDataRec',
+    relogio:'input[type="datetime-local"]',
     junto_com: '',
     observacao: '',
     medicamento_controlado: '#medicamentoControlado',
