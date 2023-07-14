@@ -15,7 +15,7 @@ dotenv.config();
 import Backoffice from '../integration/Backoffice/EmAndamento';
 
 // RECEITA
-import { ImportarReceita } from '../integration/Receita/ImportarReceita/';
+import { ImportarReceita } from '../integration/Receita/ImportarReceita';
 
 //ATENDIMENTO
 

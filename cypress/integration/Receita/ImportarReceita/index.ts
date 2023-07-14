@@ -3,7 +3,7 @@ import { ELEMENTS } from './elements';
 const el = ELEMENTS;
 import { Receita } from '../Receita';
 import { contains } from 'cypress/types/jquery';
-import { carregarImagemSimulada } from '/projetos/CySmHkm/cypress/utils/fileUtils';
+import * as criarImagemFake from '../../../support/commands';
 import { faker } from '@faker-js/faker';
 import 'cypress-real-events/support';
 
@@ -89,13 +89,15 @@ export class ImportarReceita extends Receita {
         let paciente_fake: string;
         let atendente_responsavel: string;
         let opcao_canal_recebimento: number;
+        const fakeDate: Date = faker.date.recent();
+
 
         // atribuir valores às variáveis
         prescritor_fake = faker.person.firstName();
         paciente_fake = faker.person.firstName();
         atendente_responsavel = '';
-        opcao_canal_recebimento = 4;
-        // data_de_recebimento = ''
+        opcao_canal_recebimento = 1; //injetaveis whatsapp
+        const data_recebimento_fakedate: string = fakeDate.toISOString().split('T')[0];
 
         // definir lista de nome de prescritores
         const nome_personalizado_prescritor: string[] = ['56842'];
@@ -117,8 +119,11 @@ export class ImportarReceita extends Receita {
         cy.get(el.imgjpg)
             .click()
             .then(($input: JQuery<HTMLInputElement>) => {
+                const nome_arquivo = 'img_jpeg';
+                const tamanho_arquivo = 1024 * 1024; // 1 MB
+
                 // Simula o carregamento da imagem no elemento HTML simulado
-                carregarImagemSimulada('ReceitaTeste.jpeg', 140, 'image/jpeg');
+                cy.criarImagemFake(nome_arquivo,tamanho_arquivo)
             });
 
         // inserir prescritor
@@ -132,6 +137,7 @@ export class ImportarReceita extends Receita {
                 cy.get('@suggestion')
                     .then(($elemento) => {
                         cy.wrap($elemento)
+                            .invoke('attr', 'style', 'display: block')
                             .should('be.visible')
                             .click()
                     })
@@ -169,8 +175,8 @@ export class ImportarReceita extends Receita {
                     .should('be.visible')
                     .then(($suggestions) => {
                         cy.wrap($suggestions)
-                            .should('be.visible')
                             .invoke('attr', 'style', 'display: block')
+                            .should('be.visible')
                     });
                 cy.get('.autocomplete-suggestion')
                     .as('suggestion');
@@ -196,52 +202,19 @@ export class ImportarReceita extends Receita {
         // informar canal de recebimento
         cy.get<HTMLSelectElement>(el.canal_recebimento)
             .should('be.visible')
-            .then($select => {
-                cy.wrap($select)
-                    .invoke('attr', 'id')
-                    // .should('not.be.empty')
-                    .then((id: string) => {
-                        expect(id).to.not.be.empty;
-                    });
-                cy.wrap($select)
-                    .invoke('val')
-                    // .should('not.be.empty')
-                    .then((selectedOption: string) => {
-                        expect(selectedOption).to.not.be.null;
-                        // expect(selectedOption.trim()).not.to.equal(''); 
-                    });
-            });
+            .and('have.id', 'modalCanalContato')
+            .select(opcao_canal_recebimento)
+            .should('have.value', opcao_canal_recebimento)
+            .find('option:selected')
+            .should('be.selected');
 
-
-
-        //  informar data de recebimento da receita
-
-        // Obter a data e hora atual
-        const dataHoraAtual = new Date();
-
-        // Formatar a data e hora no formato esperado pelo campo datetime-local
-        const valorDateTimeLocal = dataHoraAtual.toISOString().slice(0, 16);
-
+        // informar data de recebimento da receita
         cy.get(el.data_recebimento)
             .should('be.visible')
             .and('have.id', 'modalDataRec')
-
-        cy.get(el.relogio)
-        .as('campoDateTimeLocal');
-
-        cy.get('@campoDateTimeLocal')
-        .eq(0)
-        .click({force: true}); // Abre o calendário
-
-        cy.get('.datetimepicker-days .day:not(.old):not(.new)')
-        .contains(dataHoraAtual.getDate().toString()).click({force: true}); // Seleciona o dia atual
-
-        cy.get('@campoDateTimeLocal')
-        .type(valorDateTimeLocal, { force: true }); // Insere o valor completo no campo
-
+            .type(data_recebimento_fakedate)
+            .click();
         cy.pause();
-
-
 
         // inserir canal de recebimento
         // inserir cluster

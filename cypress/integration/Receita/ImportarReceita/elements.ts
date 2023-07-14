@@ -21,7 +21,7 @@ export const ELEMENTS = {
     orcamentista: '',
     atendente_responsavel: '#modalAtendenteRec',
     data_recebimento: '#modalDataRec',
-    relogio:'input[type="datetime-local"]',
+    calendario_data_recebimento:'div[pseudo="-webkit-calendar-picker-indicator"]#picker',
     junto_com: '',
     observacao: '',
     medicamento_controlado: '#medicamentoControlado',

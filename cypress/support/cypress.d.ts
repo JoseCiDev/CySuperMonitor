@@ -43,6 +43,12 @@ declare global {
        */
       queryDB(dbName: string, query: string): Chainable<unknown>;
 
+      /**
+       * comando customizado para criar imagens fakes.
+       * @example cy.()
+       */
+      criarImagemFake(nome: string, tamanho: number): String;
+
       
       /**
        * comando customizado para desconectar do banco de dados.
@@ -64,12 +70,9 @@ declare global {
 
       /**
      * Simula a digitação de texto com suporte a eventos de teclado.
-     *
      * @param text O texto a ser digitado.
      * @param options Opções adicionais para a digitação.
-     *
-     * @example
-     * cy.get('input').realType('Hello, World!');
+     * @example cy.get('input').realType('Hello, World!');
      */
     realType(text: string, options?: Partial<TypeOptions>): Chainable<Subject>;
     }

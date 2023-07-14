@@ -4,5 +4,6 @@
     "git.showPushSuccessNotification": true,
     "git.terminalAuthentication": false,
     "github.gitAuthentication": false,
-    "commentTranslate.targetLanguage": "pt"
+    "commentTranslate.targetLanguage": "pt",
+    "npm.packageManager": "npm"
 }

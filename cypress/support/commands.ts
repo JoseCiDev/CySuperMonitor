@@ -31,6 +31,7 @@
 // import Database from './Database/database';
 import { ELEMENTS as el } from '../integration/Login/elements';
 import * as mysql from 'mysql';
+import { faker } from '@faker-js/faker';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -72,4 +73,39 @@ Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
     // Encadeie asserções ou ações adicionais usando cy.wrap()
     return cy.wrap(result);
   });
+});
+
+
+Cypress.Commands.add('criarImagemFake', (nome: string, tamanho: number): void | string => {
+
+  const caminho_arquivo = `fixtures/${nome}.jpeg`;
+  const BYTES_CODIFICADOS_EM_CARACTERES = 3 / 4
+
+  // Gerar uma imagem base64 fictícia usando a biblioteca faker
+  const dados_imagem_aleatoria = faker.image.url();
+  const dados_base64 = Buffer.from(dados_imagem_aleatoria, 'base64url');
+
+  // Calcular o tamanho atual da imagem em bytes
+  const tamanho_atual = Math.ceil(dados_base64.length * BYTES_CODIFICADOS_EM_CARACTERES);
+
+  if (tamanho_atual < tamanho) {
+    // Preencher o arquivo com conteúdo fictício até atingir o tamanho desejado
+    const tamanho_restante = tamanho - tamanho_atual;
+    const preencher_dados = faker.random.alphaNumeric(tamanho_restante);
+    const arquivo_base64_prenchido = dados_base64 + preencher_dados;
+
+    // Converter a imagem base64 em um Blob
+    const blob = Cypress.Blob.base64StringToBlob(arquivo_base64_prenchido, 'image/jpeg');
+
+    // Escrever o Blob em um arquivo usando o comando do Cypress
+    cy.writeFile(caminho_arquivo, blob, 'binary');
+  } else {
+    // Converter a imagem base64 em um Blob
+    const blob = Cypress.Blob.base64StringToBlob(dados_base64.toString('base64url'), 'image/jpeg');
+
+    // Escrever o Blob em um arquivo usando o comando do Cypress
+    cy.writeFile(caminho_arquivo, blob, 'binary');
+  }
+
+  return '';
 });
