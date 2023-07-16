@@ -64,7 +64,6 @@ interface QueryParams {
   dbName: string;
   query: string;
 }
-
 Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
   const params: QueryParams = { dbName, query };
 
@@ -75,37 +74,16 @@ Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
   });
 });
 
+Cypress.Commands.add('criarImagemFake', (nome_arquivo: string, tamanho_arquivo: number) => {
+  // Generate a random image URL using the Faker library
+  const imageUrl = encodeURIComponent(faker.image.url()).replace(/ /g, '-').replace('==', '');
 
-Cypress.Commands.add('criarImagemFake', (nome: string, tamanho: number): void | string => {
+  // Convert the image URL to a base64 string
+  const base64String = imageUrl.split(',')[1].replace(/=+/g, '');
 
-  const caminho_arquivo = `fixtures/${nome}.jpeg`;
-  const BYTES_CODIFICADOS_EM_CARACTERES = 3 / 4
+  // Create a Blob object from the base64 string
+  const blob = Cypress.Blob.base64StringToBlob(base64String, nome_arquivo);
 
-  // Gerar uma imagem base64 fictícia usando a biblioteca faker
-  const dados_imagem_aleatoria = faker.image.url();
-  const dados_base64 = Buffer.from(dados_imagem_aleatoria, 'base64url');
-
-  // Calcular o tamanho atual da imagem em bytes
-  const tamanho_atual = Math.ceil(dados_base64.length * BYTES_CODIFICADOS_EM_CARACTERES);
-
-  if (tamanho_atual < tamanho) {
-    // Preencher o arquivo com conteúdo fictício até atingir o tamanho desejado
-    const tamanho_restante = tamanho - tamanho_atual;
-    const preencher_dados = faker.random.alphaNumeric(tamanho_restante);
-    const arquivo_base64_prenchido = dados_base64 + preencher_dados;
-
-    // Converter a imagem base64 em um Blob
-    const blob = Cypress.Blob.base64StringToBlob(arquivo_base64_prenchido, 'image/jpeg');
-
-    // Escrever o Blob em um arquivo usando o comando do Cypress
-    cy.writeFile(caminho_arquivo, blob, 'binary');
-  } else {
-    // Converter a imagem base64 em um Blob
-    const blob = Cypress.Blob.base64StringToBlob(dados_base64.toString('base64url'), 'image/jpeg');
-
-    // Escrever o Blob em um arquivo usando o comando do Cypress
-    cy.writeFile(caminho_arquivo, blob, 'binary');
-  }
-
-  return '';
+  // Write the Blob object to a file
+  cy.writeFile(`fixtures/${nome_arquivo}.jpeg`, blob, 'binary');
 });

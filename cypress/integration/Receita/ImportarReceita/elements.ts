@@ -8,12 +8,14 @@ export const ELEMENTS = {
     // Subopcoes Receitas
     importar_receitas: '#side-menu > li.active > ul > li:nth-child(1) > a',
     // Tela Importação de receitas
-    registrar_receita: '#receita_register',
-    imgpdf: '#file-upload-button',
-    imgjpg: '#tui-image-editor-container-1 > div.tui-image-editor-main-container > div.tui-image-editor-header > div.tui-image-editor-header-buttons > div > input',
+    abrir_modal_registrar_receita: '#receita_register',
+    importar_pdf: '<input type="button" value="Escolher arquivo" pseudo="-webkit-file-upload-button" id="file-upload-button" aria-hidden="true">',
+    importar_imagem: 'input.tui-image-editor-load-btn[type="file"][accept="image/*"]',
     remover_imagem: '',
+    // Modal Registro de receita
+    sugestao_autocomplete:'.autocomplete-suggestion',
     prescritor: '#modalMedicoRec',
-    cdcli_paciente:'#t2_154c',
+    busca_paciente_cdcli:'#t2_154c',
     paciente: '#modalPacienteRec',
     autocomplete_paciente: 'body > div:nth-child(323) > div',
     canal_recebimento: '#modalCanalContato',
@@ -28,8 +30,9 @@ export const ELEMENTS = {
     urgente: '#modalUrgente',
     cliente_alerta: '#clienteAlerta',
     varejo: '',
-    possui_receita: '#groupMainEntitiesModal > div:nth-child(3) > div.col-md-11.text-right > label:nth-child(1) > input[type=radio]',
+    possui_receita: '#groupMainEntitiesModal > div:nth-child(3) > div > label:nth-child(1) > input[type=radio]',
     nao_possui_receita: '',
     repeticao: '',
-    util:'.tui-image-editor-main'
+    util:'.tui-image-editor-main',
+    salvar_receita:'#save_receita'
 }
