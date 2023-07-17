@@ -113,7 +113,7 @@ export class ImportarReceita extends Receita {
         const HORA_FORMATADA: string = `${hora}:${minutos}:${segundos}`;
 
         // definir lista de nome de prescritores
-        const lista_crm_prescritor: string[] = ['5241858-RJ'];
+        const lista_crm_prescritor: string[] = ['999990-SC'];
         // gerar um nome aleatorio da lista de prescritores
         const crm_aleatorio_prescritor: string = faker.helpers.arrayElement(lista_crm_prescritor);
 
@@ -172,8 +172,8 @@ export class ImportarReceita extends Receita {
             .and('have.class', 'btn btn-primary')
             .contains('OK')
             .click()
-
-        // selecionar opcao cdcli para buscar paciente
+            
+        // marcar opção cdcli para paciente
         cy.get(el.busca_paciente_cdcli)
             .should('be.visible')
             .and('have.id', 't2_154c')
