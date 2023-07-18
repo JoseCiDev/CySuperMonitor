@@ -73,17 +73,3 @@ Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
     return cy.wrap(result);
   });
 });
-
-Cypress.Commands.add('criarImagemFake', (nome_arquivo: string, tamanho_arquivo: number) => {
-  // Generate a random image URL using the Faker library
-  const imageUrl = encodeURIComponent(faker.image.url()).replace(/ /g, '-').replace('==', '');
-
-  // Convert the image URL to a base64 string
-  const base64String = imageUrl.split(',')[1].replace(/=+/g, '');
-
-  // Create a Blob object from the base64 string
-  const blob = Cypress.Blob.base64StringToBlob(base64String, nome_arquivo);
-
-  // Write the Blob object to a file
-  cy.writeFile(`fixtures/${nome_arquivo}.jpeg`, blob, 'binary');
-});

@@ -1,3 +1,13 @@
+/// <reference types="cypress" />
+import { ELEMENTS } from './elements';
+const el = ELEMENTS;
+
+import { contains } from 'cypress/types/jquery';
+import { faker } from '@faker-js/faker';
+import 'cypress-real-events/support';
+import { eq } from 'cypress/types/lodash';
+import 'cypress-file-upload';
+
 export class Receita {
     imagem: string;
     prescritor: string;
@@ -48,6 +58,12 @@ export class Receita {
         this.repeticao = repeticao;
     }
 
-    // Outros métodos da classe
+    menuReceitas() {
+        cy.get(el.receitas)
+            .should('be.visible')
+            .contains('Receitas')
+            .and('have.class', 'nav-label')
+            .click();
+    }
 }
 

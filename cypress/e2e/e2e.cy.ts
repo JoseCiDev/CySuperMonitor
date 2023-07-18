@@ -68,8 +68,8 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
         //
         // https://on.cypress.io/api/visit
         cy.login('user', 'password')
-        
-        
+
+
     })
 
 
@@ -119,8 +119,12 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
                             'valorNaoPossuiReceita',
                             'valorRepeticao'
                         );
-                        // importarReceita.acessarImportacaoReceita();
-                        importarReceita.registrarReceitajpegPrescritorPotencialDComRelação  ();
+                        for (let i = 0; i < 1; i++) {
+                            // importarReceita.acessarImportacaoReceita();
+                            importarReceita.registrarReceitajpegPrescritorPotencialDComRelação();
+                            // importarReceita.registrarReceitajpegPrescritorPotencialDComRelaçãoLimiteAtingido();
+                            // importarReceita.registrarReceitajpegPrescritorPotencialDSemRelacao();
+                        }
                     }),
 
                 // gerenciarReceita:

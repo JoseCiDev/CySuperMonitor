@@ -1,15 +1,12 @@
 /// <reference types="cypress" />
 import { ELEMENTS } from './elements';
 const el = ELEMENTS;
-import { Receita } from '../Receita';
+import { Receita } from '../index';
 import { contains } from 'cypress/types/jquery';
-import * as criarImagemFake from '../../../Utils/criar-imagem-fake';
 import { faker } from '@faker-js/faker';
 import 'cypress-real-events/support';
 import { eq } from 'cypress/types/lodash';
 import 'cypress-file-upload';
-
-
 
 
 export class ImportarReceita extends Receita {
@@ -67,69 +64,28 @@ export class ImportarReceita extends Receita {
         this.repeticao = repeticao;
     }
 
-    // acessar a tela importação de receitas.
-    acessarImportacaoReceita() {
-        const ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
 
-        cy.get(el.receitas)
-            .should('be.visible')
-            .contains('Receitas')
-            .and('have.class', 'nav-label')
-            .click();
+    ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
 
+
+    subMenuImportacaoReceita() {
         cy.get(el.importar_receitas)
             .should('be.visible')
             .contains('Importar receitas')
             .click()
-        cy.url().should('contain', ambiente_selecionado.BASEURL + 'receita/importar');
+        cy.url().should('contain', this.ambiente_selecionado.BASEURL + 'receita/importar');
     }
 
-    registrarReceitajpegPrescritorPotencialDComRelação() {
-        cy.visit(Cypress.env('enviroment').HOMOLOG_ACESS.BASEURL + 'receita/importar', {
-            method: 'GET'
-        });
-        // tipagem das variáveis
-        let prescritor_fake: string;
-        let paciente_fake: string;
-        let atendente_responsavel: string;
-        let opcao_canal_recebimento: number;
 
-        // atribuir valores às variáveis
-        prescritor_fake = faker.person.firstName();
-        paciente_fake = faker.person.firstName();
-        atendente_responsavel = '';
-        opcao_canal_recebimento = 1; //injetaveis whatsapp
-
-        const dataAtual: Date = new Date();
-        // Obtém os componentes individuais da data e hora
-        const ano: number = dataAtual.getFullYear();
-        const mes: string = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês começa em 0, por isso é necessário adicionar 1
-        const dia: string = String(dataAtual.getDate()).padStart(2, '0');
-        const hora: string = String(dataAtual.getHours()).padStart(2, '0');
-        const minutos: string = String(dataAtual.getMinutes()).padStart(2, '0');
-        const segundos: string = String(dataAtual.getSeconds()).padStart(2, '0');
-        // Formata a data e hora no formato desejado
-        const DATA_FORMATADA: string = `${ano}-${mes}-${dia}`;
-        const HORA_FORMATADA: string = `${hora}:${minutos}:${segundos}`;
-
-        // definir lista de nome de prescritores
-        const lista_crm_prescritor: string[] = ['999990-SC'];
-        // gerar um nome aleatorio da lista de prescritores
-        const crm_aleatorio_prescritor: string = faker.helpers.arrayElement(lista_crm_prescritor);
-
-        //definir lista de cdcli de pacientes/clientes
-        const cdcli_paciente: string[] = ['618484', '87056', '361135', '644028', '606820', '117535', '71078', '13134', '475143']
-        const cdcli_aleatorio_paciente: string = faker.helpers.arrayElement(cdcli_paciente);
-
-
-        // clicar em registrar receita
+    acessarTelaRegistroReceita() {
         cy.get(el.abrir_modal_registrar_receita)
             .should('be.visible')
-            .contains('Registrar receita')
             .and('have.id', 'receita_register')
             .click();
+    }
 
-        // clicar em importar imagem
+
+    inserirImagemJpeg() {
         cy.fixture('img/ReceitaJpeg(1).jpeg', 'base64')
             .then((conteudo_arquivo) => {
                 const nome = 'ReceitaJpeg(1).jpeg';
@@ -148,8 +104,21 @@ export class ImportarReceita extends Receita {
                         $input[0].dispatchEvent(event);
                     });
             });
+    }
 
-        // inserir prescritor
+
+    inserirImagemPdf() { }
+
+
+    inserirPrescritor() {
+        let prescritor_fake: string;
+        prescritor_fake = faker.person.firstName();
+
+        // definir lista de nome de prescritores
+        const lista_crm_prescritor: string[] = ['3243-BA'];
+        // gerar um nome aleatorio da lista de prescritores
+        const crm_aleatorio_prescritor: string = faker.helpers.arrayElement(lista_crm_prescritor);
+
         cy.get(el.prescritor)
             .should('have.id', 'modalMedicoRec')
             .type(crm_aleatorio_prescritor)
@@ -166,21 +135,91 @@ export class ImportarReceita extends Receita {
                     })
             })
             .contains(crm_aleatorio_prescritor)
-        // aceitar relacao entre prescritor, atendente e cluster encontrada
-        cy.get(el.relacao_prescritor_atendente_cluster_ok)
-            .should('be.visible')
-            .and('have.class', 'btn btn-primary')
-            .contains('OK')
-            .click()
-            
-        // marcar opção cdcli para paciente
-        cy.get(el.busca_paciente_cdcli)
-            .should('be.visible')
-            .and('have.id', 't2_154c')
-            .check()
-            .should('be.checked')
+    }
 
-        // inserir paciente
+
+    SugestaoRelacaoPrescritorAtendenteCluster() {
+        enum Option {
+            Cancel,
+            Ok,
+        }
+
+        function aplicarRelacaoPrescritor(option: Option): void {
+            const actions: { [key in Option]: () => void } = {
+                [Option.Cancel]: () => {
+                    cy.get(el.relacao_prescritor_atendente_cluster_cancel)
+                        .should('be.visible')
+                        .and('have.class', 'btn btn-secondary pull-left')
+                        .contains('Cancelar')
+                        .click()
+                },
+                [Option.Ok]: () => {
+                    cy.get(el.relacao_prescritor_atendente_cluster_ok)
+                        .should('be.visible')
+                        .and('have.class', 'btn btn-primary')
+                        .contains('OK')
+                        .click()
+                },
+            };
+
+            if (option in actions) {
+                actions[option]();
+            } else {
+                // Code for invalid or unknown options
+                console.log('Invalid option');
+                // Other actions related to invalid options
+            }
+        }
+
+        // aplicarRelacaoPrescritor(Option.Cancel); // Calls the function with the Cancel option
+        aplicarRelacaoPrescritor(Option.Ok); // Calls the function with the Ok option
+
+    }
+
+
+    selecionarParametroBuscaPaciente() {
+        enum RadioElement {
+            Nome,
+            Cdcli,
+            Cpf,
+            TelCel,
+        }
+
+        function opcaoBuscaPaciente(element: RadioElement): void {
+            const ids: Record<RadioElement, string> = {
+                [RadioElement.Nome]: 't1_154c',
+                [RadioElement.Cdcli]: 't2_154c',
+                [RadioElement.Cpf]: 't3_154c',
+                [RadioElement.TelCel]: 't4_154c',
+            };
+
+            const id = ids[element];
+
+            cy.get(el.busca_paciente_cdcli)
+                .should('be.visible')
+                .and('have.id', id)
+                .check()
+                .should('be.checked');
+        }
+
+        // Chamando a função com valores enum
+        // opcaoBuscaPaciente(RadioElement.Nome); // Chama a função com o elemento "nome"
+        opcaoBuscaPaciente(RadioElement.Cdcli); // Chama a função com o elemento "cdcli"
+        // opcaoBuscaPaciente(RadioElement.Cpf); // Chama a função com o elemento "cpf"
+        // opcaoBuscaPaciente(RadioElement.TelCel); // Chama a função com o elemento "TEL / CEL"
+
+
+    }
+
+
+    inserirPaciente() {
+        let paciente_fake: string;
+        paciente_fake = faker.person.firstName();
+
+        //definir lista de cdcli de pacientes/clientes
+        const cdcli_paciente: string[] = ['618484']
+        const cdcli_aleatorio_paciente: string = faker.helpers.arrayElement(cdcli_paciente);
+
         cy.get(el.paciente)
             .should('be.visible')
             .and('have.id', 'modalPacienteRec')
@@ -198,33 +237,160 @@ export class ImportarReceita extends Receita {
                             .click();
                     });
             });
+    }
 
-        // informar canal de recebimento
-        cy.get<HTMLSelectElement>(el.canal_recebimento)
-            .should('be.visible')
-            .and('have.id', 'modalCanalContato')
-            .select(opcao_canal_recebimento)
-            .should('have.value', opcao_canal_recebimento)
-            .find('option:selected')
-            .should('be.selected');
 
-        // informar data de recebimento da receita
+    inserirCanalRecebimento() {
+
+        enum CanalContato {
+            Selecione = '',
+            Whatsapp = '1',
+            Email = '2',
+            InjetaveisWhatsapp = '4',
+            EasyHealth = '5',
+            MedX = '6',
+            Visitacao = '7',
+            BalcaoPessoalmente = '8',
+            WhatsappClinicaPrescritor = '9',
+            EmailClinicaPrescritor = '10',
+            InjetaveisEmail = '11',
+            InjetaveisEasyHealth = '12',
+        }
+
+        const selecionarOpcao = (opcao: CanalContato) => {
+            cy.get<HTMLSelectElement>(el.canal_recebimento)
+                .should('be.visible')
+                .and('have.id', 'modalCanalContato')
+                .select(opcao)
+                .should('have.value', opcao)
+                .find('option:selected')
+                .should('be.selected');
+        };
+
+        const opcoes: Record<CanalContato, () => void> = {
+            [CanalContato.Whatsapp]: () => selecionarOpcao(CanalContato.Whatsapp),
+            [CanalContato.Email]: () => selecionarOpcao(CanalContato.Email),
+            [CanalContato.InjetaveisWhatsapp]: () => selecionarOpcao(CanalContato.InjetaveisWhatsapp),
+            [CanalContato.EasyHealth]: () => selecionarOpcao(CanalContato.EasyHealth),
+            [CanalContato.MedX]: () => selecionarOpcao(CanalContato.MedX),
+            [CanalContato.Visitacao]: () => selecionarOpcao(CanalContato.Visitacao),
+            [CanalContato.BalcaoPessoalmente]: () => selecionarOpcao(CanalContato.BalcaoPessoalmente),
+            [CanalContato.WhatsappClinicaPrescritor]: () => selecionarOpcao(CanalContato.WhatsappClinicaPrescritor),
+            [CanalContato.EmailClinicaPrescritor]: () => selecionarOpcao(CanalContato.EmailClinicaPrescritor),
+            [CanalContato.InjetaveisEmail]: () => selecionarOpcao(CanalContato.InjetaveisEmail),
+            [CanalContato.InjetaveisEasyHealth]: () => selecionarOpcao(CanalContato.InjetaveisEasyHealth),
+            [CanalContato.Selecione]: () => {
+                console.log('Opção selecionada: Selecione');
+            },
+        };
+
+        // Utilize a opção desejada
+        opcoes[CanalContato.Whatsapp]();
+
+
+    }
+
+    inserirDataRecebimento() {
+        const dataAtual: Date = new Date();
+        // Obtém os componentes individuais da data e hora
+        const ano: number = dataAtual.getFullYear();
+        const mes: string = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês começa em 0, por isso é necessário adicionar 1
+        const dia: string = String(dataAtual.getDate()).padStart(2, '0');
+        const hora: string = String(dataAtual.getHours()).padStart(2, '0');
+        const minutos: string = String(dataAtual.getMinutes()).padStart(2, '0');
+        const segundos: string = String(dataAtual.getSeconds()).padStart(2, '0');
+        // Formata a data e hora no formato desejado
+        const DATA_FORMATADA: string = `${ano}-${mes}-${dia}`;
+        const HORA_FORMATADA: string = `${hora}:${minutos}:${segundos}`;
+
         cy.get(el.data_recebimento)
             .should('be.visible')
             .and('have.id', 'modalDataRec')
             .type(`${DATA_FORMATADA}T${HORA_FORMATADA}`);
+    }
 
-        // selecionar uma das opcoes: possui receita/nao possui receita/repeticao
-        cy.get(el.possui_receita)
-            .should('be.visible')
-            .check()
-            .should('be.checked')
+    inserirCluster() { }
 
-        // registrar(salvar receita/gerar receita)
+    inserirJuntoCom() { }
+
+    selecionarTipoReceita() {
+        enum ReceitaTipo {
+            PossuiReceita = '1',
+            NaoPossuiReceita = '2',
+            Repeticao = '3',
+        }
+
+        function opcaoReceita(tipo: ReceitaTipo): void {
+            cy.get(`input[name="receita_tipo"][value="${tipo}"]`)
+                .should('be.visible')
+                .check()
+                .should('be.checked');
+        }
+
+        opcaoReceita(ReceitaTipo.PossuiReceita);
+    }
+
+    ObservacaoInterna() { }
+
+    registrarReceita() {
         cy.get(el.salvar_receita)
             .should('be.visible')
             .click()
     }
+
+    mensagemSucessoImportacaoReceita() {
+        cy.get(el.mensagem_sucesso_importacao_receita)
+            .should('be.visible')
+            .and('have.class', 'btn btn-primary')
+            .click()
+        cy.url().should('contain', this.ambiente_selecionado.BASEURL + 'receita/importar');
+    }
+
+    MensagemExisteReceitaImportadaParaMesmoPrescritorPaciente() { }
+
+
+
+
+    registrarReceitajpegPrescritorPotencialDComRelação() {
+        const ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
+        cy.visit(ambiente_selecionado.BASEURL + 'receita/importar', {
+            method: 'GET'
+        });
+
+        const receita = new Receita(
+            this.imagem,
+            this.prescritor,
+            this.paciente,
+            this.dataRecebimento,
+            this.canalRecebimento,
+            this.atendenteResponsavel,
+            this.observacao,
+            this.varejo,
+            this.medicamentoControlado,
+            this.urgente,
+            this.clienteAlerta,
+            this.possuiReceita,
+            this.naoPossuiReceita,
+            this.repeticao
+        );
+        // receita.menuReceitas()
+        // this.subMenuImportacaoReceita()
+        this.acessarTelaRegistroReceita()
+        this.inserirImagemJpeg()
+        this.inserirPrescritor()
+        this.SugestaoRelacaoPrescritorAtendenteCluster()
+        this.selecionarParametroBuscaPaciente()
+        this.inserirPaciente()
+        this.inserirCanalRecebimento()
+        this.inserirDataRecebimento()
+        this.selecionarTipoReceita()
+        this.ObservacaoInterna()
+        this.registrarReceita()
+    }
+
+
+
+
     // canal de recebimento injetaveis whatsapp e cluster injetaveis
     // export function registrarReceitaJpgInjetaveis(): void { }
 
@@ -255,4 +421,3 @@ export class ImportarReceita extends Receita {
 
 
 }
-

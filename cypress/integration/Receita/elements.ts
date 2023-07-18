@@ -32,7 +32,9 @@ export const ELEMENTS = {
     cliente_alerta: '#clienteAlerta',
     varejo: '',
     // possui receita/nao possui receita/repeticao
-    tipo_receita: 'input[name="receita_tipo"]',
+    possui_receita: '#groupMainEntitiesModal > div:nth-child(3) > div > label:nth-child(1) > input[type=radio]',
+    nao_possui_receita: '',
+    repeticao: '',
     // mensagem informando que já existe receita com mesmo paciente e prescritor
     mensagem_receita_importada_paciente_prescritor_iguais:'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
     botao_mensagem_receita_importada_paciente_prescritor_iguais:'btn btn-primary',
