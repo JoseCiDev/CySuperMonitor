@@ -16,7 +16,7 @@ export const ELEMENTS = {
     //relacao prescritor com atendente e cluster
     relacao_prescritor_atendente_cluster_cancel:'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-footer > button.btn.btn-secondary.pull-left',
     relacao_prescritor_atendente_cluster_ok:'.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
-    relacao_prescritor_atendente_cluster_fechar:'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-header > button',
+    relacao_prescritor_atendente_cluster_fechar:'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modast=1690116026821778l-dialog > div > div.modal-header > button',
     busca_paciente_cdcli:'#t2_154c',
     paciente: '#modalPacienteRec',
     canal_recebimento: '#modalCanalContato',

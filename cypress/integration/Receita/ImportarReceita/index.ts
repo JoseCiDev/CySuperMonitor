@@ -2,12 +2,23 @@
 import { ELEMENTS } from './elements';
 const el = ELEMENTS;
 import { Receita } from '../index';
-import { contains } from 'cypress/types/jquery';
 import { faker } from '@faker-js/faker';
-import 'cypress-real-events/support';
-import { eq } from 'cypress/types/lodash';
-import 'cypress-file-upload';
 
+
+enum CanalRecebimento {
+    Selecione = '',
+    Whatsapp = '1',
+    Email = '2',
+    InjetaveisWhatsapp = '4',
+    EasyHealth = '5',
+    MedX = '6',
+    Visitacao = '7',
+    BalcaoPessoalmente = '8',
+    WhatsappClinicaPrescritor = '9',
+    EmailClinicaPrescritor = '10',
+    InjetaveisEmail = '11',
+    InjetaveisEasyHealth = '12',
+}
 
 export class ImportarReceita extends Receita {
     imgreceita: string;
@@ -109,32 +120,25 @@ export class ImportarReceita extends Receita {
 
     inserirImagemPdf() { }
 
-
-    inserirPrescritor() {
-        let prescritor_fake: string;
-        prescritor_fake = faker.person.firstName();
-
-        // definir lista de nome de prescritores
-        const lista_crm_prescritor: string[] = ['3243-BA'];
-        // gerar um nome aleatorio da lista de prescritores
-        const crm_aleatorio_prescritor: string = faker.helpers.arrayElement(lista_crm_prescritor);
+    inserirPrescritor(listaCRM: string[]) {
+        const crmAleatorio: string = faker.helpers.arrayElement(listaCRM);
 
         cy.get(el.prescritor)
             .should('have.id', 'modalMedicoRec')
-            .type(crm_aleatorio_prescritor)
+            .type(crmAleatorio)
             .then(() => {
                 cy.get(el.sugestao_autocomplete)
-                    .as('suggestion')
+                    .as('suggestion');
                 cy.get('@suggestion')
                     .then(($elemento) => {
                         cy.wrap($elemento)
                             .invoke('attr', 'style', 'display: block')
                             .should('be.visible')
                             .eq(0)
-                            .click({ force: true })
-                    })
+                            .click({ force: true });
+                    });
             })
-            .contains(crm_aleatorio_prescritor)
+            .contains(crmAleatorio);
     }
 
 
@@ -212,25 +216,19 @@ export class ImportarReceita extends Receita {
     }
 
 
-    inserirPaciente() {
-        let paciente_fake: string;
-        paciente_fake = faker.person.firstName();
-
-        //definir lista de cdcli de pacientes/clientes
-        const cdcli_paciente: string[] = ['618484']
-        const cdcli_aleatorio_paciente: string = faker.helpers.arrayElement(cdcli_paciente);
+    inserirPaciente(cdcli: string) {
 
         cy.get(el.paciente)
             .should('be.visible')
             .and('have.id', 'modalPacienteRec')
-            .type(cdcli_aleatorio_paciente)
+            .type(cdcli)
             .then(() => {
                 cy.get('.autocomplete-suggestions')
                     .as('suggestions')
                 cy.get('@suggestions')
                     .find('.autocomplete-suggestion')
                     .should('be.visible')
-                    .contains(cdcli_aleatorio_paciente)
+                    .contains(cdcli)
                     .then(($suggestions) => {
                         cy.wrap($suggestions[0])
                             .scrollIntoView()
@@ -240,24 +238,10 @@ export class ImportarReceita extends Receita {
     }
 
 
-    inserirCanalRecebimento() {
+    inserirCanalRecebimento(opcao: CanalRecebimento) {
 
-        enum CanalContato {
-            Selecione = '',
-            Whatsapp = '1',
-            Email = '2',
-            InjetaveisWhatsapp = '4',
-            EasyHealth = '5',
-            MedX = '6',
-            Visitacao = '7',
-            BalcaoPessoalmente = '8',
-            WhatsappClinicaPrescritor = '9',
-            EmailClinicaPrescritor = '10',
-            InjetaveisEmail = '11',
-            InjetaveisEasyHealth = '12',
-        }
+        const selecionarOpcao = (opcao: CanalRecebimento) => {
 
-        const selecionarOpcao = (opcao: CanalContato) => {
             cy.get<HTMLSelectElement>(el.canal_recebimento)
                 .should('be.visible')
                 .and('have.id', 'modalCanalContato')
@@ -266,28 +250,24 @@ export class ImportarReceita extends Receita {
                 .find('option:selected')
                 .should('be.selected');
         };
-
-        const opcoes: Record<CanalContato, () => void> = {
-            [CanalContato.Whatsapp]: () => selecionarOpcao(CanalContato.Whatsapp),
-            [CanalContato.Email]: () => selecionarOpcao(CanalContato.Email),
-            [CanalContato.InjetaveisWhatsapp]: () => selecionarOpcao(CanalContato.InjetaveisWhatsapp),
-            [CanalContato.EasyHealth]: () => selecionarOpcao(CanalContato.EasyHealth),
-            [CanalContato.MedX]: () => selecionarOpcao(CanalContato.MedX),
-            [CanalContato.Visitacao]: () => selecionarOpcao(CanalContato.Visitacao),
-            [CanalContato.BalcaoPessoalmente]: () => selecionarOpcao(CanalContato.BalcaoPessoalmente),
-            [CanalContato.WhatsappClinicaPrescritor]: () => selecionarOpcao(CanalContato.WhatsappClinicaPrescritor),
-            [CanalContato.EmailClinicaPrescritor]: () => selecionarOpcao(CanalContato.EmailClinicaPrescritor),
-            [CanalContato.InjetaveisEmail]: () => selecionarOpcao(CanalContato.InjetaveisEmail),
-            [CanalContato.InjetaveisEasyHealth]: () => selecionarOpcao(CanalContato.InjetaveisEasyHealth),
-            [CanalContato.Selecione]: () => {
+        
+        const opcoes: Record<CanalRecebimento, () => void> = {
+            [CanalRecebimento.Whatsapp]: () => selecionarOpcao(CanalRecebimento.Whatsapp),
+            [CanalRecebimento.Email]: () => selecionarOpcao(CanalRecebimento.Email),
+            [CanalRecebimento.InjetaveisWhatsapp]: () => selecionarOpcao(CanalRecebimento.InjetaveisWhatsapp),
+            [CanalRecebimento.EasyHealth]: () => selecionarOpcao(CanalRecebimento.EasyHealth),
+            [CanalRecebimento.MedX]: () => selecionarOpcao(CanalRecebimento.MedX),
+            [CanalRecebimento.Visitacao]: () => selecionarOpcao(CanalRecebimento.Visitacao),
+            [CanalRecebimento.BalcaoPessoalmente]: () => selecionarOpcao(CanalRecebimento.BalcaoPessoalmente),
+            [CanalRecebimento.WhatsappClinicaPrescritor]: () => selecionarOpcao(CanalRecebimento.WhatsappClinicaPrescritor),
+            [CanalRecebimento.EmailClinicaPrescritor]: () => selecionarOpcao(CanalRecebimento.EmailClinicaPrescritor),
+            [CanalRecebimento.InjetaveisEmail]: () => selecionarOpcao(CanalRecebimento.InjetaveisEmail),
+            [CanalRecebimento.InjetaveisEasyHealth]: () => selecionarOpcao(CanalRecebimento.InjetaveisEasyHealth),
+            [CanalRecebimento.Selecione]: () => {
                 console.log('Opção selecionada: Selecione');
             },
         };
-
-        // Utilize a opção desejada
-        opcoes[CanalContato.Whatsapp]();
-
-
+        opcoes[opcao]();
     }
 
     inserirDataRecebimento() {
@@ -352,8 +332,8 @@ export class ImportarReceita extends Receita {
 
 
     registrarReceitajpegPrescritorPotencialDComRelação() {
-        const ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
-        cy.visit(ambiente_selecionado.BASEURL + 'receita/importar', {
+        this.ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
+        cy.visit(this.ambiente_selecionado.BASEURL + 'receita/importar', {
             method: 'GET'
         });
 
@@ -373,51 +353,35 @@ export class ImportarReceita extends Receita {
             this.naoPossuiReceita,
             this.repeticao
         );
+
         // receita.menuReceitas()
+
         // this.subMenuImportacaoReceita()
+
         this.acessarTelaRegistroReceita()
+
         this.inserirImagemJpeg()
-        this.inserirPrescritor()
+
+        const listaCRM = ['3243-BA'];
+        this.inserirPrescritor(listaCRM);
+
         this.SugestaoRelacaoPrescritorAtendenteCluster()
+
         this.selecionarParametroBuscaPaciente()
-        this.inserirPaciente()
-        this.inserirCanalRecebimento()
+
+        const cdcli_aleatorio_paciente: string = faker.helpers.arrayElement(['618484']);
+        this.inserirPaciente(cdcli_aleatorio_paciente)
+
+        this.inserirCanalRecebimento(CanalRecebimento.Whatsapp);
+
         this.inserirDataRecebimento()
+
         this.selecionarTipoReceita()
+
         this.ObservacaoInterna()
+
         this.registrarReceita()
     }
-
-
-
-
-    // canal de recebimento injetaveis whatsapp e cluster injetaveis
-    // export function registrarReceitaJpgInjetaveis(): void { }
-
-    // export function registrarReceitaJpgMedicamentoControlado(): void { }
-
-    // export function registrarReceitaJpgUrgente(): void { }
-
-    // export function registrarReceitaJpgclienteAlerta(): void { }
-
-
-
-    // export function registrarReceitaPdf(): void { }
-
-    // // canal de recebimento injetaveis whatsapp e cluster injetaveis
-    // export function registrarReceitaPdfInjetaveis(): void { }
-
-
-
-    // export function registrarReceitaVarejo(): void { }
-
-
-
-    // export function registrarReceitaJpgPrescritorRelacaoAtendenteCluster(): void { }
-
-
-
-    // export function registrarReceitaJpgPrescritorRelacaoAtendenteClusterCanal(): void { }
 
 
 }
