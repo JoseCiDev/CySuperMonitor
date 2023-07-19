@@ -1,4 +1,3 @@
-/// <reference types="cypress" />
 import { ELEMENTS } from './elements';
 const el = ELEMENTS;
 import { Receita } from '../index';
@@ -19,6 +18,39 @@ enum CanalRecebimento {
     InjetaveisEmail = '11',
     InjetaveisEasyHealth = '12',
 }
+
+enum Parametro {
+    Nome,
+    Cdcli,
+    Cpf,
+    TelCel,
+}
+
+enum Opcao {
+    Cancel,
+    Ok,
+}
+
+enum TipoReceita {
+    PossuiReceita = '1',
+    NaoPossuiReceita = '2',
+    Repeticao = '3',
+}
+
+enum Cluster {
+    Selecione = '',
+    cluster1 = '1',
+    cluster2 = '2',
+    cluster3 = '3',
+    cluster4 = '4',
+    cluster5 = '5',
+    cluster6 = 'Pediátrico',
+    cluster7 = 'Prescritores',
+    cluster8 = 'Atendimento injetáveis',
+    cluster12 = 'Consultoria técnica Injetáveis',
+    cluster14 = 'Recepção',
+}
+
 
 export class ImportarReceita extends Receita {
     imgreceita: string;
@@ -87,14 +119,12 @@ export class ImportarReceita extends Receita {
         cy.url().should('contain', this.ambiente_selecionado.BASEURL + 'receita/importar');
     }
 
-
     acessarTelaRegistroReceita() {
         cy.get(el.abrir_modal_registrar_receita)
             .should('be.visible')
             .and('have.id', 'receita_register')
             .click();
     }
-
 
     inserirImagemJpeg() {
         cy.fixture('img/ReceitaJpeg(1).jpeg', 'base64')
@@ -117,15 +147,34 @@ export class ImportarReceita extends Receita {
             });
     }
 
+    inserirImagemPdf() {
+        cy.fixture('ReceitaPdf(1).pdf', 'base64')
+            .then((conteudo_arquivo) => {
+                const nome = 'ReceitaPdf(1).pdf';
+                const mimeType = 'image/pdf';
 
-    inserirImagemPdf() { }
+                const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
+                const file = new File([blob], nome, { type: mimeType });
 
-    inserirPrescritor(listaCRM: string[]) {
-        const crmAleatorio: string = faker.helpers.arrayElement(listaCRM);
+                cy.get(el.importar_pdf)
+                    .then(($input) => {
+                        const event = new Event('change', { bubbles: true });
+                        Object.defineProperty($input[0], 'files', {
+                            value: [file],
+                            writable: false,
+                        });
+                        $input[0].dispatchEvent(event);
+                    });
+            });
+
+    }
+
+    inserirPrescritor(dados_prescritor: string[]) {
+        const dados_aleatorios_prescritor: string = faker.helpers.arrayElement(dados_prescritor);
 
         cy.get(el.prescritor)
             .should('have.id', 'modalMedicoRec')
-            .type(crmAleatorio)
+            .type(dados_aleatorios_prescritor)
             .then(() => {
                 cy.get(el.sugestao_autocomplete)
                     .as('suggestion');
@@ -138,97 +187,65 @@ export class ImportarReceita extends Receita {
                             .click({ force: true });
                     });
             })
-            .contains(crmAleatorio);
+            .contains(dados_aleatorios_prescritor);
     }
 
+    SugestaoRelacaoPrescritorAtendenteCluster(opcao: Opcao) {
+        const actions: { [key in Opcao]: () => void } = {
+            [Opcao.Cancel]: () => {
+                cy.get(el.cancel_relacao_prescritor_atendente)
+                    .should('be.visible')
+                    .and('have.class', 'btn btn-secondary pull-left')
+                    .contains('Cancelar')
+                    .click()
+            },
+            [Opcao.Ok]: () => {
+                cy.get(el.ok_relacao_prescritor_atendente)
+                    .should('be.visible')
+                    .and('have.class', 'btn btn-primary')
+                    .contains('OK')
+                    .click()
+            },
+        };
 
-    SugestaoRelacaoPrescritorAtendenteCluster() {
-        enum Option {
-            Cancel,
-            Ok,
+        if (opcao in actions) {
+            actions[opcao]();
+        } else {
+            // Code for invalid or unknown options
+            console.log('Invalid option');
+            // Other actions related to invalid options
         }
-
-        function aplicarRelacaoPrescritor(option: Option): void {
-            const actions: { [key in Option]: () => void } = {
-                [Option.Cancel]: () => {
-                    cy.get(el.relacao_prescritor_atendente_cluster_cancel)
-                        .should('be.visible')
-                        .and('have.class', 'btn btn-secondary pull-left')
-                        .contains('Cancelar')
-                        .click()
-                },
-                [Option.Ok]: () => {
-                    cy.get(el.relacao_prescritor_atendente_cluster_ok)
-                        .should('be.visible')
-                        .and('have.class', 'btn btn-primary')
-                        .contains('OK')
-                        .click()
-                },
-            };
-
-            if (option in actions) {
-                actions[option]();
-            } else {
-                // Code for invalid or unknown options
-                console.log('Invalid option');
-                // Other actions related to invalid options
-            }
-        }
-
-        // aplicarRelacaoPrescritor(Option.Cancel); // Calls the function with the Cancel option
-        aplicarRelacaoPrescritor(Option.Ok); // Calls the function with the Ok option
-
     }
 
-
-    selecionarParametroBuscaPaciente() {
-        enum RadioElement {
-            Nome,
-            Cdcli,
-            Cpf,
-            TelCel,
-        }
-
-        function opcaoBuscaPaciente(element: RadioElement): void {
-            const ids: Record<RadioElement, string> = {
-                [RadioElement.Nome]: 't1_154c',
-                [RadioElement.Cdcli]: 't2_154c',
-                [RadioElement.Cpf]: 't3_154c',
-                [RadioElement.TelCel]: 't4_154c',
-            };
-
-            const id = ids[element];
-
-            cy.get(el.busca_paciente_cdcli)
-                .should('be.visible')
-                .and('have.id', id)
-                .check()
-                .should('be.checked');
-        }
-
-        // Chamando a função com valores enum
-        // opcaoBuscaPaciente(RadioElement.Nome); // Chama a função com o elemento "nome"
-        opcaoBuscaPaciente(RadioElement.Cdcli); // Chama a função com o elemento "cdcli"
-        // opcaoBuscaPaciente(RadioElement.Cpf); // Chama a função com o elemento "cpf"
-        // opcaoBuscaPaciente(RadioElement.TelCel); // Chama a função com o elemento "TEL / CEL"
-
-
+    selecionarParametroBuscaPaciente(elemento: Parametro) {
+        const ids: Record<Parametro, string> = {
+            [Parametro.Nome]: 't1_154c',
+            [Parametro.Cdcli]: 't2_154c',
+            [Parametro.Cpf]: 't3_154c',
+            [Parametro.TelCel]: 't4_154c',
+        };
+        const id = ids[elemento];
+        cy.get(el.parametro_busca_paciente)
+            .should('be.visible')
+            .and('have.id', id)
+            .check()
+            .should('be.checked');
     }
 
-
-    inserirPaciente(cdcli: string) {
+    inserirPaciente(dados_paciente: string[]) {
+        const dados_aleatorios_paciente: string = faker.helpers.arrayElement(dados_paciente);
 
         cy.get(el.paciente)
             .should('be.visible')
             .and('have.id', 'modalPacienteRec')
-            .type(cdcli)
+            .type(dados_aleatorios_paciente)
             .then(() => {
-                cy.get('.autocomplete-suggestions')
+                cy.get(el.sugestoes_autocomplete)
                     .as('suggestions')
                 cy.get('@suggestions')
+                cy.wait(3000)
                     .find('.autocomplete-suggestion')
-                    .should('be.visible')
-                    .contains(cdcli)
+                    .contains(dados_aleatorios_paciente)
                     .then(($suggestions) => {
                         cy.wrap($suggestions[0])
                             .scrollIntoView()
@@ -237,11 +254,8 @@ export class ImportarReceita extends Receita {
             });
     }
 
-
     inserirCanalRecebimento(opcao: CanalRecebimento) {
-
         const selecionarOpcao = (opcao: CanalRecebimento) => {
-
             cy.get<HTMLSelectElement>(el.canal_recebimento)
                 .should('be.visible')
                 .and('have.id', 'modalCanalContato')
@@ -249,8 +263,8 @@ export class ImportarReceita extends Receita {
                 .should('have.value', opcao)
                 .find('option:selected')
                 .should('be.selected');
-        };
-        
+        }
+
         const opcoes: Record<CanalRecebimento, () => void> = {
             [CanalRecebimento.Whatsapp]: () => selecionarOpcao(CanalRecebimento.Whatsapp),
             [CanalRecebimento.Email]: () => selecionarOpcao(CanalRecebimento.Email),
@@ -271,14 +285,14 @@ export class ImportarReceita extends Receita {
     }
 
     inserirDataRecebimento() {
-        const dataAtual: Date = new Date();
+        const data_atual: Date = new Date();
         // Obtém os componentes individuais da data e hora
-        const ano: number = dataAtual.getFullYear();
-        const mes: string = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês começa em 0, por isso é necessário adicionar 1
-        const dia: string = String(dataAtual.getDate()).padStart(2, '0');
-        const hora: string = String(dataAtual.getHours()).padStart(2, '0');
-        const minutos: string = String(dataAtual.getMinutes()).padStart(2, '0');
-        const segundos: string = String(dataAtual.getSeconds()).padStart(2, '0');
+        const ano: number = data_atual.getFullYear();
+        const mes: string = String(data_atual.getMonth() + 1).padStart(2, '0'); // O mês começa em 0, por isso é necessário adicionar 1
+        const dia: string = String(data_atual.getDate()).padStart(2, '0');
+        const hora: string = String(data_atual.getHours()).padStart(2, '0');
+        const minutos: string = String(data_atual.getMinutes()).padStart(2, '0');
+        const segundos: string = String(data_atual.getSeconds()).padStart(2, '0');
         // Formata a data e hora no formato desejado
         const DATA_FORMATADA: string = `${ano}-${mes}-${dia}`;
         const HORA_FORMATADA: string = `${hora}:${minutos}:${segundos}`;
@@ -289,44 +303,75 @@ export class ImportarReceita extends Receita {
             .type(`${DATA_FORMATADA}T${HORA_FORMATADA}`);
     }
 
-    inserirCluster() { }
+    inserirCluster(opcao: Cluster) {
+        const selecionarCluster = (opcao: Cluster) => {
 
-    inserirJuntoCom() { }
-
-    selecionarTipoReceita() {
-        enum ReceitaTipo {
-            PossuiReceita = '1',
-            NaoPossuiReceita = '2',
-            Repeticao = '3',
-        }
-
-        function opcaoReceita(tipo: ReceitaTipo): void {
-            cy.get(`input[name="receita_tipo"][value="${tipo}"]`)
+            cy.get<HTMLSelectElement>(el.cluster)
                 .should('be.visible')
-                .check()
-                .should('be.checked');
-        }
+                .and('have.id', 'modalCluster')
+                .select(opcao)
+                .should('have.value', opcao)
+                .find('option:selected')
+                .should('be.selected');
+        };
 
-        opcaoReceita(ReceitaTipo.PossuiReceita);
+        const opcoes: Record<Cluster, () => void> = {
+            [Cluster.cluster1]: () => selecionarCluster(Cluster.cluster1),
+            [Cluster.cluster2]: () => selecionarCluster(Cluster.cluster2),
+            [Cluster.cluster3]: () => selecionarCluster(Cluster.cluster3),
+            [Cluster.cluster4]: () => selecionarCluster(Cluster.cluster4),
+            [Cluster.cluster5]: () => selecionarCluster(Cluster.cluster5),
+            [Cluster.cluster6]: () => selecionarCluster(Cluster.cluster6),
+            [Cluster.cluster7]: () => selecionarCluster(Cluster.cluster7),
+            [Cluster.cluster8]: () => selecionarCluster(Cluster.cluster8),
+            [Cluster.cluster12]: () => selecionarCluster(Cluster.cluster12),
+            [Cluster.cluster14]: () => selecionarCluster(Cluster.cluster14),
+            [Cluster.Selecione]: () => {
+                console.log('Opção selecionada: Selecione');
+            },
+        };
+        opcoes[opcao]();
     }
 
-    ObservacaoInterna() { }
+
+    inserirJuntoCom(orcamento_juntocom: string) {
+        cy.get(el.juntocom)
+            .should('exist')
+            .type(orcamento_juntocom)
+            .should('have.value', orcamento_juntocom);
+        cy.get(el.autocomplete_juntocom)
+            .contains(el.autocomplete_juntocom, orcamento_juntocom)
+            .click();
+    }
+
+    aguardarEClicarOk() {
+        return cy.get('button[data-bb-handler="ok"]', { timeout: 0 })
+            .should('be.visible')
+            .click();
+    }
+
+
+    selecionarTipoReceita(tipo: TipoReceita) {
+        cy.get(el.tipo_receita)
+            .should('be.visible')
+            .check()
+            .should('be.checked');
+    }
+
+    ObservacaoInterna(conteudo: number) {
+        const texto_aleatorio: string = faker.lorem.paragraph(conteudo);
+
+        cy.get('#modal-receitas > div.modal-dialog > div > div.modal-body > div:nth-child(9) > div > div > div > div > div.note-editable')
+            .should('exist')
+            .type(texto_aleatorio)
+            .should('have.text', texto_aleatorio);
+    }
 
     registrarReceita() {
         cy.get(el.salvar_receita)
             .should('be.visible')
             .click()
     }
-
-    mensagemSucessoImportacaoReceita() {
-        cy.get(el.mensagem_sucesso_importacao_receita)
-            .should('be.visible')
-            .and('have.class', 'btn btn-primary')
-            .click()
-        cy.url().should('contain', this.ambiente_selecionado.BASEURL + 'receita/importar');
-    }
-
-    MensagemExisteReceitaImportadaParaMesmoPrescritorPaciente() { }
 
 
 
@@ -362,26 +407,24 @@ export class ImportarReceita extends Receita {
 
         this.inserirImagemJpeg()
 
-        const listaCRM = ['3243-BA'];
-        this.inserirPrescritor(listaCRM);
+        const dados_prescritor = ['5032-SC'];
+        this.inserirPrescritor(dados_prescritor);
 
-        this.SugestaoRelacaoPrescritorAtendenteCluster()
+        this.SugestaoRelacaoPrescritorAtendenteCluster(Opcao.Ok)
 
-        this.selecionarParametroBuscaPaciente()
+        this.selecionarParametroBuscaPaciente(Parametro.Cdcli)
 
-        const cdcli_aleatorio_paciente: string = faker.helpers.arrayElement(['618484']);
-        this.inserirPaciente(cdcli_aleatorio_paciente)
+        const dados_paciente = ['618484'];
+        this.inserirPaciente(dados_paciente);
 
         this.inserirCanalRecebimento(CanalRecebimento.Whatsapp);
 
         this.inserirDataRecebimento()
 
-        this.selecionarTipoReceita()
+        this.inserirCluster(Cluster.cluster1)
 
-        this.ObservacaoInterna()
+        this.selecionarTipoReceita(TipoReceita.PossuiReceita)
 
         this.registrarReceita()
     }
-
-
 }

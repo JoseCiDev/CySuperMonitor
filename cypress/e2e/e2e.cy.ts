@@ -119,7 +119,7 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
                             'valorNaoPossuiReceita',
                             'valorRepeticao'
                         );
-                        for (let i = 0; i < 1; i++) {
+                        for (let i = 0; i < 10; i++) {
                             // importarReceita.acessarImportacaoReceita();
                             importarReceita.registrarReceitajpegPrescritorPotencialDComRelação();
                             // importarReceita.registrarReceitajpegPrescritorPotencialDComRelaçãoLimiteAtingido();
