@@ -48,8 +48,14 @@ declare global {
        * @example cy.()
        */
       criarImagemFake(nome: string, tamanho: number): String;
-
       
+      /**
+       * comando customizado para criar imagens fakes.
+       * @example cy.()
+       */
+      verificarUrlEModal(url: string): String;
+      
+
       /**
        * comando customizado para desconectar do banco de dados.
        * @example cy.adicionaObservacaoFarmaceutica()

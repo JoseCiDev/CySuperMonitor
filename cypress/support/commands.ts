@@ -41,14 +41,35 @@ dotenv.config();
 
 Cypress.Commands.add('login', () => {
   const ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
-  cy.visit(ambiente_selecionado.BASEURL, {
-    method: 'GET'
-  });
 
+  cy.session[ambiente_selecionado.USER, ambiente_selecionado.PASSWORD], () => {
+    cy.visit({
+      method: 'GET',
+      url: ambiente_selecionado.BASEURL,
+    }).then(() => {
+      window.localStorage.setItem('authToken', 'authToken');
+      cy.get(el.usuario)
+        .should('be.visible')
+        .type(ambiente_selecionado.USER, { log: false });
+      cy.get(el.senha)
+        .should('be.visible')
+        .type(ambiente_selecionado.PASSWORD, { log: false });
+
+      cy.get(el.btlogin)
+        .should('be.visible')
+        .contains('login')
+        .click();
+
+      cy.url().should('contain', ambiente_selecionado.BASEURL + 'lembretes');
+    });
+  }
+  cy.visit({
+    method: 'GET',
+    url: ambiente_selecionado.BASEURL,
+  })
   cy.get(el.usuario)
     .should('be.visible')
     .type(ambiente_selecionado.USER, { log: false });
-
   cy.get(el.senha)
     .should('be.visible')
     .type(ambiente_selecionado.PASSWORD, { log: false });
@@ -56,9 +77,11 @@ Cypress.Commands.add('login', () => {
   cy.get(el.btlogin)
     .should('be.visible')
     .contains('login')
-    .click()
-  cy.url().should('contain', ambiente_selecionado.BASEURL + 'lembretes')
-})
+    .click();
+
+  cy.url().should('contain', ambiente_selecionado.BASEURL + 'lembretes');
+});
+
 
 interface QueryParams {
   dbName: string;
@@ -73,3 +96,6 @@ Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
     return cy.wrap(result);
   });
 });
+
+
+

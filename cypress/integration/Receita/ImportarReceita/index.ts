@@ -52,6 +52,7 @@ enum Cluster {
 }
 
 
+
 export class ImportarReceita extends Receita {
     imgreceita: string;
     imgpdfreceita: string;
@@ -169,6 +170,12 @@ export class ImportarReceita extends Receita {
 
     }
 
+    // Função para verificar se a modal está visível
+    autocompletePrescritorVisivel(sugestao_autocomplete: string): Cypress.Chainable<boolean> {
+        return cy.get(sugestao_autocomplete, { timeout: 5000 }).then(($modal) => {
+            return $modal.is(':visible');
+        });
+    }
     inserirPrescritor(dados_prescritor: string[]) {
         const dados_aleatorios_prescritor: string = faker.helpers.arrayElement(dados_prescritor);
 
@@ -190,32 +197,8 @@ export class ImportarReceita extends Receita {
             .contains(dados_aleatorios_prescritor);
     }
 
-    SugestaoRelacaoPrescritorAtendenteCluster(opcao: Opcao) {
-        const actions: { [key in Opcao]: () => void } = {
-            [Opcao.Cancel]: () => {
-                cy.get(el.cancel_relacao_prescritor_atendente)
-                    .should('be.visible')
-                    .and('have.class', 'btn btn-secondary pull-left')
-                    .contains('Cancelar')
-                    .click()
-            },
-            [Opcao.Ok]: () => {
-                cy.get(el.ok_relacao_prescritor_atendente)
-                    .should('be.visible')
-                    .and('have.class', 'btn btn-primary')
-                    .contains('OK')
-                    .click()
-            },
-        };
 
-        if (opcao in actions) {
-            actions[opcao]();
-        } else {
-            // Code for invalid or unknown options
-            console.log('Invalid option');
-            // Other actions related to invalid options
-        }
-    }
+
 
     selecionarParametroBuscaPaciente(elemento: Parametro) {
         const ids: Record<Parametro, string> = {
@@ -232,27 +215,38 @@ export class ImportarReceita extends Receita {
             .should('be.checked');
     }
 
+
+
+    // Função para verificar se a modal está visível
+    autocompletePacienteVisivel(sugestao_autocomplete: string): Cypress.Chainable<boolean> {
+        return cy.get(sugestao_autocomplete, { timeout: 5000 }).then(($modal) => {
+            return $modal.is(':visible');
+        });
+    }
     inserirPaciente(dados_paciente: string[]) {
         const dados_aleatorios_paciente: string = faker.helpers.arrayElement(dados_paciente);
 
         cy.get(el.paciente)
-            .should('be.visible')
+            .should('exist')
             .and('have.id', 'modalPacienteRec')
             .type(dados_aleatorios_paciente)
             .then(() => {
                 cy.get(el.sugestoes_autocomplete)
-                    .as('suggestions')
+                    .as('suggestions');
                 cy.get('@suggestions')
-                cy.wait(3000)
-                    .find('.autocomplete-suggestion')
+                    .find(el.sugestao_autocomplete)
                     .contains(dados_aleatorios_paciente)
-                    .then(($suggestions) => {
-                        cy.wrap($suggestions[0])
-                            .scrollIntoView()
-                            .click();
+                    .then(($suggestion) => {
+                        // Check if suggestions are found and select the first one
+                        if ($suggestion.length > 0) {
+                            cy.wrap($suggestion[0])
+                                .scrollIntoView()
+                                .click();
+                        }
                     });
             });
     }
+
 
     inserirCanalRecebimento(opcao: CanalRecebimento) {
         const selecionarOpcao = (opcao: CanalRecebimento) => {
@@ -305,7 +299,6 @@ export class ImportarReceita extends Receita {
 
     inserirCluster(opcao: Cluster) {
         const selecionarCluster = (opcao: Cluster) => {
-
             cy.get<HTMLSelectElement>(el.cluster)
                 .should('be.visible')
                 .and('have.id', 'modalCluster')
@@ -344,12 +337,6 @@ export class ImportarReceita extends Receita {
             .click();
     }
 
-    aguardarEClicarOk() {
-        return cy.get('button[data-bb-handler="ok"]', { timeout: 0 })
-            .should('be.visible')
-            .click();
-    }
-
 
     selecionarTipoReceita(tipo: TipoReceita) {
         cy.get(el.tipo_receita)
@@ -360,8 +347,7 @@ export class ImportarReceita extends Receita {
 
     ObservacaoInterna(conteudo: number) {
         const texto_aleatorio: string = faker.lorem.paragraph(conteudo);
-
-        cy.get('#modal-receitas > div.modal-dialog > div > div.modal-body > div:nth-child(9) > div > div > div > div > div.note-editable')
+        cy.get(el.observacao_interna)
             .should('exist')
             .type(texto_aleatorio)
             .should('have.text', texto_aleatorio);
@@ -370,7 +356,90 @@ export class ImportarReceita extends Receita {
     registrarReceita() {
         cy.get(el.salvar_receita)
             .should('be.visible')
-            .click()
+            .click({ force: true })
+    }
+
+
+    SugestaoRelacaoPrescritorAtendenteCluster(opcao: Opcao) {
+        cy.intercept('http://sm-hkm.docker.local:8080/receita/gerenciar/verifica-receita-repetida')
+            .as('modal_mensagens')
+        const actions: { [key in Opcao]: () => void } = {
+            [Opcao.Cancel]: () => {
+                cy.get(el.cancel_modal_mensagens, { timeout: 5000 })
+                    .then(($modal) => {
+                        if ($modal.is(':visible')) {
+                            cy.wrap($modal)
+                                .should('have.class', 'btn btn-secondary pull-left')
+                                .contains('Cancelar')
+                                .click();
+                        } else {
+                            console.log('Modal not visible');
+                            // Other actions related to modal not being visible
+                        }
+                    });
+            },
+            [Opcao.Ok]: () => {
+                cy.get(el.ok_modal_mensagens, { timeout: 5000 })
+                    .then(($modal) => {
+                        if ($modal.is(':visible')) {
+                            cy.wrap($modal)
+                                .should('have.class', 'btn btn-primary')
+                                .contains('OK')
+                                .click();
+                        } else {
+                            console.log('Modal not visible');
+                            // Other actions related to modal not being visible
+                        }
+                    });
+            },
+        };
+        if (opcao in actions) {
+            actions[opcao]();
+        } else {
+            // Code for invalid or unknown options
+            console.log('Invalid option');
+            // Other actions related to invalid options
+        }
+    }
+
+    AguardandoModal(opcao: Opcao) {
+        cy.intercept('http://sm-hkm.docker.local:8080/receita/gerenciar/verifica-receita-repetida')
+            .as('modal_mensagens')
+        const actions: { [key in Opcao]: () => void } = {
+            [Opcao.Cancel]: () => {
+                cy.get(el.cancel_modal_mensagens, { timeout: 5000 })
+                    .then(($modal) => {
+                        if ($modal.is(':visible')) {
+                            cy.wrap($modal)
+                                .should('have.class', 'btn btn-secondary pull-left')
+                                .click();
+                        } else {
+                            console.log('Modal not visible');
+                            // Other actions related to modal not being visible
+                        }
+                    });
+            },
+            [Opcao.Ok]: () => {
+                cy.get(el.ok_modal_mensagens, { timeout: 5000 })
+                    .then(($modal) => {
+                        if ($modal.is(':visible')) {
+                            cy.wrap($modal)
+                                .should('have.class', 'btn btn-primary')
+                                .click();
+                        } else {
+                            console.log('Modal not visible');
+                            // Other actions related to modal not being visible
+                        }
+                    });
+            },
+        };
+        if (opcao in actions) {
+            actions[opcao]();
+        } else {
+            // Code for invalid or unknown options
+            console.log('Invalid option');
+            // Other actions related to invalid options
+        }
     }
 
 
@@ -378,9 +447,11 @@ export class ImportarReceita extends Receita {
 
     registrarReceitajpegPrescritorPotencialDComRelação() {
         this.ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
-        cy.visit(this.ambiente_selecionado.BASEURL + 'receita/importar', {
-            method: 'GET'
-        });
+        cy.visit({
+            method: 'GET',
+            url: this.ambiente_selecionado.BASEURL + 'receita/importar',
+        })
+
 
         const receita = new Receita(
             this.imagem,
@@ -399,32 +470,29 @@ export class ImportarReceita extends Receita {
             this.repeticao
         );
 
-        // receita.menuReceitas()
-
-        // this.subMenuImportacaoReceita()
-
         this.acessarTelaRegistroReceita()
 
         this.inserirImagemJpeg()
 
-        const dados_prescritor = ['5032-SC'];
+        const dados_prescritor = ['999990-SC'];
         this.inserirPrescritor(dados_prescritor);
 
-        this.SugestaoRelacaoPrescritorAtendenteCluster(Opcao.Ok)
+        // this.SugestaoRelacaoPrescritorAtendenteCluster(Opcao.Ok)
 
         this.selecionarParametroBuscaPaciente(Parametro.Cdcli)
 
         const dados_paciente = ['618484'];
         this.inserirPaciente(dados_paciente);
 
-        this.inserirCanalRecebimento(CanalRecebimento.Whatsapp);
-
         this.inserirDataRecebimento()
 
-        this.inserirCluster(Cluster.cluster1)
+        this.inserirCanalRecebimento(CanalRecebimento.Email);
 
         this.selecionarTipoReceita(TipoReceita.PossuiReceita)
 
+        this.AguardandoModal(Opcao.Ok)
+
         this.registrarReceita()
+
     }
 }

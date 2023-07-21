@@ -50,7 +50,18 @@ import { ImportarReceita } from '../integration/Receita/ImportarReceita';
 
 
 describe('Teste Automatizado Essentia Group SuperMonitor', () => {
+    const ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
+    
 
+    before(function () {
+        
+
+        // cy.getCookie(sessionCookieName)
+        //     .should('exist')
+        //     .its('value')
+        //     .should('be.a', 'string')
+        //     .as('sessionCookie')
+    })
 
 
     beforeEach(function () {
@@ -67,9 +78,9 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
         // which is automatically prepended to cy.visit
         //
         // https://on.cypress.io/api/visit
-        cy.login('user', 'password')
-
-
+        // cy.setCookie(sessionCookieName, this.sessionCookie)
+        cy.login(ambiente_selecionado.USER,ambiente_selecionado.PASSWORD)
+        
     })
 
 
@@ -120,7 +131,6 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
                             'valorRepeticao'
                         );
                         for (let i = 0; i < 10; i++) {
-                            // importarReceita.acessarImportacaoReceita();
                             importarReceita.registrarReceitajpegPrescritorPotencialDComRelação();
                             // importarReceita.registrarReceitajpegPrescritorPotencialDComRelaçãoLimiteAtingido();
                             // importarReceita.registrarReceitajpegPrescritorPotencialDSemRelacao();
