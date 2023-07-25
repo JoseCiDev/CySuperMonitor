@@ -36,6 +36,7 @@ import * as dotenv from 'dotenv';
 import { OpcoesValidas } from './cypress';
 
 
+
 Cypress.Commands.add('login', () => {
   const ambiente = Cypress.env('AMBIENTE');
 
@@ -60,16 +61,6 @@ Cypress.Commands.add('login', () => {
 
     cy.url().should('contain', `${dadosAmbiente.BASEURL}lembretes`);
   });
-});
-
-
-
-Cypress.Commands.add('acessarMenuReceitas', () => {
-  cy.get(el.receitas)
-    .should('be.visible')
-    .contains('Receitas')
-    .and('have.class', 'nav-label')
-    .click();
 });
 
 
@@ -110,43 +101,20 @@ Cypress.Commands.add('inserirArquivo', (fixturePath, elementoBotao) => {
 
 
 
+Cypress.Commands.add('acessarMenuReceitas', () => {
+  cy.get(el.receitas)
+    .should('be.visible')
+    .contains('Receitas')
+    .and('have.class', 'nav-label')
+    .click();
+});
 
 
-Cypress.Commands.add('aguardarModal', (opcao: OpcoesValidas) => {
-  const { acao } = opcao;
-  const actions = {
-    Cancel: () => {
-      cy.get(el.cancel_modal_mensagens, { timeout: 20000 })
-        .then(($modal) => {
-          if ($modal.is(':visible')) {
-            cy.wrap($modal)
-              .should('have.class', 'btn btn-secondary pull-left')
-              .click();
-          } else {
-            console.log('Modal not visible');
-            // Outras ações relacionadas ao modal não estando visível
-          }
-        });
-    },
-    Ok: () => {
-      cy.get(el.ok_modal_mensagens, { timeout: 20000 })
-        .then(($modal) => {
-          if ($modal.is(':visible')) {
-            cy.wrap($modal).should('have.class', 'btn btn-primary')
-              .click();
-          } else {
-            console.log('Modal not visible');
-            // Outras ações relacionadas ao modal não estando visível
-          }
-        });
-    },
-  };
-  const acaoSelecionada = actions[acao];
-  if (acaoSelecionada) {
-    acaoSelecionada();
-  } else {
-    // Código para opções inválidas ou desconhecidas
-    console.log('Opção inválida');
-    // Outras ações relacionadas a opções inválidas
-  }
+
+Cypress.Commands.add('acessarMenuAtendimentos', () => {
+  cy.get(el.receitas)
+    .should('be.visible')
+    .contains('Receitas')
+    .and('have.class', 'nav-label')
+    .click();
 });

@@ -63,16 +63,16 @@ describe('Receitas', function () {
     });
     it('Importando Receita', function () {
         cy.acessarMenuReceitas(elements_1.ELEMENTS.receitas);
-        cy.get(elements_1.ELEMENTS.importar_receitas)
+        cy.get(elements_1.ELEMENTS.importarReceitas)
             .should('be.visible')
             .contains('Importar receitas')
             .click();
         cy.url().should('contain', dadosAmbiente.BASEURL + 'receita/importar');
-        cy.get(elements_1.ELEMENTS.abrir_modal_registrar_receita)
+        cy.get(elements_1.ELEMENTS.abrirModalRegistrarReceita)
             .should('be.visible')
             .and('have.id', 'receita_register')
             .click();
-        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', elements_1.ELEMENTS.importar_imagem);
+        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', elements_1.ELEMENTS.importarImagem);
         (function (sugestao_autocomplete) {
             return cy.get(sugestao_autocomplete, { timeout: 5000 })
                 .then(function ($modal) {
@@ -88,7 +88,7 @@ describe('Receitas', function () {
             .should('have.id', 'modalMedicoRec')
             .type(dados_aleatorios_prescritor)
             .then(function () {
-            cy.get(elements_1.ELEMENTS.sugestao_autocomplete)
+            cy.get(elements_1.ELEMENTS.sugestaoAutocomplete)
                 .as('suggestion');
             cy.get('@suggestion')
                 .then(function ($elemento) {
@@ -100,7 +100,7 @@ describe('Receitas', function () {
             });
         })
             .contains(dados_aleatorios_prescritor);
-        cy.get(elements_1.ELEMENTS.modal_sugestao_relacao_prescritor, { timeout: 10000 })
+        cy.get(elements_1.ELEMENTS.modalSugestaoRelacaoPrescritor, { timeout: 10000 })
             .as('modal');
         cy.get('@modal', { timeout: 10000 })
             .then(function ($modal) {
@@ -122,7 +122,7 @@ describe('Receitas', function () {
                 _a[Parametro.TelCel] = 't4_154c',
                 _a);
             var id = ids[elemento];
-            cy.get(elements_1.ELEMENTS.parametro_busca_paciente, { timeout: 5000 })
+            cy.get(elements_1.ELEMENTS.parametroBuscaPaciente, { timeout: 5000 })
                 .should('be.visible')
                 .and('have.id', id)
                 .check()
@@ -139,30 +139,31 @@ describe('Receitas', function () {
             return faker_1.faker.helpers.arrayElement(dados_paciente);
         };
         var dados_aleatorios_paciente = dados_paciente();
-        cy.get(elements_1.ELEMENTS.paciente, { timeout: 10000 })
+        cy.get(elements_1.ELEMENTS.paciente, { timeout: 20000 })
             .should('exist')
             .and('have.id', 'modalPacienteRec')
             .type(dados_aleatorios_paciente)
             .then(function () {
-            cy.get(elements_1.ELEMENTS.sugestoes_autocomplete, { timeout: 10000 })
+            cy.get(elements_1.ELEMENTS.sugestoesAutocomplete, { timeout: 5000 })
                 .as('suggestions');
-            cy.get('@suggestions', { timeout: 10000 })
-                .find(elements_1.ELEMENTS.sugestao_autocomplete, { timeout: 10000 })
-                .contains(dados_aleatorios_paciente)
-                .then(function ($suggestion) {
-                if ($suggestion.length > 0) {
-                    cy.wrap($suggestion[0])
-                        .scrollIntoView()
-                        .click();
-                }
-            });
+        });
+        cy.wait(3000);
+        cy.get('@suggestions', { timeout: 5000 })
+            .find(elements_1.ELEMENTS.sugestaoAutocomplete, { timeout: 5000 })
+            .contains(dados_aleatorios_paciente)
+            .then(function ($suggestion) {
+            if ($suggestion.length > 0) {
+                cy.wrap($suggestion[0])
+                    .scrollIntoView()
+                    .click();
+            }
         });
         var selecionarCanalRecebimento = function (opcao) {
             if (opcao === CanalRecebimento.Selecione) {
                 console.log('Opção selecionada: Selecione');
             }
             else {
-                cy.get(elements_1.ELEMENTS.canal_recebimento)
+                cy.get(elements_1.ELEMENTS.canalRecebimento)
                     .should('be.visible')
                     .and('have.id', 'modalCanalContato')
                     .select(opcao)
@@ -184,16 +185,16 @@ describe('Receitas', function () {
             // Formata a data e hora no formato desejado
             var DATA_FORMATADA = ano + "-" + mes + "-" + dia;
             var HORA_FORMATADA = hora + ":" + minutos + ":" + segundos;
-            cy.get(elements_1.ELEMENTS.data_recebimento)
+            cy.get(elements_1.ELEMENTS.dataRecebimento)
                 .should('be.visible')
                 .and('have.id', 'modalDataRec')
                 .type(DATA_FORMATADA + "T" + HORA_FORMATADA);
         };
         inserirDataAtualFormatada();
-        cy.get(elements_1.ELEMENTS.observacao_interna)
+        cy.get(elements_1.ELEMENTS.observacaoInterna)
             .should('be.visible')
             .click();
-        cy.get(elements_1.ELEMENTS.ok_modal_mensagens, { timeout: 10000 })
+        cy.get(elements_1.ELEMENTS.OkModalMensages, { timeout: 10000 })
             .as('modal');
         cy.get('@modal', { timeout: 10000 })
             .then(function ($modal) {
@@ -207,24 +208,24 @@ describe('Receitas', function () {
             ;
         });
         var inserirTipoReceita = function (tipo) {
-            cy.get(elements_1.ELEMENTS.tipo_receita, { timeout: 5000 })
+            cy.get(elements_1.ELEMENTS.tipoReceita, { timeout: 5000 })
                 .should('be.visible')
                 .check()
                 .should('be.checked');
         };
         inserirTipoReceita(TipoReceita.PossuiReceita);
-        cy.get(elements_1.ELEMENTS.salvar_receita, { timeout: 5000 })
+        cy.get(elements_1.ELEMENTS.salvarReceita, { timeout: 5000 })
             .should('be.visible')
             .click({ force: true });
         // Wait for the success message to appear
-        if (Cypress.$(elements_1.ELEMENTS.ok_sucesso_receita_importada).length > 0 && Cypress.$(elements_1.ELEMENTS.ok_sucesso_receita_importada).is(':visible')) {
-            cy.get(elements_1.ELEMENTS.ok_sucesso_receita_importada, { timeout: 5000 })
+        if (Cypress.$(elements_1.ELEMENTS.okSucessoReceitaImportadaModal).length > 0 && Cypress.$(elements_1.ELEMENTS.okSucessoReceitaImportadaModal).is(':visible')) {
+            cy.get(elements_1.ELEMENTS.okSucessoReceitaImportadaModal, { timeout: 5000 })
                 .should('be.visible')
                 .click();
         }
         else {
             cy.wait(5000);
-            cy.get(elements_1.ELEMENTS.ok_sucesso_receita_importada, { timeout: 5000 })
+            cy.get(elements_1.ELEMENTS.okSucessoReceitaImportadaModal, { timeout: 5000 })
                 .should('be.visible')
                 .click();
         }
@@ -263,13 +264,13 @@ describe('Receitas', function () {
             .should('exist')
             .type(orcamento_juntocom)
             .should('have.value', orcamento_juntocom);
-        cy.get(elements_1.ELEMENTS.autocomplete_juntocom)
-            .contains(elements_1.ELEMENTS.autocomplete_juntocom, orcamento_juntocom)
+        cy.get(elements_1.ELEMENTS.autocompleteJuntocom)
+            .contains(elements_1.ELEMENTS.autocompleteJuntocom, orcamento_juntocom)
             .click();
     });
     (function (conteudo) {
         var texto_aleatorio = faker_1.faker.lorem.paragraph(conteudo);
-        cy.get(elements_1.ELEMENTS.observacao_interna)
+        cy.get(elements_1.ELEMENTS.observacaoInterna)
             .should('exist')
             .type(texto_aleatorio)
             .should('have.text', texto_aleatorio);

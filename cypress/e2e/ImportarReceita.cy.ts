@@ -1,17 +1,14 @@
 import { ELEMENTS as el } from '../integration/elements';
 import { faker } from '@faker-js/faker';
-import { OpcoesValidas } from '../support/cypress';
-import { get } from 'cypress/types/lodash';
-import { Cipher } from 'crypto';
 
 
 
 describe('Receitas', () => {
     const ambiente = Cypress.env('AMBIENTE');
 
-
     // Get the specific environment object based on the selected AMBIENTE
     const dadosAmbiente = Cypress.env(ambiente);
+
 
     enum CanalRecebimento {
         Selecione = '',
@@ -82,7 +79,7 @@ describe('Receitas', () => {
 
 
 
-        cy.get(el.importar_receitas)
+        cy.get(el.importarReceitas)
             .should('be.visible')
             .contains('Importar receitas')
             .click();
@@ -91,13 +88,13 @@ describe('Receitas', () => {
 
 
 
-        cy.get(el.abrir_modal_registrar_receita)
+        cy.get(el.abrirModalRegistrarReceita)
             .should('be.visible')
             .and('have.id', 'receita_register')
             .click();
 
 
-        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.importar_imagem);
+        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.importarImagem);
 
 
 
@@ -115,7 +112,7 @@ describe('Receitas', () => {
             .should('have.id', 'modalMedicoRec')
             .type(dados_aleatorios_prescritor)
             .then(() => {
-                cy.get(el.sugestao_autocomplete)
+                cy.get(el.sugestaoAutocomplete)
                     .as('suggestion');
                 cy.get('@suggestion')
                     .then(($elemento) => {
@@ -128,7 +125,7 @@ describe('Receitas', () => {
             })
             .contains(dados_aleatorios_prescritor);
 
-        cy.get(el.modal_sugestao_relacao_prescritor, { timeout: 10000 })
+        cy.get(el.modalSugestaoRelacaoPrescritor, { timeout: 10000 })
             .as('modal');
         cy.get('@modal', { timeout: 10000 })
             .then(($modal) => {
@@ -151,7 +148,7 @@ describe('Receitas', () => {
                 [Parametro.TelCel]: 't4_154c',
             };
             const id = ids[elemento];
-            cy.get(el.parametro_busca_paciente, { timeout: 5000 })
+            cy.get(el.parametroBuscaPaciente, { timeout: 5000 })
                 .should('be.visible')
                 .and('have.id', id)
                 .check()
@@ -170,24 +167,26 @@ describe('Receitas', () => {
             return faker.helpers.arrayElement(dados_paciente);
         };
         const dados_aleatorios_paciente = dados_paciente();
-        cy.get(el.paciente, { timeout: 10000 })
+        cy.get(el.paciente, { timeout: 20000 })
             .should('exist')
             .and('have.id', 'modalPacienteRec')
             .type(dados_aleatorios_paciente)
             .then(() => {
-                cy.get(el.sugestoes_autocomplete, { timeout: 10000 })
+                cy.get(el.sugestoesAutocomplete, { timeout: 5000 })
                     .as('suggestions');
-                cy.get('@suggestions', { timeout: 10000 })
-                    .find(el.sugestao_autocomplete, { timeout: 10000 })
-                    .contains(dados_aleatorios_paciente)
-                    .then(($suggestion) => {
-                        if ($suggestion.length > 0) {
-                            cy.wrap($suggestion[0])
-                                .scrollIntoView()
-                                .click();
-                        }
-                    });
             });
+        cy.wait(3000)
+        cy.get('@suggestions', { timeout: 5000 })
+            .find(el.sugestaoAutocomplete, { timeout: 5000 })
+            .contains(dados_aleatorios_paciente)
+            .then(($suggestion) => {
+                if ($suggestion.length > 0) {
+                    cy.wrap($suggestion[0])
+                        .scrollIntoView()
+                        .click();
+                }
+            });
+
 
 
 
@@ -195,7 +194,7 @@ describe('Receitas', () => {
             if (opcao === CanalRecebimento.Selecione) {
                 console.log('Opção selecionada: Selecione');
             } else {
-                cy.get<HTMLSelectElement>(el.canal_recebimento)
+                cy.get<HTMLSelectElement>(el.canalRecebimento)
                     .should('be.visible')
                     .and('have.id', 'modalCanalContato')
                     .select(opcao)
@@ -219,7 +218,7 @@ describe('Receitas', () => {
             // Formata a data e hora no formato desejado
             const DATA_FORMATADA: string = `${ano}-${mes}-${dia}`;
             const HORA_FORMATADA: string = `${hora}:${minutos}:${segundos}`;
-            cy.get(el.data_recebimento)
+            cy.get(el.dataRecebimento)
                 .should('be.visible')
                 .and('have.id', 'modalDataRec')
                 .type(`${DATA_FORMATADA}T${HORA_FORMATADA}`);
@@ -228,11 +227,11 @@ describe('Receitas', () => {
 
 
 
-        cy.get(el.observacao_interna)
+        cy.get(el.observacaoInterna)
             .should('be.visible')
             .click()
 
-        cy.get(el.ok_modal_mensagens, { timeout: 10000 })
+        cy.get(el.OkModalMensages, { timeout: 10000 })
             .as('modal');
         cy.get('@modal', { timeout: 10000 })
             .then(($modal) => {
@@ -248,7 +247,7 @@ describe('Receitas', () => {
 
 
         const inserirTipoReceita = (tipo: TipoReceita) => {
-            cy.get(el.tipo_receita, { timeout: 5000 })
+            cy.get(el.tipoReceita, { timeout: 5000 })
                 .should('be.visible')
                 .check()
                 .should('be.checked');
@@ -257,20 +256,20 @@ describe('Receitas', () => {
 
 
 
-        cy.get(el.salvar_receita, { timeout: 5000 })
+        cy.get(el.salvarReceita, { timeout: 5000 })
             .should('be.visible')
             .click({ force: true });
 
 
 
         // Wait for the success message to appear
-        if (Cypress.$(el.ok_sucesso_receita_importada).length > 0 && Cypress.$(el.ok_sucesso_receita_importada).is(':visible')) {
-            cy.get(el.ok_sucesso_receita_importada, { timeout: 5000 })
+        if (Cypress.$(el.okSucessoReceitaImportadaModal).length > 0 && Cypress.$(el.okSucessoReceitaImportadaModal).is(':visible')) {
+            cy.get(el.okSucessoReceitaImportadaModal, { timeout: 5000 })
                 .should('be.visible')
                 .click();
         } else {
             cy.wait(5000)
-            cy.get(el.ok_sucesso_receita_importada, { timeout: 5000 })
+            cy.get(el.okSucessoReceitaImportadaModal, { timeout: 5000 })
                 .should('be.visible')
                 .click();
         }
@@ -318,14 +317,14 @@ describe('Receitas', () => {
             .should('exist')
             .type(orcamento_juntocom)
             .should('have.value', orcamento_juntocom);
-        cy.get(el.autocomplete_juntocom)
-            .contains(el.autocomplete_juntocom, orcamento_juntocom)
+        cy.get(el.autocompleteJuntocom)
+            .contains(el.autocompleteJuntocom, orcamento_juntocom)
             .click();
     }
 
     (conteudo: number) => {
         const texto_aleatorio: string = faker.lorem.paragraph(conteudo);
-        cy.get(el.observacao_interna)
+        cy.get(el.observacaoInterna)
             .should('exist')
             .type(texto_aleatorio)
             .should('have.text', texto_aleatorio);

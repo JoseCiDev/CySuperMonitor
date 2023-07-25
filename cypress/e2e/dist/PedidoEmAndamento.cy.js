@@ -1,19 +1,21 @@
-// /// <reference types="cypress" />
-// import { ELEMENTS } from './elements';
-// const el = ELEMENTS;
-// import { faker } from '@faker-js/faker';
-// import { Atendimento } from '../Atendimento';
-// import { Orcamento } from '../../Orcamento';
-
+"use strict";
+exports.__esModule = true;
+describe('Receitas', function () {
+    var ambiente = Cypress.env('AMBIENTE');
+    // Get the specific environment object based on the selected AMBIENTE
+    var dadosAmbiente = Cypress.env(ambiente);
+    beforeEach(function () {
+        cy.login('user', 'password');
+    });
+    it('Pedidos em andamento', function () { });
+});
 // subMenuPedidoEmAndamento() {
 //     cy.get(el.em_andamento)
 //       .should("have.attr", "href")
 //       .and("contain", this.ambiente_selecionado + 'atendimentos/page/1/')
 //       .click()
 //     cy.url().should('contain', this.ambiente_selecionado.BASEURL + 'atendimentos/page/1/');
-
 //   }
-
 //   buscarPedido(opcoes: BuscaOrcamento[]): void {
 //     const permiteMeusETodos = opcoes.includes(BuscaOrcamento.Meus) && opcoes.includes(BuscaOrcamento.Todos);
 //     const orcamento: string = '821543'
@@ -24,7 +26,6 @@
 //     cy.get('.form-group.busca-atendimentos').then((grupo) => {
 //       opcoes.forEach((opcao) => {
 //         const opcao_selecionar = BuscaOrcamento[opcao];
-
 //         if (opcao_selecionar) {
 //           cy.wrap(grupo).contains(opcao_selecionar).click();
 //         } else {
@@ -32,25 +33,20 @@
 //         }
 //       });
 //     });
-
 //     cy.get(el.orcamento, { timeout: 5000 })
 //       .should('be.visible')
 //       .and('have.id', 'top-search')
 //       .type(orcamento)
 //       .should('have.value', orcamento);
-
 //     cy.get(el.filial, { timeout: 5000 })
 //       .should('be.visible')
 //       .type(filial)
 //       .should('have.value', filial);
-
 //     cy.get(el.buscar)
 //       .should('be.visible')
 //       .click()
-
 //     cy.get(el.visualizar, { timeout: 5000 }).should('exist');
 //   }
-
 //   visualizarpedido() {
 //     cy.get(el.visualizar)
 //       .eq(0)
@@ -60,13 +56,11 @@
 //           cy.wrap($element)
 //             .click();
 //           cy.url().should('contain', this.ambiente_selecionado.BASEURL + 'atendimentos/edit');
-
 //         } else {
 //           cy.pause();
 //         }
 //       });
 //   }
-
 //   integracaoChatguru() {
 //     cy.get(el.brasileiro)
 //       .should('be.visible')
@@ -81,7 +75,6 @@
 //       .and('contains', 'OK')
 //       .click()
 //   }
-
 //   inserirTempoTratamento(tempo_tratamento: string) {
 //     // O método para inserir o tempo em todos os campos <input> dentro dos <tr> do <tbody>
 //     cy.get('tbody tr') // Seleciona todos os elementos <tr> dentro do <tbody>
@@ -91,9 +84,6 @@
 //           .type(tempo_tratamento); // Insere o valor do tempo no campo de input
 //       });
 //   }
-
-
-
 //   confirmarPedido() {
 //     this.ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
 //     cy.visit({
@@ -116,8 +106,5 @@
 //     this.visualizarpedido()
 //     this.integracaoChatguru()
 //     this.inserirTempoTratamento('30')
-
 //   }
-
-
 // }

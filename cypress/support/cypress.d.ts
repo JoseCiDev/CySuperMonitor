@@ -50,13 +50,13 @@ declare global {
         * comando customizado para criar imagens fakes.
         * @example cy.acessarMenuReceitas()
         */
-      acessarMenuReceitas(element: string)
+      acessarMenuReceitas(element: string): Chainable<Element>
 
       /**
        * comando customizado para desconectar do banco de dados.
        * @example cy.adicionaObservacaoFarmaceutica()
        */
-      disconnectFromDatabase(command: string, ...args: any): Chainable<Element>
+      acessarMenuAtendimentos(element: string): Chainable<Element>
 
       /**
        * describe

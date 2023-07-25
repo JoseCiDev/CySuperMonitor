@@ -50,13 +50,6 @@ Cypress.Commands.add('login', function () {
         cy.url().should('contain', dadosAmbiente.BASEURL + "lembretes");
     });
 });
-Cypress.Commands.add('acessarMenuReceitas', function () {
-    cy.get(elements_1.ELEMENTS.receitas)
-        .should('be.visible')
-        .contains('Receitas')
-        .and('have.class', 'nav-label')
-        .click();
-});
 Cypress.Commands.add('queryDB', function (dbName, query) {
     var params = { dbName: dbName, query: query };
     // Retorna um objeto Cypress.Chainable envolvendo o resultado da tarefa
@@ -81,44 +74,17 @@ Cypress.Commands.add('inserirArquivo', function (fixturePath, elementoBotao) {
         });
     });
 });
-Cypress.Commands.add('aguardarModal', function (opcao) {
-    var acao = opcao.acao;
-    var actions = {
-        Cancel: function () {
-            cy.get(elements_1.ELEMENTS.cancel_modal_mensagens, { timeout: 20000 })
-                .then(function ($modal) {
-                if ($modal.is(':visible')) {
-                    cy.wrap($modal)
-                        .should('have.class', 'btn btn-secondary pull-left')
-                        .click();
-                }
-                else {
-                    console.log('Modal not visible');
-                    // Outras ações relacionadas ao modal não estando visível
-                }
-            });
-        },
-        Ok: function () {
-            cy.get(elements_1.ELEMENTS.ok_modal_mensagens, { timeout: 20000 })
-                .then(function ($modal) {
-                if ($modal.is(':visible')) {
-                    cy.wrap($modal).should('have.class', 'btn btn-primary')
-                        .click();
-                }
-                else {
-                    console.log('Modal not visible');
-                    // Outras ações relacionadas ao modal não estando visível
-                }
-            });
-        }
-    };
-    var acaoSelecionada = actions[acao];
-    if (acaoSelecionada) {
-        acaoSelecionada();
-    }
-    else {
-        // Código para opções inválidas ou desconhecidas
-        console.log('Opção inválida');
-        // Outras ações relacionadas a opções inválidas
-    }
+Cypress.Commands.add('acessarMenuReceitas', function () {
+    cy.get(elements_1.ELEMENTS.receitas)
+        .should('be.visible')
+        .contains('Receitas')
+        .and('have.class', 'nav-label')
+        .click();
+});
+Cypress.Commands.add('acessarMenuAtendimentos', function () {
+    cy.get(elements_1.ELEMENTS.receitas)
+        .should('be.visible')
+        .contains('Receitas')
+        .and('have.class', 'nav-label')
+        .click();
 });
