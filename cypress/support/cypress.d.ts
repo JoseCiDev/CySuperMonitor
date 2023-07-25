@@ -9,6 +9,9 @@ import { mount } from 'cypress/react'
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
 // with a <reference path="./component" /> at the top of your spec.
+interface OpcoesValidas {
+  acao: 'Cancel' | 'Ok';
+}
 declare global {
   namespace Cypress {
     interface Chainable<Subject = any> {
@@ -23,13 +26,7 @@ declare global {
        * comando customizado de login.
        * @example cy.login()
        */
-      login(user: string , password: string): Chainable<Element>
-
-      /**
-       * comando customizado para adicionar observacao farmaceutica.
-       * @example cy.adicionaObservacaoFarmaceutica()
-       */
-      adicionaObservacaoFarmaceutica(senha: string , observacao: string): Chainable<Element>
+      login(USER: string, PASSWORD: string): Chainable<Element>
 
       /**
        * comando customizado para conectar no banco de dados.
@@ -47,14 +44,13 @@ declare global {
        * comando customizado para criar imagens fakes.
        * @example cy.()
        */
-      criarImagemFake(nome: string, tamanho: number): String;
-      
+      inserirArquivo(fixturePath, elementoBotao): Chainable<unknown>;
+
       /**
-       * comando customizado para criar imagens fakes.
-       * @example cy.()
-       */
-      verificarUrlEModal(url: string): String;
-      
+        * comando customizado para criar imagens fakes.
+        * @example cy.acessarMenuReceitas()
+        */
+      acessarMenuReceitas(element: string)
 
       /**
        * comando customizado para desconectar do banco de dados.
@@ -64,15 +60,15 @@ declare global {
 
       /**
        * describe
-       * @example cy.nrorclist()
+       * @example cy.aguardarModal()
        */
-      geraFixture(): { imagem: string,nome: string; caminho: string; }[]
+      aguardarModal(opcao: OpcoesValidas): string;
 
       /**
        * describe
        * @example ()
        */
-      state():Chainable<Element>
+      state(): Chainable<Element>
 
       /**
      * Simula a digitação de texto com suporte a eventos de teclado.
@@ -80,7 +76,7 @@ declare global {
      * @param options Opções adicionais para a digitação.
      * @example cy.get('input').realType('Hello, World!');
      */
-    realType(text: string, options?: Partial<TypeOptions>): Chainable<Subject>;
+      realType(text: string, options?: Partial<TypeOptions>): Chainable<Subject>;
     }
   }
 

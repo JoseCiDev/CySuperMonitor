@@ -1,31 +1,14 @@
 /// <reference types="cypress" />
-import { ELEMENTS } from './elements';
-const el = ELEMENTS;
 
-import { contains } from 'cypress/types/jquery';
-import { faker } from '@faker-js/faker';
-import 'cypress-real-events/support';
-import { eq } from 'cypress/types/lodash';
-import 'cypress-file-upload';
+import { Receita } from "../Receita";
 
-export class Receita {
-    imagem: string;
-    prescritor: string;
-    paciente: string;
-    dataRecebimento: Date;
-    canalRecebimento: string;
-    atendenteResponsavel: string;
-    orcamentista: String;
-    observacao: string;
-    varejo: string;
-    medicamentoControlado: string;
-    urgente: string;
-    clienteAlerta: string;
-    possuiReceita: string;
-    naoPossuiReceita: string;
-    repeticao: string;
+
+export class ImportarReceita extends Receita {
+    imgreceita: string;
+    imgpdfreceita: string;
 
     constructor(
+        imgreceita: string,
         imagem: string,
         prescritor: string,
         paciente: string,
@@ -40,9 +23,24 @@ export class Receita {
         possuiReceita: string,
         naoPossuiReceita: string,
         repeticao: string,
-
     ) {
-        this.imagem = imagem;
+        super(
+            imagem,
+            prescritor,
+            paciente,
+            dataRecebimento,
+            canalRecebimento,
+            atendenteResponsavel,
+            observacao,
+            varejo,
+            medicamentoControlado,
+            urgente,
+            clienteAlerta,
+            possuiReceita,
+            naoPossuiReceita,
+            repeticao,
+        );
+        this.imagem = imgreceita;
         this.prescritor = prescritor;
         this.paciente = paciente;
         this.dataRecebimento = dataRecebimento;
@@ -57,13 +55,6 @@ export class Receita {
         this.naoPossuiReceita = naoPossuiReceita;
         this.repeticao = repeticao;
     }
-
-    menuReceitas() {
-        cy.get(el.receitas)
-            .should('be.visible')
-            .contains('Receitas')
-            .and('have.class', 'nav-label')
-            .click();
-    }
+    
 }
 

@@ -5,5 +5,6 @@
     "git.terminalAuthentication": false,
     "github.gitAuthentication": false,
     "commentTranslate.targetLanguage": "pt",
-    "npm.packageManager": "npm"
+    "npm.packageManager": "npm",
+    "compile-hero.disable-compile-files-on-did-save-code": false
 }

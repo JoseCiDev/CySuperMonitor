@@ -15,9 +15,16 @@ dotenv.config();
 import Backoffice from '../integration/Backoffice/EmAndamento';
 
 // RECEITA
-import { ImportarReceita } from '../integration/Receita/ImportarReceita';
+// import { ImportarReceita } from '../integration/Receita/ImportarReceita/ImportarReceita.cy.';
 
 //ATENDIMENTO
+import { Atendimento } from '../integration/Atendimento/Atendimento';
+
+// ORCAMENTO
+import { Orcamento } from '../integration/Orcamento';
+
+// PEDIDO EM ANDAMENTO
+import { PedidoEmAndamento } from '../integration/Atendimento/PedidoEmAndamento/PedidoEmAndamento';
 
 //INCLUSAO
 
@@ -50,7 +57,7 @@ import { ImportarReceita } from '../integration/Receita/ImportarReceita';
 
 
 describe('Teste Automatizado Essentia Group SuperMonitor', () => {
-    const ambiente_selecionado = Cypress.env('enviroment').HOMOLOG_ACESS
+   
     
 
     before(function () {
@@ -79,7 +86,7 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
         //
         // https://on.cypress.io/api/visit
         // cy.setCookie(sessionCookieName, this.sessionCookie)
-        cy.login(ambiente_selecionado.USER,ambiente_selecionado.PASSWORD)
+       
         
     })
 
@@ -112,29 +119,12 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
             receita: {
                 importarReceita:
                     it('Importações de Receitas', () => {
-                        const importarReceita = new ImportarReceita(
-                            'valorImgReceita',
-                            'valorImgPdfReceita',
-                            'valorImagem',
-                            'valorPrescritor',
-                            'valorPaciente',
-                            new Date(),
-                            'valorCanalRecebimento',
-                            'valorAtendenteResponsavel',
-                            'valorObservacao',
-                            'valorVarejo',
-                            'valorMedicamentoControlado',
-                            'valorUrgente',
-                            'valorClienteAlerta',
-                            'valorPossuiReceita',
-                            'valorNaoPossuiReceita',
-                            'valorRepeticao'
-                        );
-                        for (let i = 0; i < 10; i++) {
-                            importarReceita.registrarReceitajpegPrescritorPotencialDComRelação();
+                       
+                        // for (let i = 0; i < 10; i++) {
+                            // registrarReceitajpegPrescritorPotencialDComRelação();
                             // importarReceita.registrarReceitajpegPrescritorPotencialDComRelaçãoLimiteAtingido();
                             // importarReceita.registrarReceitajpegPrescritorPotencialDSemRelacao();
-                        }
+                        // }
                     }),
 
                 // gerenciarReceita:
@@ -176,43 +166,61 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
 
 
             // },
-            // atendimentoHkm: {
-            //     emAndamento:
-            //         it('Atendimentos em Andamento', () => {
-            //             // AtendimentoHKM.acessarorcamentoAtendimento();
-            //             // AtendimentoHKM.sugestaoformulacertaAtendimento();
-            //             // AtendimentoHKM.loghistoricoAtendimento();
-            //             // AtendimentoHKM.dadosclienteAtendimento();
-            //             // AtendimentoHKM.observacaopacientemedicoAtendimento();
-            //             // AtendimentoHKM.apontarerroAtendimento();
-            //             // AtendimentoHKM.inserirobservacaoAtendimento();
-            //             // AtendimentoHKM.inseriroutrainformaçãoAtendimento();
-            //             // AtendimentoHKM.sincronizarAtendimento();
-            //             // AtendimentoHKM.acompanharpedidotrackingAtendimento();
-            //             // AtendimentoHKM.prepararemailAtendimento();
-            //             // AtendimentoHKM.prepararwhatsappAtendimento();
-            //             // AtendimentoHKM.prepararlinkavaliacaoAtendimento();
-            //             // AtendimentoHKM.creditooudebitoAtendimento();
-            //             // AtendimentoHKM.trocarresponsavelAtendimento();
-            //             // AtendimentoHKM.gerarpagamentoAtendimento();
-            //             // AtendimentoHKM.confirmarAtendimento();
-            //             // AtendimentoHKM.encerrarAtendimento(nrorc);
-            //         }),
+            // atendimento: {
+                // emAndamento:
+                //     it('Pedidos em Andamento', () => {
+                //         const pedido_andamento = new PedidoEmAndamento(
+                //             'forma_pagamento',
+                //             'orcamento_selecionado',
+                //             30, // tempo_repeticao should be a number
+                //             true, // monitoramento should be a boolean
+                //             'canal_confirmacao',
+                //             true, // enviar_email_rastreamento should be a boolean
+                //             true, // liberar_inclusao should be a boolean
+                //             true, // liberar_caixa should be a boolean
+                //             'observacao_caixa_balcao',
+                //             true, // nota_detalhada should be a boolean
+                //             'status_pagamento',
+                //             'endereco_envio',
+                //             'observacao_expedicao',
+                //             'forma_envio',
+                //             1, // juntocom should be a number
+                //             true, // juntocom_clinica_higashi should be a boolean
+                //             'prometido_para',
+                //             'aroma_sache_shake',
+                //             'aroma_solucao_oral_capsulas',
+                //             'observacao_geral',
+                //             true,
+                //             true, // pedido_urgente should be a boolean
+                //             true, // mensagem_automatica_chatguru should be a boolean
+                //             123, // atendimento should be a number
+                //             456, // filial should be a number
+                //             new Date(),
+                //             new Date(),
+                //             'paciente',
+                //             'cliente',
+                //             'prescritor',
+                //             'atendente',
+                //             'backoffice',
+                //         );
 
-            //     pendente:
-            //         it('Atendimentos Pendentes', () => {
+                //         pedido_andamento.confirmarPedido();
+                //     }),
 
-            //         }),
+                // pendente:
+                //     it('Atendimentos Pendentes', () => {
 
-            //     finalizado:
-            //         it('Atendimentos Finalizados', () => {
+                //     }),
 
-            //         }),
+                // finalizado:
+                //     it('Atendimentos Finalizados', () => {
 
-            //     retiradaBalcao:
-            //         it('Atendimentos Finalizados', () => {
+                //     }),
 
-            //         }),
+                // retiradaBalcao:
+                //     it('Atendimentos Finalizados', () => {
+
+                //     }),
             // },
 
             // inclusaoHkm: {
@@ -553,7 +561,7 @@ describe('Teste Automatizado Essentia Group SuperMonitor', () => {
         return moduloSm[tipo] || moduloSm.default
     }
 
-    const modulo = execSm(ImportarReceita)
+    const modulo = execSm(PedidoEmAndamento)
 
 
 
