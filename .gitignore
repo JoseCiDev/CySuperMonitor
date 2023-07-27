@@ -6,3 +6,4 @@ cypress/reports/
 cypress/images/
 cypress/videos/
 *.log
+connection.ts

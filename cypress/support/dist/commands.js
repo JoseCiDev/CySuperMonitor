@@ -26,6 +26,17 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 /// <reference types="Cypress" />
 /// <reference path="./cypress.d.ts" />
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 exports.__esModule = true;
 // import Database from './Database/database';
 var elements_1 = require("../integration/elements");
@@ -38,13 +49,10 @@ Cypress.Commands.add('login', function () {
         // Realiza o login
         window.localStorage.setItem('authToken', 'authToken');
         cy.get(elements_1.ELEMENTS.usuario)
-            .should('be.visible')
             .type(dadosAmbiente.USER, { log: false });
-        cy.get(elements_1.ELEMENTS.senha)
-            .should('be.visible')
+        cy.getVisible(elements_1.ELEMENTS.senha)
             .type(dadosAmbiente.PASSWORD, { log: false });
-        cy.get(elements_1.ELEMENTS.entrar)
-            .should('be.visible')
+        cy.getVisible(elements_1.ELEMENTS.entrar)
             .contains('login')
             .click();
         cy.url().should('contain', dadosAmbiente.BASEURL + "lembretes");
@@ -75,16 +83,38 @@ Cypress.Commands.add('inserirArquivo', function (fixturePath, elementoBotao) {
     });
 });
 Cypress.Commands.add('acessarMenuReceitas', function () {
-    cy.get(elements_1.ELEMENTS.receitas)
-        .should('be.visible')
+    cy.getVisible(elements_1.ELEMENTS.receitas)
         .contains('Receitas')
         .and('have.class', 'nav-label')
         .click();
 });
 Cypress.Commands.add('acessarMenuAtendimentos', function () {
-    cy.get(elements_1.ELEMENTS.receitas)
-        .should('be.visible')
-        .contains('Receitas')
-        .and('have.class', 'nav-label')
-        .click();
+    cy.get('#side-menu > li:nth-child(8)')
+        .trigger('mouseover') // Aciona o evento de mouseover no elemento pai para exibir o elemento a
+        .find('a[href="/atendimentos/page/1/"]')
+        .eq(0) // Seleciona o primeiro elemento <a> encontrado
+        .click({ force: true }); // Clica no item "Atendimentos"
+});
+Cypress.Commands.add('lerArquivo', function (Path) {
+    return cy.fixture(Path);
+});
+Cypress.Commands.add('getVisible', function (element, options) {
+    var defaultOptions = { timeout: 20000 };
+    var combinedOptions = __assign(__assign({}, defaultOptions), options);
+    return cy.get(element, combinedOptions).should('be.visible');
+});
+Cypress.Commands.add("inserirData", function (dataAtual) {
+    if (dataAtual === void 0) { dataAtual = new Date(); }
+    // Obtém os componentes individuais da data e hora
+    var ano = dataAtual.getFullYear();
+    var mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês começa em 0, por isso é necessário adicionar 1
+    var dia = String(dataAtual.getDate()).padStart(2, '0');
+    var hora = String(dataAtual.getHours()).padStart(2, '0');
+    var minutos = String(dataAtual.getMinutes()).padStart(2, '0');
+    var segundos = String(dataAtual.getSeconds()).padStart(2, '0');
+    // Formata a data e hora no formato desejado
+    var DATA_FORMATADA = ano + "-" + mes + "-" + dia;
+    var HORA_FORMATADA = hora + ":" + minutos + ":" + segundos;
+    // Retorna um objeto contendo a data e hora formatadas
+    return { DATA_FORMATADA: DATA_FORMATADA, HORA_FORMATADA: HORA_FORMATADA };
 });

@@ -24,59 +24,52 @@ declare global {
 
       /**
        * comando customizado de login.
-       * @example cy.login()
+       * @example cy.login('user', 'password')
        */
       login(USER: string, PASSWORD: string): Chainable<Element>
 
       /**
-       * comando customizado para conectar no banco de dados.
-       * @example cy.adicionaObservacaoFarmaceutica()
-       */
-      connectToDatabase(command: string, ...args: any): Chainable<Element>
-
-      /**
        * comando customizado para executar querys no banco de dados.
-       * @example cy.adicionaObservacaoFarmaceutica()
+       * @example cy.queryDB()
        */
-      queryDB(dbName: string, query: string): Chainable<unknown>;
+      queryDB(DB_NAME: string, query: string): Chainable<unknown>;
 
       /**
-       * comando customizado para criar imagens fakes.
-       * @example cy.()
+       * comando customizado para inserir arquivos.
+       * @example cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.importarImagem);
        */
       inserirArquivo(fixturePath, elementoBotao): Chainable<unknown>;
 
       /**
-        * comando customizado para criar imagens fakes.
+       * comando customizado para ler arquivos
+       * @example cy.lerArquivo('orcamentoFilial.json')
+       */
+      lerArquivo(Path: string,): Chainable<unknown>;
+
+      /**
+        * comando customizado para acessar o menu Receitas.
         * @example cy.acessarMenuReceitas()
         */
       acessarMenuReceitas(element: string): Chainable<Element>
 
       /**
-       * comando customizado para desconectar do banco de dados.
+       * * comando customizado para acessar o menu Atendimentos.
        * @example cy.adicionaObservacaoFarmaceutica()
        */
       acessarMenuAtendimentos(element: string): Chainable<Element>
 
       /**
-       * describe
-       * @example cy.aguardarModal()
+       * comando customizado para selecinar elemento e verificar se esta visivel.
+       * @example cy.getVisible()
        */
-      aguardarModal(opcao: OpcoesValidas): string;
+      getVisible(element: string, options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable>): Chainable<Subject>;
 
       /**
-       * describe
-       * @example ()
+       * comando customizado para inserir Data.
+       * @example cy.inserirData()
        */
-      state(): Chainable<Element>
+      inserirData(dataAtual: Date)
 
-      /**
-     * Simula a digitação de texto com suporte a eventos de teclado.
-     * @param text O texto a ser digitado.
-     * @param options Opções adicionais para a digitação.
-     * @example cy.get('input').realType('Hello, World!');
-     */
-      realType(text: string, options?: Partial<TypeOptions>): Chainable<Subject>;
     }
   }
 

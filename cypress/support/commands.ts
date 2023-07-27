@@ -34,6 +34,9 @@ import * as mysql from 'mysql';
 import { faker } from '@faker-js/faker';
 import * as dotenv from 'dotenv';
 import { OpcoesValidas } from './cypress';
+import dadosAmbiente from "../../cypress.config";
+// import { DatabaseConnection, ConnectionInfo, connections } from "../support/Connections/connection";
+import { defineConfig } from "cypress";
 
 
 
@@ -48,14 +51,11 @@ Cypress.Commands.add('login', () => {
     // Realiza o login
     window.localStorage.setItem('authToken', 'authToken');
     cy.get(el.usuario)
-      .should('be.visible')
       .type(dadosAmbiente.USER, { log: false });
-    cy.get(el.senha)
-      .should('be.visible')
+    cy.getVisible(el.senha)
       .type(dadosAmbiente.PASSWORD, { log: false });
 
-    cy.get(el.entrar)
-      .should('be.visible')
+    cy.getVisible(el.entrar)
       .contains('login')
       .click();
 
@@ -70,7 +70,6 @@ interface QueryParams {
 }
 Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
   const params: QueryParams = { dbName, query };
-
   // Retorna um objeto Cypress.Chainable envolvendo o resultado da tarefa
   return cy.task<unknown>('queryDB', params).then((result: unknown) => {
     // Encadeie asserções ou ações adicionais usando cy.wrap()
@@ -101,9 +100,10 @@ Cypress.Commands.add('inserirArquivo', (fixturePath, elementoBotao) => {
 
 
 
+
+
 Cypress.Commands.add('acessarMenuReceitas', () => {
-  cy.get(el.receitas)
-    .should('be.visible')
+  cy.getVisible(el.receitas)
     .contains('Receitas')
     .and('have.class', 'nav-label')
     .click();
@@ -112,9 +112,51 @@ Cypress.Commands.add('acessarMenuReceitas', () => {
 
 
 Cypress.Commands.add('acessarMenuAtendimentos', () => {
-  cy.get(el.receitas)
-    .should('be.visible')
-    .contains('Receitas')
-    .and('have.class', 'nav-label')
-    .click();
+  cy.get('#side-menu > li:nth-child(8)')
+    .trigger('mouseover') // Aciona o evento de mouseover no elemento pai para exibir o elemento a
+    .find('a[href="/atendimentos/page/1/"]')
+    .eq(0) // Seleciona o primeiro elemento <a> encontrado
+    .click({ force: true }); // Clica no item "Atendimentos"
+});
+
+
+
+interface OrcamentoFilial {
+  numeroOrcamento: string;
+  numeroFilial: string;
+}
+
+Cypress.Commands.add('lerArquivo', (Path: string) => {
+  return cy.fixture<OrcamentoFilial[]>(Path);
+});
+
+
+
+Cypress.Commands.add('getVisible', (element, options) => {
+  const defaultOptions = { timeout: 20000 };
+  const combinedOptions = { ...defaultOptions, ...options };
+  return cy.get(element, combinedOptions).should('be.visible');
+});
+
+
+
+
+
+
+
+Cypress.Commands.add("inserirData", (dataAtual: Date = new Date()) => {
+  // Obtém os componentes individuais da data e hora
+  const ano: number = dataAtual.getFullYear();
+  const mes: string = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês começa em 0, por isso é necessário adicionar 1
+  const dia: string = String(dataAtual.getDate()).padStart(2, '0');
+  const hora: string = String(dataAtual.getHours()).padStart(2, '0');
+  const minutos: string = String(dataAtual.getMinutes()).padStart(2, '0');
+  const segundos: string = String(dataAtual.getSeconds()).padStart(2, '0');
+
+  // Formata a data e hora no formato desejado
+  const DATA_FORMATADA: string = `${ano}-${mes}-${dia}`;
+  const HORA_FORMATADA: string = `${hora}:${minutos}:${segundos}`;
+
+  // Retorna um objeto contendo a data e hora formatadas
+  return { DATA_FORMATADA, HORA_FORMATADA };
 });
