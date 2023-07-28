@@ -51,7 +51,7 @@ exports.ELEMENTS = {
     okSucessoReceitaImportadaModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
     // buscar receitas importadas
     abrirFiltroBuscaReceita: '#centerHeadFilter',
-    filtroDataInicialBuscaReceita: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
+    filtroDataInicialBuscaReceita: '#date-time-edit',
     filtroDataFinalBuscaReceita: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
     filtroPendenciasBuscaReceita: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select',
     filtroPendenciasTodos: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(1)',

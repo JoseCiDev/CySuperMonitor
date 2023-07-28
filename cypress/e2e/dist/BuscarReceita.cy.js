@@ -24,20 +24,20 @@ describe('Busca de receitas', function () {
             cy.url().should('contain', dadosAmbiente.BASEURL + 'receita/importar');
         };
         acessarImportarReceitas(elements_1.ELEMENTS.importarReceitas);
-        var abrirFiltroBuscaReceita = function (element) {
-            cy.getVisible(element)
+        var abrirModalBuscaReceita = function (element) {
+            cy.wait(2000);
+            cy.getVisible(elements_1.ELEMENTS.abrirFiltroBuscaReceita, { timeout: 5000 })
                 .click()
                 .should('have.id', 'centerHeadFilter')
-                .contains('Exibir filtros de busca');
+                .contains('Ocultar filtros de busca');
         };
-        abrirFiltroBuscaReceita(elements_1.ELEMENTS.abrirFiltroBuscaReceita);
+        abrirModalBuscaReceita(elements_1.ELEMENTS.abrirFiltroBuscaReceita);
         var inserirDataInicialBuscaReceita = function (DataInicialBuscaReceita, dataAtual) {
             if (dataAtual === void 0) { dataAtual = new Date(); }
             var _a = cy.inserirData(dataAtual), DATA_FORMATADA = _a.DATA_FORMATADA, HORA_FORMATADA = _a.HORA_FORMATADA;
             var dataHoraAtualCompleta = DATA_FORMATADA + "T" + HORA_FORMATADA;
-            cy.getVisible(DataInicialBuscaReceita)
-                .contains('Data inicial')
-                .invoke('val', dataHoraAtualCompleta)
+            cy.getVisible('#filterReceitas > :nth-child(1) > :nth-child(1) > .form-group > .form-control')
+                .type(DATA_FORMATADA + "T" + HORA_FORMATADA)
                 .should('have.value', dataHoraAtualCompleta);
         };
         inserirDataInicialBuscaReceita(elements_1.ELEMENTS.filtroDataInicialBuscaReceita);

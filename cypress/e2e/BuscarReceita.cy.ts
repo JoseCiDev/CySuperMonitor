@@ -46,25 +46,25 @@ describe('Busca de receitas', () => {
 
 
 
-        const abrirFiltroBuscaReceita = (element: string): void => {
-            cy.getVisible(element)
+        const abrirModalBuscaReceita = (element: string): void => {
+            cy.wait(2000)
+            cy.getVisible(el.abrirFiltroBuscaReceita, { timeout: 5000 })
                 .click()
                 .should('have.id', 'centerHeadFilter')
-                .contains('Exibir filtros de busca')
+                .contains('Ocultar filtros de busca')
         }
-        abrirFiltroBuscaReceita(el.abrirFiltroBuscaReceita)
+        abrirModalBuscaReceita(el.abrirFiltroBuscaReceita)
 
 
 
         const inserirDataInicialBuscaReceita = (DataInicialBuscaReceita: string, dataAtual: Date = new Date()): void => {
             const { DATA_FORMATADA, HORA_FORMATADA } = cy.inserirData(dataAtual);
             const dataHoraAtualCompleta = `${DATA_FORMATADA}T${HORA_FORMATADA}`;
-            cy.getVisible(DataInicialBuscaReceita)
-                .contains('Data inicial')
-                .invoke('val', dataHoraAtualCompleta)
+            cy.getVisible('#filterReceitas > :nth-child(1) > :nth-child(1) > .form-group > .form-control')
+                .type(`${DATA_FORMATADA}T${HORA_FORMATADA}`)
                 .should('have.value', dataHoraAtualCompleta)
         }
-        inserirDataInicialBuscaReceita(el.filtroDataInicialBuscaReceita)
+        inserirDataInicialBuscaReceita(el.filtroDataInicialBuscaReceita);
 
 
 
