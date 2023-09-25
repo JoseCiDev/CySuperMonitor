@@ -1,6 +1,5 @@
 import { defineConfig } from "cypress";
 import DatabaseConnection, { ConnectionInfo, connections } from "./cypress/support/Connections/connection";
-import * as dotenv from "dotenv";
 
 
 interface CustomCypressConfig {
@@ -13,11 +12,9 @@ interface CustomCypressConfig {
 }
 
 export default defineConfig<CustomCypressConfig>({
-  // projectId: Cypress.env.PROJECT_KEY,
-  viewportWidth: 1600,
-  viewportHeight: 1280,
+  "projectId": "tx3tt6",
   includeShadowDom: true,
-
+  defaultCommandTimeout: 10000,
   e2e: {
     setupNodeEvents(on, config) {
       // Registre o evento 'task' aqui
@@ -29,5 +26,23 @@ export default defineConfig<CustomCypressConfig>({
         },
       });
     },
+    supportFile: 'cypress/support/e2e.{js,jsx,ts,tsx}',
+    specPattern: 'cypress/**/*.{js,jsx,ts,tsx}',
+    redirectionLimit: 5000,
+    viewportHeight: 1280,
+    viewportWidth: 1024,
+    numTestsKeptInMemory: 150,
+    excludeSpecPattern: [
+      'cypress/support/*',
+      'cypress/DadosParametros.ts',
+      'cypress/elements.ts',
+      'cypress/reports/*',
+      'cypress/reports/html/*',
+      'cypress/reports/html/assets/*',
+      'cypress/reports/.jsons/*',
+    ],
+    video: true,
+    videosFolder: 'cypress/videos',
+    screenshotsFolder: 'cypress/screenshots',
   },
 });

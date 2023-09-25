@@ -185,17 +185,19 @@ describe('Receitas', function () {
         };
         selecionarCanalRecebimento(CanalRecebimento.Whatsapp);
         var inserirDataFormatada = function (element, dataAtual) {
-            var _a = cy.inserirData(dataAtual), DATA_FORMATADA = _a.DATA_FORMATADA, HORA_FORMATADA = _a.HORA_FORMATADA;
-            cy.getVisible(element)
-                .and('have.id', 'modalDataRec')
-                .clear()
-                .type(DATA_FORMATADA + "T" + HORA_FORMATADA);
-            cy.getVisible(elements_1.ELEMENTS.observacaoInternaReceita).click();
-            cy.get(elements_1.ELEMENTS.OkModalMensages, { timeout: 10000 }).as('modal');
-            cy.get('@modal', { timeout: 10000 }).then(function ($modal) {
-                if ($modal.length > 0) {
-                    cy.wrap($modal[0]).scrollIntoView().click();
-                }
+            cy.inserirData(dataAtual).then(function (_a) {
+                var DATA_FORMATADA = _a.DATA_FORMATADA, HORA_FORMATADA = _a.HORA_FORMATADA;
+                cy.getVisible(element)
+                    .and('have.id', 'modalDataRec')
+                    .clear()
+                    .type(DATA_FORMATADA + "T" + HORA_FORMATADA);
+                cy.getVisible(elements_1.ELEMENTS.observacaoInternaReceita).click();
+                cy.get(elements_1.ELEMENTS.OkModalMensages, { timeout: 10000 }).as('modal');
+                cy.get('@modal', { timeout: 10000 }).then(function ($modal) {
+                    if ($modal.length > 0) {
+                        cy.wrap($modal[0]).scrollIntoView().click();
+                    }
+                });
             });
         };
         inserirDataFormatada(elements_1.ELEMENTS.dataRecebimento, new Date());
@@ -221,9 +223,6 @@ describe('Receitas', function () {
             cy.url().should('contain', dadosAmbiente.BASEURL + 'receita/importar');
         };
         salvarReceita(elements_1.ELEMENTS.salvarReceita);
-        var guardarReceitaEmVariavel = function (element, numeroReceita) {
-        };
-        guardarReceitaEmVariavel();
     });
     var selecionarCluster = function (opcao) {
         var _a;

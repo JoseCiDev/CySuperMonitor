@@ -111,13 +111,13 @@ describe('Receitas', function () {
             console.log(result);
         });
     });
-    var acessarPedidoEmAndamento = function () {
-        cy.get(elements_1.ELEMENTS.pedidoEmAndamento)
+    var acessarPedidoEmAndamento = function (element) {
+        cy.get(element)
             .contains('Em andamento')
             .click({ force: true });
         cy.url().should('contain', dadosAmbiente.BASEURL + 'atendimentos/page/1/');
     };
-    acessarPedidoEmAndamento();
+    acessarPedidoEmAndamento(elements_1.ELEMENTS.pedidoEmAndamento);
     var permiteMeusETodos = function (opcoes) {
         return opcoes.includes(BuscaPedido.Meus) && opcoes.includes(BuscaPedido.Todos);
     };

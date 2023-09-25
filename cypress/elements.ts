@@ -1,11 +1,10 @@
-"use strict";
-exports.__esModule = true;
-exports.ELEMENTS = void 0;
-exports.ELEMENTS = {
+export const ELEMENTS = {
+
     //LOGIN
     usuario: ':nth-child(1) > .form-control',
     senha: ':nth-child(2) > .form-control',
     entrar: '.btn-primary',
+
     //RECEITAS
     // Menu lateral(principal)
     receitas: '#side-menu > li:nth-child(6) > a > span.nav-label',
@@ -59,6 +58,7 @@ exports.ELEMENTS = {
     filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
     procurarReceita: 'button[type="submit"]',
     numeroReceita: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
+    
     //ATENDIMENTOS
     // Menu lateral(principal)
     atendimentos: '#side-menu > li:nth-child(8)',
@@ -130,4 +130,4 @@ exports.ELEMENTS = {
     preVisualizarPedido: '#preview',
     fecharPreVisualizarPedido: '#modal-preview-lg-content > div.modal-footer > button',
     confirmarPedido: '#submit'
-};
+}

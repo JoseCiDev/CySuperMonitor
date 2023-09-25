@@ -1,15 +1,14 @@
-export const ELEMENTS = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ELEMENTS = void 0;
+exports.ELEMENTS = {
     //LOGIN
     usuario: ':nth-child(1) > .form-control',
     senha: ':nth-child(2) > .form-control',
     entrar: '.btn-primary',
-
-
-
     //RECEITAS
     // Menu lateral(principal)
     receitas: '#side-menu > li:nth-child(6) > a > span.nav-label',
-
     //IMPORTAR RECEITAS
     // subMenuImportacaoReceita
     importarReceitas: '#side-menu > li.active > ul > li:nth-child(1) > a',
@@ -50,25 +49,28 @@ export const ELEMENTS = {
     salvarReceita: '#save_receita',
     // mensagem sucesso importacao receita
     okSucessoReceitaImportadaModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
-
     // buscar receitas importadas
     abrirFiltroBuscaReceita: '#centerHeadFilter',
-    filtroDataInicialBuscaReceita: '#date-time-edit',
+    filtroDataInicialBuscaReceita: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
     filtroDataFinalBuscaReceita: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
     filtroPendenciasBuscaReceita: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select',
     filtroPendenciasTodos: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(1)',
     filtroPendenciasPendentes: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(2)',
     filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
-    procurarReceita: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select',
+    procurarReceita: 'button[type="submit"]',
     numeroReceita: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
-
-
     //ATENDIMENTOS
     // Menu lateral(principal)
     atendimentos: '#side-menu > li:nth-child(8)',
-
     //EM ANDAMENTO
-    // subMenuImportacaoReceita
+    // fluxoDeTrabalho
+    acessarAtendimentoEmAndamento: '#side-menu > li.active > ul > li.active > a',
+    acessarFluxoDeTrabalhoAtendimento: '.nav-second-level > .active > .nav > li > a',
+    parametroBuscaCardOrcamento: '#select2-tipo-filtro-container',
+    opcaopParametroBuscaCardOrcamento: '.select2-results__option',
+    cardOrcamento: '#atendimentos-em-andamento > div.ibox-workflow > div.grid > div > div:nth-child(1) > div > div.container-coluna > ul > li:nth-child(8)',
+    vincularReceitaCardOrcamento: '#receitaCod',
+    // pedido em andamento em atendimento, elemento foi alterado, lista de pedidos em andamento movido para Receitas -> Importar Atendimentos
     pedidoEmAndamento: '#side-menu > li.active > ul > li:nth-child(1) > a',
     // visualizarpedido
     visualizar: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div > table > tbody > tr:nth-child(2) > td:nth-child(6) > a.visualizarFvc > i',
@@ -127,12 +129,5 @@ export const ELEMENTS = {
     dispararMensagemChatguru: '#form-amarelinha > div.modal-footer > div > div:nth-child(1) > input[type=checkbox]:nth-child(3)',
     preVisualizarPedido: '#preview',
     fecharPreVisualizarPedido: '#modal-preview-lg-content > div.modal-footer > button',
-    confirmarPedido: '#submit',
-
-
-
-
-
-
-
-}
+    confirmarPedido: '#submit'
+};

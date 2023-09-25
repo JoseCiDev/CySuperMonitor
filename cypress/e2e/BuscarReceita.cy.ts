@@ -1,21 +1,11 @@
-import { ELEMENTS as el } from '../integration/elements';
+import { dadosParametros } from '../DadosParametros';
+import { ELEMENTS as el } from '../elements';
 import { faker } from '@faker-js/faker';
-
-
-
-enum FiltroPendentes {
-    Todos = '0',
-    Pendentes = '1',
-    Vinculados = '2',
-
-};
 
 
 
 describe('Busca de receitas', () => {
     const ambiente = Cypress.env('AMBIENTE');
-
-    // Get the specific environment object based on the selected AMBIENTE
     const dadosAmbiente = Cypress.env(ambiente);
 
 
@@ -33,6 +23,7 @@ describe('Busca de receitas', () => {
 
 
         cy.acessarMenuReceitas(el.receitas);
+
 
 
         const acessarImportarReceitas = (element: string): void => {
@@ -53,77 +44,79 @@ describe('Busca de receitas', () => {
                 .should('have.id', 'centerHeadFilter')
                 .contains('Ocultar filtros de busca')
         }
-        abrirModalBuscaReceita(el.abrirFiltroBuscaReceita)
+        abrirModalBuscaReceita(el.abrirFiltroBuscaReceita);
 
 
 
-        const inserirDataInicialBuscaReceita = (DataInicialBuscaReceita: string, dataAtual: Date = new Date()): void => {
-            const { DATA_FORMATADA, HORA_FORMATADA } = cy.inserirData(dataAtual);
-            const dataHoraAtualCompleta = `${DATA_FORMATADA}T${HORA_FORMATADA}`;
-            cy.getVisible('#filterReceitas > :nth-child(1) > :nth-child(1) > .form-group > .form-control')
-                .type(`${DATA_FORMATADA}T${HORA_FORMATADA}`)
-                .should('have.value', dataHoraAtualCompleta)
+        const inserirDataInicialBuscaReceita = async (element: string, dataAtual: Date = new Date()): Promise<void> => {
+            cy.inserirData(dataAtual)
+                .then(({ DATA_FORMATADA, HORA_FORMATADA }: { DATA_FORMATADA: string, HORA_FORMATADA: string }) => {
+                    const dataHoraAtualCompleta = `${DATA_FORMATADA}T${HORA_FORMATADA}`;
+
+                    cy.getVisible(element)
+                        .type(dataHoraAtualCompleta.toString())
+                        .then(() => {
+                            cy.getVisible(element)
+                                .should('have.value', dataHoraAtualCompleta);
+                        });
+                })
         }
         inserirDataInicialBuscaReceita(el.filtroDataInicialBuscaReceita);
 
 
 
-        const inserirDataFinalBuscaReceita = (DataFinalBuscaReceita: string, dataAtual: Date = new Date()): void => {
-            const { DATA_FORMATADA, HORA_FORMATADA } = cy.inserirData(dataAtual);
-            const dataHoraAtualCompleta = `${DATA_FORMATADA}T${HORA_FORMATADA}`;
-            cy.getVisible(DataFinalBuscaReceita)
-                .contains('Data inicial')
-                .invoke('val', dataHoraAtualCompleta)
-                .should('have.value', dataHoraAtualCompleta)
+        const inserirDataFinalBuscaReceita = async (element: string, dataAtual: Date = new Date()): Promise<void> => {
+            cy.inserirData(dataAtual)
+                .then(({ DATA_FORMATADA, HORA_FORMATADA }: { DATA_FORMATADA: string, HORA_FORMATADA: string }) => {
+                    const dataHoraAtualCompleta = `${DATA_FORMATADA}T${HORA_FORMATADA}`;
+
+                    cy.getVisible(element)
+                        .type(dataHoraAtualCompleta.toString())
+                        .then(() => {
+                            cy.getVisible(element)
+                                .should('have.value', dataHoraAtualCompleta);
+                        });
+                })
         }
-        inserirDataFinalBuscaReceita(el.filtroDataFinalBuscaReceita)
+        inserirDataFinalBuscaReceita(el.filtroDataInicialBuscaReceita);
 
 
 
-        const selecionarFiltroPendencias = (element: string, opcao: FiltroPendentes): void => {
-            const opcoes: Record<FiltroPendentes, string> = {
-                [FiltroPendentes.Todos]: el.filtroPendenciasTodos,
-                [FiltroPendentes.Pendentes]: el.filtroPendenciasPendentes,
-                [FiltroPendentes.Vinculados]: el.filtroPendenciasVinculados
-            };
-            const id = opcoes[opcao];
+        const selecionarFiltroPendencias = (element: string, opcao): void => {
+            const id = el[`filtroPendencias${opcao}`];
             cy.getVisible(element, { timeout: 5000 })
                 .select(opcao)
                 .should('have.value', opcao)
                 .find('option:selected')
                 .should('be.selected');
         }
-        selecionarFiltroPendencias(el.filtroPendenciasBuscaReceita, FiltroPendentes.Pendentes);
+
+        selecionarFiltroPendencias(el.filtroPendenciasBuscaReceita, dadosParametros.DadosParametros.FiltroPendentes.Pendentes);
+
 
 
         const procurarReceita = (element: string): void => {
             cy.getVisible(element)
+                .contains('Procurar')
                 .click()
         }
-        procurarReceita(el.procurarReceita)
+        procurarReceita(el.procurarReceita);
 
 
 
-        const capturarNumeroReceita = (element: string): void => {
-            cy.getVisible(element)
+        const capturarNumeroReceita = (element: string): Cypress.Chainable<string> => {
+            return cy.getVisible(element)
+                .eq(0)
                 .invoke('text')
                 .then((texto) => {
-                    const numeroReceita = texto.trim()
+                    const numeroReceita = parseInt(texto.trim(), 10); // Converta a string para número
+                    cy.wrap(numeroReceita)
+                        .as('numeroReceita');
+                    cy.setReceitaNumero(numeroReceita);
                 });
-        }
+        };
         capturarNumeroReceita(el.numeroReceita);
 
+    })
 
-    });
-
-
-
-    /*
-    clicar em exibir filtros de busca;
-    inserir data inicial;
-    inserir data final;
-    selecionar pendencias pendentes;
-    clicar em procurar;
-    guardar o numero da receita em variavel;
-    */
 })

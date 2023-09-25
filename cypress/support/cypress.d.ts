@@ -1,4 +1,5 @@
 import { mount } from 'cypress/react'
+import { dadosParametros } from '../DadosParametros'
 // describe custom Cypress commands in this file
 
 // load the global Cypress types
@@ -9,13 +10,22 @@ import { mount } from 'cypress/react'
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
 // with a <reference path="./component" /> at the top of your spec.
-interface OpcoesValidas {
-  acao: 'Cancel' | 'Ok';
+
+
+
+
+interface DataHora {
+  DATA_FORMATADA: string;
+  HORA_FORMATADA: string;
 }
+
+
+
 declare global {
   namespace Cypress {
     interface Chainable<Subject = any> {
       mount: typeof mount
+
       /**
        * Custom command to select DOM element by data-cy attribute.
        * @example cy.dataCy('greeting')
@@ -44,7 +54,7 @@ declare global {
        * comando customizado para ler arquivos
        * @example cy.lerArquivo('orcamentoFilial.json')
        */
-      lerArquivo(Path: string,): Chainable<unknown>;
+      lerArquivo(nomeArquivo: string): Chainable<any>;
 
       /**
         * comando customizado para acessar o menu Receitas.
@@ -68,7 +78,23 @@ declare global {
        * comando customizado para inserir Data.
        * @example cy.inserirData()
        */
-      inserirData(dataAtual: Date)
+      inserirData(dataAtual: Date): Chainable<DataHora>
+
+      /**
+      * comando customizado para pegar numero da receita.
+      * @example cy.getReceitaNumero()
+      */
+      getReceitaNumero(): Chainable<number>;
+
+      /**
+      * comando customizado para setar numero da receita.
+      * @example cy.setReceitaNumero()
+      */
+      setReceitaNumero(receitaNumero: number): Chainable<Element>;
+
+
+
+
 
     }
   }

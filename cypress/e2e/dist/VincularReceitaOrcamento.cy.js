@@ -36,9 +36,66 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+exports.OpcaoParametroBuscaCardOrcamento = void 0;
 /// <reference types="cypress" />
 var elements_1 = require("../integration/elements");
-var faker_1 = require("@faker-js/faker");
+var numeroReceita;
+var OpcaoParametroBuscaCardOrcamento;
+(function (OpcaoParametroBuscaCardOrcamento) {
+    OpcaoParametroBuscaCardOrcamento["Paciente"] = "Paciente";
+    OpcaoParametroBuscaCardOrcamento["Prescritor"] = "Prescritor";
+    OpcaoParametroBuscaCardOrcamento["Orcamento"] = "Or\u00E7amento";
+    OpcaoParametroBuscaCardOrcamento["VincularReceita"] = "Vincular receita";
+})(OpcaoParametroBuscaCardOrcamento = exports.OpcaoParametroBuscaCardOrcamento || (exports.OpcaoParametroBuscaCardOrcamento = {}));
+describe('Vincular Receitas e Orçamentos', function () {
+    var ambiente = Cypress.env('AMBIENTE');
+    // Get the specific environment object based on the selected AMBIENTE
+    var dadosAmbiente = Cypress.env(ambiente);
+    beforeEach(function () {
+        cy.login('user', 'password');
+    });
+    it('Vinculando receitas e orçamentos pela tela de fluxo de pedidos.', function () {
+        cy.acessarMenuAtendimentos(elements_1.ELEMENTS.atendimentos);
+        // const acessarAtendimentoEmAndamento = (element: string): void => {
+        //     cy.get(element)
+        //         .contains('a', 'Em andamento', { timeout: 10000 })
+        //         .click({ force: true });
+        // }
+        // acessarAtendimentoEmAndamento(el.pedidoEmAndamento);
+        var acessarFluxoDeTrabalhoAtendimento = function (element) {
+            cy.get(element)
+                .first()
+                .contains('Fluxo de trabalho')
+                .click({ force: true });
+            cy.url().should('contain', dadosAmbiente.BASEURL + 'atendimentos/workflow');
+        };
+        acessarFluxoDeTrabalhoAtendimento(elements_1.ELEMENTS.acessarFluxoDeTrabalhoAtendimento);
+        var selecionarParametroBuscaCardOrcamento = function (parametroBuscaCardOrcamento, opcaopParametroBuscaCardOrcamento, opcao) {
+            cy.getVisible(parametroBuscaCardOrcamento)
+                .click();
+            cy.contains(opcaopParametroBuscaCardOrcamento, opcao)
+                .click();
+        };
+        selecionarParametroBuscaCardOrcamento(elements_1.ELEMENTS.parametroBuscaCardOrcamento, elements_1.ELEMENTS.opcaopParametroBuscaCardOrcamento, OpcaoParametroBuscaCardOrcamento.VincularReceita);
+        var selecionarCardOrcamento = function (element) {
+            cy.getVisible(element)
+                .click();
+        };
+        selecionarCardOrcamento(elements_1.ELEMENTS.cardOrcamento);
+        var vincularReceitaOrcamento = function (element, numeroReceitaCapturado) { return __awaiter(void 0, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                cy.getVisible(element)
+                    .type(numeroReceitaCapturado.toString())
+                    .then(function () {
+                    cy.getVisible(element)
+                        .should('have.value', numeroReceitaCapturado);
+                });
+                vincularReceitaOrcamento(elements_1.ELEMENTS.vincularReceitaCardOrcamento, numeroReceitaCapturado);
+                return [2 /*return*/];
+            });
+        }); };
+    });
+});
 /*
 
 acessar atendimentos;
@@ -56,246 +113,3 @@ guardar valor de orçamento importado em variavel;
 
 
 */
-describe('Vincular Receitas e Orçamentos', function () {
-    var ambiente = Cypress.env('AMBIENTE');
-    // Get the specific environment object based on the selected AMBIENTE
-    var dadosAmbiente = Cypress.env(ambiente);
-    beforeEach(function () {
-        cy.login('user', 'password');
-    });
-    it('Vinculando receitas e orçamentos pela tela de fluco de pedidos.', function () {
-        // cy.acessarMenuAtendimentos(el.atendimentos);
-        var acessarPedidoEmAndamento = function () {
-            cy.get(elements_1.ELEMENTS.pedidoEmAndamento)
-                .contains('Em andamento')
-                .click({ force: true });
-            cy.url().should('contain', dadosAmbiente.BASEURL + 'atendimentos/page/1/');
-        };
-        acessarPedidoEmAndamento();
-        var permiteMeusETodos = function (opcoes) {
-            return opcoes.includes(BuscaPedido.Meus) && opcoes.includes(BuscaPedido.Todos);
-        };
-        cy.lerArquivo('orcamentoFilial.json')
-            .then(function (valores) {
-            var numeroOrcamento = valores.numeroOrcamento, numeroFilial = valores.numeroFilial;
-            var pedido = valores[0].numeroOrcamento;
-            var filial = valores[0].numeroFilial;
-            var buscarPedido = function (opcoes) { return __awaiter(void 0, void 0, Promise, function () {
-                return __generator(this, function (_a) {
-                    if (permiteMeusETodos(opcoes)) {
-                        throw new Error('As opções "Meus" e "Todos" não podem ser marcadas juntas.');
-                    }
-                    cy.get('.form-group.busca-atendimentos').then(function (grupo) {
-                        opcoes.forEach(function (opcao) {
-                            var opcaoSelecionar = BuscaPedido[opcao];
-                            if (opcaoSelecionar) {
-                                cy.wrap(grupo).contains(opcaoSelecionar).click();
-                            }
-                            else {
-                                throw new Error('Opção de busca inválida.');
-                            }
-                        });
-                    });
-                    cy.getVisible(elements_1.ELEMENTS.buscarPedido, { timeout: 5000 })
-                        .and('have.id', 'top-search')
-                        .clear()
-                        .type(pedido)
-                        .should('have.value', pedido);
-                    cy.getVisible(elements_1.ELEMENTS.buscarFilial, { timeout: 5000 })
-                        .clear()
-                        .type(filial)
-                        .should('have.value', filial);
-                    cy.getVisible(elements_1.ELEMENTS.enviarBusca)
-                        .click();
-                    cy.get(elements_1.ELEMENTS.visualizar, { timeout: 5000 }).should('exist');
-                    return [2 /*return*/];
-                });
-            }); };
-            buscarPedido([BuscaPedido.Todos]);
-        });
-        var visualizarpedido = function (elemento) {
-            cy.get(elements_1.ELEMENTS.visualizar)
-                .eq(0)
-                .should('exist')
-                .then(function ($element) {
-                if ($element.length > 0) {
-                    cy.wrap($element)
-                        .click();
-                    cy.url().should('contain', dadosAmbiente.BASEURL + 'atendimentos/edit');
-                }
-                else {
-                }
-            });
-        };
-        visualizarpedido(elements_1.ELEMENTS.visualizar);
-        var integracaoChatguru = function (nacionalidade, telefoneContato, idioma) {
-            cy.getVisible(elements_1.ELEMENTS.brasileiro, { timeout: 20000 })
-                .and('have.id', 'isBr')
-                .click();
-            cy.getVisible(elements_1.ELEMENTS.salvarNumeroChatguru)
-                .and('have.id', 'saveChatGuruNumber')
-                .click();
-            cy.get(elements_1.ELEMENTS.OkModalMensages, { timeout: 20000 })
-                .as('modal');
-            cy.get('@modal', { timeout: 10000 })
-                .then(function ($modal) {
-                if ($modal.length > 0) {
-                    {
-                        cy.wrap($modal[0])
-                            .scrollIntoView()
-                            .click();
-                    }
-                }
-                ;
-            });
-        };
-        integracaoChatguru('brasileiro', '47992144541', 'português');
-        var inserirTempoTratamento = function (element, tempoTratamento) {
-            cy.getVisible(elements_1.ELEMENTS.tempoTratamento)
-                .and('have.id', 'customTime')
-                .click();
-            cy.wait(1000);
-            cy.getVisible(elements_1.ELEMENTS.tempoPadrao)
-                .clear()
-                .type(tempoTratamento);
-            cy.get(elements_1.ELEMENTS.cabecalhoModalTempoTratamento)
-                .click();
-            cy.getVisible(elements_1.ELEMENTS.salvarTempoTratamento)
-                .and('have.id', 'saveByCustomTimeFormula')
-                .click();
-            cy.getVisible(element, { timeout: 20000 })
-                .click();
-            cy.getVisible(elements_1.ELEMENTS.abrirModalConfirmacaoPedido);
-        };
-        inserirTempoTratamento(elements_1.ELEMENTS.modalMensagemPedido, '30');
-        var inserirOrcamentista = function (element, orcamentista) {
-            cy.getVisible(element)
-                .and('have.id', 'orcamentista')
-                .clear()
-                .type(orcamentista, { timeout: 20000 })
-                .eq(0)
-                .click()
-                .should('have.value', orcamentista);
-        };
-        inserirOrcamentista(elements_1.ELEMENTS.orcamentistaPedido, 'Atendente1');
-        var abrirModalConfirmacaoPedido = function (element) {
-            cy.get(element)
-                .should('be.visible')
-                .and('have.id', 'bt-confirma-modal')
-                .click();
-            cy.getVisible(elements_1.ELEMENTS.formaPagamentoPedido);
-        };
-        abrirModalConfirmacaoPedido(elements_1.ELEMENTS.abrirModalConfirmacaoPedido);
-        var selecionarFormaPagamento = function (element, value) {
-            cy.getVisible(element)
-                .select(value);
-            cy.getVisible(element)
-                .should('have.value', value)
-                .find('option:selected')
-                .should('be.selected');
-        };
-        selecionarFormaPagamento(elements_1.ELEMENTS.formaPagamentoPedido, FormaPagamento.Boleto);
-        var selecionarOrcamentoEscolhido = function (element) {
-            cy.getVisible(element)
-                .check()
-                .should('be.checked');
-            cy.getVisible(elements_1.ELEMENTS.tempoRepeticaoPaciente);
-        };
-        selecionarOrcamentoEscolhido(elements_1.ELEMENTS.orcamentoEscolhido);
-        var informarTempoRepeticaoPaciente = function (element, tempoRepeticao) {
-            cy.getVisible(element)
-                .clear()
-                .type(tempoRepeticao.toString())
-                .should('have.value', tempoRepeticao);
-        };
-        informarTempoRepeticaoPaciente(elements_1.ELEMENTS.tempoRepeticaoPaciente, 0);
-        var naoRealizarMonitoramentoAtendimento = function (element) {
-            cy.getVisible(element)
-                .check()
-                .should('be.checked');
-        };
-        naoRealizarMonitoramentoAtendimento(elements_1.ELEMENTS.naoRealizarMonitoramentoAtendimento);
-        var salvarConfirmacaoPedidoPrimeiraEtapa = function (element) {
-            cy.getVisible(element)
-                .click();
-        };
-        salvarConfirmacaoPedidoPrimeiraEtapa(elements_1.ELEMENTS.salvarConfirmacaoPedidoPrimeiraEtapa);
-        var inserirCanalFechamentoPedido = function (element, value) {
-            cy.getVisible(element)
-                .select(value)
-                .should('have.value', value)
-                .find('option:selected')
-                .should('be.selected');
-        };
-        inserirCanalFechamentoPedido(elements_1.ELEMENTS.canalConfirmacaoPedido, canalFechamentoPedido.whatsapp);
-        var enviarEmailsRastreamento = function (element) {
-            cy.getVisible(element)
-                .check()
-                .should('be.checked');
-        };
-        enviarEmailsRastreamento(elements_1.ELEMENTS.enviarEmailRastreamentoPedido);
-        var liberarPedidoInclusao = function (element) {
-            cy.getVisible(element)
-                .check()
-                .should('be.checked');
-        };
-        liberarPedidoInclusao(elements_1.ELEMENTS.liberarPedidoInclusao);
-        var liberarPedidoCaixa = function (element) {
-            cy.getVisible(element)
-                .check()
-                .should('be.checked');
-        };
-        liberarPedidoCaixa(elements_1.ELEMENTS.liberarPedidoCaixa);
-        var inserirObservacaoCaixaBalcao = function (element, conteudo, useLoremIpsum) {
-            if (useLoremIpsum) {
-                conteudo = faker_1.faker.lorem.paragraph();
-            }
-            cy.getVisible(element)
-                .should('exist')
-                .clear()
-                .type(conteudo)
-                .should('have.value', conteudo);
-        };
-        inserirObservacaoCaixaBalcao(elements_1.ELEMENTS.observacaoCaixaBalcaoPedido, '', true);
-        var desejaNotaDetalhada = function (element) {
-            cy.getVisible(element)
-                .check()
-                .should('be.checked');
-        };
-        desejaNotaDetalhada(elements_1.ELEMENTS.notaDetalhada);
-        var inserirSituacaoPagamento = function (element, value) {
-            cy.get(element)
-                .check(value)
-                .should('have.value', value)
-                .find('option:selected')
-                .should('be.checked');
-        };
-        inserirSituacaoPagamento(elements_1.ELEMENTS.situacaoPagamento, SituacaoPagamento.pago);
-        cy.pause();
-        var inserirEnderecoEnvioPedido = function (element) {
-            cy.getVisible(element)
-                .click();
-            cy.getVisible(elements_1.ELEMENTS.enderecoSelecionadoEnvioPedido)
-                .and('have.id', 'endereco-cliente')
-                .should('not.be.empty');
-        };
-        inserirEnderecoEnvioPedido(elements_1.ELEMENTS.enderecoEnvioPedido);
-        var inserirObservacaoExpedicaoPedido = function (element, conteudo, useLoremIpsum) {
-            if (useLoremIpsum) {
-                conteudo = faker_1.faker.lorem.paragraph();
-            }
-            cy.getVisible(element)
-                .should('exist')
-                .clear()
-                .type(conteudo)
-                .should('have.value', conteudo);
-        };
-        inserirObservacaoExpedicaoPedido(elements_1.ELEMENTS.observacaoExpedicao, '', true);
-        // const selecionarOpcaoPossuiReceita = (opcao: PossuiReceita): void => {
-        //     cy.getVisible(el.situacaoPossuiReceita)
-        //         .check()
-        //         .should('be.checked');
-        // };
-        // selecionarOpcaoPossuiReceita(PossuiReceita.Sim);
-    });
-});

@@ -107,7 +107,7 @@ Cypress.Commands.add("inserirData", function (dataAtual) {
     if (dataAtual === void 0) { dataAtual = new Date(); }
     // Obtém os componentes individuais da data e hora
     var ano = dataAtual.getFullYear();
-    var mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês começa em 0, por isso é necessário adicionar 1
+    var mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
     var dia = String(dataAtual.getDate()).padStart(2, '0');
     var hora = String(dataAtual.getHours()).padStart(2, '0');
     var minutos = String(dataAtual.getMinutes()).padStart(2, '0');
@@ -116,5 +116,12 @@ Cypress.Commands.add("inserirData", function (dataAtual) {
     var DATA_FORMATADA = ano + "-" + mes + "-" + dia;
     var HORA_FORMATADA = hora + ":" + minutos + ":" + segundos;
     // Retorna um objeto contendo a data e hora formatadas
-    return { DATA_FORMATADA: DATA_FORMATADA, HORA_FORMATADA: HORA_FORMATADA };
+    return cy.wrap({ DATA_FORMATADA: DATA_FORMATADA, HORA_FORMATADA: HORA_FORMATADA });
+});
+var receitaNumero;
+Cypress.Commands.add('getReceitaNumero', function () {
+    return cy.wrap(receitaNumero); // Return a Chainable<number> using cy.wrap()
+});
+Cypress.Commands.add('setReceitaNumero', function (numero) {
+    receitaNumero = numero;
 });

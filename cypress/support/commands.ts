@@ -29,13 +29,11 @@
 
 
 // import Database from './Database/database';
-import { ELEMENTS as el } from '../integration/elements'
+import { ELEMENTS as el } from '../elements'
 import * as mysql from 'mysql';
 import { faker } from '@faker-js/faker';
 import * as dotenv from 'dotenv';
-import { OpcoesValidas } from './cypress';
-import dadosAmbiente from "../../cypress.config";
-// import { DatabaseConnection, ConnectionInfo, connections } from "../support/Connections/connection";
+import { dadosParametros } from '../DadosParametros'
 import { defineConfig } from "cypress";
 
 
@@ -64,18 +62,15 @@ Cypress.Commands.add('login', () => {
 });
 
 
-interface QueryParams {
-  dbName: string;
-  query: string;
-}
-Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
-  const params: QueryParams = { dbName, query };
-  // Retorna um objeto Cypress.Chainable envolvendo o resultado da tarefa
-  return cy.task<unknown>('queryDB', params).then((result: unknown) => {
-    // Encadeie asserções ou ações adicionais usando cy.wrap()
-    return cy.wrap(result);
-  });
-});
+
+// Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
+//   const params: QueryParams = { dbName, query };
+//   // Retorna um objeto Cypress.Chainable envolvendo o resultado da tarefa
+//   return cy.task<unknown>('queryDB', params).then((result: unknown) => {
+//     // Encadeie asserções ou ações adicionais usando cy.wrap()
+//     return cy.wrap(result);
+//   });
+// });
 
 
 
@@ -100,8 +95,6 @@ Cypress.Commands.add('inserirArquivo', (fixturePath, elementoBotao) => {
 
 
 
-
-
 Cypress.Commands.add('acessarMenuReceitas', () => {
   cy.getVisible(el.receitas)
     .contains('Receitas')
@@ -121,14 +114,14 @@ Cypress.Commands.add('acessarMenuAtendimentos', () => {
 
 
 
-interface OrcamentoFilial {
-  numeroOrcamento: string;
-  numeroFilial: string;
-}
+Cypress.Commands.add('lerArquivo', (nomeArquivo) => {
+  // Construa o caminho completo para o arquivo na pasta fixtures
+  const caminhoArquivo = `${dadosParametros.DadosParametros.caminhoArquivo}${nomeArquivo}`;
 
-Cypress.Commands.add('lerArquivo', (Path: string) => {
-  return cy.fixture<OrcamentoFilial[]>(Path);
+  // Faça a leitura do arquivo
+  return cy.fixture(caminhoArquivo);
 });
+
 
 
 
@@ -140,14 +133,10 @@ Cypress.Commands.add('getVisible', (element, options) => {
 
 
 
-
-
-
-
 Cypress.Commands.add("inserirData", (dataAtual: Date = new Date()) => {
   // Obtém os componentes individuais da data e hora
   const ano: number = dataAtual.getFullYear();
-  const mes: string = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês começa em 0, por isso é necessário adicionar 1
+  const mes: string = String(dataAtual.getMonth() + 1).padStart(2, '0');
   const dia: string = String(dataAtual.getDate()).padStart(2, '0');
   const hora: string = String(dataAtual.getHours()).padStart(2, '0');
   const minutos: string = String(dataAtual.getMinutes()).padStart(2, '0');
@@ -158,5 +147,17 @@ Cypress.Commands.add("inserirData", (dataAtual: Date = new Date()) => {
   const HORA_FORMATADA: string = `${hora}:${minutos}:${segundos}`;
 
   // Retorna um objeto contendo a data e hora formatadas
-  return { DATA_FORMATADA, HORA_FORMATADA };
+  return cy.wrap({ DATA_FORMATADA, HORA_FORMATADA })
+});
+
+
+
+Cypress.Commands.add('getReceitaNumero', () => {
+  return cy.wrap(dadosParametros.DadosParametros.Receita.numeroReceita); // Return a Chainable<number> using cy.wrap()
+});
+
+
+
+Cypress.Commands.add('setReceitaNumero', (numero) => {
+  dadosParametros.DadosParametros.Receita.numeroReceita = numero;
 });
