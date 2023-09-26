@@ -5,9 +5,23 @@ import { faker } from '@faker-js/faker';
 
 interface DadosParametros {
 
+    url: {
+        inicio: string;
+        importarReceitas: string;
+        atendimentos: string
+    };
+
     Receita: {
         numeroReceita: number;
     };
+
+    Prescritor: {
+        crmPrescritor: string[];
+    };
+
+    Paciente: {
+        codigoPaciente: string[]
+    }
 
     OrcamentoFilial: {
         pedido: string;
@@ -15,6 +29,9 @@ interface DadosParametros {
     };
 
     caminhoArquivo: string;
+
+    dataAtual: Date;
+    dataFormatada: string
 
     PossuiReceita: {
         Sim: string;
@@ -139,8 +156,22 @@ enum OpcaoParametroBuscaCardOrcamento {
 export const dadosParametros: { DadosParametros: DadosParametros } = {
     DadosParametros: {
 
+        url: {
+            inicio: 'http://192.168.0.66:9200/lembretes',
+            importarReceitas: 'http://192.168.0.66:9200/receita/importar',
+            atendimentos: 'http://192.168.0.66:9200/atendimentos/page/1/',
+        },
+
         Receita: {
-            numeroReceita: 10,
+            numeroReceita: 0,
+        },
+
+        Prescritor: {
+            crmPrescritor: [faker.helpers.arrayElement(['40452-SP'])],
+        },
+
+        Paciente:{
+            codigoPaciente: [faker.helpers.arrayElement(['618484'])],
         },
 
         OrcamentoFilial: {
@@ -149,6 +180,10 @@ export const dadosParametros: { DadosParametros: DadosParametros } = {
         },
 
         caminhoArquivo: 'fixtures/',
+
+        dataAtual: new Date(),
+        dataFormatada: new Date().toISOString().slice(0, 16),
+
 
         PossuiReceita: {
             Sim: "1",

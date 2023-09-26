@@ -41,7 +41,7 @@ export const ELEMENTS = {
     // possui receita/nao possui receita/repeticao
     tipoReceita: '#groupMainEntitiesModal > div:nth-child(3) > div > label:nth-child(1) > input[type=radio]',
     // mensagem informando que já existe receita com mesmo paciente e prescritor
-    modalMensagens: '.bootbox > .modal-dialog > .modal-content > .modal-body',
+    modalMensagens: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
     OkModalMensages: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
     cancelModalMensagens: 'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-footer > button.btn.btn-secondary.pull-left',
     // salvar receita
@@ -49,14 +49,15 @@ export const ELEMENTS = {
     // mensagem sucesso importacao receita
     okSucessoReceitaImportadaModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
     // buscar receitas importadas
-    abrirFiltroBuscaReceita: '#centerHeadFilter',
+    ModalBuscaReceita: '#centerHeadFilter',
     filtroDataInicialBuscaReceita: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
     filtroDataFinalBuscaReceita: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
     filtroPendenciasBuscaReceita: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select',
     filtroPendenciasTodos: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(1)',
     filtroPendenciasPendentes: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(2)',
     filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
-    procurarReceita: 'button[type="submit"]',
+    procurarReceita: '#filterReceitas > div:nth-child(4) > div > button',
+    labelProcurarReceita:'[button type="submit"]' && 'Procurar',
     numeroReceita: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
     
     //ATENDIMENTOS

@@ -15,7 +15,7 @@ describe('Vincular Receitas e Orçamentos', () => {
 
 
     beforeEach(function () {
-        cy.login('user', 'password')
+        
 
     });
 

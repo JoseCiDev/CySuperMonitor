@@ -30,37 +30,54 @@
 
 // import Database from './Database/database';
 import { ELEMENTS as el } from '../elements'
-import * as mysql from 'mysql';
-import { faker } from '@faker-js/faker';
-import * as dotenv from 'dotenv';
 import { dadosParametros } from '../DadosParametros'
-import { defineConfig } from "cypress";
 
 
 
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, url: string): void => {
   const ambiente = Cypress.env('AMBIENTE');
-
-  // Get the specific environment object based on the selected AMBIENTE
   const dadosAmbiente = Cypress.env(ambiente);
 
-  // Visita a página de login
-  cy.visit(dadosAmbiente.BASEURL).then(() => {
-    // Realiza o login
-    window.localStorage.setItem('authToken', 'authToken');
-    cy.get(el.usuario)
-      .type(dadosAmbiente.USER, { log: false });
-    cy.getVisible(el.senha)
-      .type(dadosAmbiente.PASSWORD, { log: false });
+  cy.session('login', () => {
 
-    cy.getVisible(el.entrar)
+    cy.visit(dadosAmbiente.BASEURL);
+
+    cy.getVisible(el.usuario)
+      .type(usuario, { log: false });
+
+    cy.getVisible(el.senha)
+      .type(senha, { log: false });
+
+    cy.getVisible(entrar)
       .contains('login')
       .click();
 
-    cy.url().should('contain', `${dadosAmbiente.BASEURL}lembretes`);
-  });
-});
+    cy.url()
+      .should('contain', url);
 
+    cy.request({
+      method: 'POST',
+      url: url,
+      body: {
+        username: dadosAmbiente.USER,
+        password: dadosAmbiente.PASSWORD,
+      },
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+
+      // Use Cypress.env para armazenar os dados na sessão do Cypress
+      Cypress.env('authToken', response.body.authToken);
+      Cypress.env('userId', response.body.userId);
+      Cypress.env('userPassword', response.body.userPassword);
+
+      // Use o console.log para verificar se os dados foram armazenados corretamente
+      console.log('authToken:', Cypress.env('authToken'));
+      console.log('userId:', Cypress.env('userId'));
+      console.log('userPassword:', Cypress.env('userPassword'));
+    });
+  });
+  cy.visit(dadosAmbiente.BASEURL + '/lembretes');
+});
 
 
 // Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
@@ -73,8 +90,7 @@ Cypress.Commands.add('login', () => {
 // });
 
 
-
-Cypress.Commands.add('inserirArquivo', (fixturePath, elementoBotao) => {
+Cypress.Commands.add('inserirArquivo', (fixturePath, importarImagem): void => {
   cy.fixture(fixturePath, 'base64').then((conteudo_arquivo) => {
     const nome = fixturePath.split('/').pop(); // Extract the file name from the fixture path
     const mimeType = 'image/jpeg';
@@ -82,7 +98,7 @@ Cypress.Commands.add('inserirArquivo', (fixturePath, elementoBotao) => {
     const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
     const file = new File([blob], nome, { type: mimeType });
 
-    cy.get(elementoBotao).then(($input) => {
+    cy.get(importarImagem).then(($input) => {
       const event = new Event('change', { bubbles: true });
       Object.defineProperty($input[0], 'files', {
         value: [file],
@@ -94,70 +110,167 @@ Cypress.Commands.add('inserirArquivo', (fixturePath, elementoBotao) => {
 });
 
 
-
-Cypress.Commands.add('acessarMenuReceitas', () => {
-  cy.getVisible(el.receitas)
+Cypress.Commands.add('acessarMenuReceitas', (receitas): void => {
+  cy.getVisible(receitas)
     .contains('Receitas')
     .and('have.class', 'nav-label')
     .click();
 });
 
 
-
-Cypress.Commands.add('acessarMenuAtendimentos', () => {
-  cy.get('#side-menu > li:nth-child(8)')
-    .trigger('mouseover') // Aciona o evento de mouseover no elemento pai para exibir o elemento a
-    .find('a[href="/atendimentos/page/1/"]')
-    .eq(0) // Seleciona o primeiro elemento <a> encontrado
-    .click({ force: true }); // Clica no item "Atendimentos"
+Cypress.Commands.add('acessarMenuAtendimentos', (atendimentos): void => {
+  cy.getVisible(atendimentos)
+    .trigger('mouseover')
+    .find(dadosParametros.DadosParametros.url.atendimentos)
+    .eq(0)
+    .click({ force: true });
 });
 
 
-
 Cypress.Commands.add('lerArquivo', (nomeArquivo) => {
-  // Construa o caminho completo para o arquivo na pasta fixtures
   const caminhoArquivo = `${dadosParametros.DadosParametros.caminhoArquivo}${nomeArquivo}`;
-
-  // Faça a leitura do arquivo
   return cy.fixture(caminhoArquivo);
 });
 
 
-
-
-Cypress.Commands.add('getVisible', (element, options) => {
+Cypress.Commands.add('getVisible', (elemento, options) => {
   const defaultOptions = { timeout: 20000 };
   const combinedOptions = { ...defaultOptions, ...options };
-  return cy.get(element, combinedOptions).should('be.visible');
+  return cy.get(elemento, combinedOptions)
+    .should('be.visible');
+});
+
+
+Cypress.Commands.add('getReceitaNumero', (numeroReceita): void => {
+  dadosParametros.DadosParametros.Receita.numeroReceita = numeroReceita;
+});
+
+
+Cypress.Commands.add('setReceitaNumero', (numeroReceita): void => {
+  dadosParametros.DadosParametros.Receita.numeroReceita = numeroReceita;
+});
+
+
+Cypress.Commands.add('inserirData', (campoData: string, dataAtual?: string): void => {
+  cy.getVisible(campoData)
+    .type(dataAtual, { timeout: 1000 })
+    .should('have.value', dataAtual);
+});
+
+
+Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): void => {
+  const abrirModalBuscaReceita = (modalBuscaReceita: string): void => {
+    cy.getVisible(modalBuscaReceita, { timeout: 10000 })
+      .click({ force: true })
+      .should('have.id', 'centerHeadFilter')
+  };
+
+  const selecionarFiltroPendencias = (filtroPendencias: string, opcao): void => {
+    cy.getVisible(filtroPendencias, { timeout: 5000 })
+      .select(opcao)
+      .should('have.value', opcao)
+      .find('option:selected')
+      .should('be.selected');
+  };
+
+  const procurarReceita = (procurarReceita: string, labelProcurarReceita: string): void => {
+    cy.get(procurarReceita)
+      .contains(labelProcurarReceita)
+      .click()
+  };
+
+  const capturarNumeroReceita = (numeroReceita: string): Cypress.Chainable<string> => {
+    return cy.getVisible(numeroReceita)
+      .eq(0)
+      .invoke('text')
+      .then((texto) => {
+        const numeroReceitaMatch = texto.match(/\d+/);
+
+        if (numeroReceitaMatch) {
+          const numeroReceita = parseInt(numeroReceitaMatch[0], 10);
+          cy.wrap(numeroReceita)
+            .as('numeroReceita');
+          cy.setReceitaNumero(numeroReceita);
+          dadosParametros.DadosParametros.Receita.numeroReceita = numeroReceita;
+          cy.log(`Número da Receita Capturado: ${dadosParametros.DadosParametros.Receita.numeroReceita}`);
+        } else {
+          throw new Error(`Valor capturado não contém números válidos: ${texto}`);
+        }
+
+      });
+  };
+
+  abrirModalBuscaReceita(el.ModalBuscaReceita);
+  cy.wait(2000);
+
+  cy.inserirData(el.filtroDataInicialBuscaReceita, dataInicial);
+
+  cy.inserirData(el.filtroDataFinalBuscaReceita, dataFinal);
+
+  selecionarFiltroPendencias(el.filtroPendenciasBuscaReceita, dadosParametros.DadosParametros.FiltroPendentes.Pendentes);
+
+  procurarReceita(el.procurarReceita,el.labelProcurarReceita);
+  
+  capturarNumeroReceita(el.numeroReceita);
+});
+
+
+Cypress.Commands.add('getElementAndClick', (elemento: string): void => {
+  cy.get(elemento, { timeout: 10000 })
+    .should('be.visible')
+    .as('element')
+    .then($elements => {
+
+      if ($elements.length > 0) {
+        cy.wrap($elements.first())
+          .click({ timeout: 10000, force: true });
+      } else {
+        cy.wrap($elements.eq(0))
+          .click({ timeout: 10000, force: true });
+      }
+
+    });
+});
+
+
+Cypress.Commands.add('getElementAndType', (elemento: string, text?: string): void => {
+  if (typeof text !== 'string') {
+    throw new Error('O texto a ser escrito deve ser uma string.');
+  }
+  cy.get(elemento, { timeout: 10000 })
+    .should('be.visible')
+    .then($elements => {
+
+      if ($elements.length > 1) {
+        cy.wrap($elements.first())
+          .clear()
+          .type(text, { timeout: 1000 })
+      } else {
+        cy.wrap($elements.eq(0))
+          .clear()
+          .type(text, { timeout: 1000 })
+      }
+
+    });
+});
+
+
+Cypress.Commands.add('getRadioOptionByValue', (dataCy: string, value): void => {
+  cy.get(`[data-cy="${dataCy}"]`, { timeout: 10000 })
+    .should('be.visible')
+    .find(`input[type="radio"][value="${value}"]`)
+    .check({ force: true })
+});
+
+
+Cypress.Commands.add('getSelectOptionByValue', (dataCy: string, value): void => {
+  cy.get(`[data-cy="${dataCy}"]`, { timeout: 10000 })
+    .should('be.visible')
+    .select(value, { force: true })
 });
 
 
 
-Cypress.Commands.add("inserirData", (dataAtual: Date = new Date()) => {
-  // Obtém os componentes individuais da data e hora
-  const ano: number = dataAtual.getFullYear();
-  const mes: string = String(dataAtual.getMonth() + 1).padStart(2, '0');
-  const dia: string = String(dataAtual.getDate()).padStart(2, '0');
-  const hora: string = String(dataAtual.getHours()).padStart(2, '0');
-  const minutos: string = String(dataAtual.getMinutes()).padStart(2, '0');
-  const segundos: string = String(dataAtual.getSeconds()).padStart(2, '0');
-
-  // Formata a data e hora no formato desejado
-  const DATA_FORMATADA: string = `${ano}-${mes}-${dia}`;
-  const HORA_FORMATADA: string = `${hora}:${minutos}:${segundos}`;
-
-  // Retorna um objeto contendo a data e hora formatadas
-  return cy.wrap({ DATA_FORMATADA, HORA_FORMATADA })
-});
 
 
 
-Cypress.Commands.add('getReceitaNumero', () => {
-  return cy.wrap(dadosParametros.DadosParametros.Receita.numeroReceita); // Return a Chainable<number> using cy.wrap()
-});
-
-
-
-Cypress.Commands.add('setReceitaNumero', (numero) => {
-  dadosParametros.DadosParametros.Receita.numeroReceita = numero;
-});

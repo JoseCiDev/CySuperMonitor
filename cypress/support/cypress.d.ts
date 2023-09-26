@@ -36,7 +36,7 @@ declare global {
        * comando customizado de login.
        * @example cy.login('user', 'password')
        */
-      login(USER: string, PASSWORD: string): Chainable<Element>
+      login(acessar: string, user: string, password: string, url: string): Chainable<Element>
 
       /**
        * comando customizado para executar querys no banco de dados.
@@ -84,19 +84,49 @@ declare global {
       * comando customizado para pegar numero da receita.
       * @example cy.getReceitaNumero()
       */
-      getReceitaNumero(): Chainable<number>;
+      getReceitaNumero(numeroReceita: number): Chainable<Element>;
 
       /**
       * comando customizado para setar numero da receita.
       * @example cy.setReceitaNumero()
       */
-      setReceitaNumero(receitaNumero: number): Chainable<Element>;
+      setReceitaNumero(numeroReceita: number): Chainable<Element>;
 
+      /**
+      * comando customizado para buscar receitas.
+      * @example cy.buscarReceita()
+      */
+      buscarReceita(dataInicial: string, dataFinal: string): Chainable<void>;
 
+      /**
+     * comando customizado para inserir datas.
+     * @example cy.inserirData()
+     */
+      inserirData(element: string, dataAtual: string): Chainable<Element>;
 
+      /**
+       * comando customizado de login.
+       * @example cy.getElementAndClick(el.elemento)
+       */
+      getElementAndClick(element: string): Chainable<Element>
 
+      /**
+       * comando customizado de login.
+       * @example cy.getElementAndClick(el.elemento)
+       */
+      getElementAndType(element: string, text?: string): Chainable<Element>
 
+      /**
+       * comando customizado de login.
+       * @example cy.selecionarRadioOptionByValue(el.elemento)
+       */
+      getRadioOptionByValue(dataCy: string, value: any): Chainable<Element>
+
+      /**
+       * comando customizado de login.
+       * @example cy.selecionarRadioOptionByValue(el.elemento)
+       */
+      getSelectOptionByValue(dataCy: string, value: any): Chainable<Element>
     }
   }
-
 }

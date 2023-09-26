@@ -1,9 +1,20 @@
+#Variáveis de ambiente
 .env
 cypress.env.json
+
+#Node_modules
 node_modules/
+
+#Cache
 .cypress_cache/
+
+#Reports
 cypress/reports/
 cypress/images/
 cypress/videos/
+
+#Log
 *.log
+
+#Conexão
 connection.ts
