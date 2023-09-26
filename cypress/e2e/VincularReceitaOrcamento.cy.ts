@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { ELEMENTS as el } from '../elements';
+import { elements as el } from '../elements';
 import { faker } from '@faker-js/faker';
 import { ConnectionInfo } from "../support/Connections/connection";
 import { connections } from "../support/Connections/connection";

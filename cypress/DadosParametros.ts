@@ -1,11 +1,8 @@
 import { faker } from '@faker-js/faker';
-// import * as fakerBr from 'faker-br';
-// import { format } from 'date-fns';
-
 
 interface DadosParametros {
 
-    url: {
+    Url: {
         inicio: string;
         importarReceitas: string;
         atendimentos: string
@@ -28,10 +25,10 @@ interface DadosParametros {
         filial: string;
     };
 
-    caminhoArquivo: string;
+    CaminhoArquivo: string;
 
-    dataAtual: Date;
-    dataFormatada: string
+    DataAtual: Date;
+    DataFormatada: string
 
     PossuiReceita: {
         Sim: string;
@@ -156,7 +153,7 @@ enum OpcaoParametroBuscaCardOrcamento {
 export const dadosParametros: { DadosParametros: DadosParametros } = {
     DadosParametros: {
 
-        url: {
+        Url: {
             inicio: 'http://192.168.0.66:9200/lembretes',
             importarReceitas: 'http://192.168.0.66:9200/receita/importar',
             atendimentos: 'http://192.168.0.66:9200/atendimentos/page/1/',
@@ -179,10 +176,10 @@ export const dadosParametros: { DadosParametros: DadosParametros } = {
             filial: 'FILIAL-01',
         },
 
-        caminhoArquivo: 'fixtures/',
+        CaminhoArquivo: 'fixtures/',
 
-        dataAtual: new Date(),
-        dataFormatada: new Date().toISOString().slice(0, 16),
+        DataAtual: new Date(),
+        DataFormatada: new Date().toISOString().slice(0, 16),
 
 
         PossuiReceita: {

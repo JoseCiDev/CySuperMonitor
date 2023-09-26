@@ -29,7 +29,7 @@
 
 
 // import Database from './Database/database';
-import { ELEMENTS as el } from '../elements'
+import { elements as el } from '../elements'
 import { dadosParametros } from '../DadosParametros'
 
 
@@ -42,13 +42,13 @@ Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, u
 
     cy.visit(dadosAmbiente.BASEURL);
 
-    cy.getVisible(el.usuario)
+    cy.getVisible(el.CustomCommands.login)
       .type(usuario, { log: false });
 
-    cy.getVisible(el.senha)
+    cy.getVisible(el.CustomCommands.senha)
       .type(senha, { log: false });
 
-    cy.getVisible(entrar)
+    cy.getVisible(el.CustomCommands.entrar)
       .contains('login')
       .click();
 
@@ -121,14 +121,14 @@ Cypress.Commands.add('acessarMenuReceitas', (receitas): void => {
 Cypress.Commands.add('acessarMenuAtendimentos', (atendimentos): void => {
   cy.getVisible(atendimentos)
     .trigger('mouseover')
-    .find(dadosParametros.DadosParametros.url.atendimentos)
+    .find(dadosParametros.DadosParametros.Url.atendimentos)
     .eq(0)
     .click({ force: true });
 });
 
 
 Cypress.Commands.add('lerArquivo', (nomeArquivo) => {
-  const caminhoArquivo = `${dadosParametros.DadosParametros.caminhoArquivo}${nomeArquivo}`;
+  const caminhoArquivo = `${dadosParametros.DadosParametros.CaminhoArquivo}${nomeArquivo}`;
   return cy.fixture(caminhoArquivo);
 });
 
@@ -200,18 +200,18 @@ Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): 
       });
   };
 
-  abrirModalBuscaReceita(el.ModalBuscaReceita);
+  abrirModalBuscaReceita(el.Receitas.ModalBuscaReceita);
   cy.wait(2000);
 
-  cy.inserirData(el.filtroDataInicialBuscaReceita, dataInicial);
+  cy.inserirData(el.Receitas.filtroDataInicialBuscaReceita, dataInicial);
 
-  cy.inserirData(el.filtroDataFinalBuscaReceita, dataFinal);
+  cy.inserirData(el.Receitas.filtroDataFinalBuscaReceita, dataFinal);
 
-  selecionarFiltroPendencias(el.filtroPendenciasBuscaReceita, dadosParametros.DadosParametros.FiltroPendentes.Pendentes);
+  selecionarFiltroPendencias(el.Receitas.filtroPendenciasBuscaReceita, dadosParametros.DadosParametros.FiltroPendentes.Pendentes);
 
-  procurarReceita(el.procurarReceita,el.labelProcurarReceita);
-  
-  capturarNumeroReceita(el.numeroReceita);
+  procurarReceita(el.Receitas.procurarReceita, el.Receitas.labelProcurarReceita);
+
+  capturarNumeroReceita(el.Receitas.numeroReceita);
 });
 
 
@@ -274,3 +274,20 @@ Cypress.Commands.add('getSelectOptionByValue', (dataCy: string, value): void => 
 
 
 
+
+
+
+
+/*
+buscar receita CC - OK
+registrar receita - OK
+pesquisar receita CC
+marcar uso CC
+visualizar receita CC
+clonar receita CC
+editar receita CC
+observacoes farmaceuticas CC
+duvidas tecnicas CC
+Excluir CC
+
+*/

@@ -1,4 +1,4 @@
-import { ELEMENTS as el } from '../../../elements';
+import { elements as el } from '../../../elements';
 import { faker } from '@faker-js/faker';
 import { dadosParametros } from '../../../DadosParametros';
 
@@ -12,7 +12,7 @@ export const acessarImportarReceitas = (importarReceitas: string): void => {
         .contains('Importar receitas')
         .click();
 
-    cy.url().should('contain', dadosParametros.DadosParametros.url.importarReceitas);
+    cy.url().should('contain', dadosParametros.DadosParametros.Url.importarReceitas);
 }
 
 export const abrirModalRegistrarReceita = (registrarReceitas: string): void => {
@@ -39,7 +39,7 @@ export const inserirPrescritor = (modalSugestaoRelacaoPrescritor, sugestaoAutoco
                 });
         })
         .should('contain', dadosParametros.DadosParametros.Prescritor.crmPrescritor);
-    cy.get(el.modalSugestaoRelacaoPrescritor, { timeout: 10000 })
+    cy.get(el.Receitas.modalSugestaoRelacaoPrescritor, { timeout: 10000 })
         .scrollIntoView()
         .click();
 };
@@ -64,12 +64,12 @@ export const inserirPaciente = (paciente: string): void => {
         .clear()
         .type(dadosParametros.DadosParametros.Paciente.codigoPaciente.toString())
         .then(() => {
-            cy.get(el.sugestoesAutocomplete, { timeout: 5000 })
+            cy.get(el.Compartilhado.sugestoesAutocomplete, { timeout: 5000 })
                 .as('suggestions');
         });
     cy.wait(500)
     cy.get('@suggestions', { timeout: 5000 })
-        .find(el.sugestaoAutocomplete, { timeout: 5000 })
+        .find(el.Compartilhado.sugestaoAutocomplete, { timeout: 5000 })
         .contains(dadosParametros.DadosParametros.Paciente.codigoPaciente.toString())
         .then(($suggestion) => {
             if ($suggestion.length > 0) {
@@ -92,10 +92,10 @@ export const selecionarCanalRecebimento = (opcaoRecebimento, opcaoCanalRecebimen
 }
 
 export const inserirDataRecebimentoReceita = () => {
-    const umDiaMenos = new Date(dadosParametros.DadosParametros.dataAtual);
+    const umDiaMenos = new Date(dadosParametros.DadosParametros.DataAtual);
     umDiaMenos.setDate(umDiaMenos.getDate() - 1);
     const dataFormatada = umDiaMenos.toISOString().slice(0, 16);
-    cy.inserirData(el.dataRecebimento, dataFormatada);
+    cy.inserirData(el.Receitas.dataRecebimento, dataFormatada);
 }
 
 export const inserirTipoReceita = (tipoReceita, tipo): void => {
@@ -131,64 +131,64 @@ export const salvarReceita = (salvarImportacao): void => {
     cy.getVisible(salvarImportacao, { timeout: 5000 })
         .click({ force: true });
 
-    if (Cypress.$(el.okSucessoReceitaImportadaModal).length > 0 && Cypress.$(el.okSucessoReceitaImportadaModal).is(':visible')) {
-        cy.getVisible(el.okSucessoReceitaImportadaModal, { timeout: 5000 })
+    if (Cypress.$(el.Receitas.okSucessoReceitaImportadaModal).length > 0 && Cypress.$(el.Receitas.okSucessoReceitaImportadaModal).is(':visible')) {
+        cy.getVisible(el.Receitas.okSucessoReceitaImportadaModal, { timeout: 5000 })
             .click();
     } else {
         cy.wait(5000)
-        cy.getVisible(el.okSucessoReceitaImportadaModal, { timeout: 5000 })
+        cy.getVisible(el.Receitas.okSucessoReceitaImportadaModal, { timeout: 5000 })
             .click();
     }
 
-    cy.url().should('contain', dadosParametros.DadosParametros.url.importarReceitas)
+    cy.url().should('contain', dadosParametros.DadosParametros.Url.importarReceitas)
 }
 
 
 describe('Receitas', () => {
 
     beforeEach(function () {
-        cy.login(el.entrar, dadosAmbiente.USER, dadosAmbiente.PASSWORD, dadosParametros.DadosParametros.url.inicio)
+        cy.login(el.Login.entrar, dadosAmbiente.USER, dadosAmbiente.PASSWORD, dadosParametros.DadosParametros.Url.inicio)
     })
 
     it('Importação de Receitas', () => {
 
-        cy.acessarMenuReceitas(el.receitas);
+        cy.acessarMenuReceitas(el.Receitas.menuReceitas);
 
-        acessarImportarReceitas(el.importarReceitas);
+        acessarImportarReceitas(el.Receitas.menuImportarReceitas);
         cy.wait(2000)
 
         cy.buscarReceita('2023-01-01T10:00', '2023-10-30T10:00')
 
-        abrirModalRegistrarReceita(el.abrirModalRegistrarReceita);
+        abrirModalRegistrarReceita(el.Receitas.abrirModalRegistrarReceita);
 
-        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.importarImagem);
+        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.Receitas.importarImagem);
 
-        inserirPrescritor(el.prescritor, el.sugestaoAutocomplete);
+        inserirPrescritor(el.Receitas.prescritor, el.Compartilhado.sugestaoAutocomplete);
 
-        parametroSelecaoPaciente(el.parametroBuscaPaciente, dadosParametros.DadosParametros.ParametroBuscaPaciente.Cdcli);
+        parametroSelecaoPaciente(el.Receitas.parametroBuscaPaciente, dadosParametros.DadosParametros.ParametroBuscaPaciente.Cdcli);
 
-        inserirPaciente(el.paciente);
+        inserirPaciente(el.Receitas.paciente);
 
-        selecionarCanalRecebimento(el.canalRecebimento, dadosParametros.DadosParametros.CanalRecebimento.Whatsapp);
+        selecionarCanalRecebimento(el.Receitas.canalRecebimento, dadosParametros.DadosParametros.CanalRecebimento.Whatsapp);
 
         inserirDataRecebimentoReceita();
 
-        inserirTipoReceita(el.tipoReceita, dadosParametros.DadosParametros.PossuiReceita);
+        inserirTipoReceita(el.Receitas.tipoReceita, dadosParametros.DadosParametros.PossuiReceita);
 
-        if (cy.get(el.modalMensagens, { timeout: 20000 })) {
-            cy.get(el.modalMensagens, { timeout: 20000 })
+        if (cy.get(el.Receitas.modalMensagens, { timeout: 20000 })) {
+            cy.get(el.Receitas.modalMensagens, { timeout: 20000 })
                 .click()
         }
 
-        inserirObservacaoInternaReceita(el.textoObservacaoInternaReceita, '', true);
+        inserirObservacaoInternaReceita(el.Receitas.textoObservacaoInternaReceita, '', true);
 
-        marcarReceitaUrgente(el.urgente)
+        marcarReceitaUrgente(el.Receitas.urgente)
 
-        marcarReceitaClienteAlerta(el.clienteAlerta)
+        marcarReceitaClienteAlerta(el.Receitas.clienteAlerta)
 
-        marcarReceitaMedicamentoControlado(el.medicamentocontrolado)
+        marcarReceitaMedicamentoControlado(el.Receitas.medicamentocontrolado)
 
-        salvarReceita(el.salvarReceita)
+        salvarReceita(el.Receitas.salvarReceita)
     });
 })
 
