@@ -36,6 +36,36 @@ import { dadosParametros } from '../DadosParametros'
 const ambiente = Cypress.env('AMBIENTE');
 const dadosAmbiente = Cypress.env(ambiente);
 
+export const {
+  ModalBuscaReceita,
+  filtroDataInicialBuscaReceita,
+  filtroDataFinalBuscaReceita,
+  filtroPendenciasBuscaReceita,
+  botaoProcurar,
+  labelProcurarReceita,
+  numeroReceita,
+  containerInserirUsuario,
+  selectUsuario,
+  usuarioSelecionado,
+  senhaReceita,
+  aplicaDesmarcarUso,
+  mensagemAcaoRealizadaSucesso,
+  mensagemConfirmacaoModal,
+  mensagemSucessoMarcadoUso,
+  abaPdfVisualizarReceita,
+  abaOriginalVisualizarReceita,
+  abaObservacoesInternasVisualizarReceita,
+  abaInformacoesFcertaVisualizarReceita,
+  exibirReguaVisualizarReceita,
+  fecharVisualizarReceita,
+  clonarReceita,
+  modalObservacoesClonar,
+  clonarObservacoesFarmaceuticas,
+  menuReceitas,
+  excluirReceita,
+
+} = el.Receitas;
+
 
 Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, url: string): void => {
   const ambiente = Cypress.env('AMBIENTE');
@@ -83,6 +113,7 @@ Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, u
 });
 
 
+
 // Cypress.Commands.add('queryDB', (dbName: string, query: string) => {
 //   const params: QueryParams = { dbName, query };
 //   // Retorna um objeto Cypress.Chainable envolvendo o resultado da tarefa
@@ -93,9 +124,10 @@ Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, u
 // });
 
 
-Cypress.Commands.add('inserirArquivo', (fixturePath, importarImagem): void => {
-  cy.fixture(fixturePath, 'base64').then((conteudo_arquivo) => {
-    const nome = fixturePath.split('/').pop(); // Extract the file name from the fixture path
+
+Cypress.Commands.add('inserirArquivo', (caminhoFixture, importarImagem): void => {
+  cy.fixture(caminhoFixture, 'base64').then((conteudo_arquivo) => {
+    const nome = caminhoFixture.split('/').pop(); // Extract the file name from the fixture path
     const mimeType = 'image/jpeg';
 
     const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
@@ -113,12 +145,14 @@ Cypress.Commands.add('inserirArquivo', (fixturePath, importarImagem): void => {
 });
 
 
+
 Cypress.Commands.add('acessarMenuReceitas', (receitas): void => {
   cy.getVisible(receitas)
     .contains('Receitas')
     .and('have.class', 'nav-label')
     .click();
 });
+
 
 
 Cypress.Commands.add('acessarMenuAtendimentos', (atendimentos): void => {
@@ -130,10 +164,12 @@ Cypress.Commands.add('acessarMenuAtendimentos', (atendimentos): void => {
 });
 
 
+
 Cypress.Commands.add('lerArquivo', (nomeArquivo) => {
   const caminhoArquivo = `${dadosParametros.CaminhoArquivo}${nomeArquivo}`;
   return cy.fixture(caminhoArquivo);
 });
+
 
 
 Cypress.Commands.add('getVisible', (elemento, options) => {
@@ -144,14 +180,17 @@ Cypress.Commands.add('getVisible', (elemento, options) => {
 });
 
 
+
 Cypress.Commands.add('getReceitaNumero', (numeroReceita): void => {
   dadosParametros.Receita.numeroReceita = numeroReceita;
 });
 
 
+
 Cypress.Commands.add('setReceitaNumero', (numeroReceita): void => {
   dadosParametros.Receita.numeroReceita = numeroReceita;
 });
+
 
 
 Cypress.Commands.add('inserirData', (campoData: string, dataAtual?: string): void => {
@@ -161,12 +200,15 @@ Cypress.Commands.add('inserirData', (campoData: string, dataAtual?: string): voi
 });
 
 
+
 Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): void => {
   const abrirModalBuscaReceita = (modalBuscaReceita: string): void => {
     cy.getVisible(modalBuscaReceita, { timeout: 10000 })
       .click({ force: true })
       .should('have.id', 'centerHeadFilter')
   };
+
+
 
   const selecionarFiltroPendencias = (filtroPendencias: string, opcao): void => {
     cy.getVisible(filtroPendencias, { timeout: 5000 })
@@ -176,11 +218,15 @@ Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): 
       .should('be.selected');
   };
 
-  const procurarReceita = (procurarReceita: string, labelProcurarReceita: string): void => {
-    cy.get(procurarReceita)
+
+
+  const procurarReceita = (botaoProcurar: string, labelProcurarReceita: string): void => {
+    cy.get(botaoProcurar)
       .contains(labelProcurarReceita)
       .click()
   };
+
+
 
   const capturarNumeroReceita = (numeroReceita: string): Cypress.Chainable<string> => {
     return cy.getVisible(numeroReceita)
@@ -203,19 +249,22 @@ Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): 
       });
   };
 
-  abrirModalBuscaReceita(el.Receitas.ModalBuscaReceita);
+
+
+  abrirModalBuscaReceita(ModalBuscaReceita);
   cy.wait(2000);
 
-  cy.inserirData(el.Receitas.filtroDataInicialBuscaReceita, dataInicial);
+  cy.inserirData(filtroDataInicialBuscaReceita, dataInicial);
 
-  cy.inserirData(el.Receitas.filtroDataFinalBuscaReceita, dataFinal);
+  cy.inserirData(filtroDataFinalBuscaReceita, dataFinal);
 
-  selecionarFiltroPendencias(el.Receitas.filtroPendenciasBuscaReceita, dadosParametros.FiltroPendentes.Pendentes);
+  selecionarFiltroPendencias(filtroPendenciasBuscaReceita, dadosParametros.FiltroPendentes.Pendentes);
 
-  procurarReceita(el.Receitas.procurarReceita, el.Receitas.labelProcurarReceita);
+  procurarReceita(botaoProcurar, labelProcurarReceita);
 
-  capturarNumeroReceita(el.Receitas.numeroReceita);
+  capturarNumeroReceita(numeroReceita);
 });
+
 
 
 Cypress.Commands.add('getElementAndClick', (elemento: string): void => {
@@ -234,6 +283,8 @@ Cypress.Commands.add('getElementAndClick', (elemento: string): void => {
 
     });
 });
+
+
 
 Cypress.Commands.add('getElementAndCheck', (elemento: string): void => {
   cy.get(elemento, { timeout: 10000 })
@@ -254,6 +305,7 @@ Cypress.Commands.add('getElementAndCheck', (elemento: string): void => {
     });
 
 });
+
 
 
 Cypress.Commands.add('getElementAndType', (elemento: string, texto?: string): void => {
@@ -278,6 +330,7 @@ Cypress.Commands.add('getElementAndType', (elemento: string, texto?: string): vo
 });
 
 
+
 Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void => {
   cy.get(elemento, { timeout: 10000 })
     .should('be.visible')
@@ -286,13 +339,16 @@ Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void =>
 });
 
 
+
 Cypress.Commands.add('getSelectOptionByValue', (elemento: string, value): void => {
   cy.get(elemento, { timeout: 10000 })
     .should('be.visible')
     .select(value, { force: true })
 });
 
-Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string) => {
+
+
+Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string): void => {
   // Encontre todos os checkboxes dentro do elemento especificado
   cy.get(`${checkboxMarcarUso} input[type="checkbox"]`, { timeout: 10000 }).then(($checkboxes) => {
     const totalCheckboxes = $checkboxes.length;
@@ -304,12 +360,12 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string) => {
         cy.get(`${checkboxMarcarUso} input[type="checkbox"]:checked`, { timeout: 10000 })
           .first()
           .uncheck();
-        cy.getElementAndClick(el.Receitas.containerInserirUsuario);
-        cy.getElementAndType(el.Receitas.selectUsuario, 'adm');
-        cy.getElementAndClick(el.Receitas.usuarioSelecionado)
-        cy.getElementAndType(el.Receitas.senhaReceita, dadosAmbiente.SENHA_RECEITA_USER);
-        cy.getElementAndClick(el.Receitas.aplicaDesmarcarUso);
-        cy.getElementAndClick(el.Receitas.mensagemDesmarcadoComSucesso);
+        cy.getElementAndClick(containerInserirUsuario);
+        cy.getElementAndType(selectUsuario, 'adm');
+        cy.getElementAndClick(usuarioSelecionado)
+        cy.getElementAndType(senhaReceita, dadosAmbiente.SENHA_RECEITA_USER);
+        cy.getElementAndClick(aplicaDesmarcarUso);
+        cy.getElementAndClick(mensagemAcaoRealizadaSucesso);
         cy.get(`${checkboxMarcarUso} input[type="checkbox"]:not(:checked)`, { timeout: 10000 })
           .first()
           .check();
@@ -322,64 +378,69 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string) => {
       };
 
       cy.wait(200);
-      cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal);
+      cy.getElementAndClick(mensagemConfirmacaoModal);
       cy.wait(200);
-      cy.getElementAndClick(el.Receitas.mensagemSucessoMarcadoUso);
+      cy.getElementAndClick(mensagemSucessoMarcadoUso);
     });
   });
 });
 
-Cypress.Commands.add('visualizarReceita', (abrirModalvisualizarReceita: string,) => {
+
+
+Cypress.Commands.add('visualizarReceita', (abrirModalvisualizarReceita: string,): void => {
   cy.getElementAndClick(abrirModalvisualizarReceita)
 
-  cy.getElementAndClick(el.Receitas.abaPdfVisualizarReceita)
+  cy.getElementAndClick(abaPdfVisualizarReceita)
 
-  cy.getElementAndClick(el.Receitas.abaOriginalVisualizarReceita)
+  cy.getElementAndClick(abaOriginalVisualizarReceita)
 
-  cy.getElementAndClick(el.Receitas.abaObservacoesInternasVisualizarReceita)
+  cy.getElementAndClick(abaObservacoesInternasVisualizarReceita)
 
-  cy.getElementAndClick(el.Receitas.abaInformacoesFcertaVisualizarReceita)
+  cy.getElementAndClick(abaInformacoesFcertaVisualizarReceita)
 
-  cy.getElementAndClick(el.Receitas.exibirReguaVisualizarReceita);
+  cy.getElementAndClick(exibirReguaVisualizarReceita);
 
-  cy.getElementAndClick(el.Receitas.exibirReguaVisualizarReceita);
+  cy.getElementAndClick(exibirReguaVisualizarReceita);
 
-  cy.getElementAndClick(el.Receitas.fecharVisualizarReceita)
+  cy.getElementAndClick(fecharVisualizarReceita)
 })
 
-Cypress.Commands.add('clonarReceita', () => {
-  cy.getElementAndClick(el.Receitas.abrirModalClonarReceita);
+
+
+Cypress.Commands.add('clonarReceita', (clonarReceita: string): void => {
+  cy.getElementAndClick(clonarReceita);
   cy.wait(1000);
   cy.then(() => {
-    cy.get('#carousel-observacoes', { timeout: 10000 }).then(($elemento) => {
+    cy.get(modalObservacoesClonar, { timeout: 10000 }).then(($elemento) => {
 
       if (!$elemento.is(':visible')) {
-        cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal);
+        cy.getElementAndClick(mensagemConfirmacaoModal);
         cy.wait(500);
-        cy.log('primeiro IF, not.be.visible');
       }
       else {
-        if (dadosParametros.Receita.clonarObservacaoFarmaceutica === true) {
-          cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal);
+        if (dadosParametros.Receita.clonarObservacaoFarmaceutica) {
+          cy.getElementAndClick(mensagemConfirmacaoModal);
           cy.wait(500);
-          cy.log('segundo IF, be.visible');
-        }
-        else {
-          if (!dadosParametros.Receita.clonarObservacaoFarmaceutica) {
-            cy.get(el.Receitas.clonarObservacoesFarmaceuticasCloneReceita,{timeout:10000})
+        } else if (!dadosParametros.Receita.clonarObservacaoFarmaceutica) {
+          cy.get(clonarObservacoesFarmaceuticas, { timeout: 10000 })
             .uncheck();
-            cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal);
-            cy.wait(500);
-            cy.log('segundo IF, be.visible, Nao clonar observacao');
-          }
+          cy.getElementAndClick(mensagemConfirmacaoModal);
+          cy.wait(500);
         }
+
       }
-      cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal)
+      cy.getElementAndClick(mensagemConfirmacaoModal)
     });
   });
 });
 
-
+Cypress.Commands.add('excluirReceita', (excluir: string): void => {
+  cy.getElementAndClick(excluir);
+  cy.wait(200);
+  cy.getElementAndClick(mensagemConfirmacaoModal);
+  cy.wait(200);
+  cy.getElementAndClick(mensagemAcaoRealizadaSucesso);
+})
 
 
 
@@ -407,8 +468,11 @@ clonar receita CC
   (botao sucesso receita clonada)
   1203
 
+Excluir CC
+
+
   editar receita CC
 observacoes farmaceuticas CC
 duvidas tecnicas CC
-Excluir CC
+
 */

@@ -52,7 +52,7 @@ interface Elements<T = string> {
         filtroPendenciasTodos: T;
         filtroPendenciasPendentes: T;
         filtroPendenciasVinculados: T;
-        procurarReceita: T;
+        botaoProcurar: T;
         labelProcurarReceita: T;
         numeroReceita: T;
         checkboxMarcarUso: T;
@@ -63,8 +63,8 @@ interface Elements<T = string> {
         usuarioSelecionado: T;
         senhaReceita: T;
         aplicaDesmarcarUso: T;
-        mensagemDesmarcadoComSucesso: T;
-        abrirModalvisualizarReceita: T;
+        mensagemAcaoRealizadaSucesso: T;
+        visualizarReceita: T;
         acoes: T;
         abaPdfVisualizarReceita: T;
         abaOriginalVisualizarReceita: T;
@@ -72,9 +72,10 @@ interface Elements<T = string> {
         abaInformacoesFcertaVisualizarReceita: T;
         exibirReguaVisualizarReceita: T;
         fecharVisualizarReceita: T;
-        abrirModalClonarReceita: T;
+        clonarReceita: T;
         modalObservacoesClonar: T;
-        clonarObservacoesFarmaceuticasCloneReceita: T;
+        clonarObservacoesFarmaceuticas: T;
+        excluirReceita: T;
 
     };
 
@@ -212,7 +213,7 @@ export const elements: Elements = {
         filtroPendenciasTodos: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(1)',
         filtroPendenciasPendentes: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(2)',
         filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
-        procurarReceita: '#filterReceitas > div:nth-child(4) > div > button',
+        botaoProcurar: '#filterReceitas > div:nth-child(4) > div > button',
         labelProcurarReceita: '[button type="submit"]' && 'Procurar',
         numeroReceita: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
         checkboxMarcarUso: '#mainTableReceitas > tbody > tr > td.usedTrativa',
@@ -223,8 +224,8 @@ export const elements: Elements = {
         usuarioSelecionado: '.select2-results__option--highlighted',
         senhaReceita: '#password-farma-auth',
         aplicaDesmarcarUso: '#farma-auth-send-btn',
-        mensagemDesmarcadoComSucesso: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
-        abrirModalvisualizarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .show-receita',
+        mensagemAcaoRealizadaSucesso: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
+        visualizarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .show-receita',
         acoes: '#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > button',
         abaPdfVisualizarReceita: '#panel_look_pdf > :nth-child(1) > :nth-child(1) > a',
         abaOriginalVisualizarReceita: '#originalClickVisRe',
@@ -232,10 +233,10 @@ export const elements: Elements = {
         abaInformacoesFcertaVisualizarReceita: '#panel_look_pdf > :nth-child(1) > :nth-child(4) > a',
         exibirReguaVisualizarReceita: '#btnReceitaRegua',
         fecharVisualizarReceita: '#modal-receita-view > .modal-dialog > .modal-content > .modal-header > .close > [aria-hidden="true"]',
-        abrirModalClonarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita',
+        clonarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita',
         modalObservacoesClonar: '#carousel-observacoes',
-        clonarObservacoesFarmaceuticasCloneReceita: '#clonar-observacoes',
-
+        clonarObservacoesFarmaceuticas: '#clonar-observacoes',
+        excluirReceita: ':nth-child(2) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-receita',
 
     },
 

@@ -1,4 +1,5 @@
 import { elements as el } from '../../../elements';
+import { } from '../../../support/commands';
 import { faker } from '@faker-js/faker';
 import { dadosParametros } from '../../../DadosParametros';
 
@@ -7,18 +8,38 @@ const ambiente = Cypress.env('AMBIENTE');
 const dadosAmbiente = Cypress.env(ambiente);
 
 
+export const {
+    dataRecebimento,
+    okSucessoReceitaImportadaModal,
+    menuReceitas,
+    menuImportarReceitas,
+    abrirModalRegistrarReceita,
+    importarImagem,
+    prescritor,
+    parametroBuscaPaciente,
+    paciente,
+    canalRecebimento,
+    tipoReceita,
+    modalMensagens,
+    textoObservacaoInternaReceita,
+    urgente,
+    clienteAlerta,
+    medicamentocontrolado,
+    checkboxMarcarUso,
+    acoes,
+    visualizarReceita,
+    clonarReceita,
+    excluirReceita,
+  
+  } = el.Receitas;
+
+
 export const acessarImportarReceitas = (importarReceitas: string): void => {
     cy.getVisible(importarReceitas)
         .contains('Importar receitas')
         .click();
 
     cy.url().should('contain', dadosParametros.Url.importarReceitas);
-}
-
-export const abrirModalRegistrarReceita = (registrarReceitas: string): void => {
-    cy.getVisible(registrarReceitas)
-        .and('have.id', 'receita_register')
-        .click();
 }
 
 export const inserirPrescritor = (modalSugestaoRelacaoPrescritor, sugestaoAutocomplete): void => {
@@ -39,7 +60,7 @@ export const inserirPrescritor = (modalSugestaoRelacaoPrescritor, sugestaoAutoco
                 });
         })
         .should('contain', dadosParametros.Prescritor.crmPrescritor);
-    cy.get(el.Receitas.modalSugestaoRelacaoPrescritor, { timeout: 10000 })
+    cy.get(modalSugestaoRelacaoPrescritor, { timeout: 10000 })
         .scrollIntoView()
         .click();
 };
@@ -81,7 +102,6 @@ export const inserirPaciente = (paciente: string): void => {
 }
 
 export const selecionarCanalRecebimento = (opcaoRecebimento, opcaoCanalRecebimento): void => {
-
     cy.get<HTMLSelectElement>(opcaoRecebimento)
         .should('be.visible')
         .and('have.id', 'modalCanalContato')
@@ -95,7 +115,7 @@ export const inserirDataRecebimentoReceita = () => {
     const umDiaMenos = new Date(dadosParametros.DataAtual);
     umDiaMenos.setDate(umDiaMenos.getDate() - 1);
     const dataFormatada = umDiaMenos.toISOString().slice(0, 16);
-    cy.inserirData(el.Receitas.dataRecebimento, dataFormatada);
+    cy.inserirData(dataRecebimento, dataFormatada);
 }
 
 export const inserirTipoReceita = (tipoReceita, tipo): void => {
@@ -131,12 +151,12 @@ export const salvarReceita = (salvarImportacao): void => {
     cy.getVisible(salvarImportacao, { timeout: 5000 })
         .click({ force: true });
 
-    if (Cypress.$(el.Receitas.okSucessoReceitaImportadaModal).length > 0 && Cypress.$(el.Receitas.okSucessoReceitaImportadaModal).is(':visible')) {
-        cy.getVisible(el.Receitas.okSucessoReceitaImportadaModal, { timeout: 5000 })
+    if (Cypress.$(okSucessoReceitaImportadaModal).length > 0 && Cypress.$(okSucessoReceitaImportadaModal).is(':visible')) {
+        cy.getVisible(okSucessoReceitaImportadaModal, { timeout: 5000 })
             .click();
     } else {
         cy.wait(5000)
-        cy.getVisible(el.Receitas.okSucessoReceitaImportadaModal, { timeout: 5000 })
+        cy.getVisible(okSucessoReceitaImportadaModal, { timeout: 5000 })
             .click();
     }
 
@@ -152,61 +172,54 @@ describe('Receitas', () => {
 
     it('Importação de Receitas', () => {
 
-        cy.acessarMenuReceitas(el.Receitas.menuReceitas);
+        cy.acessarMenuReceitas(menuReceitas);
 
-        acessarImportarReceitas(el.Receitas.menuImportarReceitas);
+        acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000)
 
         // cy.buscarReceita('2023-01-01T10:00', '2023-10-30T10:00')
 
-        // abrirModalRegistrarReceita(el.Receitas.abrirModalRegistrarReceita);
+        // cy.getElementAndClick(abrirModalRegistrarReceita);
 
-        // cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.Receitas.importarImagem);
+        // cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', importarImagem);
 
-        // inserirPrescritor(el.Receitas.prescritor, el.Compartilhado.sugestaoAutocomplete);
+        // inserirPrescritor(prescritor, el.Compartilhado.sugestaoAutocomplete);
 
-        // parametroSelecaoPaciente(el.Receitas.parametroBuscaPaciente, dadosParametros.DadosParametros.ParametroBuscaPaciente.Cdcli);
+        // parametroSelecaoPaciente(parametroBuscaPaciente, dadosParametros.ParametroBuscaPaciente.Cdcli);
 
-        // inserirPaciente(el.Receitas.paciente);
+        // inserirPaciente(paciente);
 
-        // selecionarCanalRecebimento(el.Receitas.canalRecebimento, dadosParametros.DadosParametros.CanalRecebimento.Whatsapp);
+        // selecionarCanalRecebimento(canalRecebimento, dadosParametros.CanalRecebimento.Whatsapp);
 
         // inserirDataRecebimentoReceita();
 
-        // inserirTipoReceita(el.Receitas.tipoReceita, dadosParametros.DadosParametros.PossuiReceita);
+        // inserirTipoReceita(tipoReceita, dadosParametros.PossuiReceita);
 
-        // if (cy.get(el.Receitas.modalMensagens, { timeout: 20000 })) {
-        //     cy.get(el.Receitas.modalMensagens, { timeout: 20000 })
+        // if (cy.get(modalMensagens, { timeout: 20000 })) {
+        //     cy.get(modalMensagens, { timeout: 20000 })
         //         .click()
         // }
 
-        // inserirObservacaoInternaReceita(el.Receitas.textoObservacaoInternaReceita, '', true);
+        // inserirObservacaoInternaReceita(textoObservacaoInternaReceita, '', true);
 
-        // marcarReceitaUrgente(el.Receitas.urgente)
+        // marcarReceitaUrgente(urgente)
 
-        // marcarReceitaClienteAlerta(el.Receitas.clienteAlerta)
+        // marcarReceitaClienteAlerta(clienteAlerta)
 
-        // marcarReceitaMedicamentoControlado(el.Receitas.medicamentocontrolado)
-<<<<<<< Updated upstream
+        // marcarReceitaMedicamentoControlado(medicamentocontrolado)
 
-        // salvarReceita(el.Receitas.salvarReceita)
+        // salvarReceita(salvarReceita)
 
-        // cy.marcarUso(el.Receitas.checkboxMarcarUso);
+        // cy.marcarUso(checkboxMarcarUso);
+        
+        // cy.getElementAndClick(acoes);
+        // cy.visualizarReceita(visualizarReceita);
 
-        // cy.visualizarReceita(el.Receitas.abrirModalvisualizarReceita);
+        // cy.getElementAndClick(acoes);
+        // cy.clonarReceita(clonarReceita)
 
-        cy.getElementAndClick(el.Receitas.acoes);
-
-        cy.clonarReceita()
-
-=======
-
-        // salvarReceita(el.Receitas.salvarReceita)
-
-        cy.marcarUso('#mainTableReceitas > tbody > tr:nth-child(1) > td.usedTrativa > input[type=checkbox]','.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary','body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button')
-
-        cy.pause();
->>>>>>> Stashed changes
+        cy.getElementAndClick(acoes);
+        cy.excluirReceita(excluirReceita)
     });
 })
 
