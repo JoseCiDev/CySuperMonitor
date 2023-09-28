@@ -12,7 +12,7 @@ export const acessarImportarReceitas = (importarReceitas: string): void => {
         .contains('Importar receitas')
         .click();
 
-    cy.url().should('contain', dadosParametros.DadosParametros.Url.importarReceitas);
+    cy.url().should('contain', dadosParametros.Url.importarReceitas);
 }
 
 export const abrirModalRegistrarReceita = (registrarReceitas: string): void => {
@@ -25,7 +25,7 @@ export const inserirPrescritor = (modalSugestaoRelacaoPrescritor, sugestaoAutoco
     cy.get(modalSugestaoRelacaoPrescritor)
         .should('have.id', 'modalMedicoRec')
         .clear()
-        .type(dadosParametros.DadosParametros.Prescritor.crmPrescritor.toString())
+        .type(dadosParametros.Prescritor.crmPrescritor.toString())
         .then(() => {
             cy.get(sugestaoAutocomplete)
                 .as('suggestion');
@@ -38,7 +38,7 @@ export const inserirPrescritor = (modalSugestaoRelacaoPrescritor, sugestaoAutoco
                         .click({ force: true });
                 });
         })
-        .should('contain', dadosParametros.DadosParametros.Prescritor.crmPrescritor);
+        .should('contain', dadosParametros.Prescritor.crmPrescritor);
     cy.get(el.Receitas.modalSugestaoRelacaoPrescritor, { timeout: 10000 })
         .scrollIntoView()
         .click();
@@ -62,7 +62,7 @@ export const inserirPaciente = (paciente: string): void => {
         .should('exist')
         .and('have.id', 'modalPacienteRec')
         .clear()
-        .type(dadosParametros.DadosParametros.Paciente.codigoPaciente.toString())
+        .type(dadosParametros.Paciente.codigoPaciente.toString())
         .then(() => {
             cy.get(el.Compartilhado.sugestoesAutocomplete, { timeout: 5000 })
                 .as('suggestions');
@@ -70,7 +70,7 @@ export const inserirPaciente = (paciente: string): void => {
     cy.wait(500)
     cy.get('@suggestions', { timeout: 5000 })
         .find(el.Compartilhado.sugestaoAutocomplete, { timeout: 5000 })
-        .contains(dadosParametros.DadosParametros.Paciente.codigoPaciente.toString())
+        .contains(dadosParametros.Paciente.codigoPaciente.toString())
         .then(($suggestion) => {
             if ($suggestion.length > 0) {
                 cy.wrap($suggestion[0])
@@ -92,7 +92,7 @@ export const selecionarCanalRecebimento = (opcaoRecebimento, opcaoCanalRecebimen
 }
 
 export const inserirDataRecebimentoReceita = () => {
-    const umDiaMenos = new Date(dadosParametros.DadosParametros.DataAtual);
+    const umDiaMenos = new Date(dadosParametros.DataAtual);
     umDiaMenos.setDate(umDiaMenos.getDate() - 1);
     const dataFormatada = umDiaMenos.toISOString().slice(0, 16);
     cy.inserirData(el.Receitas.dataRecebimento, dataFormatada);
@@ -140,14 +140,14 @@ export const salvarReceita = (salvarImportacao): void => {
             .click();
     }
 
-    cy.url().should('contain', dadosParametros.DadosParametros.Url.importarReceitas)
+    cy.url().should('contain', dadosParametros.Url.importarReceitas)
 }
 
 
 describe('Receitas', () => {
 
     beforeEach(function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USER, dadosAmbiente.PASSWORD, dadosParametros.DadosParametros.Url.inicio)
+        cy.login(el.Login.entrar, dadosAmbiente.USER, dadosAmbiente.PASSWORD, dadosParametros.Url.inicio)
     })
 
     it('Importação de Receitas', () => {
@@ -157,38 +157,47 @@ describe('Receitas', () => {
         acessarImportarReceitas(el.Receitas.menuImportarReceitas);
         cy.wait(2000)
 
-        cy.buscarReceita('2023-01-01T10:00', '2023-10-30T10:00')
+        // cy.buscarReceita('2023-01-01T10:00', '2023-10-30T10:00')
 
-        abrirModalRegistrarReceita(el.Receitas.abrirModalRegistrarReceita);
+        // abrirModalRegistrarReceita(el.Receitas.abrirModalRegistrarReceita);
 
-        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.Receitas.importarImagem);
+        // cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.Receitas.importarImagem);
 
-        inserirPrescritor(el.Receitas.prescritor, el.Compartilhado.sugestaoAutocomplete);
+        // inserirPrescritor(el.Receitas.prescritor, el.Compartilhado.sugestaoAutocomplete);
 
-        parametroSelecaoPaciente(el.Receitas.parametroBuscaPaciente, dadosParametros.DadosParametros.ParametroBuscaPaciente.Cdcli);
+        // parametroSelecaoPaciente(el.Receitas.parametroBuscaPaciente, dadosParametros.DadosParametros.ParametroBuscaPaciente.Cdcli);
 
-        inserirPaciente(el.Receitas.paciente);
+        // inserirPaciente(el.Receitas.paciente);
 
-        selecionarCanalRecebimento(el.Receitas.canalRecebimento, dadosParametros.DadosParametros.CanalRecebimento.Whatsapp);
+        // selecionarCanalRecebimento(el.Receitas.canalRecebimento, dadosParametros.DadosParametros.CanalRecebimento.Whatsapp);
 
-        inserirDataRecebimentoReceita();
+        // inserirDataRecebimentoReceita();
 
-        inserirTipoReceita(el.Receitas.tipoReceita, dadosParametros.DadosParametros.PossuiReceita);
+        // inserirTipoReceita(el.Receitas.tipoReceita, dadosParametros.DadosParametros.PossuiReceita);
 
-        if (cy.get(el.Receitas.modalMensagens, { timeout: 20000 })) {
-            cy.get(el.Receitas.modalMensagens, { timeout: 20000 })
-                .click()
-        }
+        // if (cy.get(el.Receitas.modalMensagens, { timeout: 20000 })) {
+        //     cy.get(el.Receitas.modalMensagens, { timeout: 20000 })
+        //         .click()
+        // }
 
-        inserirObservacaoInternaReceita(el.Receitas.textoObservacaoInternaReceita, '', true);
+        // inserirObservacaoInternaReceita(el.Receitas.textoObservacaoInternaReceita, '', true);
 
-        marcarReceitaUrgente(el.Receitas.urgente)
+        // marcarReceitaUrgente(el.Receitas.urgente)
 
-        marcarReceitaClienteAlerta(el.Receitas.clienteAlerta)
+        // marcarReceitaClienteAlerta(el.Receitas.clienteAlerta)
 
-        marcarReceitaMedicamentoControlado(el.Receitas.medicamentocontrolado)
+        // marcarReceitaMedicamentoControlado(el.Receitas.medicamentocontrolado)
 
-        salvarReceita(el.Receitas.salvarReceita)
+        // salvarReceita(el.Receitas.salvarReceita)
+
+        // cy.marcarUso(el.Receitas.checkboxMarcarUso);
+
+        // cy.visualizarReceita(el.Receitas.abrirModalvisualizarReceita);
+
+        cy.getElementAndClick(el.Receitas.acoes);
+
+        cy.clonarReceita()
+
     });
 })
 

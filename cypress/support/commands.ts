@@ -33,6 +33,9 @@ import { elements as el } from '../elements'
 import { dadosParametros } from '../DadosParametros'
 
 
+const ambiente = Cypress.env('AMBIENTE');
+const dadosAmbiente = Cypress.env(ambiente);
+
 
 Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, url: string): void => {
   const ambiente = Cypress.env('AMBIENTE');
@@ -121,14 +124,14 @@ Cypress.Commands.add('acessarMenuReceitas', (receitas): void => {
 Cypress.Commands.add('acessarMenuAtendimentos', (atendimentos): void => {
   cy.getVisible(atendimentos)
     .trigger('mouseover')
-    .find(dadosParametros.DadosParametros.Url.atendimentos)
+    .find(dadosParametros.Url.atendimentos)
     .eq(0)
     .click({ force: true });
 });
 
 
 Cypress.Commands.add('lerArquivo', (nomeArquivo) => {
-  const caminhoArquivo = `${dadosParametros.DadosParametros.CaminhoArquivo}${nomeArquivo}`;
+  const caminhoArquivo = `${dadosParametros.CaminhoArquivo}${nomeArquivo}`;
   return cy.fixture(caminhoArquivo);
 });
 
@@ -142,12 +145,12 @@ Cypress.Commands.add('getVisible', (elemento, options) => {
 
 
 Cypress.Commands.add('getReceitaNumero', (numeroReceita): void => {
-  dadosParametros.DadosParametros.Receita.numeroReceita = numeroReceita;
+  dadosParametros.Receita.numeroReceita = numeroReceita;
 });
 
 
 Cypress.Commands.add('setReceitaNumero', (numeroReceita): void => {
-  dadosParametros.DadosParametros.Receita.numeroReceita = numeroReceita;
+  dadosParametros.Receita.numeroReceita = numeroReceita;
 });
 
 
@@ -191,8 +194,8 @@ Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): 
           cy.wrap(numeroReceita)
             .as('numeroReceita');
           cy.setReceitaNumero(numeroReceita);
-          dadosParametros.DadosParametros.Receita.numeroReceita = numeroReceita;
-          cy.log(`Número da Receita Capturado: ${dadosParametros.DadosParametros.Receita.numeroReceita}`);
+          dadosParametros.Receita.numeroReceita = numeroReceita;
+          cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.numeroReceita}`);
         } else {
           throw new Error(`Valor capturado não contém números válidos: ${texto}`);
         }
@@ -207,7 +210,7 @@ Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): 
 
   cy.inserirData(el.Receitas.filtroDataFinalBuscaReceita, dataFinal);
 
-  selecionarFiltroPendencias(el.Receitas.filtroPendenciasBuscaReceita, dadosParametros.DadosParametros.FiltroPendentes.Pendentes);
+  selecionarFiltroPendencias(el.Receitas.filtroPendenciasBuscaReceita, dadosParametros.FiltroPendentes.Pendentes);
 
   procurarReceita(el.Receitas.procurarReceita, el.Receitas.labelProcurarReceita);
 
@@ -216,8 +219,8 @@ Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): 
 
 
 Cypress.Commands.add('getElementAndClick', (elemento: string): void => {
+
   cy.get(elemento, { timeout: 10000 })
-    .should('be.visible')
     .as('element')
     .then($elements => {
 
@@ -232,9 +235,30 @@ Cypress.Commands.add('getElementAndClick', (elemento: string): void => {
     });
 });
 
+Cypress.Commands.add('getElementAndCheck', (elemento: string): void => {
+  cy.get(elemento, { timeout: 10000 })
+    .as('element')
+    .then($elements => {
+      cy.get('@element')
+        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto')
 
-Cypress.Commands.add('getElementAndType', (elemento: string, text?: string): void => {
-  if (typeof text !== 'string') {
+      if ($elements.length > 0) {
+        cy.wrap($elements.first())
+          .check({ timeout: 10000, force: true });
+      } else {
+        cy.wrap($elements.eq(0))
+          .check({ timeout: 10000, force: true });
+      }
+
+      cy.get('@element')
+        .invoke('attr', 'readonly' || 'hidden' || 'scroll' || 'auto');
+    });
+
+});
+
+
+Cypress.Commands.add('getElementAndType', (elemento: string, texto?: string): void => {
+  if (typeof texto !== 'string') {
     throw new Error('O texto a ser escrito deve ser uma string.');
   }
   cy.get(elemento, { timeout: 10000 })
@@ -244,29 +268,116 @@ Cypress.Commands.add('getElementAndType', (elemento: string, text?: string): voi
       if ($elements.length > 1) {
         cy.wrap($elements.first())
           .clear()
-          .type(text, { timeout: 1000 })
+          .type(texto, { timeout: 1000 })
       } else {
         cy.wrap($elements.eq(0))
           .clear()
-          .type(text, { timeout: 1000 })
+          .type(texto, { timeout: 1000 })
       }
 
     });
 });
 
 
-Cypress.Commands.add('getRadioOptionByValue', (dataCy: string, value): void => {
-  cy.get(`[data-cy="${dataCy}"]`, { timeout: 10000 })
+Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void => {
+  cy.get(elemento, { timeout: 10000 })
     .should('be.visible')
     .find(`input[type="radio"][value="${value}"]`)
     .check({ force: true })
 });
 
 
-Cypress.Commands.add('getSelectOptionByValue', (dataCy: string, value): void => {
-  cy.get(`[data-cy="${dataCy}"]`, { timeout: 10000 })
+Cypress.Commands.add('getSelectOptionByValue', (elemento: string, value): void => {
+  cy.get(elemento, { timeout: 10000 })
     .should('be.visible')
     .select(value, { force: true })
+});
+
+Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string) => {
+  // Encontre todos os checkboxes dentro do elemento especificado
+  cy.get(`${checkboxMarcarUso} input[type="checkbox"]`, { timeout: 10000 }).then(($checkboxes) => {
+    const totalCheckboxes = $checkboxes.length;
+
+    cy.get(`${checkboxMarcarUso} input[type="checkbox"]:checked`, { timeout: 10000 }).then(($checkedCheckboxes) => {
+      const totalChecked = $checkedCheckboxes.length;
+
+      if (totalChecked === totalCheckboxes) {
+        cy.get(`${checkboxMarcarUso} input[type="checkbox"]:checked`, { timeout: 10000 })
+          .first()
+          .uncheck();
+        cy.getElementAndClick(el.Receitas.containerInserirUsuario);
+        cy.getElementAndType(el.Receitas.selectUsuario, 'adm');
+        cy.getElementAndClick(el.Receitas.usuarioSelecionado)
+        cy.getElementAndType(el.Receitas.senhaReceita, dadosAmbiente.SENHA_RECEITA_USER);
+        cy.getElementAndClick(el.Receitas.aplicaDesmarcarUso);
+        cy.getElementAndClick(el.Receitas.mensagemDesmarcadoComSucesso);
+        cy.get(`${checkboxMarcarUso} input[type="checkbox"]:not(:checked)`, { timeout: 10000 })
+          .first()
+          .check();
+      }
+
+      else {
+        cy.get(`${checkboxMarcarUso} input[type="checkbox"]:not(:checked)`, { timeout: 10000 })
+          .first()
+          .check();
+      };
+
+      cy.wait(200);
+      cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal);
+      cy.wait(200);
+      cy.getElementAndClick(el.Receitas.mensagemSucessoMarcadoUso);
+    });
+  });
+});
+
+Cypress.Commands.add('visualizarReceita', (abrirModalvisualizarReceita: string,) => {
+  cy.getElementAndClick(abrirModalvisualizarReceita)
+
+  cy.getElementAndClick(el.Receitas.abaPdfVisualizarReceita)
+
+  cy.getElementAndClick(el.Receitas.abaOriginalVisualizarReceita)
+
+  cy.getElementAndClick(el.Receitas.abaObservacoesInternasVisualizarReceita)
+
+  cy.getElementAndClick(el.Receitas.abaInformacoesFcertaVisualizarReceita)
+
+  cy.getElementAndClick(el.Receitas.exibirReguaVisualizarReceita);
+
+  cy.getElementAndClick(el.Receitas.exibirReguaVisualizarReceita);
+
+  cy.getElementAndClick(el.Receitas.fecharVisualizarReceita)
+})
+
+Cypress.Commands.add('clonarReceita', () => {
+  cy.getElementAndClick(el.Receitas.abrirModalClonarReceita);
+  cy.wait(1000);
+  cy.then(() => {
+    cy.get('#carousel-observacoes', { timeout: 10000 }).then(($elemento) => {
+
+      if (!$elemento.is(':visible')) {
+        cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal);
+        cy.wait(500);
+        cy.log('primeiro IF, not.be.visible');
+      }
+      else {
+        if (dadosParametros.Receita.clonarObservacaoFarmaceutica === true) {
+          cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal);
+          cy.wait(500);
+          cy.log('segundo IF, be.visible');
+        }
+        else {
+          if (!dadosParametros.Receita.clonarObservacaoFarmaceutica) {
+            cy.get(el.Receitas.clonarObservacoesFarmaceuticasCloneReceita,{timeout:10000})
+            .uncheck();
+            cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal);
+            cy.wait(500);
+            cy.log('segundo IF, be.visible, Nao clonar observacao');
+          }
+        }
+      }
+      cy.getElementAndClick(el.Receitas.mensagemConfirmacaoModal)
+    });
+  });
 });
 
 
@@ -279,15 +390,26 @@ Cypress.Commands.add('getSelectOptionByValue', (dataCy: string, value): void => 
 
 
 /*
-buscar receita CC - OK
-registrar receita - OK
-pesquisar receita CC
-marcar uso CC
-visualizar receita CC
+marcar uso CC**
+visualizar receita CC**
+  pdf
+    download
+  original
+    download todas imagens
+  observacoes internas
+  informacoes formula certa
+  exibir regua
+  esconder regua
+  fechar
+
 clonar receita CC
-editar receita CC
+  clonar observacao boolean if botao de clonar presente clonar observacao true senao false [id="clonar-observacoes"]
+  (botao confirmacao clonagem)
+  (botao sucesso receita clonada)
+  1203
+
+  editar receita CC
 observacoes farmaceuticas CC
 duvidas tecnicas CC
 Excluir CC
-
 */

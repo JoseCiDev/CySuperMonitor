@@ -55,6 +55,27 @@ interface Elements<T = string> {
         procurarReceita: T;
         labelProcurarReceita: T;
         numeroReceita: T;
+        checkboxMarcarUso: T;
+        mensagemConfirmacaoModal: T;
+        mensagemSucessoMarcadoUso: T;
+        containerInserirUsuario: T;
+        selectUsuario: T;
+        usuarioSelecionado: T;
+        senhaReceita: T;
+        aplicaDesmarcarUso: T;
+        mensagemDesmarcadoComSucesso: T;
+        abrirModalvisualizarReceita: T;
+        acoes: T;
+        abaPdfVisualizarReceita: T;
+        abaOriginalVisualizarReceita: T;
+        abaObservacoesInternasVisualizarReceita: T;
+        abaInformacoesFcertaVisualizarReceita: T;
+        exibirReguaVisualizarReceita: T;
+        fecharVisualizarReceita: T;
+        abrirModalClonarReceita: T;
+        modalObservacoesClonar: T;
+        clonarObservacoesFarmaceuticasCloneReceita: T;
+
     };
 
     Atendimentos: {
@@ -117,6 +138,7 @@ interface Elements<T = string> {
         preVisualizarPedido: T;
         fecharPreVisualizarPedido: T;
         confirmarPedido: T;
+
     };
 }
 
@@ -193,6 +215,28 @@ export const elements: Elements = {
         procurarReceita: '#filterReceitas > div:nth-child(4) > div > button',
         labelProcurarReceita: '[button type="submit"]' && 'Procurar',
         numeroReceita: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
+        checkboxMarcarUso: '#mainTableReceitas > tbody > tr > td.usedTrativa',
+        mensagemConfirmacaoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
+        mensagemSucessoMarcadoUso: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
+        containerInserirUsuario: '#select2-farma-to-auth-container',
+        selectUsuario: '.select2-dropdown > .select2-search > .select2-search__field',
+        usuarioSelecionado: '.select2-results__option--highlighted',
+        senhaReceita: '#password-farma-auth',
+        aplicaDesmarcarUso: '#farma-auth-send-btn',
+        mensagemDesmarcadoComSucesso: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
+        abrirModalvisualizarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .show-receita',
+        acoes: '#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > button',
+        abaPdfVisualizarReceita: '#panel_look_pdf > :nth-child(1) > :nth-child(1) > a',
+        abaOriginalVisualizarReceita: '#originalClickVisRe',
+        abaObservacoesInternasVisualizarReceita: '#panel_look_pdf > :nth-child(1) > :nth-child(3) > a',
+        abaInformacoesFcertaVisualizarReceita: '#panel_look_pdf > :nth-child(1) > :nth-child(4) > a',
+        exibirReguaVisualizarReceita: '#btnReceitaRegua',
+        fecharVisualizarReceita: '#modal-receita-view > .modal-dialog > .modal-content > .modal-header > .close > [aria-hidden="true"]',
+        abrirModalClonarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita',
+        modalObservacoesClonar: '#carousel-observacoes',
+        clonarObservacoesFarmaceuticasCloneReceita: '#clonar-observacoes',
+
+
     },
 
     Atendimentos: {

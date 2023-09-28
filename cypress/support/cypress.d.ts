@@ -105,10 +105,16 @@ declare global {
       inserirData(element: string, dataAtual: string): Chainable<Element>;
 
       /**
-       * comando customizado de login.
+       * comando customizado para capturar elemento e clicar.
        * @example cy.getElementAndClick(el.elemento)
        */
       getElementAndClick(element: string): Chainable<Element>
+
+      /**
+       * comando customizado para capturar elemento e marcar checkbox.
+       * @example cy.getElementAndCheck(el.elemento)
+       */
+      getElementAndCheck(element: string): Chainable<Element>
 
       /**
        * comando customizado de login.
@@ -127,6 +133,25 @@ declare global {
        * @example cy.selecionarRadioOptionByValue(el.elemento)
        */
       getSelectOptionByValue(dataCy: string, value: any): Chainable<Element>
+
+      /**
+       * comando customizado para marcar uso em receitas e orçamentos.
+       * @example cy.marcarUso(el.Receitas.checkboxMarcarUso, el.Receitas.mensagemConfirmacaoMarcarUso, el.Receitas.mensagemSucessoMarcadoUso)
+       */
+      marcarUso(checkboxMarcarUso: string): Chainable<Element>
+
+      /**
+      * comando customizado para visualizar receitas.
+      * @example cy.visualizarReceita(el.visualizarReceita)
+      */
+      visualizarReceita(visualizarReceita: string): Chainable<Element>
+
+
+      /**
+      * comando customizado para visualizar receitas.
+      * @example cy.visualizarReceita(el.visualizarReceita)
+      */
+      clonarReceita(): Chainable<Element>
     }
   }
 }

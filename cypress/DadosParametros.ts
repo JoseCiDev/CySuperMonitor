@@ -10,6 +10,7 @@ interface DadosParametros {
 
     Receita: {
         numeroReceita: number;
+        clonarObservacaoFarmaceutica: boolean;
     };
 
     Prescritor: {
@@ -46,6 +47,7 @@ interface DadosParametros {
     TipoReceita: typeof TipoReceita;
     Cluster: typeof Cluster;
     OpcaoParametroBuscaCardOrcamento: typeof OpcaoParametroBuscaCardOrcamento;
+    marcarUso: typeof MarcarUso;
 
 }
 
@@ -147,57 +149,72 @@ enum OpcaoParametroBuscaCardOrcamento {
     VincularReceita = 'Vincular receita',
 }
 
+enum MarcarUso {
+    ELEMENTO_0 = 0,
+    ELEMENTO_1 = 1,
+    ELEMENTO_2 = 2,
+    ELEMENTO_3 = 3,
+    ELEMENTO_5 = 5,
+    ELEMENTO_6 = 6,
+    ELEMENTO_7 = 7,
+    ELEMENTO_8 = 8,
+    ELEMENTO_9 = 9,
+    ELEMENTO_10 = 10,
+    ELEMENTO_11 = 11,
+}
 
 
 
-export const dadosParametros: { DadosParametros: DadosParametros } = {
-    DadosParametros: {
 
-        Url: {
-            inicio: 'http://192.168.0.66:9200/lembretes',
-            importarReceitas: 'http://192.168.0.66:9200/receita/importar',
-            atendimentos: 'http://192.168.0.66:9200/atendimentos/page/1/',
-        },
+export const dadosParametros: DadosParametros = {
 
-        Receita: {
-            numeroReceita: 0,
-        },
-
-        Prescritor: {
-            crmPrescritor: [faker.helpers.arrayElement(['40452-SP'])],
-        },
-
-        Paciente:{
-            codigoPaciente: [faker.helpers.arrayElement(['618484'])],
-        },
-
-        OrcamentoFilial: {
-            pedido: '12345',
-            filial: 'FILIAL-01',
-        },
-
-        CaminhoArquivo: 'fixtures/',
-
-        DataAtual: new Date(),
-        DataFormatada: new Date().toISOString().slice(0, 16),
-
-
-        PossuiReceita: {
-            Sim: "1",
-            NaoRepeticao: "2",
-            NaoVarejos: "3",
-        },
-
-        BuscaPedido: BuscaPedido,
-        SituacaoPagamento: SituacaoPagamento,
-        FormaPagamento: FormaPagamento,
-        CanalFechamentoPedido: CanalFechamentoPedido,
-        FiltroPendentes: FiltroPendentes,
-        CanalRecebimento: CanalRecebimento,
-        ParametroBuscaPaciente: ParametroBuscaPaciente,
-        TipoReceita: TipoReceita,
-        Cluster: Cluster,
-        OpcaoParametroBuscaCardOrcamento: OpcaoParametroBuscaCardOrcamento,
-
+    Url: {
+        inicio: 'http://192.168.0.66:9200/lembretes',
+        importarReceitas: 'http://192.168.0.66:9200/receita/importar',
+        atendimentos: 'http://192.168.0.66:9200/atendimentos/page/1/',
     },
+
+    Receita: {
+        numeroReceita: 0,
+        clonarObservacaoFarmaceutica: false,
+    },
+
+    Prescritor: {
+        crmPrescritor: [faker.helpers.arrayElement(['40452-SP'])],
+    },
+
+    Paciente: {
+        codigoPaciente: [faker.helpers.arrayElement(['618484'])],
+    },
+
+    OrcamentoFilial: {
+        pedido: '12345',
+        filial: 'FILIAL-01',
+    },
+
+    CaminhoArquivo: 'fixtures/',
+
+    DataAtual: new Date(),
+    DataFormatada: new Date().toISOString().slice(0, 16),
+
+
+    PossuiReceita: {
+        Sim: "1",
+        NaoRepeticao: "2",
+        NaoVarejos: "3",
+    },
+
+    BuscaPedido: BuscaPedido,
+    SituacaoPagamento: SituacaoPagamento,
+    FormaPagamento: FormaPagamento,
+    CanalFechamentoPedido: CanalFechamentoPedido,
+    FiltroPendentes: FiltroPendentes,
+    CanalRecebimento: CanalRecebimento,
+    ParametroBuscaPaciente: ParametroBuscaPaciente,
+    TipoReceita: TipoReceita,
+    Cluster: Cluster,
+    OpcaoParametroBuscaCardOrcamento: OpcaoParametroBuscaCardOrcamento,
+    marcarUso: MarcarUso,
+
+
 };

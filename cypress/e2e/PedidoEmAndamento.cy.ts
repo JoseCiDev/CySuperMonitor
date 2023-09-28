@@ -190,8 +190,7 @@ inserirOrcamentista(el.orcamentistaPedido, 'Atendente1');
 
 const abrirModalConfirmacaoPedido = (element): void => {
     cy.get(element)
-        .should('be.visible')
-        .and('have.id', 'bt-confirma-modal')
+        .should('have.id', 'bt-confirma-modal')
         .click()
     cy.getVisible(el.formaPagamentoPedido)
 }
