@@ -249,7 +249,6 @@ Cypress.Commands.add('getElementAndCheck', (elemento: string): void => {
         cy.wrap($elements.eq(0))
           .check({ timeout: 10000, force: true });
       }
-
       cy.get('@element')
         .invoke('attr', 'readonly' || 'hidden' || 'scroll' || 'auto');
     });

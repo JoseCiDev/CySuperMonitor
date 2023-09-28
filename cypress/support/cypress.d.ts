@@ -136,6 +136,7 @@ declare global {
 
       /**
        * comando customizado para marcar uso em receitas e orçamentos.
+<<<<<<< Updated upstream
        * @example cy.marcarUso(el.Receitas.checkboxMarcarUso, el.Receitas.mensagemConfirmacaoMarcarUso, el.Receitas.mensagemSucessoMarcadoUso)
        */
       marcarUso(checkboxMarcarUso: string): Chainable<Element>
@@ -152,6 +153,11 @@ declare global {
       * @example cy.visualizarReceita(el.visualizarReceita)
       */
       clonarReceita(): Chainable<Element>
+=======
+       * @example cy.marcarUso(el.checkbox,el.confirmacao,el.mensagemUsoMarcado)
+       */
+      marcarUso(checkbox: string, confirmacao: string, mensagemUsoMarcado: string): Chainable<Element>
+>>>>>>> Stashed changes
     }
   }
 }

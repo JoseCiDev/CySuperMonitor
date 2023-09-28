@@ -187,6 +187,7 @@ describe('Receitas', () => {
         // marcarReceitaClienteAlerta(el.Receitas.clienteAlerta)
 
         // marcarReceitaMedicamentoControlado(el.Receitas.medicamentocontrolado)
+<<<<<<< Updated upstream
 
         // salvarReceita(el.Receitas.salvarReceita)
 
@@ -198,6 +199,14 @@ describe('Receitas', () => {
 
         cy.clonarReceita()
 
+=======
+
+        // salvarReceita(el.Receitas.salvarReceita)
+
+        cy.marcarUso('#mainTableReceitas > tbody > tr:nth-child(1) > td.usedTrativa > input[type=checkbox]','.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary','body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button')
+
+        cy.pause();
+>>>>>>> Stashed changes
     });
 })
 
