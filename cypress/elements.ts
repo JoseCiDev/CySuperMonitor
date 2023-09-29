@@ -54,28 +54,35 @@ interface Elements<T = string> {
         filtroPendenciasVinculados: T;
         botaoProcurar: T;
         labelProcurarReceita: T;
-        numeroReceita: T;
+        numeroReceitas: T;
         checkboxMarcarUso: T;
         mensagemConfirmacaoModal: T;
-        mensagemSucessoMarcadoUso: T;
+        mensagemSucessoModal: T;
         containerInserirUsuario: T;
         selectUsuario: T;
         usuarioSelecionado: T;
         senhaReceita: T;
         aplicaDesmarcarUso: T;
         mensagemAcaoRealizadaSucesso: T;
-        visualizarReceita: T;
+        visualizarReceitas: T;
         acoes: T;
-        abaPdfVisualizarReceita: T;
-        abaOriginalVisualizarReceita: T;
-        abaObservacoesInternasVisualizarReceita: T;
-        abaInformacoesFcertaVisualizarReceita: T;
-        exibirReguaVisualizarReceita: T;
-        fecharVisualizarReceita: T;
-        clonarReceita: T;
+        abaPdfVisualizarReceitas: T;
+        abaOriginalVisualizarReceitas: T;
+        abaObservacoesInternasVisualizarReceitas: T;
+        abaInformacoesFcertaVisualizarReceitas: T;
+        exibirReguaVisualizarReceitas: T;
+        fecharVisualizarReceitas: T;
+        clonarReceitas: T;
         modalObservacoesClonar: T;
         clonarObservacoesFarmaceuticas: T;
-        excluirReceita: T;
+        excluirReceitas: T;
+        acessarObservacoesFarmaceuticas: T;
+        abaAdicionarObservacoesFarmaceuticas: T;
+        senhaObservacoesFarmaceuticas: T;
+        textoObservacoesFarmaceuticas: T;
+        fecharModalObservacoesFarmaceuticas: T;
+        abaExcluirObservacoesFarmaceuticas: T;
+        excluirObservacoesFarmaceuticas:T;
 
     };
 
@@ -215,28 +222,35 @@ export const elements: Elements = {
         filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
         botaoProcurar: '#filterReceitas > div:nth-child(4) > div > button',
         labelProcurarReceita: '[button type="submit"]' && 'Procurar',
-        numeroReceita: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
+        numeroReceitas: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
         checkboxMarcarUso: '#mainTableReceitas > tbody > tr > td.usedTrativa',
         mensagemConfirmacaoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
-        mensagemSucessoMarcadoUso: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
+        mensagemSucessoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
         containerInserirUsuario: '#select2-farma-to-auth-container',
         selectUsuario: '.select2-dropdown > .select2-search > .select2-search__field',
         usuarioSelecionado: '.select2-results__option--highlighted',
         senhaReceita: '#password-farma-auth',
         aplicaDesmarcarUso: '#farma-auth-send-btn',
         mensagemAcaoRealizadaSucesso: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
-        visualizarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .show-receita',
+        visualizarReceitas: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .show-receita',
         acoes: '#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > button',
-        abaPdfVisualizarReceita: '#panel_look_pdf > :nth-child(1) > :nth-child(1) > a',
-        abaOriginalVisualizarReceita: '#originalClickVisRe',
-        abaObservacoesInternasVisualizarReceita: '#panel_look_pdf > :nth-child(1) > :nth-child(3) > a',
-        abaInformacoesFcertaVisualizarReceita: '#panel_look_pdf > :nth-child(1) > :nth-child(4) > a',
-        exibirReguaVisualizarReceita: '#btnReceitaRegua',
-        fecharVisualizarReceita: '#modal-receita-view > .modal-dialog > .modal-content > .modal-header > .close > [aria-hidden="true"]',
-        clonarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita',
+        abaPdfVisualizarReceitas: '#panel_look_pdf > :nth-child(1) > :nth-child(1) > a',
+        abaOriginalVisualizarReceitas: '#originalClickVisRe',
+        abaObservacoesInternasVisualizarReceitas: '#panel_look_pdf > :nth-child(1) > :nth-child(3) > a',
+        abaInformacoesFcertaVisualizarReceitas: '#panel_look_pdf > :nth-child(1) > :nth-child(4) > a',
+        exibirReguaVisualizarReceitas: '#btnReceitaRegua',
+        fecharVisualizarReceitas: '#modal-receita-view > .modal-dialog > .modal-content > .modal-header > .close > [aria-hidden="true"]',
+        clonarReceitas: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita',
         modalObservacoesClonar: '#carousel-observacoes',
         clonarObservacoesFarmaceuticas: '#clonar-observacoes',
-        excluirReceita: ':nth-child(2) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-receita',
+        excluirReceitas: ':nth-child(2) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-receita',
+        acessarObservacoesFarmaceuticas: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .add-obs',
+        abaAdicionarObservacoesFarmaceuticas: '#tabs > .nav > :nth-child(1) > a',
+        senhaObservacoesFarmaceuticas: '#passModalAddObsReceita',
+        textoObservacoesFarmaceuticas: '#textObsAddModalReceita',
+        fecharModalObservacoesFarmaceuticas: '#modal-receita-add-obs > .modal-dialog > .modal-content > .modal-footer > .btn',
+        abaExcluirObservacoesFarmaceuticas:'#tab-list-observacoes-farmaceuticas > a',
+        excluirObservacoesFarmaceuticas:':nth-child(1) > :nth-child(5) > .fa',
 
     },
 

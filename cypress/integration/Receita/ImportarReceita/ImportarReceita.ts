@@ -27,11 +27,12 @@ export const {
     medicamentocontrolado,
     checkboxMarcarUso,
     acoes,
-    visualizarReceita,
-    clonarReceita,
-    excluirReceita,
-  
-  } = el.Receitas;
+    visualizarReceitas,
+    clonarReceitas,
+    excluirReceitas,
+    acessarObservacoesFarmaceuticas,
+
+} = el.Receitas;
 
 
 export const acessarImportarReceitas = (importarReceitas: string): void => {
@@ -211,15 +212,21 @@ describe('Receitas', () => {
         // salvarReceita(salvarReceita)
 
         // cy.marcarUso(checkboxMarcarUso);
-        
+
         // cy.getElementAndClick(acoes);
         // cy.visualizarReceita(visualizarReceita);
 
         // cy.getElementAndClick(acoes);
         // cy.clonarReceita(clonarReceita)
 
+        // cy.getElementAndClick(acoes);
+        // cy.excluirReceita(excluirReceita)
+
+        // cy.getElementAndClick(acoes);
+        // cy.inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas,dadosParametros.Receita.senhaObservacaoFarmaceutica,dadosParametros.Receita.textoObservacaoFarmaceutica)
+
         cy.getElementAndClick(acoes);
-        cy.excluirReceita(excluirReceita)
+        cy.excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas)
     });
 })
 

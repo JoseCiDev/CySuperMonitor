@@ -43,7 +43,7 @@ export const {
   filtroPendenciasBuscaReceita,
   botaoProcurar,
   labelProcurarReceita,
-  numeroReceita,
+  numeroReceitas,
   containerInserirUsuario,
   selectUsuario,
   usuarioSelecionado,
@@ -51,18 +51,25 @@ export const {
   aplicaDesmarcarUso,
   mensagemAcaoRealizadaSucesso,
   mensagemConfirmacaoModal,
-  mensagemSucessoMarcadoUso,
-  abaPdfVisualizarReceita,
-  abaOriginalVisualizarReceita,
-  abaObservacoesInternasVisualizarReceita,
-  abaInformacoesFcertaVisualizarReceita,
-  exibirReguaVisualizarReceita,
-  fecharVisualizarReceita,
-  clonarReceita,
+  mensagemSucessoModal,
+  abaPdfVisualizarReceitas,
+  abaOriginalVisualizarReceitas,
+  abaObservacoesInternasVisualizarReceitas,
+  abaInformacoesFcertaVisualizarReceitas,
+  exibirReguaVisualizarReceitas,
+  fecharVisualizarReceitas,
+  clonarReceitas,
   modalObservacoesClonar,
   clonarObservacoesFarmaceuticas,
   menuReceitas,
-  excluirReceita,
+  excluirReceitas,
+  abaAdicionarObservacoesFarmaceuticas,
+  senhaObservacoesFarmaceuticas,
+  textoObservacoesFarmaceuticas,
+  modalMensagens,
+  fecharModalObservacoesFarmaceuticas,
+  abaExcluirObservacoesFarmaceuticas,
+  excluirObservacoesFarmaceuticas,
 
 } = el.Receitas;
 
@@ -262,7 +269,7 @@ Cypress.Commands.add('buscarReceita', (dataInicial: string, dataFinal: string): 
 
   procurarReceita(botaoProcurar, labelProcurarReceita);
 
-  capturarNumeroReceita(numeroReceita);
+  capturarNumeroReceita(numeroReceitas);
 });
 
 
@@ -380,7 +387,7 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string): void => {
       cy.wait(200);
       cy.getElementAndClick(mensagemConfirmacaoModal);
       cy.wait(200);
-      cy.getElementAndClick(mensagemSucessoMarcadoUso);
+      cy.getElementAndClick(mensagemSucessoModal);
     });
   });
 });
@@ -390,19 +397,19 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string): void => {
 Cypress.Commands.add('visualizarReceita', (abrirModalvisualizarReceita: string,): void => {
   cy.getElementAndClick(abrirModalvisualizarReceita)
 
-  cy.getElementAndClick(abaPdfVisualizarReceita)
+  cy.getElementAndClick(abaPdfVisualizarReceitas)
 
-  cy.getElementAndClick(abaOriginalVisualizarReceita)
+  cy.getElementAndClick(abaOriginalVisualizarReceitas)
 
-  cy.getElementAndClick(abaObservacoesInternasVisualizarReceita)
+  cy.getElementAndClick(abaObservacoesInternasVisualizarReceitas)
 
-  cy.getElementAndClick(abaInformacoesFcertaVisualizarReceita)
+  cy.getElementAndClick(abaInformacoesFcertaVisualizarReceitas)
 
-  cy.getElementAndClick(exibirReguaVisualizarReceita);
+  cy.getElementAndClick(exibirReguaVisualizarReceitas);
 
-  cy.getElementAndClick(exibirReguaVisualizarReceita);
+  cy.getElementAndClick(exibirReguaVisualizarReceitas);
 
-  cy.getElementAndClick(fecharVisualizarReceita)
+  cy.getElementAndClick(fecharVisualizarReceitas)
 })
 
 
@@ -429,7 +436,7 @@ Cypress.Commands.add('clonarReceita', (clonarReceita: string): void => {
         }
 
       }
-      cy.getElementAndClick(mensagemConfirmacaoModal)
+      cy.getElementAndClick(mensagemConfirmacaoModal);
     });
   });
 });
@@ -442,6 +449,30 @@ Cypress.Commands.add('excluirReceita', (excluir: string): void => {
   cy.getElementAndClick(mensagemAcaoRealizadaSucesso);
 })
 
+Cypress.Commands.add('inserirObservacaoFarmaceutica', (acessarObservacoesFarmaceuticas: string, senhaReceita: string, textoObservacao: string): void => {
+  cy.getElementAndClick(acessarObservacoesFarmaceuticas);
+  cy.getElementAndClick(abaAdicionarObservacoesFarmaceuticas);
+  cy.getElementAndType(senhaObservacoesFarmaceuticas, senhaReceita);
+  cy.getElementAndType(textoObservacoesFarmaceuticas, textoObservacao);
+  cy.getElementAndClick('#modal_receita_add_obs');
+  cy.getElementAndClick(mensagemConfirmacaoModal);
+  cy.wait(1000);
+  cy.get(modalMensagens, { timeout: 60000 })
+    .click();
+  cy.getElementAndClick(fecharModalObservacoesFarmaceuticas);
+});
+
+Cypress.Commands.add('excluirObservacaoFarmaceutica', (acessarObservacoesFarmaceuticas: string): void => {
+  cy.getElementAndClick(acessarObservacoesFarmaceuticas);
+  cy.getElementAndClick(abaExcluirObservacoesFarmaceuticas);
+  cy.getElementAndClick(excluirObservacoesFarmaceuticas);
+  cy.getElementAndClick(mensagemConfirmacaoModal);
+  cy.wait(1000);
+  cy.get(mensagemSucessoModal, { timeout: 60000 })
+    .click();
+  cy.getElementAndClick(fecharModalObservacoesFarmaceuticas);
+})
+
 
 
 
@@ -451,6 +482,7 @@ Cypress.Commands.add('excluirReceita', (excluir: string): void => {
 
 /*
 marcar uso CC**
+
 visualizar receita CC**
   pdf
     download
@@ -462,17 +494,21 @@ visualizar receita CC**
   esconder regua
   fechar
 
-clonar receita CC
+clonar receita CC**
   clonar observacao boolean if botao de clonar presente clonar observacao true senao false [id="clonar-observacoes"]
   (botao confirmacao clonagem)
   (botao sucesso receita clonada)
   1203
 
-Excluir CC
+Excluir CC**
 
+adicionar observacoes farmaceuticas CC
+  acessarObservacoesFarmaceuticas
+  senhaReceita
+  textoObservacao
 
-  editar receita CC
-observacoes farmaceuticas CC
+excluir observacoes farmaceuticas CC
+editar receita CC
 duvidas tecnicas CC
 
 */

@@ -11,6 +11,8 @@ interface DadosParametros {
     Receita: {
         numeroReceita: number;
         clonarObservacaoFarmaceutica: boolean;
+        senhaObservacaoFarmaceutica: string;
+        textoObservacaoFarmaceutica: string;
     };
 
     Prescritor: {
@@ -177,6 +179,8 @@ export const dadosParametros: DadosParametros = {
     Receita: {
         numeroReceita: 0,
         clonarObservacaoFarmaceutica: false,
+        senhaObservacaoFarmaceutica: '789123',
+        textoObservacaoFarmaceutica:'Teste',
     },
 
     Prescritor: {

@@ -136,27 +136,39 @@ declare global {
 
       /**
        * comando customizado para marcar uso em receitas e orçamentos.
-       * @example cy.marcarUso(el.Receitas.checkboxMarcarUso, el.Receitas.mensagemConfirmacaoMarcarUso, el.Receitas.mensagemSucessoMarcadoUso)
+       * @example cy.marcarUso(checkboxMarcarUso)
        */
       marcarUso(checkboxMarcarUso: string): Chainable<Element>
 
       /**
       * comando customizado para visualizar receitas.
-      * @example cy.visualizarReceita(el.visualizarReceita)
+      * @example cy.visualizarReceita(visualizarReceita)
       */
       visualizarReceita(visualizarReceita: string): Chainable<Element>
 
       /**
       * comando customizado para clonar receitas.
-      * @example cy.visualizarReceita(el.clonarReceita)
+      * @example cy.clonarReceita(clonarReceita)
       */
       clonarReceita(abrirModalClonarReceita: string): Chainable<Element>
 
       /**
       * comando customizado para excluir receitas.
-      * @example cy.excluirReceita(el.visualizarReceita)
+      * @example cy.excluirReceita(el.excluirReceita)
       */
       excluirReceita(excluir: string): Chainable<Element>
+
+      /**
+      * comando customizado para inserir observacoes farmaceuticas em receitas.
+      * @example cy.inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas,dadosParametros.Receita.senhaObservacaoFarmaceutica,dadosParametros.Receita.textoObservacaoFarmaceutica)
+      */
+      inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas: string, senhaReceita: string, textoObservacao: string): Chainable<Element>
+
+      /**
+      * comando customizado para excluir observacoes farmaceuticas em receitas.
+      * @example cy.excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas,dadosParametros.Receita.senhaObservacaoFarmaceutica,dadosParametros.Receita.textoObservacaoFarmaceutica)
+      */
+      excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas: string): Chainable<Element>
     }
   }
 }
