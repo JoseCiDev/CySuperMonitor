@@ -40,6 +40,14 @@ export default defineConfig<CustomCypressConfig>({
       'cypress/reports/html/*',
       'cypress/reports/html/assets/*',
       'cypress/reports/.jsons/*',
+      'dist',
+      'cypress/dist/*',
+      'cypress/integration/dist/*',
+      'cypress/integration/Atendimento/PedidoEmAndamento/dist/*',
+      'cypress/plugins/*',
+      'cypress/support/Connections/*'
+
+
     ],
     video: true,
     videosFolder: 'cypress/videos',

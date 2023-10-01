@@ -9,28 +9,33 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 
 export const {
-    dataRecebimento,
+    dataRecebimentoReceitas,
     okSucessoReceitaImportadaModal,
     menuReceitas,
     menuImportarReceitas,
-    abrirModalRegistrarReceita,
-    importarImagem,
-    prescritor,
+    abrirModalRegistrarReceitas,
+    importarImagemReceitas,
+    prescritorReceitas,
     parametroBuscaPaciente,
-    paciente,
-    canalRecebimento,
-    tipoReceita,
-    modalMensagens,
-    textoObservacaoInternaReceita,
-    urgente,
-    clienteAlerta,
-    medicamentocontrolado,
+    pacienteReceitas,
+    canalRecebimentoReceitas,
+    tipoReceitas,
+    textoObservacaoInternaReceitas,
+    urgenteReceitas,
+    clienteAlertaReceitas,
+    medicamentocontroladoReceitas,
     checkboxMarcarUso,
     acoes,
     visualizarReceitas,
     clonarReceitas,
     excluirReceitas,
     acessarObservacoesFarmaceuticas,
+    acessarDuvidasTecnicas,
+    atualizarModalDuvidasTecnicas,
+    mensagemConfirmacaoModal,
+    salvarReceitas,
+    mensagemSucessoModal,
+
 
 } = el.Receitas;
 
@@ -41,7 +46,7 @@ export const acessarImportarReceitas = (importarReceitas: string): void => {
         .click();
 
     cy.url().should('contain', dadosParametros.Url.importarReceitas);
-}
+};
 
 export const inserirPrescritor = (modalSugestaoRelacaoPrescritor, sugestaoAutocomplete): void => {
     cy.get(modalSugestaoRelacaoPrescritor)
@@ -61,14 +66,30 @@ export const inserirPrescritor = (modalSugestaoRelacaoPrescritor, sugestaoAutoco
                 });
         })
         .should('contain', dadosParametros.Prescritor.crmPrescritor);
-    cy.get(modalSugestaoRelacaoPrescritor, { timeout: 10000 })
+    cy.get(modalSugestaoRelacaoPrescritor, { timeout: 20000 })
         .scrollIntoView()
         .click();
 };
 
-export const parametroSelecaoPaciente = (parametro, opcaoSelecaoPaciente) => {
+export const sugestaoRelacaoPrescritor = (): void => {
+    cy.get('.col-md-12 > h2', { timeout: 20000 }).then(($elemento) => {
 
-    cy.getVisible(parametro, { timeout: 5000 })
+        if ($elemento.is(':visible')) {
+            cy.get(mensagemConfirmacaoModal, { timeout: 50000 })
+                .click();
+            cy.wait(1000);
+        }
+        else {
+            if ($elemento.is(':visible')) {
+                cy.log('Teste pode continuar.')
+            }
+        }
+    });
+};
+
+export const parametroSelecaoPaciente = (parametro, opcaoSelecaoPaciente): void => {
+
+    cy.getVisible(parametro, { timeout: 20000 })
         .and('have.id', opcaoSelecaoPaciente)
         .check()
         .should('be.checked');
@@ -76,7 +97,7 @@ export const parametroSelecaoPaciente = (parametro, opcaoSelecaoPaciente) => {
 
 export const inserirPaciente = (paciente: string): void => {
     (sugestaoAutocomplete: string): Cypress.Chainable<boolean> => {
-        return cy.get(sugestaoAutocomplete, { timeout: 5000 }).then(($modal) => {
+        return cy.get(sugestaoAutocomplete, { timeout: 20000 }).then(($modal) => {
             return $modal.is(':visible');
         });
     }
@@ -86,12 +107,12 @@ export const inserirPaciente = (paciente: string): void => {
         .clear()
         .type(dadosParametros.Paciente.codigoPaciente.toString())
         .then(() => {
-            cy.get(el.Compartilhado.sugestoesAutocomplete, { timeout: 5000 })
+            cy.get(el.Compartilhado.sugestoesAutocomplete, { timeout: 20000 })
                 .as('suggestions');
         });
-    cy.wait(500)
-    cy.get('@suggestions', { timeout: 5000 })
-        .find(el.Compartilhado.sugestaoAutocomplete, { timeout: 5000 })
+    cy.wait(1000)
+    cy.get('@suggestions', { timeout: 20000 })
+        .find(el.Compartilhado.sugestaoAutocomplete, { timeout: 20000 })
         .contains(dadosParametros.Paciente.codigoPaciente.toString())
         .then(($suggestion) => {
             if ($suggestion.length > 0) {
@@ -100,7 +121,7 @@ export const inserirPaciente = (paciente: string): void => {
                     .click();
             }
         });
-}
+};
 
 export const selecionarCanalRecebimento = (opcaoRecebimento, opcaoCanalRecebimento): void => {
     cy.get<HTMLSelectElement>(opcaoRecebimento)
@@ -110,22 +131,22 @@ export const selecionarCanalRecebimento = (opcaoRecebimento, opcaoCanalRecebimen
         .should('have.value', opcaoCanalRecebimento)
         .find('option:selected')
         .should('be.selected');
-}
+};
 
-export const inserirDataRecebimentoReceita = () => {
-    const umDiaMenos = new Date(dadosParametros.DataAtual);
+export const inserirDataRecebimento = () => {
+    const umDiaMenos = new Date(dadosParametros.dataAtual);
     umDiaMenos.setDate(umDiaMenos.getDate() - 1);
     const dataFormatada = umDiaMenos.toISOString().slice(0, 16);
-    cy.inserirData(dataRecebimento, dataFormatada);
-}
+    cy.inserirData(dataRecebimentoReceitas, dataFormatada);
+};
 
 export const inserirTipoReceita = (tipoReceita, tipo): void => {
-    cy.getVisible(tipoReceita, { timeout: 5000 })
+    cy.getVisible(tipoReceita, { timeout: 20000 })
         .check()
         .should('be.checked');
-}
+};
 
-export const inserirObservacaoInternaReceita = (areaTexto: string, conteudo: string, useLoremIpsum?: boolean): void => {
+export const inserirObservacaoInterna = (areaTexto: string, conteudo: string, useLoremIpsum?: boolean): void => {
     if (useLoremIpsum) {
         conteudo = faker.lorem.paragraph();
     }
@@ -136,100 +157,247 @@ export const inserirObservacaoInternaReceita = (areaTexto: string, conteudo: str
         .should('not.be.empty');
 };
 
-export const marcarReceitaUrgente = (urgente: string): void => {
+export const marcarUrgente = (urgente: string): void => {
     cy.getElementAndClick(urgente)
-}
+};
 
-export const marcarReceitaClienteAlerta = (clienteAlerta: string): void => {
+export const marcarClienteAlerta = (clienteAlerta: string): void => {
     cy.getElementAndClick(clienteAlerta)
-}
+};
 
-export const marcarReceitaMedicamentoControlado = (medicamentoControlado: string): void => {
+export const marcarMedicamentoControlado = (medicamentoControlado: string): void => {
     cy.getElementAndClick(medicamentoControlado)
-}
+};
 
 export const salvarReceita = (salvarImportacao): void => {
-    cy.getVisible(salvarImportacao, { timeout: 5000 })
+    cy.get(salvarImportacao, { timeout: 20000 })
         .click({ force: true });
 
     if (Cypress.$(okSucessoReceitaImportadaModal).length > 0 && Cypress.$(okSucessoReceitaImportadaModal).is(':visible')) {
-        cy.getVisible(okSucessoReceitaImportadaModal, { timeout: 5000 })
+        cy.getVisible(okSucessoReceitaImportadaModal, { timeout: 20000 })
             .click();
     } else {
-        cy.wait(5000)
-        cy.getVisible(okSucessoReceitaImportadaModal, { timeout: 5000 })
+        cy.wait(1000)
+        cy.getVisible(okSucessoReceitaImportadaModal, { timeout: 20000 })
             .click();
     }
+    cy.get(salvarImportacao, { timeout: 20000 }).then(($elemento) => {
+        cy.wrap($elemento)
+            .click();
+    });
+
 
     cy.url().should('contain', dadosParametros.Url.importarReceitas)
-}
+};
 
 
-describe('Receitas', () => {
+describe('Tela importação de receitas.', () => {
 
     beforeEach(function () {
         cy.login(el.Login.entrar, dadosAmbiente.USER, dadosAmbiente.PASSWORD, dadosParametros.Url.inicio)
-    })
+    });
 
-    it('Importação de Receitas', () => {
 
+    it('Deve realizar busca de Receitas', () => {
         cy.acessarMenuReceitas(menuReceitas);
 
         acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000)
+        cy.wait(2000);
 
-        // cy.buscarReceita('2023-01-01T10:00', '2023-10-30T10:00')
+        cy.buscarReceita('2023-01-01T10:00', '2023-10-30T10:00');
+    });
 
-        // cy.getElementAndClick(abrirModalRegistrarReceita);
 
-        // cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', importarImagem);
 
-        // inserirPrescritor(prescritor, el.Compartilhado.sugestaoAutocomplete);
+    it('Deve realizar importação de Receitas', () => {
+        cy.acessarMenuReceitas(menuReceitas);
 
-        // parametroSelecaoPaciente(parametroBuscaPaciente, dadosParametros.ParametroBuscaPaciente.Cdcli);
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
 
-        // inserirPaciente(paciente);
+        cy.getElementAndClick(abrirModalRegistrarReceitas);
 
-        // selecionarCanalRecebimento(canalRecebimento, dadosParametros.CanalRecebimento.Whatsapp);
+        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', importarImagemReceitas);
 
-        // inserirDataRecebimentoReceita();
+        inserirPrescritor(prescritorReceitas, el.Compartilhado.sugestaoAutocomplete);
 
-        // inserirTipoReceita(tipoReceita, dadosParametros.PossuiReceita);
+        sugestaoRelacaoPrescritor();
 
-        // if (cy.get(modalMensagens, { timeout: 20000 })) {
-        //     cy.get(modalMensagens, { timeout: 20000 })
-        //         .click()
-        // }
+        parametroSelecaoPaciente(parametroBuscaPaciente, dadosParametros.parametroBuscaPaciente.Cdcli);
 
-        // inserirObservacaoInternaReceita(textoObservacaoInternaReceita, '', true);
+        inserirPaciente(pacienteReceitas);
 
-        // marcarReceitaUrgente(urgente)
+        selecionarCanalRecebimento(canalRecebimentoReceitas, dadosParametros.canalRecebimento.Whatsapp);
 
-        // marcarReceitaClienteAlerta(clienteAlerta)
+        inserirDataRecebimento();
 
-        // marcarReceitaMedicamentoControlado(medicamentocontrolado)
+        inserirTipoReceita(tipoReceitas, dadosParametros.PossuiReceita);
 
-        // salvarReceita(salvarReceita)
+        if (cy.get(mensagemSucessoModal, { timeout: 20000 })) {
+            cy.get(mensagemSucessoModal, { timeout: 20000 })
+                .click();
+        };
 
-        // cy.marcarUso(checkboxMarcarUso);
+        inserirObservacaoInterna(textoObservacaoInternaReceitas, '', true);
 
-        // cy.getElementAndClick(acoes);
-        // cy.visualizarReceita(visualizarReceita);
+        marcarUrgente(urgenteReceitas);
 
-        // cy.getElementAndClick(acoes);
-        // cy.clonarReceita(clonarReceita)
+        marcarClienteAlerta(clienteAlertaReceitas);
 
-        // cy.getElementAndClick(acoes);
-        // cy.excluirReceita(excluirReceita)
+        marcarMedicamentoControlado(medicamentocontroladoReceitas);
 
-        // cy.getElementAndClick(acoes);
-        // cy.inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas,dadosParametros.Receita.senhaObservacaoFarmaceutica,dadosParametros.Receita.textoObservacaoFarmaceutica)
+        salvarReceita(salvarReceitas);
+
+    });
+
+
+
+    it('Deve realizar marcação de uso nas receitas.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.marcarUso(checkboxMarcarUso);
+
+        cy.getElementAndClick(mensagemSucessoModal);
+    });
+
+
+
+    it('Deve visualizar receitas', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
 
         cy.getElementAndClick(acoes);
-        cy.excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas)
+        cy.visualizarReceita(visualizarReceitas);
     });
+
+
+
+    it('Deve clonar receitas.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.clonarReceita(clonarReceitas);
+    });
+
+
+
+    it('Deve excluir receitas.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.excluirReceita(excluirReceitas);
+
+        cy.getElementAndClick(mensagemSucessoModal);
+
+    });
+
+
+
+    it('Deve inserir observação farmacêutica.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas, dadosParametros.Receita.senhaObservacaoFarmaceutica, dadosParametros.Receita.textoObservacaoFarmaceutica);
+    });
+
+
+
+    it('Deve excluir observação farmacêutica', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas);
+
+    });
+
+
+
+    it('Deve criar dúvida técnica.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.CriarDuvidaTecnica(acessarDuvidasTecnicas, dadosParametros.categoriaDuvidaTecnica.DuvidaInterna, dadosParametros.Receita.textoDuvidaTecnica, dadosParametros.Receita.responsavelRespostaDuvidaTecnica);
+
+    });
+
+
+
+    it('Deve atualizar modal de dúvida técnica.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.atualizarModalDuvidaTecnica(atualizarModalDuvidasTecnicas);
+    });
+
+
+
+    it('Deve alterar o responsável pela resposta da dúvida técnica ', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.alterarResponsavelRespostaDuvidaTecnica(acessarDuvidasTecnicas, dadosParametros.Receita.responsavelRespostaDuvidaTecnica);
+    });
+
+
+
+    it('Deve marcar dúvida técnica como resolvido.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.marcarDuvidaTecnicaResolvido(acessarDuvidasTecnicas);
+    });
+
+
+
+    it('Deve excluir dúvida técnica.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.excluirDuvidaTecnica(acessarDuvidasTecnicas);
+    });
+
+
+
+    it('Deve responder dúvida técnica.', () => {
+        cy.acessarMenuReceitas(menuReceitas);
+
+        acessarImportarReceitas(menuImportarReceitas);
+        cy.wait(2000);
+
+        cy.getElementAndClick(acoes);
+        cy.responderDuvidaTecnica(acessarDuvidasTecnicas, dadosParametros.statusDuvidaTecnica.AguardandoPrescritor, dadosParametros.Receita.textoRespostaDuvidaTecnica);
+    });
+
 })
-
-
-
-

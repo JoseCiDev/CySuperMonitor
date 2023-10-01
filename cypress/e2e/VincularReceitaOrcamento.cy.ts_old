@@ -28,7 +28,7 @@ describe('Vincular Receitas e Orçamentos', () => {
 
         // const acessarAtendimentoEmAndamento = (element: string): void => {
         //     cy.get(element)
-        //         .contains('a', 'Em andamento', { timeout: 10000 })
+        //         .contains('a', 'Em andamento', { timeout: 20000 })
         //         .click({ force: true });
         // }
         // acessarAtendimentoEmAndamento(el.pedidoEmAndamento);

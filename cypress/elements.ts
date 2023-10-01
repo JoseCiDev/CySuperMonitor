@@ -15,55 +15,53 @@ interface Elements<T = string> {
         login: T;
         senha: T;
         entrar: T;
-    };
+    },
 
     Receitas: {
         menuReceitas: T;
-        prescritor: T;
+        prescritorReceitas: T;
         menuImportarReceitas: T;
-        abrirModalRegistrarReceita: T;
-        importarPdf: T;
-        importarImagem: T;
-        removerImagem: T;
+        abrirModalRegistrarReceitas: T;
+        importarPdfReceitas: T;
+        importarImagemReceitas: T;
+        removerImagemReceitas: T;
         modalSugestaoRelacaoPrescritor: T;
         parametroBuscaPaciente: T;
-        paciente: T;
-        canalRecebimento: T;
-        cluster: T;
-        orcamentista: T;
-        atendenteResponsavel: T;
-        dataRecebimento: T;
-        juntocomReceita: T;
-        autocompleteJuntocomReceita: T;
-        observacaoInternaReceita: T
-        textoObservacaoInternaReceita: T
-        medicamentocontrolado: T;
-        urgente: T;
-        clienteAlerta: T;
-        varejo: T;
-        tipoReceita: T;
-        modalMensagens: T;
-        salvarReceita: T;
+        pacienteReceitas: T;
+        canalRecebimentoReceitas: T;
+        clusterReceitas: T;
+        orcamentistaReceitas: T;
+        atendenteResponsavelReceitas: T;
+        dataRecebimentoReceitas: T;
+        juntocomReceitas: T;
+        autocompleteJuntocomReceitas: T;
+        observacaoInternaReceitas: T
+        textoObservacaoInternaReceitas: T
+        medicamentocontroladoReceitas: T;
+        urgenteReceitas: T;
+        clienteAlertaReceitas: T;
+        varejoReceitas: T;
+        tipoReceitas: T;
+        salvarReceitas: T;
         okSucessoReceitaImportadaModal: T;
-        ModalBuscaReceita: T;
-        filtroDataInicialBuscaReceita: T;
-        filtroDataFinalBuscaReceita: T;
-        filtroPendenciasBuscaReceita: T;
+        ModalBuscaReceitas: T;
+        filtroDataInicialBuscaReceitas: T;
+        filtroDataFinalBuscaReceitas: T;
+        filtroPendenciasBuscaReceitas: T;
         filtroPendenciasTodos: T;
         filtroPendenciasPendentes: T;
         filtroPendenciasVinculados: T;
         botaoProcurar: T;
-        labelProcurarReceita: T;
+        labelProcurarReceitas: T;
         numeroReceitas: T;
         checkboxMarcarUso: T;
         mensagemConfirmacaoModal: T;
         mensagemSucessoModal: T;
         containerInserirUsuario: T;
-        selectUsuario: T;
+        select: T;
         usuarioSelecionado: T;
         senhaReceita: T;
         aplicaDesmarcarUso: T;
-        mensagemAcaoRealizadaSucesso: T;
         visualizarReceitas: T;
         acoes: T;
         abaPdfVisualizarReceitas: T;
@@ -82,7 +80,23 @@ interface Elements<T = string> {
         textoObservacoesFarmaceuticas: T;
         fecharModalObservacoesFarmaceuticas: T;
         abaExcluirObservacoesFarmaceuticas: T;
-        excluirObservacoesFarmaceuticas:T;
+        excluirObservacoesFarmaceuticas: T;
+        acessarDuvidasTecnicas: T;
+        containerCategoriaDuvidaTecnicas: T;
+        textoDuvidasTecnicas: T;
+        containerColaboradores: T;
+        responsavelRespostas: T;
+        enviarDuvidasTecnicas: T;
+        fecharModalDuvidasTecnicas: T;
+        atualizarModalDuvidasTecnicas: T;
+        containerResponsavelRespostaDuvidasTecnicas: T;
+        ResponsavelRespostaDuvidasTecnicas: T;
+        responsavelAtualRespostaDuvidasTecnicas: T;
+        marcarDuvidasTecnicaResolvidas: T;
+        excluirDuvidasTecnicas: T;
+        statusRespostaDuvidasTecnicas: T;
+        textoRespostaDuvidasTecnicas: T;
+        enviarRespostaDuvidasTecnicas: T;
 
     };
 
@@ -174,74 +188,70 @@ export const elements: Elements = {
     },
 
     Receitas: {
-        //RECEITAS
-        // Menu lateral(principal)
         menuReceitas: '#side-menu > li:nth-child(6) > a > span.nav-label',
         //IMPORTAR RECEITAS
         // subMenuImportacaoReceita
         menuImportarReceitas: '#side-menu > li.active > ul > li:nth-child(1) > a',
         // acessarTelaRegistroReceita
-        abrirModalRegistrarReceita: '#receita_register',
+        abrirModalRegistrarReceitas: '#receita_register',
         // inserirImagem
-        importarPdf: '#btnImportPdfRec',
-        importarImagem: 'input.tui-image-editor-load-btn[type="file"][accept="image/*"]',
-        removerImagem: '.btn btn-danger btn-del-img m-sm',
+        importarPdfReceitas: '#btnImportPdfRec',
+        importarImagemReceitas: 'input.tui-image-editor-load-btn[type="file"][accept="image/*"]',
+        removerImagemReceitas: '.btn btn-danger btn-del-img m-sm',
         // informacoes da receita
-        prescritor: '#modalMedicoRec',
+        prescritorReceitas: '#modalMedicoRec',
         modalSugestaoRelacaoPrescritor: 'button[data-bb-handler="confirm"].btn.btn-primary',
         parametroBuscaPaciente: '#t2_154c',
-        paciente: '#modalPacienteRec',
-        canalRecebimento: '#modalCanalContato',
-        cluster: '#modalCluster',
-        orcamentista: '#modalOrcamentistaRec',
-        atendenteResponsavel: '#modalAtendenteRec',
-        dataRecebimento: '#modalDataRec',
-        juntocomReceita: '#groupMainEntitiesModal > div:nth-child(2) > div:nth-child(4) > div > span',
-        autocompleteJuntocomReceita: 'ul.select2-results__options',
-        observacaoInternaReceita: '.panel-body > .note-editor > .note-toolbar',
-        textoObservacaoInternaReceita: '.panel-body > .note-editor > .note-editable',
-        medicamentocontrolado: '#medicamentoControlado',
-        urgente: '#modalUrgente',
-        clienteAlerta: '#clienteAlerta',
-        varejo: '#checkboxVarejo',
+        pacienteReceitas: '#modalPacienteRec',
+        canalRecebimentoReceitas: '#modalCanalContato',
+        clusterReceitas: '#modalCluster',
+        orcamentistaReceitas: '#modalOrcamentistaRec',
+        atendenteResponsavelReceitas: '#modalAtendenteRec',
+        dataRecebimentoReceitas: '#modalDataRec',
+        juntocomReceitas: '#groupMainEntitiesModal > div:nth-child(2) > div:nth-child(4) > div > span',
+        autocompleteJuntocomReceitas: 'ul.select2-results__options',
+        observacaoInternaReceitas: '.panel-body > .note-editor > .note-toolbar',
+        textoObservacaoInternaReceitas: '.panel-body > .note-editor > .note-editable',
+        medicamentocontroladoReceitas: '#medicamentoControlado',
+        urgenteReceitas: '#modalUrgente',
+        clienteAlertaReceitas: '#clienteAlerta',
+        varejoReceitas: '#checkboxVarejo',
         // possui receita/nao possui receita/repeticao
-        tipoReceita: '#groupMainEntitiesModal > div:nth-child(3) > div > label:nth-child(1) > input[type=radio]',
+        tipoReceitas: '#groupMainEntitiesModal > div:nth-child(3) > div > label:nth-child(1) > input[type=radio]',
         // mensagem informando que já existe receita com mesmo paciente e prescritor
-        modalMensagens: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
         // salvar receita
-        salvarReceita: '#save_receita',
+        salvarReceitas: '#save_receita',
         // mensagem sucesso importacao receita
         okSucessoReceitaImportadaModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
         // buscar receitas importadas
-        ModalBuscaReceita: '#centerHeadFilter',
-        filtroDataInicialBuscaReceita: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
-        filtroDataFinalBuscaReceita: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
-        filtroPendenciasBuscaReceita: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select',
+        ModalBuscaReceitas: '#centerHeadFilter',
+        filtroDataInicialBuscaReceitas: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
+        filtroDataFinalBuscaReceitas: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
+        filtroPendenciasBuscaReceitas: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select',
         filtroPendenciasTodos: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(1)',
         filtroPendenciasPendentes: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(2)',
         filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
         botaoProcurar: '#filterReceitas > div:nth-child(4) > div > button',
-        labelProcurarReceita: '[button type="submit"]' && 'Procurar',
+        labelProcurarReceitas: '[button type="submit"]' && 'Procurar',
         numeroReceitas: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
         checkboxMarcarUso: '#mainTableReceitas > tbody > tr > td.usedTrativa',
         mensagemConfirmacaoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
         mensagemSucessoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
         containerInserirUsuario: '#select2-farma-to-auth-container',
-        selectUsuario: '.select2-dropdown > .select2-search > .select2-search__field',
+        select: '.select2-dropdown > .select2-search > .select2-search__field',
         usuarioSelecionado: '.select2-results__option--highlighted',
         senhaReceita: '#password-farma-auth',
         aplicaDesmarcarUso: '#farma-auth-send-btn',
-        mensagemAcaoRealizadaSucesso: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
         visualizarReceitas: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .show-receita',
         acoes: '#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > button',
-        abaPdfVisualizarReceitas: '#panel_look_pdf > :nth-child(1) > :nth-child(1) > a',
+        abaPdfVisualizarReceitas: '#panel_look_pdf > ul.nav.nav-tabs > li.active > a',
         abaOriginalVisualizarReceitas: '#originalClickVisRe',
-        abaObservacoesInternasVisualizarReceitas: '#panel_look_pdf > :nth-child(1) > :nth-child(3) > a',
-        abaInformacoesFcertaVisualizarReceitas: '#panel_look_pdf > :nth-child(1) > :nth-child(4) > a',
+        abaObservacoesInternasVisualizarReceitas: '#panel_look_pdf > ul.nav.nav-tabs > :nth-child(3) > a',
+        abaInformacoesFcertaVisualizarReceitas: '#panel_look_pdf > ul.nav.nav-tabs > :nth-child(4) > a',
         exibirReguaVisualizarReceitas: '#btnReceitaRegua',
         fecharVisualizarReceitas: '#modal-receita-view > .modal-dialog > .modal-content > .modal-header > .close > [aria-hidden="true"]',
         clonarReceitas: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita',
-        modalObservacoesClonar: '#carousel-observacoes',
+        modalObservacoesClonar: '#carousel-container',
         clonarObservacoesFarmaceuticas: '#clonar-observacoes',
         excluirReceitas: ':nth-child(2) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-receita',
         acessarObservacoesFarmaceuticas: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .add-obs',
@@ -249,8 +259,24 @@ export const elements: Elements = {
         senhaObservacoesFarmaceuticas: '#passModalAddObsReceita',
         textoObservacoesFarmaceuticas: '#textObsAddModalReceita',
         fecharModalObservacoesFarmaceuticas: '#modal-receita-add-obs > .modal-dialog > .modal-content > .modal-footer > .btn',
-        abaExcluirObservacoesFarmaceuticas:'#tab-list-observacoes-farmaceuticas > a',
-        excluirObservacoesFarmaceuticas:':nth-child(1) > :nth-child(5) > .fa',
+        abaExcluirObservacoesFarmaceuticas: '#tab-list-observacoes-farmaceuticas > a',
+        excluirObservacoesFarmaceuticas: ':nth-child(1) > :nth-child(5) > .fa',
+        acessarDuvidasTecnicas: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .duvida-farmaceutica',
+        containerCategoriaDuvidaTecnicas: '#select2-selectCatDuvTec-container',
+        textoDuvidasTecnicas: '#newDuvidaTecnica',
+        containerColaboradores: '#select2-selectFarmaDuvTec-container',
+        responsavelRespostas: '.select2-dropdown > .select2-search > .select2-search__field',
+        enviarDuvidasTecnicas: '#duvidaTecnicaSend',
+        fecharModalDuvidasTecnicas: '#modal-receita-duv-tec > .modal-dialog > .modal-content > .modal-footer > .btn',
+        atualizarModalDuvidasTecnicas: '#updateRenderDuvTec',
+        containerResponsavelRespostaDuvidasTecnicas: '#chatDuvTec > div.groupContainer > div.pendenteMsg > div:nth-child(6) > div > span > span.selection > span > span.select2-selection__arrow',
+        ResponsavelRespostaDuvidasTecnicas: '.select2-dropdown > .select2-search > .select2-search__field',
+        responsavelAtualRespostaDuvidasTecnicas: 'span.select2-selection__rendered[title*="Atendente"]',
+        marcarDuvidasTecnicaResolvidas: '#chatDuvTec > div:nth-child(1) > div.pendenteMsg > div:nth-child(7) > div.col.col-sm-12.text-right',
+        excluirDuvidasTecnicas: ':nth-child(1) > .resolvidoMsg > :nth-child(7) > .col > .fa-trash',
+        statusRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) .col-sm-12 select.statusDuvidaTecnica',
+        textoRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) .col-sm-12 textarea.form-control',
+        enviarRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) div.col.col-sm-12 button.btn.btn-secondary.m-t-sm.m-b-sm.respDuvT',
 
     },
 

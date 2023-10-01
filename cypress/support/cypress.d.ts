@@ -159,16 +159,54 @@ declare global {
       excluirReceita(excluir: string): Chainable<Element>
 
       /**
-      * comando customizado para inserir observacoes farmaceuticas em receitas.
+      * comando customizado para inserir observacoes farmaceuticas, em receitas.
       * @example cy.inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas,dadosParametros.Receita.senhaObservacaoFarmaceutica,dadosParametros.Receita.textoObservacaoFarmaceutica)
       */
       inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas: string, senhaReceita: string, textoObservacao: string): Chainable<Element>
 
       /**
-      * comando customizado para excluir observacoes farmaceuticas em receitas.
+      * comando customizado para excluir observacoes farmaceuticas, em receitas.
       * @example cy.excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas,dadosParametros.Receita.senhaObservacaoFarmaceutica,dadosParametros.Receita.textoObservacaoFarmaceutica)
       */
       excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas: string): Chainable<Element>
+
+      /**
+      * comando customizado para criar dúvidas técnicas em receitas.
+      * @example cy.CriarDuvidaTecnica()
+      */
+      CriarDuvidaTecnica(acessarDuvidasTecnicas: string, categoria: string, textoDuvidaTecnica: string, colaborador: string): Chainable<Element>
+
+      /**
+      * comando customizado para atualizar modal de dúvidas técnicas, em receitas.
+      * @example cy.atualizarModalDuvidaTecnica(atualizarModalDuvidaTecnica)
+      */
+      atualizarModalDuvidaTecnica(atualizar: string): void
+
+      /**
+      * comando customizado para alterar o responsável pela resposta da dúvida técnica, em receitas.
+      * @example cy.alterarResponsavelRespostaDuvidaTecnica(atualizarModalDuvidaTecnica)
+      */
+      alterarResponsavelRespostaDuvidaTecnica(acessarDuvidasTecnicas: string, responsavelRespostaDuvidaTecnica: string): Chainable<Element>
+
+      /**
+     * comando customizado para marcar dúvida técnica como resolvido, em receitas.
+     * @example cy.marcarComoResolvidoDuvidaTecnica(MarcarDuvidaTecnicaResolvido)
+     */
+      marcarDuvidaTecnicaResolvido(acessarDuvidasTecnicas: string): Chainable<Element>
+
+      /**
+     * comando customizado para excluir dúvida técnica, em receitas.
+     * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
+     */
+      excluirDuvidaTecnica(acessarDuvidasTecnicas: string): Chainable<Element>
+
+      /**
+     * comando customizado para excluir dúvida técnica, em receitas.
+     * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
+     */
+      responderDuvidaTecnica(acessarDuvidasTecnicas: string, status: string, texto: string): Chainable<Element>
+
+
     }
   }
 }

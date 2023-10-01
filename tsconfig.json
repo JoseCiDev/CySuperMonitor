@@ -35,5 +35,5 @@
   "include": [
     "**/*.ts",
     "../cypress.d.ts"
-  ]
+, "cypress/e2e/VincularReceitaOrcamento.cy.ts_old", "cypress/e2e/e2e.cy.ts_old"  ]
 }

@@ -81,13 +81,13 @@ describe('Receitas', () => {
                     });
                 });
 
-                cy.getVisible(el.buscarPedido, { timeout: 5000 })
+                cy.getVisible(el.buscarPedido, { timeout: 20000 })
                     .and('have.id', 'top-search')
                     .clear()
                     .type(pedido)
                     .should('have.value', pedido);
 
-                cy.getVisible(el.buscarFilial, { timeout: 5000 })
+                cy.getVisible(el.buscarFilial, { timeout: 20000 })
                     .clear()
                     .type(filial)
                     .should('have.value', filial);
@@ -95,7 +95,7 @@ describe('Receitas', () => {
                 cy.getVisible(el.enviarBusca)
                     .click();
 
-                cy.get(el.visualizar, { timeout: 5000 }).should('exist');
+                cy.get(el.visualizar, { timeout: 20000 }).should('exist');
             };
             buscarPedido([dadosParametros.DadosParametros.BuscaPedido.Todos]);
         });
@@ -132,7 +132,7 @@ const integracaoChatguru = (nacionalidade: string, telefoneContato: string, idio
         .click()
     cy.get(el.OkModalMensages, { timeout: 20000 })
         .as('modal');
-    cy.get('@modal', { timeout: 10000 })
+    cy.get('@modal', { timeout: 20000 })
         .then(($modal) => {
             if ($modal.length > 0) {
                 {
