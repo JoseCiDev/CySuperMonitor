@@ -1,8 +1,8 @@
 interface Elements<T = string> {
 
     Compartilhado: {
-        sugestaoAutocomplete
-        sugestoesAutocomplete
+        sugestaoAutocomplete: T;
+        sugestoesAutocomplete: T;
     };
 
     Login: {
@@ -19,8 +19,10 @@ interface Elements<T = string> {
 
     Receitas: {
         menuReceitas: T;
+        menuReceitasReduzido: T;
         prescritorReceitas: T;
         menuImportarReceitas: T;
+        menuGerenciarReceitas: T;
         abrirModalRegistrarReceitas: T;
         importarPdfReceitas: T;
         importarImagemReceitas: T;
@@ -41,17 +43,27 @@ interface Elements<T = string> {
         urgenteReceitas: T;
         clienteAlertaReceitas: T;
         varejoReceitas: T;
-        tipoReceitas: T;
+        opcaoTipoReceitas: T;
         salvarReceitas: T;
+        editarReceita: T;
         okSucessoReceitaImportadaModal: T;
         ModalBuscaReceitas: T;
         filtroDataInicialBuscaReceitas: T;
         filtroDataFinalBuscaReceitas: T;
-        filtroPendenciasBuscaReceitas: T;
+        clusterBusca: T;
+        receitaBusca: T;
+        pacienteBusca: T;
+        prescritorBusca: T;
+        orcamentoBusca: T;
+        ultimoModificadorBusca: T;
+        orcamentistaBusca: T;
+        atendenteResponsavelBusca: T;
+        canalRecebimentoBusca: T;
+        filtroPendenciasBusca: T;
         filtroPendenciasTodos: T;
         filtroPendenciasPendentes: T;
         filtroPendenciasVinculados: T;
-        botaoProcurar: T;
+        botaoBuscarReceitas: T;
         labelProcurarReceitas: T;
         numeroReceitas: T;
         checkboxMarcarUso: T;
@@ -102,15 +114,17 @@ interface Elements<T = string> {
 
     Atendimentos: {
         menuAtendimentos: T;
-        acessarAtendimentosEmAndamento: T;
+        atendimentosEmAndamento: T;
         acessarFluxoDeTrabalhoAtendimento: T;
         parametroBuscaCardOrcamento: T;
         opcaopParametroBuscaCardOrcamento: T;
         cardOrcamento: T;
-        vincularReceitaCardOrcamento: T;
+        botaoVincularReceitaTelaAtendimentoAndamento: T;
+        botaoDesvincularReceitaTelaAtendimentoAndamento: T
+        campoVincularReceita: T;
         pedidoEmAndamento: T;
-        visualizar: T;
-        buscarPedido: T;
+        botaoVisualizar: T;
+        campoBuscarPedido: T;
         buscarFilial: T;
         enviarBusca: T;
         brasileiro: T;
@@ -122,44 +136,48 @@ interface Elements<T = string> {
         cancelarIntegracaoChatguru: T;
         salvarNumeroChatguru: T;
         modalMensagemChatguru: T;
-        orcamentistaPedido: T;
+        orcamentista: T;
         cabecalhoModalTempoTratamento: T;
-        tempoTratamento: T;
+        botaoTempoTratamento: T;
         tempoTratamentoPadrao: T;
         cancelarTempoTratamento: T;
         reimportarFormulas: T;
         salvarTempoTratamento: T;
         modalMensagemPedido: T;
-        abrirModalConfirmacaoPedido: T;
-        formaPagamentoPedido: T;
+        modalConfirmacaoPedido: T;
+        containerFormaPagamento: T;
         orcamentoEscolhido: T;
-        tempoRepeticaoPaciente: T;
-        salvarConfirmacaoPedidoPrimeiraEtapa: T;
-        naoRealizarMonitoramentoAtendimento: T;
+        inserirTempoRepeticao: T;
+        salvarDadosConfirmacaoPedido: T;
+        monitoramentoAtendimento: T;
         canalConfirmacaoPedido: T;
-        enviarEmailRastreamentoPedido: T;
-        liberarPedidoInclusao: T;
-        liberarPedidoCaixa: T;
-        observacaoCaixaBalcaoPedido: T;
+        enviarEmailRastreamento: T;
+        naoMostrarPedidoInclusao: T;
+        naoMostrarPedidoCaixa: T;
+        observacaoCaixaBalcao: T;
         notaDetalhada: T;
-        situacaoPagamento: T;
-        enderecoEnvioPedido: T;
-        enderecoSelecionadoEnvioPedido: T;
+        statusPagamento: T;
+        enderecoEnvio: T;
+        enderecoEnvioSelecionado: T;
         observacaoExpedicao: T;
-        formaEnvio: T;
-        juntocomPedido: T;
+        campoFormaEnvio: T;
+        juntocom: T;
         juntocomClinicaHigashi: T;
-        prometidoPara: T;
-        aromaShake: T;
-        aromaCapsulaSublingual: T;
+        campoprometidoPara: T;
+        campoAromaSache: T;
+        campoAromaCapsula: T;
         observacaoGeral: T;
-        situacaoPossuiReceita: T;
+        PossuiReceita: T;
         pedidoUrgente: T;
         cancelarConfirmacaoPedido: T;
         dispararMensagemChatguru: T;
         preVisualizarPedido: T;
         fecharPreVisualizarPedido: T;
         confirmarPedido: T;
+        mostrarTodos: T;
+        possuiFormulaEspecial: T;
+        gerarLinkPagamento: T;
+        relacionarReceitaPedido: T;
 
     };
 }
@@ -189,9 +207,12 @@ export const elements: Elements = {
 
     Receitas: {
         menuReceitas: '#side-menu > li:nth-child(6) > a > span.nav-label',
+        menuReceitasReduzido: '#side-menu > li.active',
         //IMPORTAR RECEITAS
         // subMenuImportacaoReceita
         menuImportarReceitas: '#side-menu > li.active > ul > li:nth-child(1) > a',
+        // subMenuGerenciarReceita
+        menuGerenciarReceitas: '#side-menu > li.active > ul > li.active > a',
         // acessarTelaRegistroReceita
         abrirModalRegistrarReceitas: '#receita_register',
         // inserirImagem
@@ -216,24 +237,33 @@ export const elements: Elements = {
         urgenteReceitas: '#modalUrgente',
         clienteAlertaReceitas: '#clienteAlerta',
         varejoReceitas: '#checkboxVarejo',
-        // possui receita/nao possui receita/repeticao
-        tipoReceitas: '#groupMainEntitiesModal > div:nth-child(3) > div > label:nth-child(1) > input[type=radio]',
+        opcaoTipoReceitas: '#groupMainEntitiesModal > div:nth-child(3) > div.col-md-12.text-right',
         // mensagem informando que já existe receita com mesmo paciente e prescritor
         // salvar receita
         salvarReceitas: '#save_receita',
-        // mensagem sucesso importacao receita
+        editarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .edit-receita',
         okSucessoReceitaImportadaModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
         // buscar receitas importadas
         ModalBuscaReceitas: '#centerHeadFilter',
         filtroDataInicialBuscaReceitas: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
         filtroDataFinalBuscaReceitas: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
-        filtroPendenciasBuscaReceitas: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select',
+        clusterBusca: '#filterReceitas > div:nth-child(1) > div:nth-child(3) > div > span > span.selection > span',
+        canalRecebimentoBusca: '#filterReceitas > div:nth-child(1) > div:nth-child(4) > div > select',
+        receitaBusca: '#filterReceitas > div:nth-child(2) > div:nth-child(1) > div > input',
+        pacienteBusca: '#pacienteRec',
+        prescritorBusca: '#medicoRec',
+        orcamentoBusca: '#orcamentoRec',
+        ultimoModificadorBusca: '#modifyRec',
+        orcamentistaBusca: '#orcamentistaRec',
+        atendenteResponsavelBusca: '#atendenteResponRec',
+        filtroPendenciasBusca: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select',
         filtroPendenciasTodos: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(1)',
         filtroPendenciasPendentes: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(2)',
         filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
-        botaoProcurar: '#filterReceitas > div:nth-child(4) > div > button',
+        botaoBuscarReceitas: '#filterReceitas > div:nth-child(4) > div > button',
         labelProcurarReceitas: '[button type="submit"]' && 'Procurar',
         numeroReceitas: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
+        //marcar uso
         checkboxMarcarUso: '#mainTableReceitas > tbody > tr > td.usedTrativa',
         mensagemConfirmacaoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
         mensagemSucessoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
@@ -281,25 +311,24 @@ export const elements: Elements = {
     },
 
     Atendimentos: {
-        //ATENDIMENTOS
-        // Menu lateral(principal)
+
         menuAtendimentos: '#side-menu > li:nth-child(8)',
-        //EM ANDAMENTO
-        // fluxoDeTrabalho
-        acessarAtendimentosEmAndamento: '#side-menu > li.active > ul > li.active > a',
+        atendimentosEmAndamento: '.active > .nav-second-level > :nth-child(1) > a',
         acessarFluxoDeTrabalhoAtendimento: '.nav-second-level > .active > .nav > li > a',
         parametroBuscaCardOrcamento: '#select2-tipo-filtro-container',
         opcaopParametroBuscaCardOrcamento: '.select2-results__option',
         cardOrcamento: '#atendimentos-em-andamento > div.ibox-workflow > div.grid > div > div:nth-child(1) > div > div.container-coluna > ul > li:nth-child(8)',
-        vincularReceitaCardOrcamento: '#receitaCod',
+        botaoVincularReceitaTelaAtendimentoAndamento: '.vinc-rec',
+        botaoDesvincularReceitaTelaAtendimentoAndamento: '.r-vinc-rec',
+        campoVincularReceita: '#receitaCod',
+        relacionarReceitaPedido: '#modal-receita-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo',
         // pedido em andamento em atendimento, elemento foi alterado, lista de pedidos em andamento movido para Receitas -> Importar Atendimentos
         pedidoEmAndamento: '#side-menu > li.active > ul > li:nth-child(1) > a',
-        // visualizarpedido
-        visualizar: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div > table > tbody > tr:nth-child(2) > td:nth-child(6) > a.visualizarFvc > i',
-        // buscarPedido
-        buscarPedido: '#top-search',
+        botaoVisualizar: ':nth-child(2) > :nth-child(6) > .visualizarFvc > .fa',
+        campoBuscarPedido: '#top-search',
         buscarFilial: '#search-form > div:nth-child(1) > input:nth-child(2)',
-        enviarBusca: '#search-form > input',
+        enviarBusca: '#search-form > div.checkbox.m-l.m-r-xs > [type="submit"][value="buscar"]',
+        mostrarTodos: '#search-form > div.form-group:nth-child(2) > label input[type="radio"][value="1"]',
         // integracaoChatguru
         brasileiro: '#isBr',
         estrangeiro: '#isNotBr',
@@ -310,47 +339,48 @@ export const elements: Elements = {
         cancelarIntegracaoChatguru: '.btn btn-white',
         salvarNumeroChatguru: '#saveChatGuruNumber',
         modalMensagemChatguru: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
-        // orcamentista
-        orcamentistaPedido: '#orcamentista',
+        orcamentista: '#orcamentista',
         // inserirTempoTratamento
         cabecalhoModalTempoTratamento: '#customTimeModal > div.modal-dialog > div > div.modal-header',
-        tempoTratamento: '#customTime',
+        botaoTempoTratamento: '#customTime',
         tempoTratamentoPadrao: '#customFormByTime > div.closestContainer > div > div:nth-child(1) > input',
         cancelarTempoTratamento: '#customTimeModal > div.modal-dialog > div > div.modal-footer > button.btn.btn-white',
         reimportarFormulas: '#reimporter',
         salvarTempoTratamento: '#saveByCustomTimeFormula',
         modalMensagemPedido: '#toast-container > div > div.toast-message',
         // confirmarPedido primeira etapa
-        abrirModalConfirmacaoPedido: '#bt-confirma-modal',
-        formaPagamentoPedido: '#confirmar-modal-body > div:nth-child(1) > div > select',
-        orcamentoEscolhido: '#confirmar-modal-body > div:nth-child(2) > div > label > input',
-        tempoRepeticaoPaciente: '#confirmar-modal-body > div:nth-child(4) > div > input',
-        salvarConfirmacaoPedidoPrimeiraEtapa: '#confirmacao-atendimento > div.modal-footer > input',
-        naoRealizarMonitoramentoAtendimento: '#confirmar-modal-body > div:nth-child(5) > div > input[type=checkbox]',
+        modalConfirmacaoPedido: '#bt-confirma-modal',
+        containerFormaPagamento: '#confirmar-modal-body > div.form-group > div.col-sm-7 > select.small-right-space',
+        orcamentoEscolhido: '#confirmar-modal-body > div.form-group > div.col-sm-7 > label > .small-right-space',
+        inserirTempoRepeticao: '#confirmar-modal-body > div:nth-child(4) > div > input',
+        salvarDadosConfirmacaoPedido: '#confirmacao-atendimento > div.modal-footer > input',
+        monitoramentoAtendimento: '#confirmar-modal-body > div:nth-child(5) > div > input[type=checkbox]',
         // confirmarPedido segunda etapa
         canalConfirmacaoPedido: '#confirmar-modal-body > div > div:nth-child(1) > div > select',
-        enviarEmailRastreamentoPedido: '#confirmar-modal-body > div > div:nth-child(2) > div > input.small-right-space',
-        liberarPedidoInclusao: '#confirmar-modal-body > div > div:nth-child(3) > div > input.small-right-space',
-        liberarPedidoCaixa: '#confirmar-modal-body > div > div:nth-child(4) > div > input.small-right-space',
-        observacaoCaixaBalcaoPedido: '#confirmar-modal-body > div > div:nth-child(5) > div > textarea',
-        notaDetalhada: '#confirmar-modal-body > div > div:nth-child(6) > div > input.small-right-space',
-        situacaoPagamento: '`input[name="pago"][value="${opcao}"]`',
-        enderecoEnvioPedido: '#confirmar-modal-body > div > div:nth-child(8) > div > a',
-        enderecoSelecionadoEnvioPedido: '#endereco-cliente',
-        observacaoExpedicao: '#confirmar-modal-body > div > div:nth-child(9) > div > textarea',
-        formaEnvio: '#confirmar-modal-body > div > div:nth-child(10) > div > select',
-        juntocomPedido: '#juntocom',
+        enviarEmailRastreamento: '#confirmar-modal-body > div > div:nth-child(2) > div > input.small-right-space',
+        naoMostrarPedidoInclusao: '#confirmar-modal-body > div > div:nth-child(3) > div > input.small-right-space',
+        naoMostrarPedidoCaixa: '#confirmar-modal-body > div > div:nth-child(4) > div > input.small-right-space',
+        observacaoCaixaBalcao: '#confirmar-modal-body > div > div:nth-child(1) > div > textarea',
+        notaDetalhada: '#confirmar-modal-body > div > div:nth-child(2) > div > input.small-right-space',
+        statusPagamento: '`input[name="pago"][value="${opcao}"]`',
+        enderecoEnvio: '#confirmar-modal-body > div > div:nth-child(4) > div > a:nth-child(1)',
+        enderecoEnvioSelecionado: '#endereco-cliente',
+        observacaoExpedicao: '#confirmar-modal-body > div > div:nth-child(5) > div > textarea',
+        campoFormaEnvio: '#confirmar-modal-body > div > div:nth-child(6) > div > select',
+        juntocom: '#juntocom',
         juntocomClinicaHigashi: '#confirmar-modal-body > div > div:nth-child(13) > div > input.small-right-space',
-        prometidoPara: '#confirmar-modal-body > div > div:nth-child(14) > div > input',
-        aromaShake: '#confirmar-modal-body > div > div:nth-child(15) > div > select',
-        aromaCapsulaSublingual: '#confirmar-modal-body > div > div:nth-child(16) > div > select',
-        observacaoGeral: '#confirmar-modal-body > div > div:nth-child(17) > div > textarea',
-        situacaoPossuiReceita: '`input[name="possui_receita"][value="${opcao}"]`',
+        campoprometidoPara: '#confirmar-modal-body > div > div:nth-child(9) > div > input',
+        campoAromaSache: '#confirmar-modal-body > div > div:nth-child(10) > div > select',
+        campoAromaCapsula: '#confirmar-modal-body > div > div:nth-child(11) > div > select',
+        observacaoGeral: '#confirmar-modal-body > div > div:nth-child(12) > div > textarea',
+        PossuiReceita: '#confirmar-modal-body > div > div:nth-child(13) > div > label:nth-child(2) > input',
+        possuiFormulaEspecial: '#confirmar-modal-body > div > div:nth-child(14) > div > input.small-right-space',
         pedidoUrgente: '#confirmar-modal-body > div > div:nth-child(20) > div > input.small-right-space',
         cancelarConfirmacaoPedido: '#form-amarelinha > div.modal-footer > div > div:nth-child(2) > button.btn.btn-white',
         dispararMensagemChatguru: '#form-amarelinha > div.modal-footer > div > div:nth-child(1) > input[type=checkbox]:nth-child(3)',
         preVisualizarPedido: '#preview',
         fecharPreVisualizarPedido: '#modal-preview-lg-content > div.modal-footer > button',
-        confirmarPedido: '#submit'
+        confirmarPedido: '#submit',
+        gerarLinkPagamento: '#bt-pagamento-modal',
     }
 }

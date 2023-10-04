@@ -1,5 +1,6 @@
 import { mount } from 'cypress/react'
-import { dadosParametros } from '../DadosParametros'
+import { dadosParametros, BuscarReceita } from '../DadosParametros'
+
 // describe custom Cypress commands in this file
 
 // load the global Cypress types
@@ -58,15 +59,22 @@ declare global {
 
       /**
         * comando customizado para acessar o menu Receitas.
-        * @example cy.acessarMenuReceitas()
+        * @example cy.acessarMenuReceitas(receitas)
         */
-      acessarMenuReceitas(element: string): Chainable<Element>
+      acessarMenuReceitas(receitas: string): Chainable<Element>
 
       /**
-       * * comando customizado para acessar o menu Atendimentos.
-       * @example cy.adicionaObservacaoFarmaceutica()
+       * comando customizado para acessar o menu Importação de Receitas.
+       * @example cy.acessarImportarReceitas(importarReceitas)
        */
-      acessarMenuAtendimentos(element: string): Chainable<Element>
+      acessarImportarReceitas(importarReceitas: string): Chainable<Element>
+
+      /**
+       * comando customizado para acessar o menu Importação de Receitas.
+       * @example cy.acessarGerenciarReceitas(gerenciarReceitas)
+       */
+      acessarGerenciarReceitas(gerenciarReceitas: string): Chainable<Element>
+
 
       /**
        * comando customizado para selecinar elemento e verificar se esta visivel.
@@ -78,7 +86,43 @@ declare global {
        * comando customizado para inserir Data.
        * @example cy.inserirData()
        */
-      inserirData(dataAtual: Date): Chainable<DataHora>
+      inserirData(campoData: string, data: string): Chainable<DataHora>
+
+      /**
+       * comando customizado para inserir datas.
+       * @example cy.inserirDataUmDiaMenosDiaAtual()
+       */
+      inserirDataUmDiaMenosDiaAtual(campoData: string): Chainable<Element>;
+
+      /**
+       * comando customizado para inserir Prescritor.
+       * @example cy.inserirPrescritor(dadosPrescritor)
+       */
+      inserirPrescritor(dadosPrescritor: string): Chainable<Element>;
+
+      /**
+       * comando customizado para inserir Paciente.
+       * @example cy.inserirPaciente(dadosPaciente)
+       */
+      inserirPaciente(opcaoSelecaoPaciente: string, paciente: string): Chainable<Element>;
+
+      /**
+       * comando customizado para inserir canal de recebimento.
+       * @example cy.selecionarCanalRecebimento(canalRecebimento)
+       */
+      selecionarCanalRecebimento(canalRecebimentoReceitas: string, canalRecebimento: string): Chainable<Element>;
+
+      /**
+       * comando customizado para inserir selecionar cluster.
+       * @example cy.selecionarCluster(cluster)
+       */
+      selecionarCluster(cluster: string): Chainable<Element>;
+
+      /**
+       * comando customizado para inserir selecionar tipo da receita.
+       * @example cy.inserirTipoReceita(tipoReceita)
+       */
+      inserirTipoReceita(tipoReceita: string): Chainable<Element>;
 
       /**
       * comando customizado para pegar numero da receita.
@@ -96,13 +140,7 @@ declare global {
       * comando customizado para buscar receitas.
       * @example cy.buscarReceita()
       */
-      buscarReceita(dataInicial: string, dataFinal: string): Chainable<void>;
-
-      /**
-     * comando customizado para inserir datas.
-     * @example cy.inserirData()
-     */
-      inserirData(element: string, dataAtual: string): Chainable<Element>;
+      buscarReceita(parametrosBuscarReceita: BuscarReceita): Chainable<void>;
 
       /**
        * comando customizado para capturar elemento e clicar.
@@ -120,7 +158,7 @@ declare global {
        * comando customizado de login.
        * @example cy.getElementAndClick(el.elemento)
        */
-      getElementAndType(element: string, text?: string): Chainable<Element>
+      getElementAndType(element: string, text: string): Chainable<Element>
 
       /**
        * comando customizado de login.
@@ -205,6 +243,77 @@ declare global {
      * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
      */
       responderDuvidaTecnica(acessarDuvidasTecnicas: string, status: string, texto: string): Chainable<Element>
+
+      /**
+           * comando customizado para excluir dúvida técnica, em receitas.
+           * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
+           */
+      atribuirUsuario(campoAtribuicao: string, usuario: string): Chainable<Element>
+
+      /**
+     * comando customizado para excluir dúvida técnica, em receitas.
+     * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
+     */
+      editarReceita(imagem: string, botaoImportarImagemReceitas: string, dadosPrescritor: string): Chainable<Element>
+
+      /**
+       * * comando customizado para acessar o menu Atendimentos.
+       * @example cy.adicionaObservacaoFarmaceutica()
+       */
+      acessarMenuAtendimentos(element: string): Chainable<Element>
+
+      /**
+       * * comando customizado para acessar o menu Pedidos em andamento.
+       * @example cy.acessarPedidosEmAndamento(atendimentoEmAndamento)
+       */
+      acessarAtendimentosEmAndamento(element: string): Chainable<Element>
+
+      /**
+       * * comando customizado para acessar selecionar opcao "meus" ou "todos" para buscar orçamentos.
+       * @example cy.opcaoMeusETodosBuscaOrcamento(Meus)
+       */
+      opcaoMeusETodosBuscaOrcamento(opcoesBusca: string)
+
+      /**
+       * * comando customizado para visulizar pedidos.
+       * @example cy.visualizarPedido(botaoVisualizar)
+       */
+      visualizarPedido(botaoVisualizar: string): Chainable<Element>;
+
+      /**
+       * * comando customizado para inserir tempo de tratamento.
+       * @example cy.inserirTempoTratamento(tempoTratamento)
+       */
+      inserirTempoTratamento(tempoTratamento: number): Chainable<Element>;
+
+      /**
+       * * comando customizado para confirmar pedidos.
+       * @example cy.confirmarPedido(dadosParametros.formaPagamento.Boleto,
+            dadosParametros.Pedido.tempoRepeticao,
+            dadosParametros.Pedido.textoObservacaoCaixaBalcao,
+            dadosParametros.statusPagamento.Pago,
+            dadosParametros.Pedido.textoObservacaoExpedicao,
+            dadosParametros.formaEnvio.SedexHoje,
+            dadosParametros.dataFormatada,
+            dadosParametros.aromaSache.AromaDaBasePadrao,
+            dadosParametros.aromaCapsula.laranjaComHortelaMenta,
+            dadosParametros.Pedido.textoObservacaoGeral)
+       */
+      confirmarPedido(formaPagamentoSelecionada: string, tempoRepeticao: number, observacaoCaixaBalcao: string, statusPagamento: string, textoObservacaoExpedicao: string, formaEnvio: string, prometidoPara: string, aromaSache: string, aromaCapsula: string, textoObservacaoGeral: string): Chainable<Element>;
+
+      /**
+       * * comando customizado para vincular receita ao pedido.
+       * @example cy.vincularReceitaPedido(botaoVincularReceitaTelaAtendimentoAndamento,dadosParametros.Receita.numeroReceita)
+       */
+      vincularReceitaPedido(botaoVincular: string, numeroReceita: number): Chainable<Element>;
+
+      /**
+       * * comando customizado para desvincular receita ao pedido.
+       * @example cy.desvincularReceitaPedido(tempoTratamento)
+       */
+      desvincularReceitaPedido(botaoDesvincular: string): Chainable<Element>;
+
+
 
 
     }

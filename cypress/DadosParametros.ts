@@ -1,12 +1,34 @@
 import { faker } from '@faker-js/faker';
 
+export interface BuscarReceita {
+
+    dataInicial?: string,
+    dataFinal?: string,
+    pendencia?: string,
+    cluster?: string,
+    canalRecebimento?: string,
+    receita?: number,
+    paciente?: string,
+    prescritor?: string,
+    pedido?: number,
+    ultimoModificador?: string,
+    orcamentista?: string,
+    atendenteResponsavel?: string
+
+};
 interface DadosParametros {
 
     Url: {
         inicio: string;
         importarReceitas: string;
+        gerenciarReceitas: string;
         atendimentos: string;
+        atendimentosEmAndamento: string;
     };
+
+    Usuario: {
+        usuarioAtribuido: string;
+    }
 
     Receita: {
         numeroReceita: number;
@@ -15,22 +37,24 @@ interface DadosParametros {
         senhaObservacaoFarmaceutica: string;
         textoObservacaoFarmaceutica: string;
         textoDuvidaTecnica: string;
-        responsavelRespostaDuvidaTecnica: string;
         responsavelAtualRespostaDuvidaTecnica: string;
         textoRespostaDuvidaTecnica: string;
+        ValorJuntoCom: string;
+        dataInicial: Date;
+        dataFinal: Date;
     };
 
     Prescritor: {
-        crmPrescritor: string[];
+        crmPrescritor: string;
     };
 
     Paciente: {
-        codigoPaciente: string[];
+        codigoPaciente: string;
     }
 
     OrcamentoFilial: {
-        pedido: string;
-        filial: string;
+        pedido: any;
+        filial: any;
     };
 
     caminhoArquivo: string;
@@ -44,8 +68,17 @@ interface DadosParametros {
         naoVarejos: string;
     };
 
+    Pedido: {
+        tempoTratamento: number;
+        tempoRepeticao: number;
+        textoObservacaoCaixaBalcao: string;
+        textoObservacaoExpedicao: string;
+        juntocomPedido: number[];
+        textoObservacaoGeral: string;
+    }
+
     buscaPedido: typeof BuscaPedido;
-    situacaoPagamento: typeof SituacaoPagamento;
+    statusPagamento: typeof StatusPagamento;
     formaPagamento: typeof FormaPagamento;
     canalFechamentoPedido: typeof CanalFechamentoPedido;
     filtroPendentes: typeof FiltroPendentes;
@@ -54,9 +87,12 @@ interface DadosParametros {
     tipoReceita: typeof TipoReceita;
     cluster: typeof Cluster;
     opcaoParametroBuscaCardOrcamento: typeof OpcaoParametroBuscaCardOrcamento;
-    marcarUso: typeof MarcarUso;
     categoriaDuvidaTecnica: typeof CategoriaDuvidaTecnica;
     statusDuvidaTecnica: typeof StatusDuvidaTecnica;
+    formaEnvio: typeof FormaEnvio;
+    aromaSache: typeof AromaSache;
+    aromaCapsula: typeof AromaCapsula;
+    possuiReceitaPedido: typeof PossuiReceitaPedido;
 
 }
 
@@ -69,13 +105,13 @@ enum BuscaPedido {
     Antigos = 'Antigos',
 }
 
-enum SituacaoPagamento {
-    NaoPago = '0',
-    Pago = '1',
+enum StatusPagamento {
+    NaoPago = '#confirmar-modal-body > div > div:nth-child(3) > div > label:nth-child(1) > input',
+    Pago = '#confirmar-modal-body > div > div:nth-child(3) > div > label:nth-child(2) > input',
 }
 
-enum FormaPagamento {
-    AcertoVisita = '10',
+enum FormaPagamentoHkm {
+    AcertoVisita = '11',
     AcertoVisitaPlanilha = '14',
     Boleto = '2',
     BoletoLiberarSemPgto = '9',
@@ -91,6 +127,28 @@ enum FormaPagamento {
     Donheiro = '6',
     Outro = '8',
     Pix = '16',
+
+}
+
+enum FormaPagamento {
+    AcertoVisita = '11',
+    Boleto = '2',
+    BoletoLiberarSemPgto = '9',
+    BoletoCaixaPaciente = '3',
+    BoletoCaixaPrescritor15Dias = '15',
+    BoletoPorEmail = '2',
+    BoletoPorEmailEspecial = '9',
+    cartaoCredito = '1',
+    CartaoGpeAguardandoPagamento = '12',
+    CartaoGpeLiberadoSemPagamento = '13',
+    CartaoDebito = '10',
+    Cheque = '7',
+    Cortesia = '5',
+    Deposito = '4',
+    Donheiro = '6',
+    Outro = '8',
+    Pix = '14',
+    PIXPrescritorLiberarSemPgto = '16'
 }
 
 enum CanalFechamentoPedido {
@@ -101,6 +159,71 @@ enum CanalFechamentoPedido {
     BalcaoSmart = 'balcao_smart',
     TeleSmart = 'tele_smart',
 }
+
+
+enum FormaEnvio {
+    SedexSC = '1',
+    SedexOutrosEstados = '2',
+    Sedex10 = '3',
+    Sedex10Cortesia = '4',
+    EnvioGrátisSedex = '5',
+    Internacional = '6',
+    BalcãoCentro = '7',
+    TeleEntrega = '8',
+    SedexFloripa = '9',
+    BalcãoHKM = '10',
+    Aéreo = '11',
+    TransportadoraQuality = '12',
+    TransportadoraQualityGratis = '13',
+    ExpediçãoHKM = '14',
+    ExpediçãoSMART = '15',
+    SedexHoje = '16',
+}
+
+
+enum AromaSache {
+    SelecioneAroma = 'Selecione o Aroma',
+    Abacaxi = 'Abacaxi',
+    AromaDaBasePadrao = 'Aroma da base padrão',
+    Baunilha = 'Baunilha',
+    Cacau = 'Cacau',
+    framboesa = 'Framboesa',
+    laranja = 'Laranja',
+    laranjaComHortelaMenta = 'Laranja com hortelã/menta',
+    limao = 'Limão',
+    mentaHortela = 'Menta/hortelã',
+    morango = 'Morango',
+    semAroma = 'Sem aroma',
+    uva = 'Uva',
+}
+
+enum AromaCapsula {
+    SelecioneAroma = 'Selecione o Aroma',
+    abacaxi = 'Abacaxi',
+    aromaBasePadrao = 'Aroma da base padrão',
+    baunilha = 'Baunilha',
+    cacau = 'Cacau',
+    framboesa = 'Framboesa',
+    laranja = 'Laranja',
+    laranjaComHortelaMenta = 'Laranja com hortelã/menta',
+    limao = 'Limão',
+    mentaHortela = 'Menta/hortelã',
+    morango = 'Morango',
+    semAroma = 'Sem aroma',
+    uva = 'Uva',
+}
+
+enum PossuiReceitaPedido {
+    Não = '0',
+    Sim = '1'
+}
+
+
+
+
+
+
+
 
 enum FiltroPendentes {
     Todos = '0',
@@ -140,15 +263,15 @@ enum TipoReceita {
 enum Cluster {
     Selecione = '',
     cluster1 = '1',
-    cluster2 = '2',
-    cluster3 = '3',
-    cluster4 = '4',
-    cluster5 = '5',
-    cluster6 = 'Pediátrico',
-    cluster7 = 'Prescritores',
-    cluster8 = 'Atendimento injetáveis',
-    cluster12 = 'Consultoria técnica Injetáveis',
-    cluster14 = 'Recepção',
+    // cluster2 = '2',
+    // cluster3 = '3',
+    // cluster4 = '4',
+    // cluster5 = '5',
+    // clusterPediatrico = 'Pediátrico',
+    // clusterPrescritores = 'Prescritores',
+    // clusterInjetaveis = 'Atendimento injetáveis',
+    // clusterConsultoriaTecnicaInjetaveis = 'Consultoria técnica Injetáveis',
+    // clusterRecepcao = 'Recepção',
 };
 
 enum OpcaoParametroBuscaCardOrcamento {
@@ -158,19 +281,6 @@ enum OpcaoParametroBuscaCardOrcamento {
     VincularReceita = 'Vincular receita',
 }
 
-enum MarcarUso {
-    Elemento_0 = 0,
-    Elemento_1 = 1,
-    Elemento_2 = 2,
-    Elemento_3 = 3,
-    Elemento_5 = 5,
-    Elemento_6 = 6,
-    Elemento_7 = 7,
-    Elemento_8 = 8,
-    Elemento_9 = 9,
-    Elemento_10 = 10,
-    Elemento_11 = 11,
-}
 
 enum CategoriaDuvidaTecnica {
     SelecioneUmaCategoria = 'Selecione uma categoria *',
@@ -197,37 +307,46 @@ enum StatusDuvidaTecnica {
 export const dadosParametros: DadosParametros = {
 
     Url: {
-        inicio: 'http://192.168.0.66:9200/lembretes',
-        importarReceitas: 'http://192.168.0.66:9200/receita/importar',
-        atendimentos: 'http://192.168.0.66:9200/atendimentos/page/1/',
+        inicio: 'http://192.168.0.66:9220/lembretes',
+        importarReceitas: 'http://192.168.0.66:9220/receita/importar',
+        gerenciarReceitas: 'http://192.168.0.66:9220/receita/gerenciar',
+        atendimentos: 'http://192.168.0.66:9220/atendimentos/page/1/',
+        atendimentosEmAndamento: 'http://192.168.0.66:9220/atendimentos/page/1/',
+    },
+
+    Usuario: {
+        // usuarioAtribuido: [faker.helpers.arrayElement(['Tamires', 'Andressa', 'Bruna', 'Mariana', 'Jessica', 'Amanda', 'Maria', 'Daian', 'Ana'])].toString(),
+        usuarioAtribuido: [faker.helpers.arrayElement(['Bruna'])].toString(),
     },
 
     Receita: {
-        numeroReceita: 0,
+        numeroReceita: 16,
         clonarObservacaoFarmaceutica: false,
         senhaObservacaoFarmaceutica: [faker.helpers.arrayElement(['789123'])].toString(),
         textoObservacaoFarmaceutica: [faker.helpers.arrayElement(['Teste'])].toString(),
         textoDuvidaTecnica: [faker.helpers.arrayElement(['Teste'])].toString(),
-        responsavelRespostaDuvidaTecnica: [faker.helpers.arrayElement(['Tamires', 'Andressa', 'Bruna', 'Mariana', 'Jessica', 'Amanda', 'Maria', 'Daian', 'Ana'])].toString(),
-        usuárioMarcarUso: [faker.helpers.arrayElement(['adm'])].toString(),
+        usuárioMarcarUso: [faker.helpers.arrayElement(['jose'])].toString(),
         responsavelAtualRespostaDuvidaTecnica: '',
-        textoRespostaDuvidaTecnica:faker.lorem.paragraph(),
+        textoRespostaDuvidaTecnica: faker.lorem.paragraph(),
+        ValorJuntoCom: [faker.helpers.arrayElement([1020, 1021, 1022])].toString(),
+        dataInicial: new Date('2023-01-01T10:00'),
+        dataFinal: new Date('2023-10-30T10:00'),
     },
 
     Prescritor: {
-        crmPrescritor: [faker.helpers.arrayElement(['40452-SP'])],
+        crmPrescritor: faker.helpers.arrayElement(['8205-SC']),
     },
 
     Paciente: {
-        codigoPaciente: [faker.helpers.arrayElement(['618484'])],
+        codigoPaciente: faker.helpers.arrayElement(['149877']),
     },
 
     OrcamentoFilial: {
-        pedido: '12345',
-        filial: 'FILIAL-01',
+        pedido: '',
+        filial: '',
     },
 
-    caminhoArquivo: 'fixtures/',
+    caminhoArquivo: '/',
 
     dataAtual: new Date(),
     dataFormatada: new Date().toISOString().slice(0, 16),
@@ -239,8 +358,17 @@ export const dadosParametros: DadosParametros = {
         naoVarejos: '3',
     },
 
+    Pedido: {
+        tempoTratamento: 30,
+        tempoRepeticao: 0,
+        textoObservacaoCaixaBalcao: faker.lorem.paragraph(),
+        textoObservacaoExpedicao: faker.lorem.paragraph(),
+        juntocomPedido: faker.helpers.arrayElements([107456, 107246]),
+        textoObservacaoGeral: faker.lorem.paragraph(),
+    },
+
     buscaPedido: BuscaPedido,
-    situacaoPagamento: SituacaoPagamento,
+    statusPagamento: StatusPagamento,
     formaPagamento: FormaPagamento,
     canalFechamentoPedido: CanalFechamentoPedido,
     filtroPendentes: FiltroPendentes,
@@ -249,9 +377,11 @@ export const dadosParametros: DadosParametros = {
     tipoReceita: TipoReceita,
     cluster: Cluster,
     opcaoParametroBuscaCardOrcamento: OpcaoParametroBuscaCardOrcamento,
-    marcarUso: MarcarUso,
     categoriaDuvidaTecnica: CategoriaDuvidaTecnica,
     statusDuvidaTecnica: StatusDuvidaTecnica,
-
+    formaEnvio: FormaEnvio,
+    aromaSache: AromaSache,
+    aromaCapsula: AromaCapsula,
+    possuiReceitaPedido: PossuiReceitaPedido,
 
 };
