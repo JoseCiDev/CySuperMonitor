@@ -73,8 +73,9 @@ interface DadosParametros {
         tempoRepeticao: number;
         textoObservacaoCaixaBalcao: string;
         textoObservacaoExpedicao: string;
-        juntocomPedido: number[];
+        juntocomPedido: string;
         textoObservacaoGeral: string;
+        prometidoPara: Date;
     }
 
     buscaPedido: typeof BuscaPedido;
@@ -363,8 +364,9 @@ export const dadosParametros: DadosParametros = {
         tempoRepeticao: 0,
         textoObservacaoCaixaBalcao: faker.lorem.paragraph(),
         textoObservacaoExpedicao: faker.lorem.paragraph(),
-        juntocomPedido: faker.helpers.arrayElements([107456, 107246]),
+        juntocomPedido: faker.helpers.arrayElements([107456, 107246]).toString(),
         textoObservacaoGeral: faker.lorem.paragraph(),
+        prometidoPara: new Date(),
     },
 
     buscaPedido: BuscaPedido,

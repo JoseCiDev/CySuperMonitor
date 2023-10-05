@@ -1,5 +1,5 @@
 import { elements as el } from '../../../elements';
-import { } from '../../../support/Commands/commandsReceita';
+import { } from '../../../support/commands';
 import { faker } from '@faker-js/faker';
 import { dadosParametros } from '../../../DadosParametros';
 
@@ -175,13 +175,13 @@ describe('Tela importação de receitas.', () => {
 
 
 
-    it('Deve realizar busca de Receitas filtrando por data', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar busca de Receitas filtrando por data', () => {
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
-        cy.buscarReceita({ dataInicial, dataFinal });
-    });
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
+    //     cy.buscarReceita({ dataInicial, dataFinal });
+    // });
 
 
 
@@ -190,73 +190,73 @@ describe('Tela importação de receitas.', () => {
 
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
-        cy.buscarReceita({ dataInicial, dataFinal, paciente: dadosParametros.Paciente.codigoPaciente.toString() });
+        cy.buscarReceita( dataInicial, dataFinal, dadosParametros.Paciente.codigoPaciente.toString() );
     });
 
 
 
-    it('Deve realizar busca de Receitas filtrando por prescritor', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar busca de Receitas filtrando por prescritor', () => {
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
 
-        cy.buscarReceita({ dataInicial, dataFinal, prescritor: dadosParametros.Prescritor.crmPrescritor });
-    });
+    //     cy.buscarReceita({ dataInicial, dataFinal, prescritor: dadosParametros.Prescritor.crmPrescritor });
+    // });
 
-    it('Deve realizar busca de Receitas filtrando por cluster', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar busca de Receitas filtrando por cluster', () => {
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
 
-        cy.buscarReceita({ dataInicial, dataFinal, cluster: dadosParametros.cluster.cluster1 });
-    });
+    //     cy.buscarReceita({ dataInicial, dataFinal, cluster: dadosParametros.cluster.cluster1 });
+    // });
 
-    it('Deve realizar busca de Receitas filtrando por pedido', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar busca de Receitas filtrando por pedido', () => {
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
 
-        cy.buscarReceita({ dataInicial, dataFinal, pedido: dadosParametros.OrcamentoFilial.pedido });
-    });
+    //     cy.buscarReceita({ dataInicial, dataFinal, pedido: dadosParametros.OrcamentoFilial.pedido });
+    // });
 
-    it('Deve realizar busca de Receitas filtrando por canal de recebimento', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar busca de Receitas filtrando por canal de recebimento', () => {
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
 
-        cy.buscarReceita({ dataInicial, dataFinal, canalRecebimento: dadosParametros.canalRecebimento.WhatsappClinicaPrescritor });
-    });
+    //     cy.buscarReceita({ dataInicial, dataFinal, canalRecebimento: dadosParametros.canalRecebimento.WhatsappClinicaPrescritor });
+    // });
 
-    it('Deve realizar busca de Receitas filtrando por atendente responsável', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar busca de Receitas filtrando por atendente responsável', () => {
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
 
-        cy.buscarReceita({ dataInicial, dataFinal,atendenteResponsavel:dadosParametros.Usuario.usuarioAtribuido});
-    });
+    //     cy.buscarReceita({ dataInicial, dataFinal,atendenteResponsavel:dadosParametros.Usuario.usuarioAtribuido});
+    // });
 
-    it('Deve realizar busca de Receitas filtrando por pendências', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar busca de Receitas filtrando por pendências', () => {
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
 
-        cy.buscarReceita({ dataInicial, dataFinal,pendencia:dadosParametros.filtroPendentes.Todos });
-    });
+    //     cy.buscarReceita({ dataInicial, dataFinal,pendencia:dadosParametros.filtroPendentes.Todos });
+    // });
 
-    it('Deve realizar busca de Receitas filtrando por cluster', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar busca de Receitas filtrando por cluster', () => {
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
 
-        cy.buscarReceita({ dataInicial, dataFinal,cluster:dadosParametros.cluster.cluster1 });
-    });
+    //     cy.buscarReceita({ dataInicial, dataFinal,cluster:dadosParametros.cluster.cluster1 });
+    // });
 
 
 

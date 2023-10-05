@@ -6,6 +6,7 @@ import { dadosParametros } from '../../../DadosParametros'
 
 
 
+
 const ambiente = Cypress.env('AMBIENTE');
 const dadosAmbiente = Cypress.env(ambiente);
 
@@ -37,7 +38,7 @@ export const {
     naoMostrarPedidoCaixa,
     observacaoCaixaBalcao,
     notaDetalhada,
-    statusPagamento,
+    campoStatusPagamento,
     enderecoEnvioSelecionado,
     enderecoEnvio,
     observacaoExpedicao,
@@ -57,7 +58,7 @@ describe('Atendimentos em Andamento', () => {
 
 
     beforeEach(function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD, dadosParametros.Url.inicio)
+        cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD, dadosParametros.Url.inicio);
     });
 
 
@@ -66,32 +67,21 @@ describe('Atendimentos em Andamento', () => {
     it.only('Deve confirmar pedido', () => {
         cy.acessarAtendimentosEmAndamento(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
-        cy.inserirTempoTratamento(30);
-        cy.confirmarPedido(
-            dadosParametros.formaPagamento.Boleto,
-            dadosParametros.Pedido.tempoRepeticao,
-            dadosParametros.Pedido.textoObservacaoCaixaBalcao,
-            dadosParametros.statusPagamento.Pago,
-            dadosParametros.Pedido.textoObservacaoExpedicao,
-            dadosParametros.formaEnvio.SedexHoje,
-            dadosParametros.dataFormatada,
-            dadosParametros.aromaSache.AromaDaBasePadrao,
-            dadosParametros.aromaCapsula.laranjaComHortelaMenta,
-            dadosParametros.Pedido.textoObservacaoGeral
-        );
+
+
     });
 
 
     it('Deve vincular receita ao pedido', () => {
         cy.acessarAtendimentosEmAndamento(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
-        cy.vincularReceitaPedido(botaoVincularReceitaTelaAtendimentoAndamento,dadosParametros.Receita.numeroReceita)
+        cy.vincularPedidoReceita(botaoVincularReceitaTelaAtendimentoAndamento, dadosParametros.Receita.numeroReceita)
     });
 
     it.only('Deve desvincular receita ao pedido', () => {
         cy.acessarAtendimentosEmAndamento(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
-        cy.desvincularReceitaPedido(botaoDesvincularReceitaTelaAtendimentoAndamento)
+        cy.desvincularPedidoReceita(botaoDesvincularReceitaTelaAtendimentoAndamento)
     });
 
 

@@ -1,3 +1,3 @@
 
-import './Commands/commandsReceita';
+import 'commands/';
 import '@babel/polyfill'

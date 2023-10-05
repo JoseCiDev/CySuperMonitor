@@ -140,7 +140,19 @@ declare global {
       * comando customizado para buscar receitas.
       * @example cy.buscarReceita()
       */
-      buscarReceita(parametrosBuscarReceita: BuscarReceita): Chainable<void>;
+      // buscarReceita(parametrosBuscarReceita: BuscarReceita): Chainable<void>;
+      buscarReceita(dataInicial?: string,
+        dataFinal?: string,
+        pendencia?: string,
+        cluster?: string,
+        canalRecebimento?: string,
+        receita?: number,
+        paciente?: string,
+        prescritor?: string,
+        orcamento?: number,
+        ultimoModificador?: string,
+        orcamentista?: string,
+        atendenteResponsavel?: string): Chainable<void>;
 
       /**
        * comando customizado para capturar elemento e clicar.
@@ -284,7 +296,7 @@ declare global {
        * * comando customizado para inserir tempo de tratamento.
        * @example cy.inserirTempoTratamento(tempoTratamento)
        */
-      inserirTempoTratamento(tempoTratamento: number): Chainable<Element>;
+      inserirTempoTratamento(tempoTratamento: string): Chainable<Element>;
 
       /**
        * * comando customizado para confirmar pedidos.
@@ -299,20 +311,36 @@ declare global {
             dadosParametros.aromaCapsula.laranjaComHortelaMenta,
             dadosParametros.Pedido.textoObservacaoGeral)
        */
-      confirmarPedido(formaPagamentoSelecionada: string, tempoRepeticao: number, observacaoCaixaBalcao: string, statusPagamento: string, textoObservacaoExpedicao: string, formaEnvio: string, prometidoPara: string, aromaSache: string, aromaCapsula: string, textoObservacaoGeral: string): Chainable<Element>;
+      confirmarPedido(
+        formaPagamentoSelecionada: string,
+        tempoRepeticao: number,
+        observacaoCaixaBalcao: string,
+        statusPagamento: string,
+        textoObservacaoExpedicao: string,
+        formaEnvio: string,
+        prometidoPara: string,
+        aromaSache: string,
+        aromaCapsula: string,
+        textoObservacaoGeral: string,
+      ): Chainable<Element>;
 
       /**
        * * comando customizado para vincular receita ao pedido.
        * @example cy.vincularReceitaPedido(botaoVincularReceitaTelaAtendimentoAndamento,dadosParametros.Receita.numeroReceita)
        */
-      vincularReceitaPedido(botaoVincular: string, numeroReceita: number): Chainable<Element>;
+      vincularPedidoReceita(botaoVincular: string, numeroReceita: number): Chainable<Element>;
 
       /**
        * * comando customizado para desvincular receita ao pedido.
        * @example cy.desvincularReceitaPedido(tempoTratamento)
        */
-      desvincularReceitaPedido(botaoDesvincular: string): Chainable<Element>;
+      desvincularPedidoReceita(botaoDesvincular: string): Chainable<Element>;
 
+      /**
+      * * comando customizado para importar orçamentos .
+      * @example cy.importarOrcamento(modalImportacao,numerOrcamento,numeroFilial,importarOrcamento)
+      */
+      importarOrcamento(): Chainable<Element>
 
 
 

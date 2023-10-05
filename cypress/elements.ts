@@ -63,7 +63,7 @@ interface Elements<T = string> {
         filtroPendenciasTodos: T;
         filtroPendenciasPendentes: T;
         filtroPendenciasVinculados: T;
-        botaoBuscarReceitas: T;
+        botaoProcurarReceitas: T;
         labelProcurarReceitas: T;
         numeroReceitas: T;
         checkboxMarcarUso: T;
@@ -156,12 +156,12 @@ interface Elements<T = string> {
         naoMostrarPedidoCaixa: T;
         observacaoCaixaBalcao: T;
         notaDetalhada: T;
-        statusPagamento: T;
+        campoStatusPagamento: T;
         enderecoEnvio: T;
         enderecoEnvioSelecionado: T;
         observacaoExpedicao: T;
         campoFormaEnvio: T;
-        juntocom: T;
+        juntocomconfirmacaoPedido: T;
         juntocomClinicaHigashi: T;
         campoprometidoPara: T;
         campoAromaSache: T;
@@ -173,11 +173,20 @@ interface Elements<T = string> {
         dispararMensagemChatguru: T;
         preVisualizarPedido: T;
         fecharPreVisualizarPedido: T;
-        confirmarPedido: T;
+        enviarconfirmarPedido: T;
         mostrarTodos: T;
         possuiFormulaEspecial: T;
         gerarLinkPagamento: T;
         relacionarReceitaPedido: T;
+        mostrarPedidosEncerrados: T;
+        reabrirPedido: T;
+        confirmaReabrirPedido: T;
+        opcoesUsuario: T;
+        abrirModalImportarOrcamento: T;
+        importarOrcamento: T;
+        importarFilial: T;
+        importarComoNovoAtendimento: T;
+        sincronizarOrcamento: T;
 
     };
 }
@@ -260,7 +269,7 @@ export const elements: Elements = {
         filtroPendenciasTodos: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(1)',
         filtroPendenciasPendentes: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(2)',
         filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
-        botaoBuscarReceitas: '#filterReceitas > div:nth-child(4) > div > button',
+        botaoProcurarReceitas: '#filterReceitas > div:nth-child(4) > div > button',
         labelProcurarReceitas: '[button type="submit"]' && 'Procurar',
         numeroReceitas: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
         //marcar uso
@@ -362,12 +371,12 @@ export const elements: Elements = {
         naoMostrarPedidoCaixa: '#confirmar-modal-body > div > div:nth-child(4) > div > input.small-right-space',
         observacaoCaixaBalcao: '#confirmar-modal-body > div > div:nth-child(1) > div > textarea',
         notaDetalhada: '#confirmar-modal-body > div > div:nth-child(2) > div > input.small-right-space',
-        statusPagamento: '`input[name="pago"][value="${opcao}"]`',
+        campoStatusPagamento: '`input[name="pago"][value="${opcao}"]`',
         enderecoEnvio: '#confirmar-modal-body > div > div:nth-child(4) > div > a:nth-child(1)',
         enderecoEnvioSelecionado: '#endereco-cliente',
         observacaoExpedicao: '#confirmar-modal-body > div > div:nth-child(5) > div > textarea',
         campoFormaEnvio: '#confirmar-modal-body > div > div:nth-child(6) > div > select',
-        juntocom: '#juntocom',
+        juntocomconfirmacaoPedido: '#juntocom',
         juntocomClinicaHigashi: '#confirmar-modal-body > div > div:nth-child(13) > div > input.small-right-space',
         campoprometidoPara: '#confirmar-modal-body > div > div:nth-child(9) > div > input',
         campoAromaSache: '#confirmar-modal-body > div > div:nth-child(10) > div > select',
@@ -380,7 +389,18 @@ export const elements: Elements = {
         dispararMensagemChatguru: '#form-amarelinha > div.modal-footer > div > div:nth-child(1) > input[type=checkbox]:nth-child(3)',
         preVisualizarPedido: '#preview',
         fecharPreVisualizarPedido: '#modal-preview-lg-content > div.modal-footer > button',
-        confirmarPedido: '#submit',
+        enviarconfirmarPedido: '#submit',
         gerarLinkPagamento: '#bt-pagamento-modal',
+        //pedido encerrado
+        mostrarPedidosEncerrados: '#search-form > div.checkbox.m-l.m-r-xs > input[type=checkbox]:nth-child(1)',
+        reabrirPedido: '#reabrir',
+        confirmaReabrirPedido: 'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-footer > button.btn.btn-danger.pull-right',
+        //importar orcamento manualmente
+        opcoesUsuario: '#username-link',
+        abrirModalImportarOrcamento: '#page-wrapper > div.row.border-bottom > nav > ul > li:nth-child(1) > div > ul > li:nth-child(3) > a',
+        importarOrcamento: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(1) > div > input',
+        importarFilial: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(3) > div > input',
+        importarComoNovoAtendimento: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(5) > div > span > input',
+        sincronizarOrcamento: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div.row > div:nth-child(2) > div > button',
     }
 }
