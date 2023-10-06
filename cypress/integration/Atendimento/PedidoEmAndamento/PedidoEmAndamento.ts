@@ -64,9 +64,10 @@ describe('Atendimentos em Andamento', () => {
 
 
 
-    it.only('Deve confirmar pedido', () => {
+    it('Deve confirmar pedido', () => {
         cy.acessarAtendimentosEmAndamento(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
+        cy.inserirTempoTratamento('30');
 
 
     });
@@ -78,7 +79,7 @@ describe('Atendimentos em Andamento', () => {
         cy.vincularPedidoReceita(botaoVincularReceitaTelaAtendimentoAndamento, dadosParametros.Receita.numeroReceita)
     });
 
-    it.only('Deve desvincular receita ao pedido', () => {
+    it('Deve desvincular receita ao pedido', () => {
         cy.acessarAtendimentosEmAndamento(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
         cy.desvincularPedidoReceita(botaoDesvincularReceitaTelaAtendimentoAndamento)

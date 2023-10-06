@@ -76,6 +76,8 @@ interface DadosParametros {
         juntocomPedido: string;
         textoObservacaoGeral: string;
         prometidoPara: Date;
+        orcamentista: string;
+        atendentePedido: string;
     }
 
     buscaPedido: typeof BuscaPedido;
@@ -188,30 +190,30 @@ enum AromaSache {
     AromaDaBasePadrao = 'Aroma da base padrão',
     Baunilha = 'Baunilha',
     Cacau = 'Cacau',
-    framboesa = 'Framboesa',
-    laranja = 'Laranja',
-    laranjaComHortelaMenta = 'Laranja com hortelã/menta',
-    limao = 'Limão',
-    mentaHortela = 'Menta/hortelã',
-    morango = 'Morango',
-    semAroma = 'Sem aroma',
-    uva = 'Uva',
+    Framboesa = 'Framboesa',
+    Laranja = 'Laranja',
+    LaranjaComHortelaMenta = 'Laranja com hortelã/menta',
+    Limao = 'Limão',
+    MentaHortela = 'Menta/hortelã',
+    Morango = 'Morango',
+    SemAroma = 'Sem aroma',
+    Uva = 'Uva',
 }
 
 enum AromaCapsula {
     SelecioneAroma = 'Selecione o Aroma',
-    abacaxi = 'Abacaxi',
-    aromaBasePadrao = 'Aroma da base padrão',
-    baunilha = 'Baunilha',
-    cacau = 'Cacau',
-    framboesa = 'Framboesa',
-    laranja = 'Laranja',
-    laranjaComHortelaMenta = 'Laranja com hortelã/menta',
-    limao = 'Limão',
-    mentaHortela = 'Menta/hortelã',
-    morango = 'Morango',
-    semAroma = 'Sem aroma',
-    uva = 'Uva',
+    Abacaxi = 'Abacaxi',
+    AromaBasePadrao = 'Aroma da base padrão',
+    Baunilha = 'Baunilha',
+    Cacau = 'Cacau',
+    Framboesa = 'Framboesa',
+    Laranja = 'Laranja',
+    LaranjaComHortelaMenta = 'Laranja com hortelã/menta',
+    Limao = 'Limão',
+    MentaHortela = 'Menta/hortelã',
+    Morango = 'Morango',
+    SemAroma = 'Sem aroma',
+    Uva = 'Uva',
 }
 
 enum PossuiReceitaPedido {
@@ -321,7 +323,7 @@ export const dadosParametros: DadosParametros = {
     },
 
     Receita: {
-        numeroReceita: 16,
+        numeroReceita: 0,
         clonarObservacaoFarmaceutica: false,
         senhaObservacaoFarmaceutica: [faker.helpers.arrayElement(['789123'])].toString(),
         textoObservacaoFarmaceutica: [faker.helpers.arrayElement(['Teste'])].toString(),
@@ -367,6 +369,8 @@ export const dadosParametros: DadosParametros = {
         juntocomPedido: faker.helpers.arrayElements([107456, 107246]).toString(),
         textoObservacaoGeral: faker.lorem.paragraph(),
         prometidoPara: new Date(),
+        orcamentista: '',
+        atendentePedido: '',
     },
 
     buscaPedido: BuscaPedido,

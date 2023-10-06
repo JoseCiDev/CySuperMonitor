@@ -187,6 +187,14 @@ interface Elements<T = string> {
         importarFilial: T;
         importarComoNovoAtendimento: T;
         sincronizarOrcamento: T;
+        quadroInformacoesAmarelinhaConfirmada: T;
+        orcamentoQuadroInformacoesAmarelinhaConfirmada: T;
+        orcamentistaQuadroInformacoesAmarelinhaConfirmada: T;
+        inclusaoQuadroInformacoesAmarelinhaConfirmada: T;
+        atendenteQuadroInformacoesAmarelinhaConfirmada: T;
+        textoQuadroInformacoesAmarelinhaConfirmada: T;
+        orcamentistaPedido: T;
+        atendentePedido: T;
 
     };
 }
@@ -333,7 +341,7 @@ export const elements: Elements = {
         relacionarReceitaPedido: '#modal-receita-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo',
         // pedido em andamento em atendimento, elemento foi alterado, lista de pedidos em andamento movido para Receitas -> Importar Atendimentos
         pedidoEmAndamento: '#side-menu > li.active > ul > li:nth-child(1) > a',
-        botaoVisualizar: ':nth-child(2) > :nth-child(6) > .visualizarFvc > .fa',
+        botaoVisualizar: ':nth-child(2) > :nth-child(6) > a.visualizarFvc',
         campoBuscarPedido: '#top-search',
         buscarFilial: '#search-form > div:nth-child(1) > input:nth-child(2)',
         enviarBusca: '#search-form > div.checkbox.m-l.m-r-xs > [type="submit"][value="buscar"]',
@@ -402,5 +410,15 @@ export const elements: Elements = {
         importarFilial: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(3) > div > input',
         importarComoNovoAtendimento: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(5) > div > span > input',
         sincronizarOrcamento: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div.row > div:nth-child(2) > div > button',
+        //quadro de informacoes da amarelinha confirmada
+        quadroInformacoesAmarelinhaConfirmada:'.infosInclusao',
+        orcamentoQuadroInformacoesAmarelinhaConfirmada:'#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(1)',
+        orcamentistaQuadroInformacoesAmarelinhaConfirmada:'#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(2)',
+        inclusaoQuadroInformacoesAmarelinhaConfirmada:'#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(3)',
+        atendenteQuadroInformacoesAmarelinhaConfirmada:'#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(4)',
+        textoQuadroInformacoesAmarelinhaConfirmada:'#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao',
+        //Usuarios do atendimento
+        orcamentistaPedido:'#orcamentista',
+        atendentePedido:'#atendente',
     }
 }

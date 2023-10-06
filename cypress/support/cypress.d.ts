@@ -125,10 +125,10 @@ declare global {
       inserirTipoReceita(tipoReceita: string): Chainable<Element>;
 
       /**
-      * comando customizado para pegar numero da receita.
-      * @example cy.getReceitaNumero()
+      * comando customizado para aplicar o nome da orçamentista.
+      * @example cy.setOrcamentistaPedido()
       */
-      getReceitaNumero(numeroReceita: number): Chainable<Element>;
+      setDadoCapturado(dadoCapturado: string): Chainable<Element>;
 
       /**
       * comando customizado para setar numero da receita.
@@ -341,6 +341,12 @@ declare global {
       * @example cy.importarOrcamento(modalImportacao,numerOrcamento,numeroFilial,importarOrcamento)
       */
       importarOrcamento(): Chainable<Element>
+
+      /**
+      * * comando customizado para importar orçamentos .
+      * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+      */
+      alterarUsuariosPedido(orcamentista: string, atendente: string): Chainable<Element>
 
 
 

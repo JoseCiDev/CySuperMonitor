@@ -28,7 +28,7 @@
 
 
 
-// import Database from './Database/database';
+
 import { elements as el } from '../elements'
 import { dadosParametros } from '../DadosParametros'
 
@@ -144,6 +144,9 @@ Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, u
   const ambiente = Cypress.env('AMBIENTE');
   const dadosAmbiente = Cypress.env(ambiente);
 
+  // Limpar cookies antes de fazer login novamente
+  cy.clearCookies();
+
   cy.session('login', () => {
     cy.visit(dadosAmbiente.BASEURL);
 
@@ -155,8 +158,6 @@ Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, u
 
     cy.url()
       .should('contain', url);
-
-
 
     cy.request({
       method: 'POST',
@@ -181,6 +182,7 @@ Cypress.Commands.add('login', (entrar: string, usuario: string, senha: string, u
   });
   cy.visit(dadosAmbiente.BASEURL + '/lembretes');
 });
+
 
 
 
@@ -464,6 +466,7 @@ Cypress.Commands.add('visualizarPedido', (botaoVisualizar: string): void => {
 
 
 
+
 Cypress.Commands.add('inserirTempoTratamento', (tempoTratamento: string) => {
   cy.getElementAndClick(botaoTempoTratamento);
   cy.wait(2000);
@@ -549,7 +552,9 @@ Cypress.Commands.add('desvincularPedidoReceita', (botaoDesvincular: string) => {
 
 
 
+Cypress.Commands.add('alterarUsuariosPedido', (orcamentista: string, atendente: string) => {
 
+})
 
 
 
@@ -595,15 +600,8 @@ Cypress.Commands.add('acessarGerenciarReceitas', (gerenciarReceitas: string): vo
 
 
 
-
-
-
-
-
-
-
-Cypress.Commands.add('getReceitaNumero', (numeroReceita): void => {
-  dadosParametros.Receita.numeroReceita = numeroReceita;
+Cypress.Commands.add('setDadoCapturado', (orcamentistaPedido: string): void => {
+  dadosParametros.Pedido.orcamentista = orcamentistaPedido;
 });
 
 
@@ -648,25 +646,25 @@ Cypress.Commands.add('setReceitaNumero', (numeroReceita): void => {
 //       .click()
 //   };
 
-//   const capturarNumeroReceita = (numeroReceita: string): Cypress.Chainable<string> => {
-//     return cy.getVisible(numeroReceita)
-//       .eq(0)
-//       .invoke('text')
-//       .then((texto) => {
-//         const numeroReceitaMatch = texto.match(/\d+/);
+// const capturarNumeroReceita = (numeroReceita: string): Cypress.Chainable<string> => {
+//   return cy.getVisible(numeroReceita)
+//     .eq(0)
+//     .invoke('text')
+//     .then((texto) => {
+//       const numeroReceitaMatch = texto.match(/\d+/);
 
-//         if (numeroReceitaMatch) {
-//           const numeroReceita = parseInt(numeroReceitaMatch[0], 10);
-//           cy.wrap(numeroReceita)
-//             .as('numeroReceita');
-//           cy.setReceitaNumero(numeroReceita);
-//           dadosParametros.Receita.numeroReceita = numeroReceita;
-//           cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.numeroReceita}`);
-//         } else {
-//           throw new Error(`Valor capturado não contém números válidos: ${texto}`);
-//         }
+//       if (numeroReceitaMatch) {
+//         const numeroReceita = parseInt(numeroReceitaMatch[0], 10);
+//         cy.wrap(numeroReceita)
+//           .as('numeroReceita');
+//         cy.setReceitaNumero(numeroReceita);
+//         dadosParametros.Receita.numeroReceita = numeroReceita;
+//         cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.numeroReceita}`);
+//       } else {
+//         throw new Error(`Valor capturado não contém números válidos: ${texto}`);
+//       }
 
-//       });
+//     });
 
 //     if (pendencia){}
 //   };
