@@ -1,0 +1,21 @@
+{
+    "name": "cysupermonitor",
+    "version": "1.0.0",
+    "description": "Testes automatizados em SuperMonitor",
+    "main": "index.ts",
+    "scripts": {
+        "open": "npx cypress open",
+        "run": "npx cypress run"
+    },
+    "author": "Cypress",
+    "license": "ISC",
+    "devDependencies": {
+        "@faker-js/faker": "^8.3.1",
+        "cypress": "^13.6.1",
+        "typescript": "^5.3.3"
+    },
+    "dependencies": {
+        "date-fns": "^2.30.0",
+        "faker-br": "^0.4.1"
+    }
+}
