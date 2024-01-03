@@ -130,7 +130,7 @@ describe('Tela importação de receitas.', () => {
 
 
     it.only('Deve acessar importar receitas logado com perfil atendente', () => {
-        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        cy.login(' ',' ', el.Login.mensagemErroLogin)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
@@ -139,7 +139,7 @@ describe('Tela importação de receitas.', () => {
         cy.getElementAndClick(menuReceitasReduzido);
     })
 
-    it.only('Deve acessar importar receitas logado com perfil inclusão', () => {
+    it('Deve acessar importar receitas logado com perfil inclusão', () => {
         // cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD);
         cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
             assert.exists(result.success, result.error)
