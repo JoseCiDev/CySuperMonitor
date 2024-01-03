@@ -148,91 +148,86 @@ export const {
 
 
 Cypress.Commands.add('login', (usuario: string, senha: string, elementError: string) => {
-  try {
-    cy.log('Iniciando login...');
-    cy.visit(dadosAmbiente.BASE_URL);
 
-    cy.get(el.Login.usuario, { timeout: 10000 })
-      .each(($input) => {
-        cy.wrap($input)
-          .type(usuario)
-          .then(() => {
-            const $userValue = String($input.val());
-            const $elementError = cy.get(elementError);
-            
-            if ($userValue.length > 0 && $elementError.should(':visible')) {
-              cy.log('Erro: Usuário incorreto. Tente novamente.')
-              throw new Error('Usuário incorreto. Tente novamente.');
-            }
+  cy.log('Iniciando login...');
+  cy.visit(dadosAmbiente.BASE_URL);
 
-            if ($userValue.length < 1 && !$elementError.should(':visible')) {
-              cy.log('Erro: Usuário não foi inserido, porém não é apresentado mensagem ao usuário.')
-              throw new Error('Usuário não foi inserido, porém não é apresentado mensagem ao usuário.');
-            };
+  cy.get(el.Login.usuario, { timeout: 10000 })
+    .each(($input) => {
+      cy.wrap($input)
+        .type(usuario)
+        .then(() => {
+          const $userValue = String($input.val());
+          const $elementError = Cypress.$(elementError);
 
-            if (!$userValue || $userValue.length === 0 && !$elementError.should(':visible')) {
-              cy.log('Erro: Há digitos que não foram preenchidos, porém não é apresentado mensagem ao usuário.')
-              throw new Error('Há digitos que não foram preenchidos, porém não é apresentado mensagem ao usuário.');
-            };
-          });
-      });
+          if ($userValue.length < 1 && !$elementError.is(':visible')) {
+            cy.log('Erro: Usuário não foi inserido, porém não é apresentado mensagem ao usuário.')
+            throw new Error('Usuário não foi inserido, porém não é apresentado mensagem ao usuário.');
+          };
 
-    cy.get(el.Login.senha, { timeout: 10000 })
-      .each(($input) => {
-        cy.wrap($input)
-          .type(senha)
-          .then(() => {
-            const passwordValue = String($input.val());
-            const $elementError = Cypress.$(elementError);
+          if (!$userValue || $userValue.length === 0 && !$elementError.is(':visible')) {
+            cy.log('Erro: Há digitos que não foram preenchidos, porém não é apresentado mensagem ao usuário.')
+            throw new Error('Há digitos que não foram preenchidos, porém não é apresentado mensagem ao usuário.');
+          };
+        });
+    });
 
-            if (passwordValue.length > 0 && $elementError.is(':visible')) {
-              cy.log('Erro: Senha incorreta. Tente novamente.')
-              throw new Error('Senha incorreta. Tente novamente.');
-            }
+  cy.get(el.Login.senha, { timeout: 10000 })
+    .each(($input) => {
+      cy.wrap($input)
+        .type(senha)
+        .then(() => {
+          const passwordValue = String($input.val());
+          const $elementError = Cypress.$(elementError);
 
-            if (senha.length < 1 && !$elementError.is(':visible')) {
-              // return cy.wrap({ error: `Senha não foi inserida, porém não é apresentado mensagem ao usuário.` })
-              cy.log('Erro: Senha não foi inserida, porém não é apresentado mensagem ao usuário.')
-              throw new Error('Senha não foi inserida, porém não é apresentado mensagem ao usuário.');
-            };
 
-            if (!passwordValue || passwordValue.length === 0 && !$elementError.is(':visible')) {
-              // return cy.wrap({ error: `Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.` })
-              cy.log('Erro: Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.')
-              throw new Error('Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.');
-            };
-          });
+          if (senha.length < 1 && !$elementError.is(':visible')) {
+            cy.log('Erro: Senha não foi inserida, porém não é apresentado mensagem ao usuário.')
+            throw new Error('Senha não foi inserida, porém não é apresentado mensagem ao usuário.');
+          };
 
-        cy.getElementAndClick(el.Login.entrar);
+          if (!passwordValue || passwordValue.length === 0 && !$elementError.is(':visible')) {
+            cy.log('Erro: Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.')
+            throw new Error('Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.');
+          };
 
-        const $elementErrorUsuario = Cypress.$(el.Login.usuario)
-          .prop('prop', 'validationMessage')
-          .prop((text) => {
-            expect(text).to.contain('Preencha este campo.');
-          });
+          cy.getElementAndClick(el.Login.entrar);
 
-        const $elementErrorSenha = Cypress.$(el.Login.senha)
-          .prop('prop', 'validationMessage')
-          .prop((text) => {
-            expect(text).to.contain('Preencha este campo.');
-          });
-        if ($elementErrorUsuario) {
-          // return cy.wrap({ error: `Campo usuário não está preenchido.` });
-          cy.log('Erro: Usuário ou senha incorretos. Tente novamente.')
-          throw new Error('Usuário ou senha incorretos. Tente novamente.');
-        };
-        if ($elementErrorSenha) {
-          // return cy.wrap({ error: `Campo senha não está preenchido.` })
-          cy.log('Erro: Campo senha não está preenchido.')
-          throw new Error('Campo senha não está preenchido.');
-        };
+          cy.get(elementError)
+            .invoke('text')
+            .then((text) => {
+              cy.log(text);
 
-      });
+              if (text.includes('Usuário ou senha inválidos')) {
+                cy.log('Erro: Usuário ou senha incorretos. Tente novamente.');
+                throw new Error('Usuário ou senha incorretos. Tente novamente.');
+              } else {
+                cy.log('Teste irá continuar porque não apresentou mensagem de erro, ');
+              }
+            });
+        });
 
-    cy.log('Login realizado com sucesso.');
-  } catch (error) {
-    cy.log(`Erro no login: ${error.message}`);
-  }
+      const $elementErrorUsuario = Cypress.$(el.Login.usuario)
+        .prop('prop', 'validationMessage')
+        .prop((text) => {
+          expect(text).to.contain('Preencha este campo.');
+        });
+      const $elementErrorSenha = Cypress.$(el.Login.senha)
+        .prop('prop', 'validationMessage')
+        .prop((text) => {
+          expect(text).to.contain('Preencha este campo.');
+        });
+      if ($elementErrorUsuario) {
+        cy.log('Erro: Usuário ou senha incorretos. Tente novamente.');
+        throw new Error('Usuário ou senha incorretos. Tente novamente.');
+      };
+      if ($elementErrorSenha) {
+        cy.log('Erro: Campo senha não está preenchido.')
+        throw new Error('Campo senha não está preenchido.');
+      };
+
+    });
+  return cy.wrap({ success: 'Login realizado com sucesso.' });
 });
 
 

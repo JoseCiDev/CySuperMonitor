@@ -212,7 +212,7 @@ export const elements: Elements = {
         senha: ':nth-child(2) > .form-control',
         entrar: '.btn-primary',
         logout: '.navbar > .nav > :nth-child(5) > a',
-        mensagemErroLogin: 'body > p',
+        mensagemErroLogin: 'p',
     },
 
 

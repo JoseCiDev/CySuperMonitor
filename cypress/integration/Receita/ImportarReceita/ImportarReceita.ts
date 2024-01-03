@@ -118,20 +118,28 @@ export const salvarReceita = (salvarImportacao): void => {
 describe('Tela importação de receitas.', () => {
 
     beforeEach(function () {
-
+        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+            .then((result) => {
+                if (result.error) {
+                    cy.log(result.error);
+                } else {
+                    cy.log(result.success);
+                }
+            })
     })
 
+
     it.only('Deve acessar importar receitas logado com perfil atendente', () => {
-        // cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-
-        cy.login('aa','bb', el.Login.mensagemErroLogin)
-
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.getElementAndClick(menuReceitasReduzido);
     })
 
-    it('Deve acessar importar receitas logado com perfil inclusão', () => {
+    it.only('Deve acessar importar receitas logado com perfil inclusão', () => {
         // cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD);
         cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
             assert.exists(result.success, result.error)
