@@ -29,7 +29,7 @@
 
 
 
-import { elements as el } from '../../elements'
+import { elements as el } from '../../Elements'
 import { dadosParametros } from '../../DadosParametros'
 import { env } from 'process';
 

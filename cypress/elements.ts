@@ -10,7 +10,7 @@ interface Elements<S = string> {
         senha: S;
         entrar: S;
         logout: S;
-        mensagemErroLogin:S;
+        mensagemErroLogin: S;
     };
 
     Receitas: {
@@ -42,7 +42,7 @@ interface Elements<S = string> {
         opcaoTipoReceitas: S;
         salvarReceitas: S;
         editarReceita: S;
-        okSucessoReceitaImportadaModal: S;
+        okSucessoModalMensagem: S;
         ModalBuscaReceitas: S;
         filtroDataInicialBuscaReceitas: S;
         filtroDataFinalBuscaReceitas: S;
@@ -194,6 +194,21 @@ interface Elements<S = string> {
         containerPedidos: S;
 
     };
+
+    Configuracoes: {
+        menuConfiguracoes: S;
+        subMenuClustersGrupos: S;
+        relacoes: S;
+        containerFiltros: S;
+        containerPerfil: S;
+        buscarFiltros: S;
+        pesquisa: S;
+        gerenciarRelacao: S;
+        selecionarCluster: S;
+        containerSelecionarPrescritor: S;
+        selecionarPrescritor: S;
+        adicionarClusterPrescritorRelacaoAtendente: S;
+    };
 }
 
 
@@ -253,7 +268,8 @@ export const elements: Elements = {
         // salvar receita
         salvarReceitas: '#save_receita',
         editarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .edit-receita',
-        okSucessoReceitaImportadaModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
+        //okSucessoModalMensagem
+        okSucessoModalMensagem: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
         // buscar receitas importadas
         ModalBuscaReceitas: '#centerHeadFilter',
         filtroDataInicialBuscaReceitas: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
@@ -417,5 +433,23 @@ export const elements: Elements = {
         atendentePedido: '#atendente',
         //toast toast-error
         //toast toast-sucess
+    },
+
+    Configuracoes: {
+        menuConfiguracoes: '#side-menu > li: nth- child(22) > a > span.fa.arrow',
+        //Clusters(grupos)
+        subMenuClustersGrupos: '#side-menu > li.active > ul > li:nth-child(6) > a',
+        //Relações
+        relacoes: '#side-menu > li.active > ul > li.active > ul > li:nth-child(2) > a',
+        containerFiltros: '#page-wrapper > div:nth-child(6) > div > div.ibox-title.collapse-link > div.ibox-tools > i',
+        containerPerfil: 'select[name="profile"]',
+        buscarFiltros: '#page-wrapper > div:nth-child(6) > div > div.ibox-content > form > div:nth-child(2) > div > button',
+        pesquisa: '#tableRelation_filter > label > input',
+        gerenciarRelacao: '#tableRelation > tbody > tr > td:nth-child(8) > a',
+        selecionarCluster: 'select[name="clusterAdd"]',
+        containerSelecionarPrescritor: '#tableRelationPorAtendente > tbody > tr:nth-child(1) > td:nth-child(4) > span > span.selection > span > span.select2-selection__arrow',
+        selecionarPrescritor: 'body > span > span > span.select2-search.select2-search--dropdown > input',
+        adicionarClusterPrescritorRelacaoAtendente: '#adicionar_relacao',
+
     }
 }

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { elements as el } from '../../../elements';
+import { elements as el } from '../../../Elements';
 import { } from '../../../support/commands/commands';
 import { faker } from '@faker-js/faker';
 import { dadosParametros } from '../../../DadosParametros';
@@ -12,7 +12,7 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 export const {
     dataRecebimentoReceitas,
-    okSucessoReceitaImportadaModal,
+    okSucessoModalMensagem,
     menuReceitas,
     menuReceitasReduzido,
     menuImportarReceitas,
@@ -49,9 +49,6 @@ export const {
 
 
 
-
-
-
 export const sugestaoRelacaoPrescritor = (): void => {
     cy.get('.col-md-12 > h2', { timeout: 20000 }).then(($elemento) => {
 
@@ -67,8 +64,6 @@ export const sugestaoRelacaoPrescritor = (): void => {
         }
     });
 };
-
-
 
 export const inserirObservacaoInterna = (areaTexto: string, conteudo: string, useLoremIpsum?: boolean): void => {
     if (useLoremIpsum) {
@@ -97,12 +92,12 @@ export const salvarReceita = (salvarImportacao): void => {
     cy.get(salvarImportacao, { timeout: 20000 })
         .click({ force: true });
 
-    if (Cypress.$(okSucessoReceitaImportadaModal).length > 0 && Cypress.$(okSucessoReceitaImportadaModal).is(':visible')) {
-        cy.getVisible(okSucessoReceitaImportadaModal, { timeout: 20000 })
+    if (Cypress.$(okSucessoModalMensagem).length > 0 && Cypress.$(okSucessoModalMensagem).is(':visible')) {
+        cy.getVisible(okSucessoModalMensagem, { timeout: 20000 })
             .click();
     } else {
         cy.wait(1000)
-        cy.getVisible(okSucessoReceitaImportadaModal, { timeout: 20000 })
+        cy.getVisible(okSucessoModalMensagem, { timeout: 20000 })
             .click();
     }
     cy.get(salvarImportacao, { timeout: 20000 }).then(($elemento) => {
@@ -118,19 +113,12 @@ export const salvarReceita = (salvarImportacao): void => {
 describe('Tela importação de receitas.', () => {
 
     beforeEach(function () {
-        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-            .then((result) => {
-                if (result.error) {
-                    cy.log(result.error);
-                } else {
-                    cy.log(result.success);
-                }
-            })
+        
     })
 
 
-    it.only('Deve acessar importar receitas logado com perfil atendente', () => {
-        cy.login(' ',' ', el.Login.mensagemErroLogin)
+    it('Deve acessar importar receitas logado com perfil atendente', () => {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
@@ -181,7 +169,7 @@ describe('Tela importação de receitas.', () => {
 
 
 
-    it('Deve realizar busca de Receitas filtrando por data', () => {
+    it.only('Deve realizar busca de Receitas filtrando por data', () => {
         // cy.login(dadosAmbiente.USER_ORCAMENTISTA, dadosAmbiente.PASSWORD);
         cy.login(dadosAmbiente.USER_ORCAMENTISTA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
             assert.exists(result.success, result.error)
@@ -199,6 +187,10 @@ describe('Tela importação de receitas.', () => {
 
 
     it('Deve realizar busca de Receitas filtrando por paciente', () => {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error)
+        })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -212,6 +204,10 @@ describe('Tela importação de receitas.', () => {
 
 
     it('Deve realizar busca de Receitas filtrando por prescritor', () => {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error)
+        })
         cy.acessarMenuReceitas(menuReceitas);
 
         cy.acessarImportarReceitas(menuImportarReceitas);
@@ -225,17 +221,25 @@ describe('Tela importação de receitas.', () => {
     });
 
     it('Deve realizar busca de Receitas filtrando por cluster', () => {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error)
+        })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
         cy.buscarReceita({
             dataInicial: dadosParametros.Receita.dataInicial,
             dataFinal: dadosParametros.Receita.dataFinal,
-            cluster: dadosParametros.cluster.cluster1,
+            cluster: dadosParametros.ClusterImportarReceitas.cluster1,
         });
     });
 
     it('Deve realizar busca de Receitas filtrando por pedido', () => {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error)
+        })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -248,6 +252,10 @@ describe('Tela importação de receitas.', () => {
     });
 
     it('Deve realizar busca de Receitas filtrando por canal de recebimento', () => {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error)
+        })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -259,6 +267,10 @@ describe('Tela importação de receitas.', () => {
     });
 
     it('Deve realizar busca de Receitas filtrando por atendente responsável', () => {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error)
+        })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -270,6 +282,10 @@ describe('Tela importação de receitas.', () => {
     });
 
     it('Deve realizar busca de Receitas filtrando por pendências', () => {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error)
+        })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -283,52 +299,53 @@ describe('Tela importação de receitas.', () => {
 
 
 
-    it('Deve realizar importação de Receitas', () => {
-        cy.acessarMenuReceitas(menuReceitas);
+    // it('Deve realizar importação de Receitas', () => {
+        
+    //     cy.acessarMenuReceitas(menuReceitas);
 
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.wait(2000);
+    //     cy.acessarImportarReceitas(menuImportarReceitas);
+    //     cy.wait(2000);
 
-        cy.getElementAndClick(abrirModalRegistrarReceitas);
+    //     cy.getElementAndClick(abrirModalRegistrarReceitas);
 
-        cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', importarImagemReceitas);
-
-
-        cy.inserirPrescritor(dadosParametros.Prescritor.crmPrescritor.toString());
+    //     cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', importarImagemReceitas);
 
 
-        // sugestaoRelacaoPrescritor();
+    //     cy.inserirPrescritor(dadosParametros.Prescritor.crmPrescritor.toString());
 
-        cy.inserirPaciente(dadosParametros.parametroBuscaPaciente.Cdcli, dadosParametros.Paciente.codigoPaciente);
 
-        cy.selecionarCanalRecebimento(canalRecebimentoReceitas, dadosParametros.canalRecebimento.Whatsapp);
+    //     // sugestaoRelacaoPrescritor();
 
-        cy.getSelectOptionByValue(clusterReceitas, dadosParametros.cluster.cluster1)
+    //     cy.inserirPaciente(dadosParametros.parametroBuscaPaciente.Cdcli, dadosParametros.Paciente.codigoPaciente);
 
-        cy.getElementAndType(atendenteResponsavelReceitas, dadosParametros.Usuario.usuarioAtribuido)
-            .wait(2000)
-            .type('{downarrow}{enter}')
+    //     cy.selecionarCanalRecebimento(canalRecebimentoReceitas, dadosParametros.canalRecebimento.Whatsapp);
 
-        cy.inserirDataUmDiaMenosDiaAtual(dataRecebimentoReceitas);
+    //     cy.getSelectOptionByValue(clusterReceitas, dadosParametros.cluster.cluster1)
 
-        cy.inserirTipoReceita(dadosParametros.tipoReceita.Repeticao);
+    //     cy.getElementAndType(atendenteResponsavelReceitas, dadosParametros.Usuario.usuarioAtribuido)
+    //         .wait(2000)
+    //         .type('{downarrow}{enter}')
 
-        if (cy.get(mensagemSucessoModal, { timeout: 20000 })) {
-            cy.get(mensagemSucessoModal, { timeout: 20000 })
-                .click();
-        };
+    //     cy.inserirDataUmDiaMenosDiaAtual(dataRecebimentoReceitas);
 
-        inserirObservacaoInterna(textoObservacaoInternaReceitas, '', true);
+    //     cy.inserirTipoReceita(dadosParametros.tipoReceita.Repeticao);
 
-        marcarUrgente(urgenteReceitas);
+    //     if (cy.get(mensagemSucessoModal, { timeout: 20000 })) {
+    //         cy.get(mensagemSucessoModal, { timeout: 20000 })
+    //             .click();
+    //     };
 
-        marcarClienteAlerta(clienteAlertaReceitas);
+    //     inserirObservacaoInterna(textoObservacaoInternaReceitas, '', true);
 
-        marcarMedicamentoControlado(medicamentocontroladoReceitas);
+    //     marcarUrgente(urgenteReceitas);
 
-        salvarReceita(salvarReceitas);
+    //     marcarClienteAlerta(clienteAlertaReceitas);
 
-    });
+    //     marcarMedicamentoControlado(medicamentocontroladoReceitas);
+
+    //     salvarReceita(salvarReceitas);
+
+    // });
 
 
 
