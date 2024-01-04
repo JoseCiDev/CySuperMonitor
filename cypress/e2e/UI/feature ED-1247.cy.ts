@@ -1,4 +1,4 @@
-import { elements as el } from '../../elements';
+import { elements as el } from '../../Elements';
 import '../../support/commands';
 import { faker } from '@faker-js/faker';
 import { dadosParametros, BuscarReceita } from '../../DadosParametros'

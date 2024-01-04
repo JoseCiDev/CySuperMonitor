@@ -41,7 +41,7 @@ declare global {
        * comando customizado para ler arquivos
        * @example cy.lerArquivo('orcamentoFilial.json')
        */
-      lerArquivo(nomeArquivo: string): Chainable<any>;
+      lerArquivo(nomeArquivo: string)
 
       /**
         * comando customizado para acessar o menu Receitas.
@@ -347,8 +347,12 @@ declare global {
       */
       alterarUsuariosPedido(orcamentista: string, atendente: string): Chainable<Element>
 
-
-
+      /**
+    * * comando customizado para importar orçamentos .
+    * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+    */
+      configuraRelacaoAtendenteClusterPrescritor(): Chainable<ValidationResult>
+      
     }
   }
 }

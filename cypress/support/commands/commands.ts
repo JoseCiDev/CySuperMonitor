@@ -28,7 +28,7 @@
 
 
 
-import { elements as el } from '../../elements'
+import { elements as el } from '../../Elements'
 import { dadosParametros } from '../../DadosParametros'
 import { env } from 'process';
 
@@ -40,6 +40,7 @@ const dadosAmbiente = Cypress.env(ambiente);
 import '../commands/commandsLogin'
 import '../commands/commandsAtendimento'
 import '../commands/commandsReceita'
+import '../commands/commandsConfiguracoes'
 
 
 
@@ -149,45 +150,81 @@ export const {
 } = el.Atendimentos;
 
 
-Cypress.Commands.add('getVisible', (element: string, options: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable>) => {
+Cypress.Commands.add('inserirArquivo', (caminhoFixture, importarImagem): void => {
+  cy.fixture(caminhoFixture, 'base64').then((conteudo_arquivo) => {
+    const nome = caminhoFixture.split('/').pop(); // Extract the file name from the fixture path
+    const mimeType = 'image/jpeg';
+
+    const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
+    const file = new File([blob], nome, { type: mimeType });
+
+    cy.get(importarImagem).then(($input) => {
+      const event = new Event('change', { bubbles: true });
+      Object.defineProperty($input[0], 'files', {
+        value: [file],
+        writable: false,
+      });
+      $input[0].dispatchEvent(event);
+    });
+  });
+});
+
+
+
+
+Cypress.Commands.add('lerArquivo', (nomeArquivo) => {
+  const caminhoArquivo = `${dadosParametros.caminhoArquivo}${nomeArquivo}`;
+  return cy.fixture(caminhoArquivo);
+});
+
+
+
+Cypress.Commands.add('getVisible', (elemento, options) => {
   const defaultOptions = { timeout: 20000 };
   const combinedOptions = { ...defaultOptions, ...options };
-  return cy.getVisible(element, combinedOptions);
+  return cy.get(elemento, combinedOptions)
+    .should('be.visible');
 });
 
 
 
-Cypress.Commands.add('getElementAndClick', (element: string): void => {
-  cy.get(element, { timeout: 10000 })
-    .should('be.visible')
+Cypress.Commands.add('inserirData', (campoData: string, data: string): void => {
+  cy.get(campoData)
+    .type(data, { timeout: 1000 })
+    .should('have.value', data);
+});
+
+
+
+
+
+
+Cypress.Commands.add('inserirDataUmDiaMenosDiaAtual', (campoData: string) => {
+  const umDiaMenos = new Date(dadosParametros.dataAtual);
+  umDiaMenos.setDate(umDiaMenos.getDate() - 1);
+  const dataFormatadaDiaAnterior = umDiaMenos.toISOString().slice(0, 16);
+  cy.inserirData(campoData, dataFormatadaDiaAnterior);
+})
+
+
+
+
+
+
+Cypress.Commands.add('getElementAndClick', (elemento: string): void => {
+
+  cy.get(elemento, { timeout: 20000 })
     .as('element')
     .then($elements => {
+
       if ($elements.length > 0) {
         cy.wrap($elements.first())
-          .click({ timeout: 10000, force: true });
+          .click({ timeout: 20000, force: true });
       } else {
         cy.wrap($elements.eq(0))
-          .click({ timeout: 10000, force: true });
+          .click({ timeout: 20000, force: true });
       }
-    });
-});
 
-
-
-Cypress.Commands.add('getElementAndType', (element: string, text?: string): void => {
-  
-  cy.get(element, { timeout: 10000 })
-    .should('be.visible')
-    .then($elements => {
-      if ($elements.length > 1) {
-        cy.wrap($elements.first())
-          .clear()
-          .type(text, { timeout: 1000 })
-      } else {
-        cy.wrap($elements.eq(0))
-          .clear()
-          .type(text, { timeout: 1000 })
-      }
     });
 });
 
@@ -215,19 +252,24 @@ Cypress.Commands.add('getElementAndCheck', (elemento: string): void => {
 
 
 
-Cypress.Commands.add('getRadioOptionByValue', (element: string, value): void => {
-  cy.get(element, { timeout: 10000 })
-    .should('be.visible')
-    .find(`input[type="radio"][value="${value}"]`)
-    .check({ force: true })
-});
+Cypress.Commands.add('getElementAndType', (elemento: string, texto?: string): void => {
+  if (typeof texto !== 'string') {
+    throw new Error('O texto a ser escrito deve ser uma string.');
+  }
+  cy.get(elemento, { timeout: 20000 })
+    .then($elements => {
 
+      if ($elements.length > 1) {
+        cy.wrap($elements.first())
+          .clear()
+          .type(texto, { timeout: 1000 })
+      } else {
+        cy.wrap($elements.eq(0))
+          .clear()
+          .type(texto, { timeout: 1000 })
+      }
 
-
-Cypress.Commands.add('getSelectOptionByValue', (element: string, value) => {
-  cy.get(element, { timeout: 10000 })
-    .should('be.visible')
-    .select(value, { force: true })
+    });
 });
 
 
@@ -237,4 +279,48 @@ Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void =>
     .should('be.visible')
     .find(`input[type="radio"][value="${value}"]`)
     .check({ force: true })
+});
+
+
+
+Cypress.Commands.add('getSelectOptionByValue', (elemento: string, value: any): void => {
+  cy.get(elemento, { timeout: 20000 })
+    .select(value, { force: true })
+});
+
+
+
+Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string): void => {
+  cy.get(`${checkboxMarcarUso} input[type="checkbox"]`, { timeout: 20000 }).then(($checkboxes) => {
+    const totalCheckboxes = $checkboxes.length;
+
+    cy.get(`${checkboxMarcarUso} input[type="checkbox"]:checked`, { timeout: 20000 }).then(($checkedCheckboxes) => {
+      const totalChecked = $checkedCheckboxes.length;
+
+      if (totalChecked === totalCheckboxes) {
+        cy.get(`${checkboxMarcarUso} input[type="checkbox"]:checked`, { timeout: 20000 })
+          .first()
+          .uncheck();
+        cy.getElementAndClick(containerInserirUsuario);
+        cy.getElementAndType(select, dadosParametros.Receita.usuárioMarcarUso);
+        cy.getElementAndClick(usuarioSelecionado)
+        cy.getElementAndType(senhaReceita, dadosAmbiente.SENHA_RECEITA_USER);
+        cy.getElementAndClick(aplicaDesmarcarUso);
+        cy.getElementAndClick(mensagemSucessoModal);
+        cy.get(`${checkboxMarcarUso} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
+          .first()
+          .check();
+      }
+      else {
+        cy.get(`${checkboxMarcarUso} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
+          .first()
+          .check();
+      };
+
+      cy.wait(200);
+      cy.getElementAndClick(mensagemConfirmacaoModal);
+      cy.wait(200);
+      cy.getElementAndClick(mensagemSucessoModal);
+    });
+  });
 });

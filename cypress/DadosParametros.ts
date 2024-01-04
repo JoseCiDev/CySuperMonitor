@@ -10,22 +10,22 @@ const dadosAmbiente = Cypress.env(ambiente);
 export type ValidationResult = Cypress.Chainable<{ error?: string; success?: string; }>
 
 
-// export interface BuscarReceita<S = string> {
+export interface BuscarReceita<S = string> {
 
-//     dataInicial?: S;
-//     dataFinal?: S;
-//     cluster?: S;
-//     pendencia?: S;
-//     canalRecebimento?: S;
-//     receita?: number,
-//     paciente?: S;
-//     prescritor?: S;
-//     pedido?: number,
-//     ultimoModificador?: S;
-//     orcamentista?: S;
-//     atendenteResponsavel?: S;
+    dataInicial?: S;
+    dataFinal?: S;
+    ClusterImportarReceitas?: S;
+    pendencia?: S;
+    canalRecebimento?: S;
+    receita?: number,
+    paciente?: S;
+    prescritor?: S;
+    pedido?: number,
+    ultimoModificador?: S;
+    orcamentista?: S;
+    atendenteResponsavel?: S;
 
-// };
+};
 
 interface DadosParametros<S = string> {
 
@@ -122,11 +122,13 @@ interface DadosParametros<S = string> {
     canalRecebimento: typeof CanalRecebimento;
     parametroBuscaPaciente: typeof ParametroBuscaPaciente;
     tipoReceita: typeof TipoReceita;
-    cluster: typeof Cluster;
+    ClusterImportarReceitas: typeof ClusterImportarReceitas;
+    ClusterRelacoesPrescritorAtendenteCluster: typeof ClusterRelacoesPrescritorAtendenteCluster;
     pendencia: typeof Pendencia;
     OpcaoParametroBuscaPaciente: typeof OpcaoParametroBuscaPaciente;
     categoriaDuvidaTecnica: typeof CategoriaDuvidaTecnica;
     statusDuvidaTecnica: typeof StatusDuvidaTecnica;
+    perfil: typeof Perfil;
     formaEnvio: typeof FormaEnvio;
     aromaSache: typeof AromaSache;
     aromaCapsula: typeof AromaCapsula;
@@ -258,11 +260,6 @@ enum PossuiReceitaPedido {
 
 
 
-
-
-
-
-
 enum FiltroPendentes {
     Todos = '0',
     Pendentes = '1',
@@ -298,7 +295,7 @@ enum TipoReceita {
     Repeticao = '3',
 };
 
-enum Cluster {
+enum ClusterImportarReceitas {
     Selecione = '',
     cluster1 = '1',
     cluster2 = '2',
@@ -311,6 +308,20 @@ enum Cluster {
     clusterConsultoriaTecnicaInjetaveis = 'Consultoria técnica Injetáveis',
     clusterRecepcao = 'Recepção',
 };
+
+enum ClusterRelacoesPrescritorAtendenteCluster {
+    EscolhaUmCluster = '',
+    Cluster1 = '1',
+    Cluster2 = '2',
+    Cluster3 = '3',
+    Cluster4 = '4',
+    Cluster5 = '5',
+    ClusterPediatrico = '6',
+    ClusterPrescritores = '7',
+    ClusterAtendimentoInjetaveis = '8',
+    ClusterConsultoriaTecnicaInjetaveis = '12',
+    ClusterRecepcao = '14',
+}
 
 enum Pendencia {
     Todos = '0',
@@ -343,6 +354,33 @@ enum StatusDuvidaTecnica {
     AguardandoPeD = '2',
     PendenciaInterna = '3',
     Respondido = '4',
+}
+
+
+
+enum Perfil {
+    Todos = 'Todos',
+    Visualizador = '0',
+    ControleReceitas = '2',
+    Atendente = '3',
+    Expedicao = '4',
+    Caixa = '5',
+    Administrador = '6',
+    Farmaceutico = '7',
+    Orcamentista = '8',
+    Telefonista = '9',
+    Visitacao = '10',
+    Marketing = '11',
+    Recepcao = '12',
+    Treinamento = '13',
+    Inclusao = '14',
+    ControleFinanceiro = '15',
+    COnferencia = '16',
+    Almoxarifado = '17',
+    FarmaConfSaida = '18',
+    backoffice = '19',
+    Laboratorio = '20',
+    Monitora = '21',
 }
 
 
@@ -422,11 +460,13 @@ export const dadosParametros: DadosParametros = {
     canalRecebimento: CanalRecebimento,
     parametroBuscaPaciente: ParametroBuscaPaciente,
     tipoReceita: TipoReceita,
-    cluster: Cluster,
+    ClusterImportarReceitas: ClusterImportarReceitas,
+    ClusterRelacoesPrescritorAtendenteCluster: ClusterRelacoesPrescritorAtendenteCluster,
     pendencia: Pendencia,
     OpcaoParametroBuscaPaciente: OpcaoParametroBuscaPaciente,
     categoriaDuvidaTecnica: CategoriaDuvidaTecnica,
     statusDuvidaTecnica: StatusDuvidaTecnica,
+    perfil: Perfil,
     formaEnvio: FormaEnvio,
     aromaSache: AromaSache,
     aromaCapsula: AromaCapsula,

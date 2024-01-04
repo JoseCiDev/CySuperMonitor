@@ -29,7 +29,7 @@
 
 
 
-import { elements as el } from '../../elements'
+import { elements as el } from '../../Elements'
 import { dadosParametros } from '../../DadosParametros'
 
 
@@ -180,79 +180,6 @@ Cypress.Commands.add('setReceitaNumero', (numeroReceita): void => {
 });
 
 
-
-// Cypress.Commands.add('buscarReceita', ({
-//   dataInicial,
-//   dataFinal,
-//   pendencia,
-//   cluster,
-//   canalRecebimento,
-//   receita,
-//   paciente,
-//   prescritor,
-//   pedido,
-//   ultimoModificador,
-//   orcamentista,
-//   atendenteResponsavel,
-// }): void => {
-//   const abrirModalBuscaReceita = (modalBuscaReceita: string): void => {
-//     cy.getVisible(modalBuscaReceita, { timeout: 20000 })
-//       .click({ force: true })
-//       .should('have.id', 'centerHeadFilter')
-//   };
-
-//   const selecionarFiltroPendencias = (filtroPendencias: string, opcao): void => {
-//     cy.getVisible(filtroPendencias, { timeout: 20000 })
-//       .select(opcao)
-//       .should('have.value', opcao)
-//       .find('option:selected')
-//       .should('be.selected');
-//   };
-
-//   const procurarReceita = (botaoProcurar: string, labelProcurarReceita: string): void => {
-//     cy.get(botaoProcurar)
-//       .contains(labelProcurarReceita)
-//       .click()
-//   };
-
-// const capturarNumeroReceita = (numeroReceita: string): Cypress.Chainable<string> => {
-//   return cy.getVisible(numeroReceita)
-//     .eq(0)
-//     .invoke('text')
-//     .then((texto) => {
-//       const numeroReceitaMatch = texto.match(/\d+/);
-
-//       if (numeroReceitaMatch) {
-//         const numeroReceita = parseInt(numeroReceitaMatch[0], 10);
-//         cy.wrap(numeroReceita)
-//           .as('numeroReceita');
-//         cy.setReceitaNumero(numeroReceita);
-//         dadosParametros.Receita.numeroReceita = numeroReceita;
-//         cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.numeroReceita}`);
-//       } else {
-//         throw new Error(`Valor capturado não contém números válidos: ${texto}`);
-//       }
-
-//     });
-
-//     if (pendencia){}
-//   };
-
-//   abrirModalBuscaReceita(ModalBuscaReceitas);
-//   cy.wait(2000);
-
-//   cy.inserirData(filtroDataInicialBuscaReceitas, dataInicial);
-
-//   cy.inserirData(filtroDataFinalBuscaReceitas, dataFinal);
-
-//   selecionarFiltroPendencias(filtroPendenciasBusca, dadosParametros.filtroPendentes.Pendentes);
-
-//   procurarReceita(botaoProcurarReceitas, labelProcurarReceitas);
-
-//   capturarNumeroReceita(numeroReceitas);
-// });
-
-
 Cypress.Commands.add('buscarReceita', (
     params?: {
         dataInicial?: string,
@@ -269,25 +196,49 @@ Cypress.Commands.add('buscarReceita', (
         atendenteResponsavel?: string
     }): void => {
 
-    const capturarNumeroReceita = (numeroReceita: string): Cypress.Chainable<string> => {
-        return cy.get(numeroReceita)
-            .eq(0)
-            .invoke('text')
-            .then((texto) => {
+    const capturarNumeroReceita = (numeroReceita: string, tentativas: number = 50) => {
+        if (tentativas === 0) {
+            throw new Error(`Número de tentativas excedido. Não foi possível capturar o número da receita.`);
+        }
+
+        return cy.wrap(null).then(() => {
+            const $element = Cypress.$(numeroReceita);
+
+            if ($element.length > 0) {
+                const texto = $element.text();
                 const numeroReceitaMatch = texto.match(/\d+/);
 
-                if (numeroReceitaMatch) {
-                    const numeroReceita = parseInt(numeroReceitaMatch[0], 10);
-                    cy.wrap(numeroReceita)
-                        .as('numeroReceita');
-                    cy.setReceitaNumero(numeroReceita);
-                    dadosParametros.Receita.numeroReceita = numeroReceita;
-                    cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.numeroReceita}`);
-                } else {
+                if (!numeroReceitaMatch) {
                     throw new Error(`Valor capturado não contém números válidos: ${texto}`);
-                }
 
-            });
+                }
+                const numeroReceita = parseInt(numeroReceitaMatch[0], 10);
+                cy.wrap(numeroReceita).as('numeroReceita');
+                cy.setReceitaNumero(numeroReceita);
+                cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.numeroReceita}`);
+            }
+            cy.wait(2000);
+            capturarNumeroReceita(numeroReceita, tentativas - 1);
+        });
+    };
+
+    const buscarReceitaComParametros = (params?: {
+        dataInicial?: string,
+        dataFinal?: string,
+        pendencia?: string,
+        cluster?: string,
+        canalRecebimento?: string,
+        receita?: number,
+        paciente?: string,
+        prescritor?: string,
+        pedido?: number,
+        ultimoModificador?: string,
+        orcamentista?: string,
+        atendenteResponsavel?: string
+    }) => {
+        cy.getElementAndClick(botaoProcurarReceitas);
+
+        capturarNumeroReceita(numeroReceitas);
     };
 
     cy.getElementAndClick(ModalBuscaReceitas), { timeout: 20000 };
@@ -355,9 +306,11 @@ Cypress.Commands.add('buscarReceita', (
             .type('{enter}');
     }
 
-
     cy.getElementAndClick(botaoProcurarReceitas);
+
     capturarNumeroReceita(numeroReceitas);
+
+    buscarReceitaComParametros(params)
 });
 
 
@@ -595,18 +548,20 @@ Cypress.Commands.add('marcarDuvidaTecnicaResolvido', (acessarDuvidasTecnicas: st
 
             if (resolvido) {
                 cy.log(`Dúvida técnica ${index + 1} está resolvida.`);
-            } else {
-                $duvida.find('button.resolveDuvT').first().click();
-                cy.wait(1000);
-                cy.getElementAndClick(mensagemConfirmacaoModal);
-                cy.wait(1000);
-                cy.getElementAndClick(mensagemSucessoModal);
-                cy.wait(1000);
-                cy.log(`Dúvida técnica ${index + 1} marcada como resolvida.`);
-                cy.getElementAndClick(fecharModalDuvidasTecnicas);
 
-                duvidaResolvida = true;
+                return;
             }
+
+            $duvida.find('button.resolveDuvT').first().click();
+            cy.wait(1000);
+            cy.getElementAndClick(mensagemConfirmacaoModal);
+            cy.wait(1000);
+            cy.getElementAndClick(mensagemSucessoModal);
+            cy.wait(1000);
+            cy.log(`Dúvida técnica ${index + 1} marcada como resolvida.`);
+            cy.getElementAndClick(fecharModalDuvidasTecnicas);
+
+            duvidaResolvida = true;
         });
     });
 });
@@ -714,7 +669,7 @@ Cypress.Commands.add('visualizarPedido', (botaoVisualizar): void => {
         }
 
         if (todosPedidosUsados) {
-            cy.log('Todos os números de pedidos já foram usados.')
+            throw new Error('Todos os números de pedidos já foram usados.')
         };
 
     });

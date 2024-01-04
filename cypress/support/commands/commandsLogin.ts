@@ -28,7 +28,7 @@
 
 
 
-import { elements as el } from '../../elements'
+import { elements as el } from '../../Elements'
 import { ValidationResult, dadosParametros } from '../../DadosParametros'
 import { env } from 'process';
 
@@ -161,12 +161,10 @@ Cypress.Commands.add('login', (usuario: string, senha: string, elementError: str
           const $elementError = Cypress.$(elementError);
 
           if ($userValue.length < 1 && !$elementError.is(':visible')) {
-            cy.log('Erro: Usuário não foi inserido, porém não é apresentado mensagem ao usuário.')
             throw new Error('Usuário não foi inserido, porém não é apresentado mensagem ao usuário.');
           };
 
           if (!$userValue || $userValue.length === 0 && !$elementError.is(':visible')) {
-            cy.log('Erro: Há digitos que não foram preenchidos, porém não é apresentado mensagem ao usuário.')
             throw new Error('Há digitos que não foram preenchidos, porém não é apresentado mensagem ao usuário.');
           };
         });
@@ -180,14 +178,11 @@ Cypress.Commands.add('login', (usuario: string, senha: string, elementError: str
           const passwordValue = String($input.val());
           const $elementError = Cypress.$(elementError);
 
-
           if (senha.length < 1 && !$elementError.is(':visible')) {
-            cy.log('Erro: Senha não foi inserida, porém não é apresentado mensagem ao usuário.')
             throw new Error('Senha não foi inserida, porém não é apresentado mensagem ao usuário.');
           };
 
           if (!passwordValue || passwordValue.length === 0 && !$elementError.is(':visible')) {
-            cy.log('Erro: Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.')
             throw new Error('Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.');
           };
 
@@ -195,11 +190,9 @@ Cypress.Commands.add('login', (usuario: string, senha: string, elementError: str
 
           cy.get(elementError)
             .invoke('text')
-            .then((text) => {
-              cy.log(text);
 
+            .then((text) => {
               if (text.includes('Usuário ou senha inválidos')) {
-                cy.log('Erro: Usuário ou senha incorretos. Tente novamente.');
                 throw new Error('Usuário ou senha incorretos. Tente novamente.');
               } else {
                 cy.log('Teste irá continuar porque não apresentou mensagem de erro, ');
@@ -218,16 +211,12 @@ Cypress.Commands.add('login', (usuario: string, senha: string, elementError: str
           expect(text).to.contain('Preencha este campo.');
         });
       if ($elementErrorUsuario) {
-        cy.log('Erro: Usuário ou senha incorretos. Tente novamente.');
         throw new Error('Usuário ou senha incorretos. Tente novamente.');
       };
       if ($elementErrorSenha) {
-        cy.log('Erro: Campo senha não está preenchido.')
         throw new Error('Campo senha não está preenchido.');
       };
 
     });
   return cy.wrap({ success: 'Login realizado com sucesso.' });
 });
-
-
