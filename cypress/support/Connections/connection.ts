@@ -44,11 +44,10 @@ class DatabaseConnection {
     const connection = mysql.createConnection({
     });
     const ok = connection.connect();
-    if (ok) {
-      console.log("Connectado com sucesso!");
-    } else {
-      console.log("Não foi possivel conectar ao banco de dados");
+    if (!ok) {
+      cy.log("Não foi possivel conectar ao banco de dados");
     }
+    console.log("Connectado com sucesso!");
 
     return new Promise((resolve, reject) => {
       connection.query(query, (error, results) => {

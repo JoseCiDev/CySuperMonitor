@@ -5,7 +5,8 @@
     "main": "index.ts",
     "scripts": {
         "open": "npx cypress open",
-        "run": "npx cypress run"
+        "run": "npx cypress run --spec cypress/integration/Configuracoes/Clusters/RelacoesClusterMedicoAtendente.ts"
+
     },
     "author": "Cypress",
     "license": "ISC",

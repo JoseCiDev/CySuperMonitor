@@ -11,7 +11,7 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 export const {
     dataRecebimentoReceitas,
-    okSucessoModalMensagem,
+    okModalMensagem,
     menuReceitas,
     menuReceitasReduzido,
     menuImportarReceitas,
@@ -61,7 +61,7 @@ export const {
 
 
 
-describe('Tela importação de receitas.', () => {
+describe('Tela configuração de relações entre Atendentes, Clusters e Prescritores.', () => {
 
     beforeEach(function () {
 
@@ -69,17 +69,13 @@ describe('Tela importação de receitas.', () => {
 
 
     it('Deve criar relações entre atendente selecionada, cluster e prescritor', () => {
-        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.configuraRelacaoAtendenteClusterPrescritor()
+        cy.configuraRelacaoAtendenteClusterPrescritor('json/relacaoAtendenteClusterPrescritorEstefania.json');
 
     })
 
 
 })
-
-
-
-

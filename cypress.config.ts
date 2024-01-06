@@ -10,7 +10,8 @@ export default defineConfig({
     supportFile: 'cypress/support/e2e.{js,jsx,ts,tsx}',
     specPattern: 'cypress/**/*.{js,jsx,ts,tsx}',
     redirectionLimit: 5000,
-    numTestsKeptInMemory: 150,
+    numTestsKeptInMemory: 15,
+    experimentalMemoryManagement : true,
     excludeSpecPattern: [
       'cypress/support/*',
       'cypress/support/commands',
@@ -29,7 +30,8 @@ export default defineConfig({
 
 
     ],
-    video: true,
+    video: false,
+    screenshotOnRunFailure:true,
     videosFolder: 'cypress/videos',
     screenshotsFolder: 'cypress/screenshots',
   },

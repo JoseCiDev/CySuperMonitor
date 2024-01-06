@@ -42,7 +42,7 @@ interface Elements<S = string> {
         opcaoTipoReceitas: S;
         salvarReceitas: S;
         editarReceita: S;
-        okSucessoModalMensagem: S;
+        okModalMensagem: S;
         ModalBuscaReceitas: S;
         filtroDataInicialBuscaReceitas: S;
         filtroDataFinalBuscaReceitas: S;
@@ -208,6 +208,13 @@ interface Elements<S = string> {
         containerSelecionarPrescritor: S;
         selecionarPrescritor: S;
         adicionarClusterPrescritorRelacaoAtendente: S;
+        containerMensagemRelacao: S;
+        atendenteRelacaoCriada: S;
+        PrescritorRelacaoCriada: S;
+        removerRelacaoSelecionada: S;
+        pesquisaPrescritorGerenciarRelacao: S;
+        buscaPrescritorGerenciarRelacao: S;
+        selecionarPrescritorEncontrado: S;
     };
 }
 
@@ -268,8 +275,8 @@ export const elements: Elements = {
         // salvar receita
         salvarReceitas: '#save_receita',
         editarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .edit-receita',
-        //okSucessoModalMensagem
-        okSucessoModalMensagem: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
+        //okModalMensagem
+        okModalMensagem: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
         // buscar receitas importadas
         ModalBuscaReceitas: '#centerHeadFilter',
         filtroDataInicialBuscaReceitas: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
@@ -436,20 +443,26 @@ export const elements: Elements = {
     },
 
     Configuracoes: {
-        menuConfiguracoes: '#side-menu > li: nth- child(22) > a > span.fa.arrow',
+        menuConfiguracoes: ':nth-child(22) > [href="javascript:void(0);"]',
         //Clusters(grupos)
         subMenuClustersGrupos: '#side-menu > li.active > ul > li:nth-child(6) > a',
         //Relações
         relacoes: '#side-menu > li.active > ul > li.active > ul > li:nth-child(2) > a',
-        containerFiltros: '#page-wrapper > div:nth-child(6) > div > div.ibox-title.collapse-link > div.ibox-tools > i',
+        containerFiltros: ':nth-child(5) > .ibox > .ibox-title',
         containerPerfil: 'select[name="profile"]',
-        buscarFiltros: '#page-wrapper > div:nth-child(6) > div > div.ibox-content > form > div:nth-child(2) > div > button',
+        buscarFiltros: '.col-sm-12 > .btn',
         pesquisa: '#tableRelation_filter > label > input',
         gerenciarRelacao: '#tableRelation > tbody > tr > td:nth-child(8) > a',
-        selecionarCluster: 'select[name="clusterAdd"]',
+        selecionarCluster: '#clusterAdd',
         containerSelecionarPrescritor: '#tableRelationPorAtendente > tbody > tr:nth-child(1) > td:nth-child(4) > span > span.selection > span > span.select2-selection__arrow',
-        selecionarPrescritor: 'body > span > span > span.select2-search.select2-search--dropdown > input',
+        selecionarPrescritor: '.select2-dropdown > .select2-search > .select2-search__field',
         adicionarClusterPrescritorRelacaoAtendente: '#adicionar_relacao',
-
+        containerMensagemRelacao: '.bootbox-body > .alert',
+        atendenteRelacaoCriada: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div > b:nth-child(4)',
+        PrescritorRelacaoCriada: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div > b:nth-child(3)',
+        removerRelacaoSelecionada: ':nth-child(1) > .removerRelBtn',
+        pesquisaPrescritorGerenciarRelacao: 'form > .form-control',
+        buscaPrescritorGerenciarRelacao: '.text-right > form > .btn',
+        selecionarPrescritorEncontrado: '.edit-cb',
     }
 }
