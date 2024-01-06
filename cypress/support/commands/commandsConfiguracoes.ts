@@ -38,7 +38,6 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 
 export const {
-
     ModalBuscaReceitas,
     filtroDataInicialBuscaReceitas,
     filtroDataFinalBuscaReceitas,
@@ -85,12 +84,11 @@ export const {
     statusRespostaDuvidasTecnicas,
     textoRespostaDuvidasTecnicas,
     enviarRespostaDuvidasTecnicas,
-    okSucessoModalMensagem
+    okModalMensagem
 
 } = el.Receitas;
 
 export const {
-
     campoBuscarPedido,
     buscarFilial,
     enviarBusca,
@@ -145,9 +143,7 @@ export const {
 
 } = el.Atendimentos;
 
-
 export const {
-
     menuConfiguracoes,
     subMenuClustersGrupos,
     relacoes,
@@ -160,55 +156,107 @@ export const {
     containerSelecionarPrescritor,
     selecionarPrescritor,
     adicionarClusterPrescritorRelacaoAtendente,
+    containerMensagemRelacao,
+    atendenteRelacaoCriada,
+    PrescritorRelacaoCriada,
+    removerRelacaoSelecionada,
+    pesquisaPrescritorGerenciarRelacao,
+    buscaPrescritorGerenciarRelacao,
+    selecionarPrescritorEncontrado,
 
 } = el.Configuracoes;
 
-Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', () => {
-    cy.lerArquivo('json/relacaoAtendenteClusterPrescritor.json').then((arquivoSelecionado: Record<string, { nome: string }[]>) => {
-
-        const atendentes = Object.keys(arquivoSelecionado);
-        
-        for (const atendente of atendentes) {
-            const prescritores = arquivoSelecionado[atendente];
-
-            //acessar relacoes
-            cy.getElementAndClick(menuConfiguracoes);
-            cy.getElementAndClick(subMenuClustersGrupos);
-            cy.getElementAndClick(relacoes);
-
-            cy.pause();
-
-            //filtrar resultados => todos cluster, todos perfis e buscar
-            cy.getElementAndClick(containerFiltros);
-            cy.getSelectOptionByValue(containerPerfil, dadosParametros.perfil.Todos);
-            cy.getElementAndClick(buscarFiltros);
-
-
-            cy.pause();
-
-            //buscar atendente e clicar em gerenciar
-            cy.getElementAndType(pesquisa, '')
-            cy.getElementAndClick(gerenciarRelacao);
-
-
-            cy.pause();
-
-            for (const dadosPrescritor of prescritores) {
-                const nomePrescritor = dadosPrescritor.nome;
-
-                //selecionar cluster, selecionar prescritor, clicar em adicionar e clicar em ok
-                cy.getSelectOptionByValue(selecionarCluster, dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster3);
-                cy.getElementAndClick(containerSelecionarPrescritor);
-                cy.getElementAndType(selecionarPrescritor, nomePrescritor)
-                    .type('{enter}');
-
-                cy.pause();
-
-                cy.getElementAndClick(okSucessoModalMensagem);
-                //repetir processo até terminar lista de prescritores
+Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo: string) => {
+    cy.lerArquivo(nomeArquivo).then((atendenteClusterPrescritor: { atendentes: { nome: string; cluster: string; prescritores: { nome: string }[] }[] }) => {
+        function mapClusterValue(clusterName: string): string {
+            switch (clusterName) {
+                case 'Cluster1':
+                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster1;
+                case 'Cluster2':
+                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster2;
+                case 'Cluster3':
+                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster3;
+                case 'Cluster4':
+                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster4;
+                case 'Cluster5':
+                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster5;
+                default:
+                    return '';
             }
-
         }
 
-    })
+        cy.getElementAndClick(menuConfiguracoes,subMenuClustersGrupos,relacoes);
+        // cy.getElementAndClick(subMenuClustersGrupos);
+        // cy.getElementAndClick(relacoes);
+
+        function configurarRelacao() {
+            let nomeAtendenteRelacao;
+            let nomePrescritorRelacao;
+            const atendentes = atendenteClusterPrescritor.atendentes;
+
+            for (const atendenteClusterPrescritor of atendentes) {
+                const atendente = atendenteClusterPrescritor.nome;
+                const cluster = mapClusterValue(atendenteClusterPrescritor.cluster);
+                const prescritores = atendenteClusterPrescritor.prescritores;
+
+                for (const dadosPrescritor of prescritores) {
+                    const nomePrescritor = dadosPrescritor.nome;
+
+                    cy.getElementAndClick(relacoes);
+                    cy.getElementAndClick(buscarFiltros);
+                    cy.getElementAndType(pesquisa, atendente);
+                    cy.getElementAndClick(gerenciarRelacao);
+
+                    cy.getSelectOptionByValue(selecionarCluster, cluster);
+                    cy.getElementAndClick(containerSelecionarPrescritor);
+                    cy.get(selecionarPrescritor)
+                        .type(nomePrescritor)
+                        .wait(2000)
+                        .type('{downarrow}{enter}');
+                    cy.get(adicionarClusterPrescritorRelacaoAtendente, { timeout: 5000 })
+                        .click();
+                    cy.wait(2000);
+
+                    cy.get(containerMensagemRelacao).should('be.visible').then(($modal) => {
+
+                        if ($modal.text().includes('Não foi possível adicionar.')) {
+                            cy.get(PrescritorRelacaoCriada).invoke('text').then((text) => {
+
+                                const regex = /^([^\d-]+)/;
+                                let matchArray = text.match(regex);
+                                nomePrescritorRelacao = matchArray[1]
+
+                                cy.get(atendenteRelacaoCriada).invoke('text').then((text) => {
+
+                                    matchArray = text.match(regex);
+                                    nomeAtendenteRelacao = matchArray[1]
+
+                                    cy.getElementAndClick(relacoes);
+                                    cy.get(pesquisa)
+                                        .type(nomeAtendenteRelacao);
+                                    cy.getElementAndClick(gerenciarRelacao);
+                                })
+                                cy.get(pesquisaPrescritorGerenciarRelacao, { timeout: 1000 })
+                                    .type(nomePrescritorRelacao.trim(), { timeout: 1000 });
+
+                                cy.get(buscaPrescritorGerenciarRelacao, { timeout: 1000 })
+                                    .click({ timeout: 1000 });
+
+                                cy.get(selecionarPrescritorEncontrado, { timeout: 1000 })
+                                    .check({ timeout: 1000 });
+
+                                cy.get(removerRelacaoSelecionada, { timeout: 1000 })
+                                    .click({ timeout: 1000 });
+
+                                cy.get(mensagemConfirmacaoModal, { timeout: 1000 })
+                                    .click({ timeout: 1000 });
+
+                            });
+                        }
+                    })
+                }
+            }
+        }
+        configurarRelacao();
+    });
 });

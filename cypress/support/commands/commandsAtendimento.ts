@@ -140,19 +140,6 @@ export const {
 
 } = el.Atendimentos;
 
-
-
-Cypress.Commands.add('acessarAtendimentosEmAndamento', (): void => {
-    cy.getVisible(menuAtendimentos)
-      .trigger('mouseover')
-      .click();
-  
-    cy.get(atendimentosEmAndamento)
-      .click({ force: true });
-  });
-  
-  
-  
   
   
   Cypress.Commands.add('inserirTempoTratamento', (tempoTratamento: string) => {
@@ -163,9 +150,6 @@ Cypress.Commands.add('acessarAtendimentosEmAndamento', (): void => {
     cy.getElementAndClick(salvarTempoTratamento);
     cy.getVisible(modalConfirmacaoPedido)
   })
-  
-  
-  
   
   
   Cypress.Commands.add('confirmarPedido', (

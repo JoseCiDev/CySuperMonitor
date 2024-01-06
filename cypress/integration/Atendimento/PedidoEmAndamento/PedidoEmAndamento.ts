@@ -58,14 +58,14 @@ describe('Atendimentos em Andamento', () => {
 
 
     beforeEach(function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD, dadosParametros.Url.inicio);
+        cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD);
     });
 
 
 
 
     it('Deve confirmar pedido', () => {
-        cy.acessarAtendimentosEmAndamento(atendimentosEmAndamento);
+        cy.getElementAndClick(menuAtendimentos,atendimentosEmAndamento);(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
         cy.inserirTempoTratamento('30');
 
@@ -74,13 +74,13 @@ describe('Atendimentos em Andamento', () => {
 
 
     it('Deve vincular receita ao pedido', () => {
-        cy.acessarAtendimentosEmAndamento(atendimentosEmAndamento);
+        cy.getElementAndClick(menuAtendimentos,atendimentosEmAndamento);(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
         cy.vincularPedidoReceita(botaoVincularReceitaTelaAtendimentoAndamento, dadosParametros.Receita.numeroReceita)
     });
 
     it('Deve desvincular receita ao pedido', () => {
-        cy.acessarAtendimentosEmAndamento(atendimentosEmAndamento);
+        cy.getElementAndClick(menuAtendimentos,atendimentosEmAndamento);(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
         cy.desvincularPedidoReceita(botaoDesvincularReceitaTelaAtendimentoAndamento)
     });
@@ -104,13 +104,6 @@ describe('Atendimentos em Andamento', () => {
     it('Deve excluir pedido', () => {
 
     });
-
-
-
-
-
-
-
 
 
 

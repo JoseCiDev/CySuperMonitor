@@ -211,21 +211,22 @@ Cypress.Commands.add('inserirDataUmDiaMenosDiaAtual', (campoData: string) => {
 
 
 
-Cypress.Commands.add('getElementAndClick', (elemento: string): void => {
+Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
+  elements.forEach(element => {
+    cy.get(element, { timeout: 20000 })
+      .as('element')
+      .then($elements => {
 
-  cy.get(elemento, { timeout: 20000 })
-    .as('element')
-    .then($elements => {
+        if ($elements.length > 0) {
+          cy.wrap($elements.first())
+            .click({ timeout: 20000, force: true });
+        } else {
+          cy.wrap($elements.eq(0))
+            .click({ timeout: 20000, force: true });
+        }
 
-      if ($elements.length > 0) {
-        cy.wrap($elements.first())
-          .click({ timeout: 20000, force: true });
-      } else {
-        cy.wrap($elements.eq(0))
-          .click({ timeout: 20000, force: true });
-      }
-
-    });
+      });
+  })
 });
 
 

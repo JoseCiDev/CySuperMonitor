@@ -12,7 +12,7 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 export const {
     dataRecebimentoReceitas,
-    okSucessoModalMensagem,
+    okModalMensagem,
     menuReceitas,
     menuReceitasReduzido,
     menuImportarReceitas,
@@ -57,11 +57,6 @@ export const sugestaoRelacaoPrescritor = (): void => {
                 .click();
             cy.wait(1000);
         }
-        else {
-            if ($elemento.is(':visible')) {
-                cy.log('Teste pode continuar.')
-            }
-        }
     });
 };
 
@@ -92,12 +87,12 @@ export const salvarReceita = (salvarImportacao): void => {
     cy.get(salvarImportacao, { timeout: 20000 })
         .click({ force: true });
 
-    if (Cypress.$(okSucessoModalMensagem).length > 0 && Cypress.$(okSucessoModalMensagem).is(':visible')) {
-        cy.getVisible(okSucessoModalMensagem, { timeout: 20000 })
+    if (Cypress.$(okModalMensagem).length > 0 && Cypress.$(okModalMensagem).is(':visible')) {
+        cy.getVisible(okModalMensagem, { timeout: 20000 })
             .click();
     } else {
         cy.wait(1000)
-        cy.getVisible(okSucessoModalMensagem, { timeout: 20000 })
+        cy.getVisible(okModalMensagem, { timeout: 20000 })
             .click();
     }
     cy.get(salvarImportacao, { timeout: 20000 }).then(($elemento) => {
@@ -113,7 +108,7 @@ export const salvarReceita = (salvarImportacao): void => {
 describe('Tela importação de receitas.', () => {
 
     beforeEach(function () {
-        
+
     })
 
 
@@ -122,9 +117,7 @@ describe('Tela importação de receitas.', () => {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.acessarMenuReceitas(menuReceitas);
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.getElementAndClick(menuReceitasReduzido);
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
     })
 
     it('Deve acessar importar receitas logado com perfil inclusão', () => {
@@ -132,9 +125,7 @@ describe('Tela importação de receitas.', () => {
         cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.acessarMenuReceitas(menuReceitas);
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.getElementAndClick(menuReceitasReduzido);
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
     })
 
     it('Deve acessar importar receitas logado com perfil conferência de entrada', () => {
@@ -142,9 +133,7 @@ describe('Tela importação de receitas.', () => {
         cy.login(dadosAmbiente.USER_CONFENTRADA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.acessarMenuReceitas(menuReceitas);
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.getElementAndClick(menuReceitasReduzido);
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
     })
 
     it('Deve acessar importar receitas logado com perfil conferência de saída', () => {
@@ -152,9 +141,7 @@ describe('Tela importação de receitas.', () => {
         cy.login(dadosAmbiente.USER_CONFSAIDA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.acessarMenuReceitas(menuReceitas);
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.getElementAndClick(menuReceitasReduzido);
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
     })
 
     it('Deve acessar importar receitas logado com perfil expedição', () => {
@@ -162,9 +149,7 @@ describe('Tela importação de receitas.', () => {
         cy.login(dadosAmbiente.USER_EXPEDICAO, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.acessarMenuReceitas(menuReceitas);
-        cy.acessarImportarReceitas(menuImportarReceitas);
-        cy.getElementAndClick(menuReceitasReduzido);
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
     })
 
 
@@ -188,9 +173,9 @@ describe('Tela importação de receitas.', () => {
 
     it('Deve realizar busca de Receitas filtrando por paciente', () => {
         cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error)
-        })
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -205,9 +190,9 @@ describe('Tela importação de receitas.', () => {
 
     it('Deve realizar busca de Receitas filtrando por prescritor', () => {
         cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error)
-        })
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
         cy.acessarMenuReceitas(menuReceitas);
 
         cy.acessarImportarReceitas(menuImportarReceitas);
@@ -222,9 +207,9 @@ describe('Tela importação de receitas.', () => {
 
     it('Deve realizar busca de Receitas filtrando por cluster', () => {
         cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error)
-        })
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -237,9 +222,9 @@ describe('Tela importação de receitas.', () => {
 
     it('Deve realizar busca de Receitas filtrando por pedido', () => {
         cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error)
-        })
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -253,9 +238,9 @@ describe('Tela importação de receitas.', () => {
 
     it('Deve realizar busca de Receitas filtrando por canal de recebimento', () => {
         cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error)
-        })
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -268,9 +253,9 @@ describe('Tela importação de receitas.', () => {
 
     it('Deve realizar busca de Receitas filtrando por atendente responsável', () => {
         cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error)
-        })
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -283,9 +268,9 @@ describe('Tela importação de receitas.', () => {
 
     it('Deve realizar busca de Receitas filtrando por pendências', () => {
         cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error)
-        })
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
         cy.acessarMenuReceitas(menuReceitas);
         cy.acessarImportarReceitas(menuImportarReceitas);
         cy.wait(2000);
@@ -300,7 +285,7 @@ describe('Tela importação de receitas.', () => {
 
 
     // it('Deve realizar importação de Receitas', () => {
-        
+
     //     cy.acessarMenuReceitas(menuReceitas);
 
     //     cy.acessarImportarReceitas(menuImportarReceitas);

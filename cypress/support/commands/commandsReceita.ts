@@ -149,26 +149,6 @@ export const {
 
 
 
-Cypress.Commands.add('acessarMenuReceitas', (receitas: string): void => {
-    cy.getElementAndClick(receitas)
-        .contains('Receitas')
-        .and('have.class', 'nav-label')
-});
-
-
-
-Cypress.Commands.add('acessarImportarReceitas', (importarReceitas: string): void => {
-    cy.getElementAndClick(importarReceitas);
-})
-
-
-
-Cypress.Commands.add('acessarGerenciarReceitas', (gerenciarReceitas: string): void => {
-    cy.getElementAndClick(gerenciarReceitas);
-})
-
-
-
 Cypress.Commands.add('setDadoCapturado', (orcamentistaPedido: string): void => {
     dadosParametros.Pedido.orcamentista = orcamentistaPedido;
 });
@@ -356,7 +336,6 @@ Cypress.Commands.add('clonarReceita', (clonarReceita: string): void => {
                     cy.getElementAndClick(mensagemConfirmacaoModal);
                     cy.wait(1000);
                 }
-
             }
             cy.getElementAndClick(mensagemConfirmacaoModal);
         });
@@ -427,13 +406,10 @@ Cypress.Commands.add('atualizarModalDuvidaTecnica', (atualizar: string): void =>
         .should('have.attr', 'disabled');
     cy.get(atualizar, { timeout: 20000 }).then(($elemento) => {
 
-        if ($elemento.is(':disabled')) {
-            cy.wait(8000);
-        }
-        else {
+        if (!$elemento.is(':disabled')) {
             cy.log('Já pode atualizar a modal.')
         }
-
+        cy.wait(8000);
         cy.getElementAndClick(fecharModalDuvidasTecnicas);
     });
 });
@@ -463,17 +439,18 @@ Cypress.Commands.add('atualizarModalDuvidaTecnica', (atualizar: string): void =>
 //       }
 //     });
 
-//   if (responsavelRespostaDuvidaTecnica !== dadosParametros.Receita.responsavelAtualRespostaDuvidaTecnica) {
-//     cy.get(containerResponsavelRespostaDuvidasTecnicas, { timeout: 20000 })
+//   if (responsavelRespostaDuvidaTecnica === dadosParametros.Receita.responsavelAtualRespostaDuvidaTecnica) {
+//     cy.log('O novo responsável é o mesmo que o atual');
+//     
+//   } 
+//    cy.get(containerResponsavelRespostaDuvidasTecnicas, { timeout: 20000 })
 //       .click();
 //     cy.get(responsavelRespostas, { timeout: 20000 })
 //       .type(`${responsavelRespostaDuvidaTecnica}{enter}`);
 //     cy.wait(1000);
 //     cy.getElementAndClick(mensagemSucessoModal);
 //     cy.getElementAndClick(fecharModalDuvidasTecnicas);
-//   } else {
-//     cy.log('O novo responsável é o mesmo que o atual');
-//   }
+//   
 // });
 
 
@@ -518,17 +495,17 @@ Cypress.Commands.add('alterarResponsavelRespostaDuvidaTecnica', (acessarDuvidasT
             }
         });
 
-    if (responsavelRespostaDuvidaTecnica !== dadosParametros.Receita.responsavelAtualRespostaDuvidaTecnica) {
-        cy.get(containerResponsavelRespostaDuvidasTecnicas, { timeout: 20000 })
-            .click();
-        cy.get(responsavelRespostas, { timeout: 20000 })
-            .type(`${responsavelRespostaDuvidaTecnica}{enter}`);
-        cy.wait(1000);
-        cy.getElementAndClick(mensagemSucessoModal);
-        cy.getElementAndClick(fecharModalDuvidasTecnicas);
-    } else {
+    if (responsavelRespostaDuvidaTecnica === dadosParametros.Receita.responsavelAtualRespostaDuvidaTecnica) {
         cy.log('O novo responsável é o mesmo que o atual');
+
     }
+    cy.get(containerResponsavelRespostaDuvidasTecnicas, { timeout: 20000 })
+        .click();
+    cy.get(responsavelRespostas, { timeout: 20000 })
+        .type(`${responsavelRespostaDuvidaTecnica}{enter}`);
+    cy.wait(1000);
+    cy.getElementAndClick(mensagemSucessoModal);
+    cy.getElementAndClick(fecharModalDuvidasTecnicas);
 });
 
 

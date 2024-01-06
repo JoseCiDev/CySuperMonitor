@@ -46,18 +46,16 @@ const configureEnvironment = (config: Cypress.PluginConfig) => {
   if (Cypress.env) {
     // Verifique se o parâmetro "AMBIENTE" está definido
     const ambiente = Cypress.env('ambiente');
-    if (ambiente && Cypress.env[ambiente]) {
-      // Aqui você pode acessar as variáveis de ambiente definidas no cypress.env.json
-      const environmentConfig = Cypress.env[ambiente];
-
-      // Exemplo de uso das variáveis de ambiente
-      console.log(`Ambiente selecionado: ${ambiente}`);
-      console.log(`DB Host: ${environmentConfig.DB_HOST}`);
-      console.log(`DB User: ${environmentConfig.DB_USER}`);
-      console.log(`DB Password: ${environmentConfig.DB_PASSWORD}`);
-      // e assim por diante...
-    } else {
-      console.error(`Ambiente '${ambiente}' não encontrado no arquivo cypress.env.json`);
+    if (!ambiente && Cypress.env[ambiente]) {
+      throw new Error(`Ambiente '${ambiente}' não encontrado no arquivo cypress.env.json`);
     }
+    const environmentConfig = Cypress.env[ambiente];
+
+    // Exemplo de uso das variáveis de ambiente
+    console.log(`Ambiente selecionado: ${ambiente}`);
+    console.log(`DB Host: ${environmentConfig.DB_HOST}`);
+    console.log(`DB User: ${environmentConfig.DB_USER}`);
+    console.log(`DB Password: ${environmentConfig.DB_PASSWORD}`);
+    // e assim por diante...
   }
 };

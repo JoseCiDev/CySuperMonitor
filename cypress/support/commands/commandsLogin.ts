@@ -194,8 +194,6 @@ Cypress.Commands.add('login', (usuario: string, senha: string, elementError: str
             .then((text) => {
               if (text.includes('Usuário ou senha inválidos')) {
                 throw new Error('Usuário ou senha incorretos. Tente novamente.');
-              } else {
-                cy.log('Teste irá continuar porque não apresentou mensagem de erro, ');
               }
             });
         });

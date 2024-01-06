@@ -145,7 +145,7 @@ declare global {
        * comando customizado para capturar elemento e clicar.
        * @example cy.getElementAndClick(el.elemento)
        */
-      getElementAndClick(element: string): Chainable<Element>
+      getElementAndClick(...elements: string[]): Chainable<Element>
 
       /**
        * comando customizado para capturar elemento e marcar checkbox.
@@ -351,8 +351,8 @@ declare global {
     * * comando customizado para importar orçamentos .
     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
     */
-      configuraRelacaoAtendenteClusterPrescritor(): Chainable<ValidationResult>
-      
+      configuraRelacaoAtendenteClusterPrescritor(nomeArquivo: string): Chainable<ValidationResult>
+
     }
   }
 }
