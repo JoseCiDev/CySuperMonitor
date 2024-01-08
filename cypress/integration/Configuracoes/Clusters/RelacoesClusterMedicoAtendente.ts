@@ -10,41 +10,6 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 
 export const {
-    dataRecebimentoReceitas,
-    okModalMensagem,
-    menuReceitas,
-    menuReceitasReduzido,
-    menuImportarReceitas,
-    abrirModalRegistrarReceitas,
-    importarImagemReceitas,
-    prescritorReceitas,
-    parametroBuscaPaciente,
-    pacienteReceitas,
-    canalRecebimentoReceitas,
-    opcaoTipoReceitas,
-    textoObservacaoInternaReceitas,
-    urgenteReceitas,
-    clienteAlertaReceitas,
-    medicamentocontroladoReceitas,
-    checkboxMarcarUso,
-    acoes,
-    visualizarReceitas,
-    clonarReceitas,
-    excluirReceitas,
-    acessarObservacoesFarmaceuticas,
-    acessarDuvidasTecnicas,
-    atualizarModalDuvidasTecnicas,
-    mensagemConfirmacaoModal,
-    salvarReceitas,
-    editarReceita,
-    mensagemSucessoModal,
-    atendenteResponsavelReceitas,
-    juntocomReceitas,
-    clusterReceitas,
-    menuGerenciarReceitas,
-} = el.Receitas;
-
-export const {
     menuConfiguracoes,
     subMenuClustersGrupos,
     relacoes,
@@ -56,7 +21,7 @@ export const {
     selecionarCluster,
     containerSelecionarPrescritor,
     selecionarPrescritor,
-    adicionarClusterPrescritorRelacaoAtendente,
+    adicionarRelacaoAtendenteClusterPrescritor,
 } = el.Configuracoes;
 
 

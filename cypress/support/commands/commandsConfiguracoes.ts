@@ -36,112 +36,12 @@ const ambiente = Cypress.env('AMBIENTE');
 const dadosAmbiente = Cypress.env(ambiente);
 
 
-
 export const {
-    ModalBuscaReceitas,
-    filtroDataInicialBuscaReceitas,
-    filtroDataFinalBuscaReceitas,
-    filtroPendenciasBusca,
-    botaoProcurarReceitas,
-    labelProcurarReceitas,
-    numeroReceitas,
-    containerInserirUsuario,
-    select,
-    usuarioSelecionado,
-    senhaReceita,
-    aplicaDesmarcarUso,
+
     mensagemConfirmacaoModal,
-    mensagemSucessoModal,
-    abaPdfVisualizarReceitas,
-    abaOriginalVisualizarReceitas,
-    abaObservacoesInternasVisualizarReceitas,
-    abaInformacoesFcertaVisualizarReceitas,
-    exibirReguaVisualizarReceitas,
-    fecharVisualizarReceitas,
-    clonarReceitas,
-    modalObservacoesClonar,
-    clonarObservacoesFarmaceuticas,
-    menuReceitas,
-    excluirReceitas,
-    abaAdicionarObservacoesFarmaceuticas,
-    senhaObservacoesFarmaceuticas,
-    textoObservacoesFarmaceuticas,
-    fecharModalObservacoesFarmaceuticas,
-    abaExcluirObservacoesFarmaceuticas,
-    excluirObservacoesFarmaceuticas,
-    containerCategoriaDuvidaTecnicas,
-    textoDuvidasTecnicas,
-    containerColaboradores,
-    responsavelRespostas,
-    enviarDuvidasTecnicas,
-    fecharModalDuvidasTecnicas,
-    acessarDuvidasTecnicas,
-    containerResponsavelRespostaDuvidasTecnicas,
-    ResponsavelRespostaDuvidasTecnicas,
-    responsavelAtualRespostaDuvidasTecnicas,
-    marcarDuvidasTecnicaResolvidas,
-    excluirDuvidasTecnicas,
-    statusRespostaDuvidasTecnicas,
-    textoRespostaDuvidasTecnicas,
-    enviarRespostaDuvidasTecnicas,
     okModalMensagem
 
 } = el.Receitas;
-
-export const {
-    campoBuscarPedido,
-    buscarFilial,
-    enviarBusca,
-    botaoVisualizar,
-    brasileiro,
-    salvarNumeroChatguru,
-    botaoTempoTratamento,
-    modalMensagemChatguru,
-    tempoTratamentoPadrao,
-    cabecalhoModalTempoTratamento,
-    salvarTempoTratamento,
-    modalConfirmacaoPedido,
-    modalMensagemPedido,
-    orcamentista,
-    containerFormaPagamento,
-    inserirTempoRepeticao,
-    orcamentoEscolhido,
-    monitoramentoAtendimento,
-    salvarDadosConfirmacaoPedido,
-    canalConfirmacaoPedido,
-    enviarEmailRastreamento,
-    naoMostrarPedidoInclusao,
-    naoMostrarPedidoCaixa,
-    observacaoCaixaBalcao,
-    notaDetalhada,
-    campoStatusPagamento,
-    enderecoEnvioSelecionado,
-    enderecoEnvio,
-    observacaoExpedicao,
-    menuAtendimentos,
-    atendimentosEmAndamento,
-    mostrarTodos,
-    juntocomconfirmacaoPedido,
-    observacaoGeral,
-    PossuiReceita,
-    possuiFormulaEspecial,
-    preVisualizarPedido,
-    fecharPreVisualizarPedido,
-    enviarconfirmarPedido,
-    campoFormaEnvio,
-    campoprometidoPara,
-    campoAromaSache,
-    campoAromaCapsula,
-    dispararMensagemChatguru,
-    campoVincularReceita,
-    relacionarReceitaPedido,
-    botaoDesvincularReceitaTelaAtendimentoAndamento,
-    mostrarPedidosEncerrados,
-    reabrirPedido,
-    confirmaReabrirPedido,
-    containerPedidos,
-
-} = el.Atendimentos;
 
 export const {
     menuConfiguracoes,
@@ -155,7 +55,7 @@ export const {
     selecionarCluster,
     containerSelecionarPrescritor,
     selecionarPrescritor,
-    adicionarClusterPrescritorRelacaoAtendente,
+    adicionarRelacaoAtendenteClusterPrescritor,
     containerMensagemRelacao,
     atendenteRelacaoCriada,
     PrescritorRelacaoCriada,
@@ -168,7 +68,6 @@ export const {
 
 Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo: string) => {
     cy.lerArquivo(nomeArquivo).then((atendenteClusterPrescritor: { atendentes: { nome: string; cluster: string; prescritores: { nome: string }[] }[] }) => {
-
 
         function mapClusterValue(clusterName: string): string {
             switch (clusterName) {
@@ -187,37 +86,40 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
             }
         }
 
-        let nomeAtendenteRelacao;
-        let nomePrescritorRelacao;
+        let nomeAtendenteRelacao: string;
+        let nomePrescritorRelacao: string;
         const atendentes = atendenteClusterPrescritor.atendentes;
 
         for (const atendenteClusterPrescritor of atendentes) {
-            const atendente = atendenteClusterPrescritor.nome;
-            const cluster = mapClusterValue(atendenteClusterPrescritor.cluster);
+            const atendente: string = atendenteClusterPrescritor.nome;
+            const cluster: string = mapClusterValue(atendenteClusterPrescritor.cluster);
             const prescritores = atendenteClusterPrescritor.prescritores;
 
-            cy.getElementAndClick(menuConfiguracoes, subMenuClustersGrupos);
-            
-            cy.getElementAndClick(relacoes);
-            cy.getElementAndClick(buscarFiltros);
+            cy.getElementAndClick(
+                menuConfiguracoes,
+                subMenuClustersGrupos,
+                relacoes,
+                buscarFiltros
+            );
             cy.getElementAndType(pesquisa, atendente);
             cy.getElementAndClick(gerenciarRelacao);
 
             for (const dadosPrescritor of prescritores) {
                 const nomePrescritor = dadosPrescritor.nome;
 
-                const criarRelacao = () => {
-
+                const criarRelacao = (): void => {
                     cy.getSelectOptionByValue(selecionarCluster, cluster);
                     cy.getElementAndClick(containerSelecionarPrescritor);
                     cy.get(selecionarPrescritor)
                         .type(nomePrescritor)
                         .wait(2000)
                         .type('{downarrow}{enter}');
-                    cy.get(adicionarClusterPrescritorRelacaoAtendente, { timeout: 5000 })
-                        .click();
+                    cy.get(adicionarRelacaoAtendenteClusterPrescritor, { timeout: 5000 })
+                        .click({ timeout: 5000 });
+
                     cy.get(containerMensagemRelacao).should('be.visible').then(($modal) => {
                         if ($modal.text().includes('Não foi possível adicionar.')) {
+
                             cy.get(PrescritorRelacaoCriada).invoke('text').then((textPrescritor) => {
                                 const regex = /^([^\d-]+)/;
                                 let matchArray = textPrescritor.match(regex);
@@ -228,41 +130,34 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                                     nomeAtendenteRelacao = matchArray[1];
 
                                     if (nomeAtendenteRelacao !== atendente) {
-
                                         excluirRelacao();
                                     }
                                 })
                             });
                         }
                     })
-                    cy.getElementAndClick(okModalMensagem);
+                    cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
                 }
                 criarRelacao();
 
-                const excluirRelacao = () => {
-
+                const excluirRelacao = (): void => {
                     cy.getElementAndClick(relacoes);
-
                     cy.get(pesquisa)
                         .type(nomeAtendenteRelacao);
                     cy.getElementAndClick(gerenciarRelacao);
-
                     cy.get(pesquisaPrescritorGerenciarRelacao, { timeout: 1000 })
                         .type(nomePrescritorRelacao.trim(), { timeout: 1000 });
-
                     cy.get(buscaPrescritorGerenciarRelacao, { timeout: 1000 })
                         .click({ timeout: 1000 });
-
                     cy.get(selecionarPrescritorEncontrado, { timeout: 1000 })
                         .check({ timeout: 1000 });
-
                     cy.get(removerRelacaoSelecionada, { timeout: 1000 })
                         .click({ timeout: 1000 });
-
                     cy.get(mensagemConfirmacaoModal, { timeout: 1000 })
                         .click({ timeout: 1000 });
+                    cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
 
-                    // criarRelacao();
+                    criarRelacao();
                 }
             }
         }

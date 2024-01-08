@@ -207,7 +207,7 @@ interface Elements<S = string> {
         selecionarCluster: S;
         containerSelecionarPrescritor: S;
         selecionarPrescritor: S;
-        adicionarClusterPrescritorRelacaoAtendente: S;
+        adicionarRelacaoAtendenteClusterPrescritor: S;
         containerMensagemRelacao: S;
         atendenteRelacaoCriada: S;
         PrescritorRelacaoCriada: S;
@@ -456,7 +456,7 @@ export const elements: Elements = {
         selecionarCluster: '#clusterAdd',
         containerSelecionarPrescritor: '#tableRelationPorAtendente > tbody > tr:nth-child(1) > td:nth-child(4) > span > span.selection > span > span.select2-selection__arrow',
         selecionarPrescritor: '.select2-dropdown > .select2-search > .select2-search__field',
-        adicionarClusterPrescritorRelacaoAtendente: '#adicionar_relacao',
+        adicionarRelacaoAtendenteClusterPrescritor: '#adicionar_relacao',
         containerMensagemRelacao: '.bootbox-body > .alert',
         atendenteRelacaoCriada: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div > b:nth-child(4)',
         PrescritorRelacaoCriada: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div > b:nth-child(3)',
