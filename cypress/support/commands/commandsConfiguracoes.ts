@@ -195,17 +195,18 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
             const atendente = atendenteClusterPrescritor.nome;
             const cluster = mapClusterValue(atendenteClusterPrescritor.cluster);
             const prescritores = atendenteClusterPrescritor.prescritores;
-            
+
             cy.getElementAndClick(menuConfiguracoes, subMenuClustersGrupos);
+            
+            cy.getElementAndClick(relacoes);
+            cy.getElementAndClick(buscarFiltros);
+            cy.getElementAndType(pesquisa, atendente);
+            cy.getElementAndClick(gerenciarRelacao);
 
             for (const dadosPrescritor of prescritores) {
                 const nomePrescritor = dadosPrescritor.nome;
 
                 const criarRelacao = () => {
-                    cy.getElementAndClick(relacoes);
-                    cy.getElementAndClick(buscarFiltros);
-                    cy.getElementAndType(pesquisa, atendente);
-                    cy.getElementAndClick(gerenciarRelacao);
 
                     cy.getSelectOptionByValue(selecionarCluster, cluster);
                     cy.getElementAndClick(containerSelecionarPrescritor);
@@ -215,8 +216,6 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                         .type('{downarrow}{enter}');
                     cy.get(adicionarClusterPrescritorRelacaoAtendente, { timeout: 5000 })
                         .click();
-                    // cy.pause();
-                    cy.wait(2000);
                     cy.get(containerMensagemRelacao).should('be.visible').then(($modal) => {
                         if ($modal.text().includes('Não foi possível adicionar.')) {
                             cy.get(PrescritorRelacaoCriada).invoke('text').then((textPrescritor) => {
