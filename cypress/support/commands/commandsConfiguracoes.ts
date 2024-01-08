@@ -168,6 +168,8 @@ export const {
 
 Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo: string) => {
     cy.lerArquivo(nomeArquivo).then((atendenteClusterPrescritor: { atendentes: { nome: string; cluster: string; prescritores: { nome: string }[] }[] }) => {
+
+
         function mapClusterValue(clusterName: string): string {
             switch (clusterName) {
                 case 'Cluster1':
@@ -185,23 +187,21 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
             }
         }
 
-        cy.getElementAndClick(menuConfiguracoes,subMenuClustersGrupos,relacoes);
-        // cy.getElementAndClick(subMenuClustersGrupos);
-        // cy.getElementAndClick(relacoes);
+        let nomeAtendenteRelacao;
+        let nomePrescritorRelacao;
+        const atendentes = atendenteClusterPrescritor.atendentes;
 
-        function configurarRelacao() {
-            let nomeAtendenteRelacao;
-            let nomePrescritorRelacao;
-            const atendentes = atendenteClusterPrescritor.atendentes;
+        for (const atendenteClusterPrescritor of atendentes) {
+            const atendente = atendenteClusterPrescritor.nome;
+            const cluster = mapClusterValue(atendenteClusterPrescritor.cluster);
+            const prescritores = atendenteClusterPrescritor.prescritores;
+            
+            cy.getElementAndClick(menuConfiguracoes, subMenuClustersGrupos);
 
-            for (const atendenteClusterPrescritor of atendentes) {
-                const atendente = atendenteClusterPrescritor.nome;
-                const cluster = mapClusterValue(atendenteClusterPrescritor.cluster);
-                const prescritores = atendenteClusterPrescritor.prescritores;
+            for (const dadosPrescritor of prescritores) {
+                const nomePrescritor = dadosPrescritor.nome;
 
-                for (const dadosPrescritor of prescritores) {
-                    const nomePrescritor = dadosPrescritor.nome;
-
+                const criarRelacao = () => {
                     cy.getElementAndClick(relacoes);
                     cy.getElementAndClick(buscarFiltros);
                     cy.getElementAndType(pesquisa, atendente);
@@ -215,48 +215,57 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                         .type('{downarrow}{enter}');
                     cy.get(adicionarClusterPrescritorRelacaoAtendente, { timeout: 5000 })
                         .click();
+                    // cy.pause();
                     cy.wait(2000);
-
                     cy.get(containerMensagemRelacao).should('be.visible').then(($modal) => {
-
                         if ($modal.text().includes('Não foi possível adicionar.')) {
-                            cy.get(PrescritorRelacaoCriada).invoke('text').then((text) => {
-
+                            cy.get(PrescritorRelacaoCriada).invoke('text').then((textPrescritor) => {
                                 const regex = /^([^\d-]+)/;
-                                let matchArray = text.match(regex);
+                                let matchArray = textPrescritor.match(regex);
                                 nomePrescritorRelacao = matchArray[1]
 
-                                cy.get(atendenteRelacaoCriada).invoke('text').then((text) => {
+                                cy.get(atendenteRelacaoCriada).invoke('text').then((textAtendente) => {
+                                    matchArray = textAtendente.match(regex);
+                                    nomeAtendenteRelacao = matchArray[1];
 
-                                    matchArray = text.match(regex);
-                                    nomeAtendenteRelacao = matchArray[1]
+                                    if (nomeAtendenteRelacao !== atendente) {
 
-                                    cy.getElementAndClick(relacoes);
-                                    cy.get(pesquisa)
-                                        .type(nomeAtendenteRelacao);
-                                    cy.getElementAndClick(gerenciarRelacao);
+                                        excluirRelacao();
+                                    }
                                 })
-                                cy.get(pesquisaPrescritorGerenciarRelacao, { timeout: 1000 })
-                                    .type(nomePrescritorRelacao.trim(), { timeout: 1000 });
-
-                                cy.get(buscaPrescritorGerenciarRelacao, { timeout: 1000 })
-                                    .click({ timeout: 1000 });
-
-                                cy.get(selecionarPrescritorEncontrado, { timeout: 1000 })
-                                    .check({ timeout: 1000 });
-
-                                cy.get(removerRelacaoSelecionada, { timeout: 1000 })
-                                    .click({ timeout: 1000 });
-
-                                cy.get(mensagemConfirmacaoModal, { timeout: 1000 })
-                                    .click({ timeout: 1000 });
-
                             });
                         }
                     })
+                    cy.getElementAndClick(okModalMensagem);
+                }
+                criarRelacao();
+
+                const excluirRelacao = () => {
+
+                    cy.getElementAndClick(relacoes);
+
+                    cy.get(pesquisa)
+                        .type(nomeAtendenteRelacao);
+                    cy.getElementAndClick(gerenciarRelacao);
+
+                    cy.get(pesquisaPrescritorGerenciarRelacao, { timeout: 1000 })
+                        .type(nomePrescritorRelacao.trim(), { timeout: 1000 });
+
+                    cy.get(buscaPrescritorGerenciarRelacao, { timeout: 1000 })
+                        .click({ timeout: 1000 });
+
+                    cy.get(selecionarPrescritorEncontrado, { timeout: 1000 })
+                        .check({ timeout: 1000 });
+
+                    cy.get(removerRelacaoSelecionada, { timeout: 1000 })
+                        .click({ timeout: 1000 });
+
+                    cy.get(mensagemConfirmacaoModal, { timeout: 1000 })
+                        .click({ timeout: 1000 });
+
+                    // criarRelacao();
                 }
             }
         }
-        configurarRelacao();
     });
 });
