@@ -28,7 +28,7 @@
 
 
 
-import { elements as el } from '../../Elements'
+import { elements as el } from '../../elements'
 import { ValidationResult, dadosParametros } from '../../DadosParametros'
 import { env } from 'process';
 

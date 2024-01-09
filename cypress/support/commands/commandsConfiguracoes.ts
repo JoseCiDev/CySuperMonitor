@@ -28,7 +28,7 @@
 
 
 
-import { elements as el } from '../../Elements'
+import { elements as el } from '../../elements'
 import { dadosParametros } from '../../DadosParametros'
 
 
@@ -82,7 +82,7 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                 case 'Cluster5':
                     return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster5;
                 default:
-                    return '';
+                    throw new Error('Cluster que procura não está cadastrado.');
             }
         }
 
@@ -101,60 +101,90 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                 relacoes,
                 buscarFiltros
             );
+            
             cy.getElementAndType(pesquisa, atendente);
+
             cy.getElementAndClick(gerenciarRelacao);
+
 
             for (const dadosPrescritor of prescritores) {
                 const nomePrescritor = dadosPrescritor.nome;
 
                 const criarRelacao = (): void => {
+
                     cy.getSelectOptionByValue(selecionarCluster, cluster);
+
                     cy.getElementAndClick(containerSelecionarPrescritor);
+
                     cy.get(selecionarPrescritor)
                         .type(nomePrescritor)
                         .wait(2000)
                         .type('{downarrow}{enter}');
+
                     cy.get(adicionarRelacaoAtendenteClusterPrescritor, { timeout: 5000 })
                         .click({ timeout: 5000 });
 
-                    cy.get(containerMensagemRelacao).should('be.visible').then(($modal) => {
-                        if ($modal.text().includes('Não foi possível adicionar.')) {
+                    cy.get(containerMensagemRelacao)
+                        .should('be.visible')
+                        .then(($modal) => {
 
-                            cy.get(PrescritorRelacaoCriada).invoke('text').then((textPrescritor) => {
-                                const regex = /^([^\d-]+)/;
-                                let matchArray = textPrescritor.match(regex);
-                                nomePrescritorRelacao = matchArray[1]
+                            const messages = [
+                                'Adicionado com sucesso!',
+                            ];
+                            for (const successMessage of messages) {
+                                if (cluster.length < 1 && $modal.text().includes(successMessage)) {
+                                    throw new Error(`Erro: Cluster ou prescritor não selecionado, mas mensagem "${successMessage}" apresentada.`);
+                                }
+                            }
+                            if ($modal.text().includes('Não foi possível adicionar.')) {
+                                cy.get(PrescritorRelacaoCriada)
+                                    .invoke('text')
+                                    .then((textPrescritor) => {
+                                        const regex = /^([^\d-]+)/;
+                                        let matchArray = textPrescritor.match(regex);
+                                        nomePrescritorRelacao = matchArray[1]
 
-                                cy.get(atendenteRelacaoCriada).invoke('text').then((textAtendente) => {
-                                    matchArray = textAtendente.match(regex);
-                                    nomeAtendenteRelacao = matchArray[1];
+                                        cy.get(atendenteRelacaoCriada)
+                                            .invoke('text')
+                                            .then((textAtendente) => {
+                                                matchArray = textAtendente.match(regex);
+                                                nomeAtendenteRelacao = matchArray[1];
 
-                                    if (nomeAtendenteRelacao !== atendente) {
-                                        excluirRelacao();
-                                    }
-                                })
-                            });
-                        }
-                    })
+                                                if (nomeAtendenteRelacao !== atendente) {
+                                                    cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
+                                                    excluirRelacao();
+                                                }
+                                            })
+                                    });
+                            }
+                        })
                     cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
                 }
                 criarRelacao();
 
                 const excluirRelacao = (): void => {
                     cy.getElementAndClick(relacoes);
+
                     cy.get(pesquisa)
                         .type(nomeAtendenteRelacao);
+
                     cy.getElementAndClick(gerenciarRelacao);
+
                     cy.get(pesquisaPrescritorGerenciarRelacao, { timeout: 1000 })
                         .type(nomePrescritorRelacao.trim(), { timeout: 1000 });
+
                     cy.get(buscaPrescritorGerenciarRelacao, { timeout: 1000 })
                         .click({ timeout: 1000 });
+
                     cy.get(selecionarPrescritorEncontrado, { timeout: 1000 })
                         .check({ timeout: 1000 });
+
                     cy.get(removerRelacaoSelecionada, { timeout: 1000 })
                         .click({ timeout: 1000 });
+
                     cy.get(mensagemConfirmacaoModal, { timeout: 1000 })
                         .click({ timeout: 1000 });
+
                     cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
 
                     criarRelacao();
@@ -162,4 +192,5 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
             }
         }
     });
+    return cy.wrap({ success: 'Login realizado com sucesso.' });
 });
