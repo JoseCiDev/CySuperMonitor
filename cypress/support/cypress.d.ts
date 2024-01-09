@@ -351,7 +351,7 @@ declare global {
     * * comando customizado para importar orçamentos .
     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
     */
-      configuraRelacaoAtendenteClusterPrescritor(nomeArquivo: string): Chainable<ValidationResult>
+      configuraRelacaoAtendenteClusterPrescritor(nomeArquivo: string): ValidationResult
 
     }
   }
