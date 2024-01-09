@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { elements as el } from '../../../Elements';
+import { elements as el } from '../../../elements';
 import { faker } from '@faker-js/faker';
 import { dadosParametros } from '../../../DadosParametros';
 
