@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { elements as el } from '../../../Elements';
+import { elements as el } from '../../../elements';
 import { faker } from '@faker-js/faker';
 import { dadosParametros } from '../../../DadosParametros'
 
@@ -51,7 +51,7 @@ export const {
 
 
 
-describe('Atendimentos em Andamento', () => {
+describe('Atendimentos em Andamento', function () {
     const ambiente = Cypress.env('AMBIENTE');
     // Get the specific environment object based on the selected AMBIENTE
     const dadosAmbiente = Cypress.env(ambiente);
@@ -64,7 +64,7 @@ describe('Atendimentos em Andamento', () => {
 
 
 
-    it('Deve confirmar pedido', () => {
+    it('Deve confirmar pedido', function () {
         cy.getElementAndClick(menuAtendimentos,atendimentosEmAndamento);(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
         cy.inserirTempoTratamento('30');
@@ -73,35 +73,35 @@ describe('Atendimentos em Andamento', () => {
     });
 
 
-    it('Deve vincular receita ao pedido', () => {
+    it('Deve vincular receita ao pedido', function () {
         cy.getElementAndClick(menuAtendimentos,atendimentosEmAndamento);(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
         cy.vincularPedidoReceita(botaoVincularReceitaTelaAtendimentoAndamento, dadosParametros.Receita.numeroReceita)
     });
 
-    it('Deve desvincular receita ao pedido', () => {
+    it('Deve desvincular receita ao pedido', function () {
         cy.getElementAndClick(menuAtendimentos,atendimentosEmAndamento);(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
         cy.desvincularPedidoReceita(botaoDesvincularReceitaTelaAtendimentoAndamento)
     });
 
 
-    it('Deve gerar link de pagamento pedido', () => {
+    it('Deve gerar link de pagamento pedido', function () {
 
 
     });
 
 
-    it('Deve inserir arquivo na galeria do atendimento', () => {
+    it('Deve inserir arquivo na galeria do atendimento', function () {
 
     });
 
 
-    it('Deve enviar orçamento via e-mail', () => {
+    it('Deve enviar orçamento via e-mail', function () {
 
     });
 
-    it('Deve excluir pedido', () => {
+    it('Deve excluir pedido', function () {
 
     });
 

@@ -1,4 +1,4 @@
-import { elements as el } from '../../Elements';
+import { elements as el } from '../../elements';
 import '../../support/commands';
 import { faker } from '@faker-js/faker';
 import { dadosParametros, BuscarReceita } from '../../DadosParametros'
@@ -116,7 +116,7 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 
 
-describe('Tela importação de receitas.', () => {
+describe('Tela importação de receitas.', function () {
 
     beforeEach(function () {
         // cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD);
@@ -124,7 +124,7 @@ describe('Tela importação de receitas.', () => {
 
 
 
-    it.only('Deve confirmar pedido logado com perfil administrador e visualizar informações selecionadas no quadro de informações da amarelinha confirmada.', () => {
+    it.only('Deve confirmar pedido logado com perfil administrador e visualizar informações selecionadas no quadro de informações da amarelinha confirmada.', function () {
         cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD);
 
         cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento);
@@ -150,7 +150,7 @@ describe('Tela importação de receitas.', () => {
 
 
 
-    it('Deve confirmar pedido logado com usuário atendente, logar com usuário distinto do primeiro, reabrir amarelinha, alterar atendente, orçamentista, backoffice, tempo de repetição, dias de tratamento, aroma sachê, aroma capsula, observações e confirmar novamente. Validar se é apresentado informações alterada no quadro de informações da amarelinha confirmada.', () => {
+    it('Deve confirmar pedido logado com usuário atendente, logar com usuário distinto do primeiro, reabrir amarelinha, alterar atendente, orçamentista, backoffice, tempo de repetição, dias de tratamento, aroma sachê, aroma capsula, observações e confirmar novamente. Validar se é apresentado informações alterada no quadro de informações da amarelinha confirmada.', function () {
         cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD);
 
         cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
@@ -227,7 +227,7 @@ describe('Tela importação de receitas.', () => {
     });
 
 
-    it('Deve confirmar pedido juntocom e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', () => {
+    it('Deve confirmar pedido juntocom e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', function () {
         cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE, dadosAmbiente.PASSWORD);
 
         cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
@@ -235,7 +235,7 @@ describe('Tela importação de receitas.', () => {
 
     })
 
-    it('Deve confirmar pedido vinculado a receita e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', () => {
+    it('Deve confirmar pedido vinculado a receita e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', function () {
         cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE1, dadosAmbiente.PASSWORD);
 
         cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
@@ -244,7 +244,7 @@ describe('Tela importação de receitas.', () => {
     })
 
 
-    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil farmacêutico.', () => {
+    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil farmacêutico.', function () {
         cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE1, dadosAmbiente.PASSWORD);
 
         cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
@@ -252,7 +252,7 @@ describe('Tela importação de receitas.', () => {
 
     })
 
-    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil recepção.', () => {
+    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil recepção.', function () {
         cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE1, dadosAmbiente.PASSWORD);
 
         cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
@@ -260,7 +260,7 @@ describe('Tela importação de receitas.', () => {
 
     })
 
-    it('Deve confirmar pedido, logado com perfil atendente.', () => {
+    it('Deve confirmar pedido, logado com perfil atendente.', function () {
         cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE1, dadosAmbiente.PASSWORD);
 
         cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
@@ -268,7 +268,7 @@ describe('Tela importação de receitas.', () => {
 
     })
 
-    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil inclusão.', () => {
+    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil inclusão.', function () {
         cy.login(el.Login.entrar, dadosAmbiente.USERINCLUSAO, dadosAmbiente.PASSWORD);
 
         cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);

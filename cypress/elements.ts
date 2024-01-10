@@ -443,7 +443,7 @@ export const elements: Elements = {
     },
 
     Configuracoes: {
-        menuConfiguracoes: ':nth-child(22) > [href="javascript:void(0);"]',
+        menuConfiguracoes: ':nth-child(19) > [href="javascript:void(0);"]',
         //Clusters(grupos)
         subMenuClustersGrupos: '#side-menu > li.active > ul > li:nth-child(6) > a',
         //Relações

@@ -101,17 +101,14 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                 relacoes,
                 buscarFiltros
             );
-            
+
             cy.getElementAndType(pesquisa, atendente);
 
             cy.getElementAndClick(gerenciarRelacao);
 
-
             for (const dadosPrescritor of prescritores) {
                 const nomePrescritor = dadosPrescritor.nome;
-
                 const criarRelacao = (): void => {
-
                     cy.getSelectOptionByValue(selecionarCluster, cluster);
 
                     cy.getElementAndClick(containerSelecionarPrescritor);
@@ -123,11 +120,9 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
 
                     cy.get(adicionarRelacaoAtendenteClusterPrescritor, { timeout: 5000 })
                         .click({ timeout: 5000 });
-
                     cy.get(containerMensagemRelacao)
                         .should('be.visible')
                         .then(($modal) => {
-
                             const messages = [
                                 'Adicionado com sucesso!',
                             ];
@@ -153,12 +148,23 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                                                 if (nomeAtendenteRelacao !== atendente) {
                                                     cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
                                                     excluirRelacao();
+                                                    cy.getElementAndClick(
+                                                        relacoes,
+                                                        buscarFiltros
+                                                    );
+                                                    cy.getElementAndType(pesquisa, atendente);
+                                                    cy.getElementAndClick(gerenciarRelacao);
+                                                }
+                                                else {
+                                                    cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
                                                 }
                                             })
                                     });
                             }
+                            else {
+                                cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
+                            }
                         })
-                    cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
                 }
                 criarRelacao();
 
@@ -185,7 +191,15 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                     cy.get(mensagemConfirmacaoModal, { timeout: 1000 })
                         .click({ timeout: 1000 });
 
-                    cy.getElementAndClick(okModalMensagem), { timeout: 10000 };
+                    cy.getElementAndClick(
+                        okModalMensagem,
+                        relacoes,
+                        buscarFiltros
+                    ), { timeout: 10000 };
+
+                    cy.getElementAndType(pesquisa, atendente);
+
+                    cy.getElementAndClick(gerenciarRelacao);
 
                     criarRelacao();
                 }

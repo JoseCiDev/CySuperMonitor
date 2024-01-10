@@ -151,7 +151,7 @@ declare global {
        * comando customizado para capturar elemento e marcar checkbox.
        * @example cy.getElementAndCheck(el.elemento)
        */
-      getElementAndCheck(element: string): Chainable<Element>
+      getElementAndCheck(...elements: string[]): Chainable<Element>
 
       /**
        * comando customizado de login.

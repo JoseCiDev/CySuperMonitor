@@ -176,7 +176,7 @@ Cypress.Commands.add('buscarReceita', (
         atendenteResponsavel?: string
     }): void => {
 
-    const capturarNumeroReceita = (numeroReceita: string, tentativas: number = 50) => {
+    const capturarNumeroReceita = (numeroReceita: string, tentativas: number = 10) => {
         if (tentativas === 0) {
             throw new Error(`Número de tentativas excedido. Não foi possível capturar o número da receita.`);
         }
@@ -190,14 +190,13 @@ Cypress.Commands.add('buscarReceita', (
 
                 if (!numeroReceitaMatch) {
                     throw new Error(`Valor capturado não contém números válidos: ${texto}`);
-
                 }
                 const numeroReceita = parseInt(numeroReceitaMatch[0], 10);
+
                 cy.wrap(numeroReceita).as('numeroReceita');
                 cy.setReceitaNumero(numeroReceita);
                 cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.numeroReceita}`);
             }
-            cy.wait(2000);
             capturarNumeroReceita(numeroReceita, tentativas - 1);
         });
     };
@@ -221,8 +220,10 @@ Cypress.Commands.add('buscarReceita', (
         capturarNumeroReceita(numeroReceitas);
     };
 
-    cy.getElementAndClick(ModalBuscaReceitas), { timeout: 20000 };
-    cy.wait(2000);
+    cy.get(ModalBuscaReceitas, { timeout: 20000 })
+        .as('ModalBuscaReceitas')
+    cy.get('@ModalBuscaReceitas')
+        .click();
     cy.getElementAndType(filtroDataInicialBuscaReceitas, params.dataInicial);
     cy.getElementAndType(filtroDataFinalBuscaReceitas, params.dataFinal);
 
@@ -400,19 +401,31 @@ Cypress.Commands.add('CriarDuvidaTecnica', (acessarDuvidasTecnicas: string, cate
 
 
 
+// Cypress.Commands.add('atualizarModalDuvidaTecnica', (atualizar: string): void => {
+//     cy.getElementAndClick(acessarDuvidasTecnicas);
+//     cy.getElementAndClick(atualizar)
+//         .should('have.attr', 'disabled');
+//     cy.get(atualizar, { timeout: 20000 }).then(($elemento) => {
+
+//         if (!$elemento.is(':disabled')) {
+//             cy.log('Já pode atualizar a modal.')
+//         }
+//         cy.wait(8000);
+//         cy.getElementAndClick(fecharModalDuvidasTecnicas);
+//     });
+// });
+
 Cypress.Commands.add('atualizarModalDuvidaTecnica', (atualizar: string): void => {
     cy.getElementAndClick(acessarDuvidasTecnicas);
-    cy.getElementAndClick(atualizar)
-        .should('have.attr', 'disabled');
-    cy.get(atualizar, { timeout: 20000 }).then(($elemento) => {
 
-        if (!$elemento.is(':disabled')) {
-            cy.log('Já pode atualizar a modal.')
-        }
-        cy.wait(8000);
-        cy.getElementAndClick(fecharModalDuvidasTecnicas);
-    });
+    cy.get(atualizar)
+        .should('not.be.disabled')
+        .as('botaoAtualizar')
+        .click();
+
+    cy.getElementAndClick('@botaoAtualizar', fecharModalDuvidasTecnicas);
 });
+
 
 
 
@@ -503,7 +516,6 @@ Cypress.Commands.add('alterarResponsavelRespostaDuvidaTecnica', (acessarDuvidasT
         .click();
     cy.get(responsavelRespostas, { timeout: 20000 })
         .type(`${responsavelRespostaDuvidaTecnica}{enter}`);
-    cy.wait(1000);
     cy.getElementAndClick(mensagemSucessoModal);
     cy.getElementAndClick(fecharModalDuvidasTecnicas);
 });
@@ -525,7 +537,6 @@ Cypress.Commands.add('marcarDuvidaTecnicaResolvido', (acessarDuvidasTecnicas: st
 
             if (resolvido) {
                 cy.log(`Dúvida técnica ${index + 1} está resolvida.`);
-
                 return;
             }
 

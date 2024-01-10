@@ -26,21 +26,18 @@ export const {
 
 
 
-describe('Tela configuração de relações entre Atendentes, Clusters e Prescritores.', () => {
+describe('Tela configuração de relações entre Atendentes, Clusters e Prescritores.', function () {
 
     beforeEach(function () {
 
     })
 
 
-    it('Deve criar relações entre atendente selecionada, cluster e prescritor', () => {
+    it('Deve criar relações entre atendente selecionada, cluster e prescritor', function () {
         cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
         cy.configuraRelacaoAtendenteClusterPrescritor('json/relacaoAtendenteClusterPrescritorEstefania.json');
-
     })
-
-
 })
