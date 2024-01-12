@@ -110,13 +110,14 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                 const nomePrescritor = dadosPrescritor.nome;
                 const criarRelacao = (): void => {
                     cy.getSelectOptionByValue(selecionarCluster, cluster);
-
+                    cy.log(cluster)
                     cy.getElementAndClick(containerSelecionarPrescritor);
 
                     cy.get(selecionarPrescritor)
                         .type(nomePrescritor)
                         .wait(2000)
-                        .type('{downarrow}{enter}');
+                        .type('{downarrow}{enter}',{timeout:5000});
+                        cy.log(nomePrescritor)
 
                     cy.get(adicionarRelacaoAtendenteClusterPrescritor, { timeout: 5000 })
                         .click({ timeout: 5000 });

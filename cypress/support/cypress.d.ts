@@ -29,7 +29,7 @@ declare global {
        * comando customizado de login.
        * @example cy.login('user', 'password')
        */
-      login(user: string, password: string, elementError: string): ValidationResult;
+      login(user: string, password: string, elementError: string, baseUrl: string): ValidationResult;
 
       /**
        * comando customizado para inserir arquivos.

@@ -318,24 +318,23 @@ Cypress.Commands.add('visualizarReceita', (abrirModalvisualizarReceita: string,)
 
 
 Cypress.Commands.add('clonarReceita', (clonarReceita: string): void => {
-    cy.getElementAndClick(clonarReceita);
+    cy.get(clonarReceita)
+        .click();
     cy.wait(1000);
     cy.then(() => {
         cy.get(modalObservacoesClonar, { timeout: 20000 }).then(($elemento) => {
 
             if (!$elemento.is(':visible')) {
                 cy.getElementAndClick(mensagemConfirmacaoModal);
-                cy.wait(1000);
             }
             else {
                 if (dadosParametros.Receita.clonarObservacaoFarmaceutica) {
                     cy.getElementAndClick(mensagemConfirmacaoModal);
-                    cy.wait(1000);
-                } else if (!dadosParametros.Receita.clonarObservacaoFarmaceutica) {
+                }
+                if (!dadosParametros.Receita.clonarObservacaoFarmaceutica) {
                     cy.get(clonarObservacoesFarmaceuticas, { timeout: 20000 })
                         .uncheck();
                     cy.getElementAndClick(mensagemConfirmacaoModal);
-                    cy.wait(1000);
                 }
             }
             cy.getElementAndClick(mensagemConfirmacaoModal);
@@ -346,11 +345,15 @@ Cypress.Commands.add('clonarReceita', (clonarReceita: string): void => {
 
 
 Cypress.Commands.add('excluirReceita', (excluir: string): void => {
-    cy.getElementAndClick(excluir);
-    cy.wait(200);
-    cy.getElementAndClick(mensagemConfirmacaoModal);
-    cy.wait(200);
-    cy.getElementAndClick(mensagemSucessoModal);
+    cy.get(excluir, { timeout: 50000 })
+        .click();
+    cy.pause();
+    cy.get(mensagemConfirmacaoModal, { timeout: 50000 })
+        .click();
+    cy.pause();
+    cy.get(mensagemSucessoModal, { timeout: 50000 })
+        .click();
+    cy.pause();
 });
 
 
@@ -484,7 +487,7 @@ Cypress.Commands.add('alterarResponsavelRespostaDuvidaTecnica', (acessarDuvidasT
     });
 
     if (todasResolvidas) {
-        cy.log('Maravilha!! Todas as dúvidas técnicas estão resolvidas. Não é necessário alterar o responsável da resposta.');
+        cy.log('Excelente! Todas as questões técnicas foram solucionadas. Não há necessidade de alterar o responsável pela resposta.');
         return; // Saímos da função se todas estiverem resolvidas
     }
 

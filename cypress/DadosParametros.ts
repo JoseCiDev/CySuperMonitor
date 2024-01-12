@@ -39,7 +39,8 @@ interface DadosParametros<S = string> {
         USER_CONFSAIDA: S;
         USER_EXPEDICAO: S;
         PASSWORD: S;
-        BASE_URL: S;
+        BASE_URL_PRODUCTION: S;
+        BASE_URL_HOMOLOG: S;
         DB_NAME: S;
         DB_USER: S;
         DB_HOST: S;
@@ -76,6 +77,8 @@ interface DadosParametros<S = string> {
         dataInicial: S;
         dataFinal: S;
         atendenteResponsavel: S;
+        textoObservacaoInterna: S;
+        dataRecebimento: S;
     };
 
     Prescritor: {
@@ -95,12 +98,6 @@ interface DadosParametros<S = string> {
 
     dataAtual: Date;
     dataFormatada: S;
-
-    PossuiReceita: {
-        sim: S;
-        naoRepeticao: S;
-        naoVarejos: S;
-    };
 
     Pedido: {
         tempoTratamento: number;
@@ -402,17 +399,19 @@ export const dadosParametros: DadosParametros = {
 
     Receita: {
         numeroReceita: 0,
-        clonarObservacaoFarmaceutica: false,
+        clonarObservacaoFarmaceutica: true,
         senhaObservacaoFarmaceutica: [faker.helpers.arrayElement(['789123'])].toString(),
         textoObservacaoFarmaceutica: [faker.helpers.arrayElement(['Teste'])].toString(),
         textoDuvidaTecnica: [faker.helpers.arrayElement(['Teste'])].toString(),
-        usuárioMarcarUso: [faker.helpers.arrayElement(['jose'])].toString(),
+        usuárioMarcarUso: [faker.helpers.arrayElement(['admin'])].toString(),
         responsavelAtualRespostaDuvidaTecnica: '',
         textoRespostaDuvidaTecnica: faker.lorem.paragraph(),
         ValorJuntoCom: [faker.helpers.arrayElement([1020, 1021, 1022])].toString(),
         dataInicial: faker.date.between({ from: '2023-01-01T00:00:00.000Z', to: '2023-12-01T00:00:00.000Z' }).toISOString().slice(0, 16),
         dataFinal: faker.date.between({ from: '2023-12-02T00:00:00.000Z', to: '2023-12-20T00:00:00.000Z' }).toISOString().slice(0, 16),
-        atendenteResponsavel: faker.helpers.arrayElement(['atendente']),
+        atendenteResponsavel: faker.helpers.arrayElement(['tamires silva luiz']),
+        textoObservacaoInterna: faker.lorem.paragraph(),
+        dataRecebimento: new Date().toISOString().slice(0, 16),
     },
 
     Prescritor: {
@@ -432,13 +431,6 @@ export const dadosParametros: DadosParametros = {
 
     dataAtual: new Date(),
     dataFormatada: new Date().toISOString().slice(0, 16),
-
-
-    PossuiReceita: {
-        sim: '1',
-        naoRepeticao: '2',
-        naoVarejos: '3',
-    },
 
     Pedido: {
         tempoTratamento: 30,
