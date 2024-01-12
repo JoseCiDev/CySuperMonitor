@@ -1,3 +1,6 @@
+import { dadosParametros } from './DadosParametros';
+
+
 interface Elements<S = string> {
 
     Compartilhado: {
@@ -105,6 +108,7 @@ interface Elements<S = string> {
         statusRespostaDuvidasTecnicas: S;
         textoRespostaDuvidasTecnicas: S;
         enviarRespostaDuvidasTecnicas: S;
+        barraProgressoSalvarReceita:S;
 
     };
 
@@ -270,7 +274,7 @@ export const elements: Elements = {
         urgenteReceitas: '#modalUrgente',
         clienteAlertaReceitas: '#clienteAlerta',
         varejoReceitas: '#checkboxVarejo',
-        opcaoTipoReceitas: '#groupMainEntitiesModal > div:nth-child(3) > div.col-md-12.text-right',
+        opcaoTipoReceitas: `input[name="receita_tipo"][value="${dadosParametros.tipoReceita}"]`,
         // mensagem informando que já existe receita com mesmo paciente e prescritor
         // salvar receita
         salvarReceitas: '#save_receita',
@@ -341,6 +345,7 @@ export const elements: Elements = {
         statusRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) .col-sm-12 select.statusDuvidaTecnica',
         textoRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) .col-sm-12 textarea.form-control',
         enviarRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) div.col.col-sm-12 button.btn.btn-secondary.m-t-sm.m-b-sm.respDuvT',
+        barraProgressoSalvarReceita:'#modal-receitas > div.modal-dialog > div > div.container-fluid > div > div',
 
     },
 

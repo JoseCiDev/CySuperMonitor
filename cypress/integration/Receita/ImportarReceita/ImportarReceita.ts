@@ -4,6 +4,7 @@ import { elements as el } from '../../../elements';
 import { } from '../../../support/commands/commands';
 import { faker } from '@faker-js/faker';
 import { dadosParametros } from '../../../DadosParametros';
+import 'cypress-wait-until';
 
 
 const ambiente = Cypress.env('AMBIENTE');
@@ -43,54 +44,29 @@ export const {
     juntocomReceitas,
     clusterReceitas,
     menuGerenciarReceitas,
-    modalSugestaoRelacaoPrescritor
-
+    modalSugestaoRelacaoPrescritor,
+    barraProgressoSalvarReceita
 
 } = el.Receitas;
 
 
-export const sugestaoRelacaoPrescritor = (): void => {
-    // Usar um alias para a modal
-    const $modalSRP = Cypress.$('.bootbox .modal-dialog .modal-content .modal-footer .btn-primary')
-    $modalSRP;
-    cy.get('.bootbox .modal-dialog .modal-content .modal-footer .btn-primary')
-        .should('be.visible')
-        .as('modal');
 
-    // Usar o comando then para acessar o alias e verificar se a modal é visível
-    cy.get('@modal').then(($modal) => {
-        if (!$modal.is(':visible')) {
-            cy.log('Teste irá continuar porque a modal não foi apresentada em tela.');
-        } else {
-            // Usar o comando click diretamente no alias
-            cy.get('@modal').click();
+export const setSugestaoRelacaoPrescritor = (): void => {
+    cy.wrap(null).then(() => {
+        const $aliasModal = Cypress.$('.bootbox .modal-dialog .modal-content .modal-footer .btn-primary')
+        if ($aliasModal.each) {
+            cy.get('.bootbox .modal-dialog .modal-content .modal-footer .btn-primary')
+                .as('modal')
+            cy.get('@modal')
+                .should('be.visible')
+                .click()
         }
+        else {
+            cy.log('O teste será prosseguido, uma vez que a modal não foi exibida na tela.')
+        }
+
     });
 };
-
-
-// export const sugestaoRelacaoPrescritor = (): void => {
-//     // Obter o elemento usando Cypress.$
-//     const $modalSRP = Cypress.$('.bootbox .modal-dialog .modal-content .modal-footer .btn-primary');
-
-//     // Verificar se o elemento foi encontrado
-//     if ($modalSRP.length > 0) {
-//         // Criar um alias para o elemento usando cy.wrap
-//         cy.wrap($modalSRP).as('modal');
-
-//         // Usar o comando then para acessar o alias e verificar se a modal é visível
-//         cy.get('@modal').then(($modal) => {
-//             if (!$modal.is(':visible')) {
-//                 cy.log('Teste irá continuar porque a modal não foi apresentada em tela.');
-//             } else {
-//                 // Usar o comando click diretamente no alias
-//                 cy.get('@modal').click();
-//             }
-//         });
-//     } else {
-//         cy.log('O elemento não foi encontrado. Teste irá continuar.');
-//     }
-// };
 
 
 export const inserirObservacaoInterna = (areaTexto: string, conteudo: string, useLoremIpsum?: boolean): void => {
@@ -124,7 +100,7 @@ export const salvarReceita = (salvarImportacao): void => {
         cy.getVisible(okModalMensagem, { timeout: 20000 })
             .click();
     } else {
-        cy.log('Teste irá continuar porque a modal não foi apresentada em tela.')
+        cy.log('O teste será prosseguido, uma vez que a modal não foi exibida na tela.')
     }
     cy.get(salvarImportacao, { timeout: 20000 }).then(($elemento) => {
         cy.wrap($elemento)
@@ -139,292 +115,302 @@ export const salvarReceita = (salvarImportacao): void => {
 describe('Tela importação de receitas.', function () {
 
     beforeEach(function () {
-
-    })
-
-
-    // it('Deve acessar importar receitas logado com perfil atendente', function () {
-    //     cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-    //         .then((result) => {
-    //             assert.exists(result.success, result.error)
-    //         })
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
-    // })
-
-    // it('Deve acessar importar receitas logado com perfil inclusão', function () {
-    //     // cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD);
-    //     cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
-    //         assert.exists(result.success, result.error)
-    //     });
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
-    // })
-
-    // it('Deve acessar importar receitas logado com perfil conferência de entrada', function () {
-    //     // cy.login(dadosAmbiente.USER_CONFENTRADA, dadosAmbiente.PASSWORD);
-    //     cy.login(dadosAmbiente.USER_CONFENTRADA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
-    //         assert.exists(result.success, result.error)
-    //     });
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
-    // })
-
-    // it('Deve acessar importar receitas logado com perfil conferência de saída', function () {
-    //     // cy.login(dadosAmbiente.USER_CONFSAIDA, dadosAmbiente.PASSWORD);
-    //     cy.login(dadosAmbiente.USER_CONFSAIDA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
-    //         assert.exists(result.success, result.error)
-    //     });
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
-    // })
-
-    // it('Deve acessar importar receitas logado com perfil expedição', function () {
-    //     // cy.login(dadosAmbiente.USER_EXPEDICAO, dadosAmbiente.PASSWORD);
-    //     cy.login(dadosAmbiente.USER_EXPEDICAO, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
-    //         assert.exists(result.success, result.error)
-    //     });
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
-    // })
-
-
-
-    // it.only('Deve realizar busca de Receitas filtrando por data', function () {
-    //     // cy.login(dadosAmbiente.USER_ORCAMENTISTA, dadosAmbiente.PASSWORD);
-    //     cy.login(dadosAmbiente.USER_ORCAMENTISTA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin).then((result) => {
-    //         assert.exists(result.success, result.error)
-    //     });
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas);
-
-    //     cy.buscarReceita({
-    //         dataInicial: dadosParametros.Receita.dataInicial,
-    //         dataFinal: dadosParametros.Receita.dataFinal,
-    //         prescritor: dadosParametros.Prescritor.crmPrescritor,
-    //     });
-    // });
-
-
-
-    // it('Deve realizar busca de Receitas filtrando por paciente', function () {
-    //     cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-    //         .then((result) => {
-    //             assert.exists(result.success, result.error)
-    //         })
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas);
-
-    //     cy.buscarReceita({
-    //         dataInicial: dadosParametros.Receita.dataInicial,
-    //         dataFinal: dadosParametros.Receita.dataFinal,
-    //         paciente: dadosParametros.Paciente.codigoPaciente,
-    //     });
-    // });
-
-
-
-    // it('Deve realizar busca de Receitas filtrando por prescritor', function () {
-    //     cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-    //         .then((result) => {
-    //             assert.exists(result.success, result.error)
-    //         })
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas);
-
-
-    //     cy.buscarReceita({
-    //         dataInicial: dadosParametros.Receita.dataInicial,
-    //         dataFinal: dadosParametros.Receita.dataFinal,
-    //         prescritor: dadosParametros.Prescritor.crmPrescritor,
-    //     });
-    // });
-
-    // it('Deve realizar busca de Receitas filtrando por cluster', function () {
-    //     cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-    //         .then((result) => {
-    //             assert.exists(result.success, result.error)
-    //         })
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas);
-    //     cy.buscarReceita({
-    //         dataInicial: dadosParametros.Receita.dataInicial,
-    //         dataFinal: dadosParametros.Receita.dataFinal,
-    //         cluster: dadosParametros.ClusterImportarReceitas.cluster1,
-    //     });
-    // });
-
-    // it('Deve realizar busca de Receitas filtrando por pedido', function () {
-    //     cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-    //         .then((result) => {
-    //             assert.exists(result.success, result.error)
-    //         })
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas);
-    //     cy.buscarReceita({
-    //         dataInicial: dadosParametros.Receita.dataInicial,
-    //         dataFinal: dadosParametros.Receita.dataFinal,
-    //         pedido: dadosParametros.OrcamentoFilial.pedido,
-    //         pendencia: dadosParametros.pendencia.Todos
-    //     });
-    // });
-
-    // it('Deve realizar busca de Receitas filtrando por canal de recebimento', function () {
-    //     cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-    //         .then((result) => {
-    //             assert.exists(result.success, result.error)
-    //         })
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas);
-    //     cy.buscarReceita({
-    //         dataInicial: dadosParametros.Receita.dataInicial,
-    //         dataFinal: dadosParametros.Receita.dataFinal,
-    //         canalRecebimento: dadosParametros.canalRecebimento.WhatsappClinicaPrescritor
-    //     });
-    // });
-
-    // it('Deve realizar busca de Receitas filtrando por atendente responsável', function () {
-    //     cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-    //         .then((result) => {
-    //             assert.exists(result.success, result.error)
-    //         })
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas);
-    //     cy.buscarReceita({
-    //         dataInicial: dadosParametros.Receita.dataInicial,
-    //         dataFinal: dadosParametros.Receita.dataFinal,
-    //         atendenteResponsavel: dadosParametros.Receita.atendenteResponsavel
-    //     });
-    // });
-
-    // it('Deve realizar busca de Receitas filtrando por pendências', function () {
-    //     cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
-    //         .then((result) => {
-    //             assert.exists(result.success, result.error)
-    //         })
-    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas);
-    //     cy.buscarReceita({
-    //         dataInicial: dadosParametros.Receita.dataInicial,
-    //         dataFinal: dadosParametros.Receita.dataFinal,
-    //         pendencia: dadosParametros.filtroPendentes.Pendentes
-    //     });
-    // });
-
-
-
-
-    it.only('Deve realizar importação de Receitas', function () {
-        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
+    })
+
+
+    it('Deve acessar importar receitas logado com perfil atendente', function () {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
+    })
+
+    it('Deve acessar importar receitas logado com perfil inclusão', function () {
+        // cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD);
+        cy.login(dadosAmbiente.USER_INCLUSAO, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG).then((result) => {
+            assert.exists(result.success, result.error)
+        });
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
+    })
+
+    it('Deve acessar importar receitas logado com perfil conferência de entrada', function () {
+        // cy.login(dadosAmbiente.USER_CONFENTRADA, dadosAmbiente.PASSWORD);
+        cy.login(dadosAmbiente.USER_CONFENTRADA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG).then((result) => {
+            assert.exists(result.success, result.error)
+        });
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
+    })
+
+    it('Deve acessar importar receitas logado com perfil conferência de saída', function () {
+        // cy.login(dadosAmbiente.USER_CONFSAIDA, dadosAmbiente.PASSWORD);
+        cy.login(dadosAmbiente.USER_CONFSAIDA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG).then((result) => {
+            assert.exists(result.success, result.error)
+        });
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
+    })
+
+    it('Deve acessar importar receitas logado com perfil expedição', function () {
+        // cy.login(dadosAmbiente.USER_EXPEDICAO, dadosAmbiente.PASSWORD);
+        cy.login(dadosAmbiente.USER_EXPEDICAO, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG).then((result) => {
+            assert.exists(result.success, result.error)
+        });
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, menuReceitasReduzido);
+    })
+
+
+
+    it('Deve realizar busca de Receitas filtrando por data', function () {
+        // cy.login(dadosAmbiente.USER_ORCAMENTISTA, dadosAmbiente.PASSWORD);
+        cy.login(dadosAmbiente.USER_ORCAMENTISTA, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG).then((result) => {
+            assert.exists(result.success, result.error)
+        });
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+
+        cy.buscarReceita({
+            dataInicial: dadosParametros.Receita.dataInicial,
+            dataFinal: dadosParametros.Receita.dataFinal,
+            prescritor: dadosParametros.Prescritor.crmPrescritor,
+        });
+    });
+
+
+
+    it('Deve realizar busca de Receitas filtrando por paciente', function () {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+
+        cy.buscarReceita({
+            dataInicial: dadosParametros.Receita.dataInicial,
+            dataFinal: dadosParametros.Receita.dataFinal,
+            paciente: dadosParametros.Paciente.codigoPaciente,
+        });
+    });
+
+
+
+    it('Deve realizar busca de Receitas filtrando por prescritor', function () {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+
+
+        cy.buscarReceita({
+            dataInicial: dadosParametros.Receita.dataInicial,
+            dataFinal: dadosParametros.Receita.dataFinal,
+            prescritor: dadosParametros.Prescritor.crmPrescritor,
+        });
+    });
+
+    it('Deve realizar busca de Receitas filtrando por cluster', function () {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+        cy.buscarReceita({
+            dataInicial: dadosParametros.Receita.dataInicial,
+            dataFinal: dadosParametros.Receita.dataFinal,
+            cluster: dadosParametros.ClusterImportarReceitas.cluster1,
+        });
+    });
+
+    it('Deve realizar busca de Receitas filtrando por pedido', function () {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+        cy.buscarReceita({
+            dataInicial: dadosParametros.Receita.dataInicial,
+            dataFinal: dadosParametros.Receita.dataFinal,
+            pedido: dadosParametros.OrcamentoFilial.pedido,
+            pendencia: dadosParametros.pendencia.Todos
+        });
+    });
+
+    it('Deve realizar busca de Receitas filtrando por canal de recebimento', function () {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+        cy.buscarReceita({
+            dataInicial: dadosParametros.Receita.dataInicial,
+            dataFinal: dadosParametros.Receita.dataFinal,
+            canalRecebimento: dadosParametros.canalRecebimento.WhatsappClinicaPrescritor
+        });
+    });
+
+    it('Deve realizar busca de Receitas filtrando por atendente responsável', function () {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+        cy.buscarReceita({
+            dataInicial: dadosParametros.Receita.dataInicial,
+            dataFinal: dadosParametros.Receita.dataFinal,
+            atendenteResponsavel: dadosParametros.Receita.atendenteResponsavel
+        });
+    });
+
+    it('Deve realizar busca de Receitas filtrando por pendências', function () {
+        cy.login(dadosAmbiente.USER_ATENDENTE1, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+        cy.buscarReceita({
+            dataInicial: dadosParametros.Receita.dataInicial,
+            dataFinal: dadosParametros.Receita.dataFinal,
+            pendencia: dadosParametros.filtroPendentes.Pendentes
+        });
+    });
+
+
+
+
+    it('Deve realizar importação de Receitas', function () {
 
         cy.getElementAndClick(menuReceitas, menuImportarReceitas, abrirModalRegistrarReceitas);
 
         cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', importarImagemReceitas);
 
-        cy.get(prescritorReceitas).as('prescritorReceitas')
+        cy.get(prescritorReceitas)
+            .as('prescritorReceitas')
         cy.get('@prescritorReceitas')
             .type(dadosParametros.Prescritor.crmPrescritor)
-        cy.get(el.Compartilhado.sugestaoAutocomplete).as('sugestaoAutocomplete')
-        cy.get('@sugestaoAutocomplete')
+        cy.get(el.Compartilhado.sugestaoAutocomplete)
+            .as('sugestaoAutocompletePrescritor')
+        cy.get('@sugestaoAutocompletePrescritor')
             .click();
 
-        sugestaoRelacaoPrescritor();
+        setSugestaoRelacaoPrescritor();
 
         cy.getElementAndCheck(dadosParametros.parametroBuscaPaciente.Cdcli);
 
-        // cy.get(pacienteReceitas).as('pacienteReceitas')
-        // cy.get('@pacienteReceitas')
-        //     .type(dadosParametros.Paciente.codigoPaciente)
-        //     .type('{downarrow}{enter}');
-
-        cy.get(pacienteReceitas).as('pacienteReceitas')
+        cy.get(pacienteReceitas)
+            .as('pacienteReceitas')
         cy.get('@pacienteReceitas')
             .type(dadosParametros.Paciente.codigoPaciente)
-        cy.get('body > div:nth-child(324)').as('sugestaoAutocomplete')
-        cy.get('@sugestaoAutocomplete')
-            .click({force:true});
-        cy.pause();
+        cy.contains('.autocomplete-suggestion', dadosParametros.Paciente.codigoPaciente)
+            .as('sugestaoAutocompletePaciente')
+        cy.get('@sugestaoAutocompletePaciente')
+            .click({ force: true });
 
         cy.getSelectOptionByValue(canalRecebimentoReceitas, dadosParametros.canalRecebimento.Whatsapp);
 
-        cy.getSelectOptionByValue(clusterReceitas, dadosParametros.ClusterImportarReceitas.cluster1)
+        cy.wrap(null).then(() => {
+            const $aliasAtendenteResponsavel = cy.get(atendenteResponsavelReceitas)
+            $aliasAtendenteResponsavel.invoke('val').then((atendenteResponsavel) => {
+                const atendenteResponsavelString = String(atendenteResponsavel).trim()
+                if (atendenteResponsavelString !== '') {
+                    cy.log('O teste será prosseguido, pois um atendente responsável já foi designado.');
+                } else {
+                    cy.get(atendenteResponsavelReceitas)
+                        .as('atendenteResponsavelReceitas');
+                    cy.get('@atendenteResponsavelReceitas')
+                        .type(dadosParametros.Receita.atendenteResponsavel)
+                        .get(`body > div:nth-child(327) > div`)
+                        .as('sugestaoAutocompleteAtendenteResponsavel')
+                        .get('@sugestaoAutocompleteAtendenteResponsavel')
+                        .click();
+                }
+            })
+        });
 
-        cy.getElementAndType(atendenteResponsavelReceitas, dadosParametros.Usuario.usuarioAtribuido)
-            // .wait(2000)
-            .as('elementType')
-        cy.get('@elementType')
-            .type('{downarrow}{enter}')
+        cy.getElementAndType(dataRecebimentoReceitas, dadosParametros.Receita.dataRecebimento)
 
-        cy.inserirDataUmDiaMenosDiaAtual(dataRecebimentoReceitas);
+        cy.getElementAndCheck(`input[name="receita_tipo"][value="${dadosParametros.tipoReceita.Repeticao}"]`);
 
-        cy.getElementAndCheck(dadosParametros.tipoReceita.Repeticao);
+        cy.wait(1000);
+        cy.wrap(null).then(() => {
+            const $aliasModal = Cypress.$(mensagemSucessoModal)
+            if ($aliasModal.each) {
+                cy.get(mensagemSucessoModal)
+                    .as('modal')
+                cy.get('@modal')
+                    .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto')
+                    .click({ force: true, multiple: true, timeout: 5000 })
+            }
+            else {
+                cy.log('O teste será prosseguido, uma vez que a modal não foi exibida na tela.')
+            }
+        });
 
-        if (Cypress.$(okModalMensagem).length > 0 && Cypress.$(okModalMensagem).is(':visible')) {
-            cy.getVisible(okModalMensagem, { timeout: 20000 })
-                .click();
-        } else {
-            cy.log('Teste pode continuar porque a modal não foi apresentada em tela.')
-        }
+        cy.getElementAndType(textoObservacaoInternaReceitas, dadosParametros.Receita.textoObservacaoInterna);
 
-        cy.getElementAndType(textoObservacaoInternaReceitas, '');
-
-        cy.getElementAndCheck(urgenteReceitas, clienteAlertaReceitas, medicamentocontroladoReceitas);
+        cy.getElementAndCheck(urgenteReceitas);
+        cy.getElementAndCheck(clienteAlertaReceitas);
+        cy.getElementAndCheck(medicamentocontroladoReceitas);
 
         cy.getElementAndClick(salvarReceitas);
+
+        const $progressBar = cy.get(barraProgressoSalvarReceita)
+            .then(() => {
+                if (!Cypress.$($progressBar).is(':visible')) {
+                    // Captura o botão OK na modal
+                    cy.get(mensagemSucessoModal, { timeout: 50000 })
+                        .as('modal');
+                    cy.get('@modal').click();
+                } else {
+                    cy.log('A barra de carregamento ainda está visível.');
+                }
+            })
+    });
+
+
+
+    it('Deve realizar marcação de uso nas receitas.', function () {
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+
+        cy.marcarUso(checkboxMarcarUso);
+    });
+
+
+
+    it('Deve visualizar receitas', function () {
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, acoes);
+
+        cy.visualizarReceita(visualizarReceitas);
+    });
+
+
+
+    it('Deve clonar receitas.', function () {
+        cy.get(menuReceitas).click();
+        cy.get(menuImportarReceitas).click()
+        cy.get(acoes).click();
+        cy.pause();
+
+        cy.clonarReceita(clonarReceitas);
+    });
+
+
+
+    it.only('Deve excluir receitas.', function () {
+
+        cy.getElementAndClick(menuReceitas, menuImportarReceitas, acoes);
+        cy.excluirReceita(excluirReceitas);
+        cy.pause();
+        cy.getElementAndClick(mensagemSucessoModal);
 
     });
 
 
 
-    // it('Deve realizar marcação de uso nas receitas.', function () {
-    //     cy.acessarMenuReceitas(menuReceitas);
-
-    //     cy.acessarImportarReceitas(menuImportarReceitas);
-    //     
-
-    //     cy.marcarUso(checkboxMarcarUso);
-
-    //     cy.getElementAndClick(mensagemSucessoModal);
-    // });
-
-
-
-    // it('Deve visualizar receitas', function () {
-    //     cy.acessarMenuReceitas(menuReceitas);
-
-    //     cy.acessarImportarReceitas(menuImportarReceitas);
-    //     
-
-    //     cy.getElementAndClick(acoes);
-    //     cy.visualizarReceita(visualizarReceitas);
-    // });
-
-
-
-    // it('Deve clonar receitas.', function () {
-    //     cy.acessarMenuReceitas(menuReceitas);
-
-    //     cy.acessarImportarReceitas(menuImportarReceitas);
-    //     
-
-    //     cy.getElementAndClick(acoes);
-    //     cy.clonarReceita(clonarReceitas);
-    // });
-
-
-
-    // it('Deve excluir receitas.', function () {
-    //     cy.acessarMenuReceitas(menuReceitas);
-
-    //     cy.acessarImportarReceitas(menuImportarReceitas);
-    //     
-
-    //     cy.getElementAndClick(acoes);
-    //     cy.excluirReceita(excluirReceitas);
-
-    //     cy.getElementAndClick(mensagemSucessoModal);
-
-    // });
-
-
-
     // it('Deve inserir observação farmacêutica.', function () {
-    //     cy.acessarMenuReceitas(menuReceitas);
-
-    //     cy.acessarImportarReceitas(menuImportarReceitas);
-    //     
-
-    //     cy.getElementAndClick(acoes);
+    //     cy.getElementAndClick(menuReceitas, menuImportarReceitas,acoes);
     //     cy.inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas, dadosParametros.Receita.senhaObservacaoFarmaceutica, dadosParametros.Receita.textoObservacaoFarmaceutica);
     // });
 

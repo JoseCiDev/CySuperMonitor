@@ -32,12 +32,11 @@ describe('Tela configuração de relações entre Atendentes, Clusters e Prescri
 
     })
 
-
     it('Deve criar relações entre atendente selecionada, cluster e prescritor', function () {
-        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin)
+        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin,dadosAmbiente.BASE_URL_PRODUCTION)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.configuraRelacaoAtendenteClusterPrescritor('json/relacaoAtendenteClusterPrescritorEstefania.json');
+        cy.configuraRelacaoAtendenteClusterPrescritor('json/relacaoAtendenteAlexssandraCluster4Prescritores.json');
     })
 })

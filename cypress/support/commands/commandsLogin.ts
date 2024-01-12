@@ -147,10 +147,10 @@ export const {
 } = el.Atendimentos;
 
 
-Cypress.Commands.add('login', (usuario: string, senha: string, elementError: string) => {
+Cypress.Commands.add('login', (usuario: string, senha: string, elementError: string, baseUrl: string) => {
 
   cy.log('Iniciando login...');
-  cy.visit(dadosAmbiente.BASE_URL);
+  cy.visit(baseUrl);
 
   cy.get(el.Login.usuario, { timeout: 10000 })
     .each(($input) => {
