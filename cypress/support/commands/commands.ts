@@ -150,21 +150,21 @@ export const {
 } = el.Atendimentos;
 
 
-Cypress.Commands.add('inserirArquivo', (caminhoFixture, importarImagem): void => {
-  cy.fixture(caminhoFixture, 'base64').then((conteudo_arquivo) => {
-    const nome = caminhoFixture.split('/').pop(); // Extract the file name from the fixture path
+Cypress.Commands.add('inserirArquivo', (filePath, element): void => {
+  cy.fixture(filePath, 'base64').then((conteudo_arquivo) => {
+    const nome = filePath.split('/').pop(); // Extract the file name from the fixture path
     const mimeType = 'image/jpeg';
 
     const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
     const file = new File([blob], nome, { type: mimeType });
 
-    cy.get(importarImagem).then(($input) => {
+    cy.get(element).then(($element) => {
       const event = new Event('change', { bubbles: true });
-      Object.defineProperty($input[0], 'files', {
+      Object.defineProperty($element[0], 'files', {
         value: [file],
         writable: false,
       });
-      $input[0].dispatchEvent(event);
+      $element[0].dispatchEvent(event);
     });
   });
 });
@@ -325,3 +325,30 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string): void => {
     });
   });
 });
+
+Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, data: string | number, autocomplete: string) => {
+  cy.get(element)
+    .as('elementAlias')
+    .type(data.toString())
+    .then(() => {
+      cy.contains(autocomplete, data)
+        .as('autocompleteAlias')
+        .click({ force: true });
+    });
+});
+
+Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
+  cy.wrap(null).then(() => {
+      const $aliasModal = Cypress.$(jqueryElement)
+      if ($aliasModal.each) {
+          cy.get(element, { timeout: 60000 })
+              .as('elementAlias')
+          cy.get('@elementAlias', { timeout: 60000 })
+              .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto')
+              .click({ force: true, multiple: true, timeout: 5000 })
+      }
+      else {
+          cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
+      }
+  });
+})

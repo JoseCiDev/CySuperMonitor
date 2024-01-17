@@ -27,8 +27,6 @@ export default defineConfig({
       'cypress/integration/Atendimento/PedidoEmAndamento/dist/*',
       'cypress/plugins/*',
       'cypress/support/Connections/*'
-
-
     ],
     video: false,
     screenshotOnRunFailure:true,

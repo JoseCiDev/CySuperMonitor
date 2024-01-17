@@ -342,16 +342,52 @@ declare global {
       importarOrcamento(): Chainable<Element>
 
       /**
-      * * comando customizado para importar orçamentos .
+      * * comando customizado para alterar usuário do pedido .
       * @example cy.alterarUsuariosPedido(orcamentista,atendente)
       */
       alterarUsuariosPedido(orcamentista: string, atendente: string): Chainable<Element>
 
       /**
-    * * comando customizado para importar orçamentos .
-    * @example cy.alterarUsuariosPedido(orcamentista,atendente)
-    */
+     * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
+     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+     */
       configuraRelacaoAtendenteClusterPrescritor(nomeArquivo: string): ValidationResult
+
+      /**
+     * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
+     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+     */
+      getElementAutocompleteTypeAndClick(element: string, data: string | number, autocomplete: string): ValidationResult
+
+      /**
+     * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
+     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+     */
+      waitModalAndClick(jqueryElement: string, element: string): ValidationResult
+
+      /**
+     * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
+     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+     */
+      importarReceita(
+        arquivo: Object,
+        prescritor: string | number,
+        parametroBuscaPaciente: ParametroBuscaPaciente,
+        paciente: string | number,
+        canalRecebimento: CanalRecebimentoReceita,
+        atendenteResponsavel: string,
+        dataRecebimento: Date,
+        tipoReceita: string,
+        textoObservacaoInterna: string,
+        urgenteReceitas: MarcacoesReceita,
+        clienteAlerta: MarcacoesReceita,
+        medicamentoControlado: MarcacoesReceita): ValidationResult
+
+
+
+
+
+
 
     }
   }
