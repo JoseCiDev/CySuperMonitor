@@ -89,6 +89,21 @@ export const {
     ultimoModificadorBusca,
     orcamentistaBusca,
     atendenteResponsavelBusca,
+    prescritorReceitas,
+    pacienteReceitas,
+    canalRecebimentoReceitas,
+    atendenteResponsavelReceitas,
+    menuImportarReceitas,
+    importarImagemReceitas,
+    abrirModalRegistrarReceitas,
+    textoObservacaoInternaReceitas,
+    urgenteReceitas,
+    clienteAlertaReceitas,
+    medicamentocontroladoReceitas,
+    dataRecebimentoReceitas,
+    barraProgressoSalvarReceita,
+    salvarReceitas,
+    modalSugestaoRelacaoPrescritor,
 
 } = el.Receitas;
 
@@ -156,7 +171,7 @@ Cypress.Commands.add('setDadoCapturado', (orcamentistaPedido: string): void => {
 
 
 Cypress.Commands.add('setReceitaNumero', (numeroReceita): void => {
-    dadosParametros.Receita.numeroReceita = numeroReceita;
+    dadosParametros.Receita.busca.numeroReceita = numeroReceita;
 });
 
 
@@ -195,7 +210,7 @@ Cypress.Commands.add('buscarReceita', (
 
                 cy.wrap(numeroReceita).as('numeroReceita');
                 cy.setReceitaNumero(numeroReceita);
-                cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.numeroReceita}`);
+                cy.log(`Número da Receita Capturado: ${dadosParametros.Receita.busca.numeroReceita}`);
             }
             capturarNumeroReceita(numeroReceita, tentativas - 1);
         });
@@ -328,10 +343,10 @@ Cypress.Commands.add('clonarReceita', (clonarReceita: string): void => {
                 cy.getElementAndClick(mensagemConfirmacaoModal);
             }
             else {
-                if (dadosParametros.Receita.clonarObservacaoFarmaceutica) {
+                if (dadosParametros.Receita.busca.clonarObservacaoFarmaceutica) {
                     cy.getElementAndClick(mensagemConfirmacaoModal);
                 }
-                if (!dadosParametros.Receita.clonarObservacaoFarmaceutica) {
+                if (!dadosParametros.Receita.busca.clonarObservacaoFarmaceutica) {
                     cy.get(clonarObservacoesFarmaceuticas, { timeout: 20000 })
                         .uncheck();
                     cy.getElementAndClick(mensagemConfirmacaoModal);
@@ -345,15 +360,13 @@ Cypress.Commands.add('clonarReceita', (clonarReceita: string): void => {
 
 
 Cypress.Commands.add('excluirReceita', (excluir: string): void => {
-    cy.get(excluir, { timeout: 50000 })
-        .click();
-    cy.pause();
+    cy.get(':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-receita', { timeout: 50000 })
+        .eq(0)
+        .click({ force: true });
     cy.get(mensagemConfirmacaoModal, { timeout: 50000 })
         .click();
-    cy.pause();
     cy.get(mensagemSucessoModal, { timeout: 50000 })
         .click();
-    cy.pause();
 });
 
 
@@ -501,8 +514,8 @@ Cypress.Commands.add('alterarResponsavelRespostaDuvidaTecnica', (acessarDuvidasT
             if (matches && matches.length > 1) {
                 nome = matches[1];
                 cy.log(nome);
-                if (nome !== dadosParametros.Receita.responsavelAtualRespostaDuvidaTecnica) {
-                    dadosParametros.Receita.responsavelAtualRespostaDuvidaTecnica = nome;
+                if (nome !== dadosParametros.Receita.busca.responsavelAtualRespostaDuvidaTecnica) {
+                    dadosParametros.Receita.busca.responsavelAtualRespostaDuvidaTecnica = nome;
                 } else {
                     cy.log('O novo responsável é o mesmo que o atual');
                 }
@@ -511,7 +524,7 @@ Cypress.Commands.add('alterarResponsavelRespostaDuvidaTecnica', (acessarDuvidasT
             }
         });
 
-    if (responsavelRespostaDuvidaTecnica === dadosParametros.Receita.responsavelAtualRespostaDuvidaTecnica) {
+    if (responsavelRespostaDuvidaTecnica === dadosParametros.Receita.busca.responsavelAtualRespostaDuvidaTecnica) {
         cy.log('O novo responsável é o mesmo que o atual');
 
     }
@@ -665,3 +678,109 @@ Cypress.Commands.add('visualizarPedido', (botaoVisualizar): void => {
 
     });
 });
+
+
+Cypress.Commands.add('importarReceita', (
+    arquivo: Object,
+        prescritor: string | number,
+        parametroBuscaPaciente: ParametroBuscaPaciente,
+        paciente: string | number,
+        canalRecebimento: CanalRecebimentoReceita,
+        atendenteResponsavel: string,
+        dataRecebimento: Date,
+        tipoReceita: string,
+        textoObservacaoInterna: string,
+        urgenteReceitas: MarcacoesReceita,
+        clienteAlerta: MarcacoesReceita,
+        medicamentoControlado: MarcacoesReceita) => {
+    //acessar registrar receitas
+    cy.getElementAndClick(abrirModalRegistrarReceitas);
+    //importar imagem
+    cy.inserirArquivo(arquivo, importarImagemReceitas);
+    //prescritor
+    cy.getElementAutocompleteTypeAndClick(
+        prescritorReceitas,
+        dadosParametros.Receita.importacao.prescritor, 
+        el.Compartilhado.sugestaoAutocomplete);
+    cy.waitModalAndClick(modalSugestaoRelacaoPrescritor, modalSugestaoRelacaoPrescritor);
+    //paciente
+    cy.getElementAndCheck(dadosParametros.Receita.importacao.parametroBuscaPaciente);
+    // cy.get(pacienteReceitas)
+    //     .as('pacienteReceitas')
+    // cy.get('@pacienteReceitas')
+    //     .type(dadosParametros.Paciente.codigoPaciente)
+    // cy.contains('.autocomplete-suggestion', dadosParametros.Paciente.codigoPaciente)
+    //     .as('sugestaoAutocompletePaciente')
+    // cy.get('@sugestaoAutocompletePaciente')
+    //     .click({ force: true });
+    cy.getElementAutocompleteTypeAndClick(
+        pacienteReceitas,
+        dadosParametros.Receita.importacao.paciente,
+        el.Compartilhado.sugestaoAutocomplete);
+    //canal de recebimento
+    cy.getSelectOptionByValue(canalRecebimentoReceitas, dadosParametros.Receita.importacao.canalRecebimentoReceita);
+    //atendente responsavel
+    cy.wrap(null).then(() => {
+        const $aliasAtendenteResponsavel = cy.get(atendenteResponsavelReceitas)
+        $aliasAtendenteResponsavel.invoke('val').then((atendenteResponsavel) => {
+            const atendenteResponsavelString = String(atendenteResponsavel).trim()
+            if (atendenteResponsavelString !== '') {
+                cy.log('O teste será prosseguido, pois um atendente responsável já foi designado.');
+            } else {
+                // cy.get(atendenteResponsavelReceitas)
+                //     .as('atendenteResponsavelReceitas');
+                // cy.get('@atendenteResponsavelReceitas')
+                //     .type(dadosParametros.Receita.atendenteResponsavel)
+                //     .get(`body > div:nth-child(327) > div`)
+                //     .as('sugestaoAutocompleteAtendenteResponsavel')
+                //     .get('@sugestaoAutocompleteAtendenteResponsavel')
+                //     .click();
+                cy.getElementAutocompleteTypeAndClick(
+                    atendenteResponsavelReceitas,
+                    dadosParametros.Receita.importacao.atendenteResponsavel,
+                    el.Receitas.autocompleteAtendenteResponsavel);
+            }
+        })
+    });
+    //data de recebimento
+    cy.getElementAndType(dataRecebimentoReceitas, dadosParametros.Receita.importacao.dataRecebimento)
+    //tipo
+    cy.getElementAndCheck(`input[name="receita_tipo"][value="${dadosParametros.Receita.importacao.tipoReceita}"]`);
+    //modal receita ja importada
+    cy.wait(1000);
+    // cy.wrap(null).then(() => {
+    //     const $aliasModal = Cypress.$(mensagemSucessoModal)
+    //     if ($aliasModal.each) {
+    //         cy.get(mensagemSucessoModal)
+    //             .as('modal')
+    //         cy.get('@modal')
+    //             .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto')
+    //             .click({ force: true, multiple: true, timeout: 5000 })
+    //     }
+    //     else {
+    //         cy.log('O teste será prosseguido, uma vez que a modal não foi exibida na tela.')
+    //     }
+    // });
+    cy.waitModalAndClick(mensagemSucessoModal, mensagemSucessoModal)
+    //obs
+    cy.getElementAndType(textoObservacaoInternaReceitas, dadosParametros.Receita.importacao.textoObservacaoReceita);
+    //urgente cliente alerta medicamento controlado
+    cy.getElementAndCheck(dadosParametros.Receita.importacao.urgenteReceitas);
+    cy.getElementAndCheck(dadosParametros.Receita.importacao.clienteAlerta);
+    cy.getElementAndCheck(dadosParametros.Receita.importacao.medicamentoControlado);
+    //save
+    cy.getElementAndClick(salvarReceitas);
+    //barra progresso e modal de importacao com sucesso
+    const $progressBar = cy.get(barraProgressoSalvarReceita)
+        .then(() => {
+            if (!Cypress.$($progressBar).is(':visible')) {
+                // Captura o botão OK na modal
+                cy.get(mensagemSucessoModal, { timeout: 50000 })
+                    .as('modal');
+                cy.get('@modal').click();
+            } else {
+                cy.log('A barra de carregamento ainda está visível.');
+            }
+        })
+})
+

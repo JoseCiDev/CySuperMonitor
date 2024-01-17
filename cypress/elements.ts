@@ -33,6 +33,7 @@ interface Elements<S = string> {
         clusterReceitas: S;
         orcamentistaReceitas: S;
         atendenteResponsavelReceitas: S;
+        autocompleteAtendenteResponsavel: S;
         dataRecebimentoReceitas: S;
         juntocomReceitas: S;
         autocompleteJuntocomReceitas: S;
@@ -108,7 +109,7 @@ interface Elements<S = string> {
         statusRespostaDuvidasTecnicas: S;
         textoRespostaDuvidasTecnicas: S;
         enviarRespostaDuvidasTecnicas: S;
-        barraProgressoSalvarReceita:S;
+        barraProgressoSalvarReceita: S;
 
     };
 
@@ -258,13 +259,14 @@ export const elements: Elements = {
         removerImagemReceitas: '.btn btn-danger btn-del-img m-sm',
         // informacoes da receita
         prescritorReceitas: '#modalMedicoRec',
-        modalSugestaoRelacaoPrescritor: 'button[data-bb-handler="confirm"].btn.btn-primary',
+        modalSugestaoRelacaoPrescritor: '.bootbox .modal-dialog .modal-content .modal-footer .btn-primary',
         parametroBuscaPaciente: '#t2_154c',
         pacienteReceitas: '#modalPacienteRec',
         canalRecebimentoReceitas: '#modalCanalContato',
         clusterReceitas: '#modalCluster',
         orcamentistaReceitas: '#modalOrcamentistaRec',
         atendenteResponsavelReceitas: '#modalAtendenteRec',
+        autocompleteAtendenteResponsavel: 'body > div:nth-child(327) > div',
         dataRecebimentoReceitas: '#modalDataRec',
         juntocomReceitas: '#groupMainEntitiesModal > div:nth-child(2) > div:nth-child(4) > div > span',
         autocompleteJuntocomReceitas: 'ul.select2-results__options',
@@ -345,7 +347,7 @@ export const elements: Elements = {
         statusRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) .col-sm-12 select.statusDuvidaTecnica',
         textoRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) .col-sm-12 textarea.form-control',
         enviarRespostaDuvidasTecnicas: '#chatDuvTec .groupContainer .row:not(.m-b-sm) div.col.col-sm-12 button.btn.btn-secondary.m-t-sm.m-b-sm.respDuvT',
-        barraProgressoSalvarReceita:'#modal-receitas > div.modal-dialog > div > div.container-fluid > div > div',
+        barraProgressoSalvarReceita: '#modal-receitas > div.modal-dialog > div > div.container-fluid > div > div',
 
     },
 

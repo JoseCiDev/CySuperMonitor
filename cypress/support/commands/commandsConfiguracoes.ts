@@ -209,3 +209,4 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
     });
     return cy.wrap({ success: 'Login realizado com sucesso.' });
 });
+
