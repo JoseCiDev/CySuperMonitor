@@ -10,7 +10,7 @@ export const {
     filtroPendenciasBusca,
     botaoProcurarReceitas,
     labelProcurarReceitas,
-    numeroReceitas,
+    numeroReceita,
     containerInserirUsuario,
     select,
     usuarioSelecionado,

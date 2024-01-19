@@ -51,7 +51,7 @@ export const {
   filtroPendenciasBusca,
   botaoProcurarReceitas,
   labelProcurarReceitas,
-  numeroReceitas,
+  numeroReceita,
   containerInserirUsuario,
   select,
   usuarioSelecionado,
@@ -63,7 +63,7 @@ export const {
   abaOriginalVisualizarReceitas,
   abaObservacoesInternasVisualizarReceitas,
   abaInformacoesFcertaVisualizarReceitas,
-  exibirReguaVisualizarReceitas,
+  reguaVisualizarReceitas,
   fecharVisualizarReceitas,
   clonarReceitas,
   modalObservacoesClonar,
@@ -291,7 +291,7 @@ Cypress.Commands.add('getSelectOptionByValue', (elemento: string, value: any): v
 
 
 
-Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string): void => {
+Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string, usuarioMarcarUso: string): void => {
   cy.get(`${checkboxMarcarUso} input[type="checkbox"]`, { timeout: 20000 }).then(($checkboxes) => {
     const totalCheckboxes = $checkboxes.length;
 
@@ -303,7 +303,7 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string): void => {
           .first()
           .uncheck();
         cy.getElementAndClick(containerInserirUsuario);
-        cy.getElementAndType(select, dadosParametros.Receita.usuárioMarcarUso);
+        cy.getElementAndType(select, usuarioMarcarUso);
         cy.getElementAndClick(usuarioSelecionado)
         cy.getElementAndType(senhaReceita, dadosAmbiente.SENHA_RECEITA_USER);
         cy.getElementAndClick(aplicaDesmarcarUso);
@@ -333,22 +333,23 @@ Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, dat
     .then(() => {
       cy.contains(autocomplete, data)
         .as('autocompleteAlias')
-        .click({ force: true });
+        .click({ force: true })
     });
 });
 
 Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
   cy.wrap(null).then(() => {
-      const $aliasModal = Cypress.$(jqueryElement)
-      if ($aliasModal.each) {
-          cy.get(element, { timeout: 60000 })
-              .as('elementAlias')
-          cy.get('@elementAlias', { timeout: 60000 })
-              .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto')
-              .click({ force: true, multiple: true, timeout: 5000 })
-      }
-      else {
-          cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
-      }
+    const $aliasModal = Cypress.$(jqueryElement)
+    if (!$aliasModal.each) {
+      cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
+
+    }
+    else {
+      cy.get(element, { timeout: 60000 })
+        .as('elementAlias')
+      cy.get('@elementAlias', { timeout: 60000 })
+        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto')
+        .click({ force: true, multiple: true, timeout: 5000 })
+    }
   });
 })
