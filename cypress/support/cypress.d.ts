@@ -163,25 +163,25 @@ declare global {
        * comando customizado para selecionar a opcao radio.
        * @example cy.getRadioOptionByValue(elemento)
        */
-      getRadioOptionByValue(dataCy: string, value: any): Chainable<Element>
+      getRadioOptionByValue(element: string, value: any): Chainable<Element>
 
       /**
        * comando customizado de login.
        * @example cy.selecionarRadioOptionByValue(el.elemento)
        */
-      getSelectOptionByValue(dataCy: string, value: any): Chainable<Element>
+      getSelectOptionByValue(element: string, value: any): Chainable<Element>
 
       /**
        * comando customizado para marcar uso em receitas e orçamentos.
        * @example cy.marcarUso(checkboxMarcarUso)
        */
-      marcarUso(checkboxMarcarUso: string): Chainable<Element>
+      marcarUso(elementMarcarUso: string, usuarioMarcarUso: string): Chainable<Element>
 
       /**
       * comando customizado para visualizar receitas.
       * @example cy.visualizarReceita(visualizarReceita)
       */
-      visualizarReceita(visualizarReceita: string): Chainable<Element>
+      visualizarReceita(elementVisualizarReceita: string): Chainable<Element>
 
       /**
       * comando customizado para clonar receitas.
@@ -370,18 +370,24 @@ declare global {
      * @example cy.alterarUsuariosPedido(orcamentista,atendente)
      */
       importarReceita(
-        arquivo: Object,
-        prescritor: string | number,
-        parametroBuscaPaciente: ParametroBuscaPaciente,
-        paciente: string | number,
-        canalRecebimento: CanalRecebimentoReceita,
-        atendenteResponsavel: string,
-        dataRecebimento: Date,
-        tipoReceita: string,
-        textoObservacaoInterna: string,
-        urgenteReceitas: MarcacoesReceita,
-        clienteAlerta: MarcacoesReceita,
-        medicamentoControlado: MarcacoesReceita): ValidationResult
+        arquivo?: Object,
+        prescritor?: string | number,
+        parametroBuscaPaciente?: string,
+        paciente?: string | number,
+        canalRecebimento?: string,
+        atendenteResponsavel?: string,
+        dataRecebimento?: Date,
+        tipoReceita?: string,
+        textoObservacaoInterna?: string,
+        urgenteReceitas?: string,
+        clienteAlerta?: string,
+        medicamentoControlado?: string): ValidationResult
+
+      /**
+     * * comando customizado para capturar o número da receita .
+     * @example cy.capturarNumeroReceita(orcamentista,atendente)
+     */
+      capturarNumeroReceita(elementNumeroReceita: string)
 
 
 
@@ -389,6 +395,6 @@ declare global {
 
 
 
-    }
   }
+}
 }

@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import * as fakerBr from 'faker-br';
 import { format } from 'date-fns';
-import { parametroBuscaPaciente } from './integration/Receita/ImportarReceita/ImportarReceita';
+
 
 
 const ambiente = Cypress.env('AMBIENTE');
@@ -11,35 +11,37 @@ const dadosAmbiente = Cypress.env(ambiente);
 export type ValidationResult = Cypress.Chainable<{ error?: string; success?: string; }>
 
 
-interface ImportacaoReceita {
-    arquivo: string;
-    prescritor: string | number;
+interface ImportacaoReceita<S = string> {
+    numeroReceita: S | number;
+    arquivo: S;
+    prescritor: S | number;
     parametroBuscaPaciente: ParametroBuscaPaciente;
-    paciente: string | number;
+    paciente: S | number;
     canalRecebimentoReceita: CanalRecebimentoReceita;
-    atendenteResponsavel: string;
-    dataRecebimento: string;
+    atendenteResponsavel: S;
+    dataRecebimento: S;
     tipoReceita: TipoReceita;
-    textoObservacaoReceita: string;
-    urgenteReceitas: MarcacoesReceita;
-    clienteAlerta: MarcacoesReceita;
-    medicamentoControlado: MarcacoesReceita;
+    textoObservacaoReceita: S;
+    urgenteReceitas: boolean;
+    clienteAlerta: boolean;
+    medicamentoControlado: boolean;
 }
 
-interface BuscaReceita {
-    numeroReceita: number;
+interface BuscaReceita<S = string> {
+    numeroReceita: S | number;
     clonarObservacaoFarmaceutica: boolean;
-    senhaObservacaoFarmaceutica: string;
-    textoObservacaoFarmaceutica: string;
-    textoDuvidaTecnica: string;
-    usuárioMarcarUso: string;
-    responsavelAtualRespostaDuvidaTecnica: string;
-    textoRespostaDuvidaTecnica: string;
-    ValorJuntoCom: string;
-    dataInicial: string;
-    dataFinal: string;
-    textoObservacaoInterna: string;
-    dataRecebimento: string;
+    senhaObservacaoFarmaceutica: S;
+    textoObservacaoFarmaceutica: S;
+    textoDuvidaTecnica: S;
+    usuárioMarcarUso: S;
+    responsavelAtualRespostaDuvidaTecnica: S;
+    textoRespostaDuvidaTecnica: S;
+    ValorJuntoCom: S;
+    dataInicial: S;
+    dataFinal: S;
+    textoObservacaoInterna: S;
+    dataRecebimento: S;
+    atendenteResponsavel: S;
 }
 
 interface DadosParametros<S = string> {
@@ -91,7 +93,7 @@ interface DadosParametros<S = string> {
         // dataRecebimento: Date;
         // tipoReceita: string;
         // textoObservacaoInterna: string;
-        // urgenteReceitas: MarcacoesReceita;
+        // urgenteReceitas: boolean;
         // clienteAlerta: MarcacoesReceita;
         // medicamentoControlado: MarcacoesReceita;
         // numeroReceita: number;
@@ -158,6 +160,8 @@ interface DadosParametros<S = string> {
     possuiReceitaPedido: typeof PossuiReceitaPedido;
 
 }
+
+
 
 
 
@@ -319,9 +323,9 @@ enum TipoReceita {
 };
 
 enum MarcacoesReceita {
-    MedicamentoControlado = 'medicamentoControlado',
-    Urgente = 'modalUrgente',
-    ClienteAlerta = 'clienteAlerta',
+    MedicamentoControlado = '#medicamentoControlado',
+    Urgente = '#modalUrgente',
+    ClienteAlerta = '#clienteAlerta',
 }
 
 
@@ -415,6 +419,8 @@ enum Perfil {
 }
 
 
+
+
 export const dadosParametros: DadosParametros = {
 
     env: dadosAmbiente,
@@ -429,38 +435,6 @@ export const dadosParametros: DadosParametros = {
 
     Usuario: {
         usuarioAtribuido: [faker.helpers.arrayElement(['Tamires', 'Andressa', 'Bruna', 'Mariana', 'Jessica', 'Amanda', 'Maria', 'Daian', 'Ana'])].toString(),
-    },
-
-    Receita: {
-        importacao: {
-            arquivo: 'img/ReceitaJpeg.jpeg',
-            prescritor: faker.helpers.arrayElement(['123456-SC']),
-            parametroBuscaPaciente: ParametroBuscaPaciente.Cdcli,
-            paciente: faker.helpers.arrayElement(['618484']),
-            canalRecebimentoReceita: CanalRecebimentoReceita.Whatsapp,
-            atendenteResponsavel: faker.helpers.arrayElement(['tamires silva luiz']),
-            dataRecebimento: new Date().toISOString().slice(0, 16),
-            tipoReceita: TipoReceita.Repeticao,
-            textoObservacaoReceita: faker.lorem.paragraph(),
-            urgenteReceitas: MarcacoesReceita.Urgente,
-            clienteAlerta: MarcacoesReceita.ClienteAlerta,
-            medicamentoControlado: MarcacoesReceita.MedicamentoControlado,
-        },
-        busca: {
-            numeroReceita: 0,
-            clonarObservacaoFarmaceutica: true,
-            senhaObservacaoFarmaceutica: [faker.helpers.arrayElement(['789123'])].toString(),
-            textoObservacaoFarmaceutica: [faker.helpers.arrayElement(['Teste'])].toString(),
-            textoDuvidaTecnica: [faker.helpers.arrayElement(['Teste'])].toString(),
-            usuárioMarcarUso: [faker.helpers.arrayElement(['admin'])].toString(),
-            responsavelAtualRespostaDuvidaTecnica: '',
-            textoRespostaDuvidaTecnica: faker.lorem.paragraph(),
-            ValorJuntoCom: [faker.helpers.arrayElement([1020, 1021, 1022])].toString(),
-            dataInicial: faker.date.between({ from: '2023-01-01T00:00:00.000Z', to: '2023-12-01T00:00:00.000Z' }).toISOString().slice(0, 16),
-            dataFinal: faker.date.between({ from: '2023-12-02T00:00:00.000Z', to: '2023-12-20T00:00:00.000Z' }).toISOString().slice(0, 16),
-            textoObservacaoInterna: faker.lorem.paragraph(),
-            dataRecebimento: new Date().toISOString().slice(0, 16),
-        },
     },
 
     Prescritor: {
@@ -480,6 +454,41 @@ export const dadosParametros: DadosParametros = {
 
     dataAtual: new Date(),
     dataFormatada: new Date().toISOString().slice(0, 16),
+
+    Receita: {
+        importacao: {
+            numeroReceita: 0,
+            arquivo: '../fixtures/img/ReceitaJpeg.jpeg',
+            prescritor: faker.helpers.arrayElement(['999990-SC']),
+            parametroBuscaPaciente: ParametroBuscaPaciente.Cdcli,
+            paciente: faker.helpers.arrayElement(['618484']),
+            canalRecebimentoReceita: CanalRecebimentoReceita.Whatsapp,
+            atendenteResponsavel: faker.helpers.arrayElement(['tamires silva luiz']),
+            dataRecebimento: new Date().toISOString().slice(0, 16),
+            tipoReceita: TipoReceita.Repeticao,
+            textoObservacaoReceita: faker.lorem.paragraph(),
+            urgenteReceitas: false,
+            clienteAlerta: false,
+            medicamentoControlado: false,
+        },
+        busca: {
+            numeroReceita: 0,
+            clonarObservacaoFarmaceutica: true,
+            senhaObservacaoFarmaceutica: [faker.helpers.arrayElement(['789123'])].toString(),
+            textoObservacaoFarmaceutica: [faker.helpers.arrayElement(['Teste'])].toString(),
+            textoDuvidaTecnica: [faker.helpers.arrayElement(['Teste'])].toString(),
+            usuárioMarcarUso: [faker.helpers.arrayElement(['admin'])].toString(),
+            responsavelAtualRespostaDuvidaTecnica: '',
+            textoRespostaDuvidaTecnica: faker.lorem.paragraph(),
+            ValorJuntoCom: [faker.helpers.arrayElement([1020, 1021, 1022])].toString(),
+            dataInicial: faker.date.between({ from: '2023-01-01T00:00:00.000Z', to: '2023-12-01T00:00:00.000Z' }).toISOString().slice(0, 16),
+            dataFinal: faker.date.between({ from: '2023-12-02T00:00:00.000Z', to: '2023-12-20T00:00:00.000Z' }).toISOString().slice(0, 16),
+            textoObservacaoInterna: faker.lorem.paragraph(),
+            dataRecebimento: new Date().toISOString().slice(0, 16),
+            atendenteResponsavel: faker.helpers.arrayElement(['tamires silva luiz']),
+
+        },
+    },
 
     Pedido: {
         tempoTratamento: 30,

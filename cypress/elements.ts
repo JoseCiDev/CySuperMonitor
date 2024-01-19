@@ -65,7 +65,8 @@ interface Elements<S = string> {
         filtroPendenciasVinculados: S;
         botaoProcurarReceitas: S;
         labelProcurarReceitas: S;
-        numeroReceitas: S;
+        numeroReceita: S;
+        dataRecebimentoGrid: S;
         checkboxMarcarUso: S;
         mensagemConfirmacaoModal: S;
         mensagemSucessoModal: S;
@@ -80,7 +81,7 @@ interface Elements<S = string> {
         abaOriginalVisualizarReceitas: S;
         abaObservacoesInternasVisualizarReceitas: S;
         abaInformacoesFcertaVisualizarReceitas: S;
-        exibirReguaVisualizarReceitas: S;
+        reguaVisualizarReceitas: S;
         fecharVisualizarReceitas: S;
         clonarReceitas: S;
         modalObservacoesClonar: S;
@@ -302,7 +303,8 @@ export const elements: Elements = {
         filtroPendenciasVinculados: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
         botaoProcurarReceitas: '#filterReceitas > div:nth-child(4) > div > button',
         labelProcurarReceitas: '[button type="submit"]' && 'Procurar',
-        numeroReceitas: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
+        numeroReceita: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
+        dataRecebimentoGrid: '#mainTableReceitas > thead > tr > th.sorting.sorting_asc',
         //marcar uso
         checkboxMarcarUso: '#mainTableReceitas > tbody > tr > td.usedTrativa',
         mensagemConfirmacaoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
@@ -318,7 +320,7 @@ export const elements: Elements = {
         abaOriginalVisualizarReceitas: '#originalClickVisRe',
         abaObservacoesInternasVisualizarReceitas: '#panel_look_pdf > ul.nav.nav-tabs > :nth-child(3) > a',
         abaInformacoesFcertaVisualizarReceitas: '#panel_look_pdf > ul.nav.nav-tabs > :nth-child(4) > a',
-        exibirReguaVisualizarReceitas: '#btnReceitaRegua',
+        reguaVisualizarReceitas: '#btnReceitaRegua',
         fecharVisualizarReceitas: '#modal-receita-view > .modal-dialog > .modal-content > .modal-header > .close > [aria-hidden="true"]',
         clonarReceitas: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita',
         modalObservacoesClonar: '#carousel-container',
