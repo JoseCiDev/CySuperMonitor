@@ -38,7 +38,7 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 export const {
 
-    mensagemConfirmacaoModal,
+    btnSucessoModal,
     okModalMensagem
 
 } = el.Receitas;
@@ -72,15 +72,15 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
         function mapClusterValue(clusterName: string): string {
             switch (clusterName) {
                 case 'Cluster1':
-                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster1;
+                    return dadosParametros.clusterRelacoesPrescritorAtendenteCluster.Cluster1;
                 case 'Cluster2':
-                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster2;
+                    return dadosParametros.clusterRelacoesPrescritorAtendenteCluster.Cluster2;
                 case 'Cluster3':
-                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster3;
+                    return dadosParametros.clusterRelacoesPrescritorAtendenteCluster.Cluster3;
                 case 'Cluster4':
-                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster4;
+                    return dadosParametros.clusterRelacoesPrescritorAtendenteCluster.Cluster4;
                 case 'Cluster5':
-                    return dadosParametros.ClusterRelacoesPrescritorAtendenteCluster.Cluster5;
+                    return dadosParametros.clusterRelacoesPrescritorAtendenteCluster.Cluster5;
                 default:
                     throw new Error('Cluster que procura não está cadastrado.');
             }
@@ -189,7 +189,7 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                     cy.get(removerRelacaoSelecionada, { timeout: 1000 })
                         .click({ timeout: 1000 });
 
-                    cy.get(mensagemConfirmacaoModal, { timeout: 1000 })
+                    cy.get(btnSucessoModal, { timeout: 1000 })
                         .click({ timeout: 1000 });
 
                     cy.getElementAndClick(

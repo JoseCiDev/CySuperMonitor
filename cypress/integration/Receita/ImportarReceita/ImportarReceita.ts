@@ -98,7 +98,10 @@ export const salvarReceita = (salvarImportacao): void => {
 describe('Tela importação de receitas.', function () {
 
     beforeEach(function () {
-
+        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
     })
 
 
@@ -200,7 +203,7 @@ describe('Tela importação de receitas.', function () {
         cy.buscarReceita({
             dataInicial: dadosParametros.Receita.busca.dataInicial,
             dataFinal: dadosParametros.Receita.busca.dataFinal,
-            cluster: dadosParametros.ClusterImportarReceitas.cluster1,
+            cluster: dadosParametros.Receita.busca.cluster,
         });
     });
 
@@ -260,10 +263,7 @@ describe('Tela importação de receitas.', function () {
 
 
     it.only('Deve realizar importação de Receitas', function () {
-        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
-            .then((result) => {
-                assert.exists(result.success, result.error)
-            })
+
 
         cy.getElementAndClick(menuReceitas, menuImportarReceitas);
 

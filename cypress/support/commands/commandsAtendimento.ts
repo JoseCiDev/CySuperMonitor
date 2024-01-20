@@ -48,8 +48,8 @@ export const {
   usuarioSelecionado,
   senhaReceita,
   aplicaDesmarcarUso,
-  mensagemConfirmacaoModal,
-  mensagemSucessoModal,
+  btnSucessoModal,
+  mensagemModal,
   abaPdfVisualizarReceitas,
   abaOriginalVisualizarReceitas,
   abaObservacoesInternasVisualizarReceitas,
@@ -93,7 +93,6 @@ export const {
   brasileiro,
   salvarNumeroChatguru,
   botaoTempoTratamento,
-  modalMensagemChatguru,
   tempoTratamentoPadrao,
   cabecalhoModalTempoTratamento,
   salvarTempoTratamento,
@@ -208,18 +207,18 @@ export const {
       .wait(2000)
       .type('{downarrow}{enter}', { timeout: 20000 });
     cy.getElementAndClick(relacionarReceitaPedido);
-    cy.getElementAndClick(mensagemConfirmacaoModal)
+    cy.getElementAndClick(btnSucessoModal)
       .wait(2000);
-    cy.getElementAndClick(mensagemSucessoModal);
+    cy.getElementAndClick(mensagemModal);
   })
   
   
   
   Cypress.Commands.add('desvincularPedidoReceita', (botaoDesvincular: string) => {
     cy.getElementAndClick(botaoDesvincular);
-    cy.getElementAndClick(mensagemConfirmacaoModal)
+    cy.getElementAndClick(btnSucessoModal)
       .wait(2000);
-    cy.getElementAndClick(mensagemSucessoModal);
+    cy.getElementAndClick(mensagemModal);
   })
   
   
