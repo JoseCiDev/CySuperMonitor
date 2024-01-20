@@ -57,8 +57,8 @@ export const {
   usuarioSelecionado,
   senhaReceita,
   aplicaDesmarcarUso,
-  mensagemConfirmacaoModal,
-  mensagemSucessoModal,
+  btnSucessoModal,
+  mensagemModal,
   abaPdfVisualizarReceitas,
   abaOriginalVisualizarReceitas,
   abaObservacoesInternasVisualizarReceitas,
@@ -102,7 +102,6 @@ export const {
   brasileiro,
   salvarNumeroChatguru,
   botaoTempoTratamento,
-  modalMensagemChatguru,
   tempoTratamentoPadrao,
   cabecalhoModalTempoTratamento,
   salvarTempoTratamento,
@@ -229,26 +228,25 @@ Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
   })
 });
 
+Cypress.Commands.add('getElementAndCheck', (element: string): void => {
+  cy.wrap(null).then(() => {
+    cy.get(element, { timeout: 20000 })
+      .as('element')
+      .each(($element) => {
+        cy.wrap($element)
+          .then($elements => {
+            cy.get('@element')
 
-
-Cypress.Commands.add('getElementAndCheck', (elemento: string): void => {
-  cy.get(elemento, { timeout: 20000 })
-    .as('element')
-    .then($elements => {
-      cy.get('@element')
-        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto')
-
-      if ($elements.length > 0) {
-        cy.wrap($elements.first())
-          .check({ timeout: 20000, force: true });
-      } else {
-        cy.wrap($elements.eq(0))
-          .check({ timeout: 20000, force: true });
-      }
-      cy.get('@element')
-        .invoke('attr', 'readonly' || 'hidden' || 'scroll' || 'auto');
-    });
-
+            if ($elements.length > 0) {
+              cy.wrap($elements.first())
+                .check({ timeout: 20000, force: true });
+            } else {
+              cy.wrap($elements.eq(0))
+                .check({ timeout: 20000, force: true });
+            }
+          });
+      })
+  })
 });
 
 
@@ -307,7 +305,7 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string, usuarioMarcarUso: 
         cy.getElementAndClick(usuarioSelecionado)
         cy.getElementAndType(senhaReceita, dadosAmbiente.SENHA_RECEITA_USER);
         cy.getElementAndClick(aplicaDesmarcarUso);
-        cy.getElementAndClick(mensagemSucessoModal);
+        cy.getElementAndClick(mensagemModal);
         cy.get(`${checkboxMarcarUso} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
           .first()
           .check();
@@ -319,9 +317,9 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string, usuarioMarcarUso: 
       };
 
       cy.wait(200);
-      cy.getElementAndClick(mensagemConfirmacaoModal);
+      cy.getElementAndClick(btnSucessoModal);
       cy.wait(200);
-      cy.getElementAndClick(mensagemSucessoModal);
+      cy.getElementAndClick(mensagemModal);
     });
   });
 });
@@ -348,7 +346,7 @@ Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: strin
       cy.get(element, { timeout: 60000 })
         .as('elementAlias')
       cy.get('@elementAlias', { timeout: 60000 })
-        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto')
+        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })
         .click({ force: true, multiple: true, timeout: 5000 })
     }
   });

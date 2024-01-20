@@ -20,6 +20,7 @@ interface ImportacaoReceita<S = string> {
     canalRecebimentoReceita: CanalRecebimentoReceita;
     atendenteResponsavel: S;
     dataRecebimento: S;
+    cluster: any;
     tipoReceita: TipoReceita;
     textoObservacaoReceita: S;
     urgenteReceitas: boolean;
@@ -29,6 +30,7 @@ interface ImportacaoReceita<S = string> {
 
 interface BuscaReceita<S = string> {
     numeroReceita: S | number;
+    cluster: any;
     clonarObservacaoFarmaceutica: boolean;
     senhaObservacaoFarmaceutica: S;
     textoObservacaoFarmaceutica: S;
@@ -42,6 +44,11 @@ interface BuscaReceita<S = string> {
     textoObservacaoInterna: S;
     dataRecebimento: S;
     atendenteResponsavel: S;
+}
+
+export interface CheckAndThrowError {
+    condition: boolean;
+    errorMessage: string;
 }
 
 interface DadosParametros<S = string> {
@@ -84,29 +91,6 @@ interface DadosParametros<S = string> {
     Receita: {
         importacao: ImportacaoReceita;
         busca: BuscaReceita;
-        // arquivo: Object;
-        // prescritor: string | number;
-        // parametroBuscaPaciente: ParametroBuscaPaciente;
-        // paciente: string | number;
-        // canalRecebimentoReceita: CanalRecebimentoReceita;
-        // atendenteResponsavel: string;
-        // dataRecebimento: Date;
-        // tipoReceita: string;
-        // textoObservacaoInterna: string;
-        // urgenteReceitas: boolean;
-        // clienteAlerta: MarcacoesReceita;
-        // medicamentoControlado: MarcacoesReceita;
-        // numeroReceita: number;
-        // usuárioMarcarUso: S;
-        // clonarObservacaoFarmaceutica: boolean;
-        // senhaObservacaoFarmaceutica: S;
-        // textoObservacaoFarmaceutica: S;
-        // textoDuvidaTecnica: S;
-        // responsavelAtualRespostaDuvidaTecnica: S;
-        // textoRespostaDuvidaTecnica: S;
-        // ValorJuntoCom: S;
-        // dataInicial: S;
-        // dataFinal: S;
     };
 
     Prescritor: {
@@ -147,8 +131,8 @@ interface DadosParametros<S = string> {
     canalRecebimentoReceita: typeof CanalRecebimentoReceita;
     parametroBuscaPaciente: typeof ParametroBuscaPaciente;
     tipoReceita: typeof TipoReceita;
-    ClusterImportarReceitas: typeof ClusterImportarReceitas;
-    ClusterRelacoesPrescritorAtendenteCluster: typeof ClusterRelacoesPrescritorAtendenteCluster;
+    clusterImportarReceitas: typeof ClusterImportarReceitas;
+    clusterRelacoesPrescritorAtendenteCluster: typeof ClusterRelacoesPrescritorAtendenteCluster;
     pendencia: typeof Pendencia;
     // OpcaoParametroBuscaPaciente: typeof OpcaoParametroBuscaPaciente;
     categoriaDuvidaTecnica: typeof CategoriaDuvidaTecnica;
@@ -331,17 +315,17 @@ enum MarcacoesReceita {
 
 
 enum ClusterImportarReceitas {
-    Selecione = '',
-    cluster1 = '1',
-    cluster2 = '2',
-    cluster3 = '3',
-    cluster4 = '4',
-    cluster5 = '5',
-    clusterPediatrico = 'Pediátrico',
-    clusterPrescritores = 'Prescritores',
-    clusterInjetaveis = 'Atendimento injetáveis',
-    clusterConsultoriaTecnicaInjetaveis = 'Consultoria técnica Injetáveis',
-    clusterRecepcao = 'Recepção',
+    Selecione = "", // Opção default
+    Cluster1 = "1 | Cluster 1",
+    Cluster2 = "2 | Cluster 2",
+    Cluster3 = "3 | Cluster 3",
+    Cluster4 = "4 | Cluster 4",
+    Cluster5 = "5 | Cluster 5",
+    ClusterPediatrico = "6 | Cluster Pediátrico",
+    ClusterPrescritores = "7 | Cluster Prescritores",
+    ClusterAtendimentoInjetaveis = "8 | Cluster Atendimento Injetáveis",
+    ClusterConsultoriaTecnicaInjetaveis = "12 | Cluster Consultoria técnica Injetáveis",
+    ClusterRecepcao = "14 | Cluster Recepção",
 };
 
 enum ClusterRelacoesPrescritorAtendenteCluster {
@@ -463,8 +447,9 @@ export const dadosParametros: DadosParametros = {
             parametroBuscaPaciente: ParametroBuscaPaciente.Cdcli,
             paciente: faker.helpers.arrayElement(['618484']),
             canalRecebimentoReceita: CanalRecebimentoReceita.Whatsapp,
-            atendenteResponsavel: faker.helpers.arrayElement(['tamires silva luiz']),
+            atendenteResponsavel: faker.helpers.arrayElement(['Atendente Tamires Silva Luiz']),
             dataRecebimento: new Date().toISOString().slice(0, 16),
+            cluster: ClusterImportarReceitas.Cluster4,
             tipoReceita: TipoReceita.Repeticao,
             textoObservacaoReceita: faker.lorem.paragraph(),
             urgenteReceitas: false,
@@ -474,6 +459,7 @@ export const dadosParametros: DadosParametros = {
         busca: {
             numeroReceita: 0,
             clonarObservacaoFarmaceutica: true,
+            cluster:ClusterImportarReceitas,
             senhaObservacaoFarmaceutica: [faker.helpers.arrayElement(['789123'])].toString(),
             textoObservacaoFarmaceutica: [faker.helpers.arrayElement(['Teste'])].toString(),
             textoDuvidaTecnica: [faker.helpers.arrayElement(['Teste'])].toString(),
@@ -510,8 +496,8 @@ export const dadosParametros: DadosParametros = {
     canalRecebimentoReceita: CanalRecebimentoReceita,
     parametroBuscaPaciente: ParametroBuscaPaciente,
     tipoReceita: TipoReceita,
-    ClusterImportarReceitas: ClusterImportarReceitas,
-    ClusterRelacoesPrescritorAtendenteCluster: ClusterRelacoesPrescritorAtendenteCluster,
+    clusterImportarReceitas: ClusterImportarReceitas,
+    clusterRelacoesPrescritorAtendenteCluster: ClusterRelacoesPrescritorAtendenteCluster,
     pendencia: Pendencia,
     // OpcaoParametroBuscaPaciente: OpcaoParametroBuscaPaciente,
     categoriaDuvidaTecnica: CategoriaDuvidaTecnica,

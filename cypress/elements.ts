@@ -29,7 +29,7 @@ interface Elements<S = string> {
         modalSugestaoRelacaoPrescritor: S;
         parametroBuscaPaciente: S;
         pacienteReceitas: S;
-        canalRecebimentoReceitas: S;
+        canalRecebimentoImportacao: S;
         clusterReceitas: S;
         orcamentistaReceitas: S;
         atendenteResponsavelReceitas: S;
@@ -45,6 +45,7 @@ interface Elements<S = string> {
         varejoReceitas: S;
         opcaoTipoReceitas: S;
         salvarReceitas: S;
+        fecharRegistrarReceitas:S;
         editarReceita: S;
         okModalMensagem: S;
         ModalBuscaReceitas: S;
@@ -68,8 +69,9 @@ interface Elements<S = string> {
         numeroReceita: S;
         dataRecebimentoGrid: S;
         checkboxMarcarUso: S;
-        mensagemConfirmacaoModal: S;
-        mensagemSucessoModal: S;
+        btnSucessoModal: S;
+        mensagemModal: S;
+        btnmensagemModal: S;
         containerInserirUsuario: S;
         select: S;
         usuarioSelecionado: S;
@@ -137,7 +139,6 @@ interface Elements<S = string> {
         idiomaCliente: S;
         cancelarIntegracaoChatguru: S;
         salvarNumeroChatguru: S;
-        modalMensagemChatguru: S;
         orcamentista: S;
         cabecalhoModalTempoTratamento: S;
         botaoTempoTratamento: S;
@@ -263,11 +264,11 @@ export const elements: Elements = {
         modalSugestaoRelacaoPrescritor: '.bootbox .modal-dialog .modal-content .modal-footer .btn-primary',
         parametroBuscaPaciente: '#t2_154c',
         pacienteReceitas: '#modalPacienteRec',
-        canalRecebimentoReceitas: '#modalCanalContato',
+        canalRecebimentoImportacao: '#modalCanalContato',
         clusterReceitas: '#modalCluster',
         orcamentistaReceitas: '#modalOrcamentistaRec',
         atendenteResponsavelReceitas: '#modalAtendenteRec',
-        autocompleteAtendenteResponsavel: 'body > div:nth-child(327) > div',
+        autocompleteAtendenteResponsavel: '.autocomplete-suggestion',
         dataRecebimentoReceitas: '#modalDataRec',
         juntocomReceitas: '#groupMainEntitiesModal > div:nth-child(2) > div:nth-child(4) > div > span',
         autocompleteJuntocomReceitas: 'ul.select2-results__options',
@@ -281,9 +282,9 @@ export const elements: Elements = {
         // mensagem informando que já existe receita com mesmo paciente e prescritor
         // salvar receita
         salvarReceitas: '#save_receita',
+        fecharRegistrarReceitas:'#modal-receitas > div.modal-dialog > div > div.modal-footer > button.btn.btn-white',
         editarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .edit-receita',
-        //okModalMensagem
-        okModalMensagem: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
+        
         // buscar receitas importadas
         ModalBuscaReceitas: '#centerHeadFilter',
         filtroDataInicialBuscaReceitas: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
@@ -307,8 +308,11 @@ export const elements: Elements = {
         dataRecebimentoGrid: '#mainTableReceitas > thead > tr > th.sorting.sorting_asc',
         //marcar uso
         checkboxMarcarUso: '#mainTableReceitas > tbody > tr > td.usedTrativa',
-        mensagemConfirmacaoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
-        mensagemSucessoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
+        //okModalMensagem   
+        okModalMensagem: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
+        mensagemModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div',
+        btnSucessoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
+        btnmensagemModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
         containerInserirUsuario: '#select2-farma-to-auth-container',
         select: '.select2-dropdown > .select2-search > .select2-search__field',
         usuarioSelecionado: '.select2-results__option--highlighted',
@@ -382,7 +386,6 @@ export const elements: Elements = {
         idiomaCliente: '#languageCli',
         cancelarIntegracaoChatguru: '.btn btn-white',
         salvarNumeroChatguru: '#saveChatGuruNumber',
-        modalMensagemChatguru: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
         orcamentista: '#orcamentista',
         // inserirTempoTratamento
         cabecalhoModalTempoTratamento: '#customTimeModal > div.modal-dialog > div > div.modal-header',
