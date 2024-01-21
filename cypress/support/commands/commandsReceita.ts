@@ -853,11 +853,11 @@ Cypress.Commands.add('importarReceita', (
                 if (Cypress.$(fecharRegistrarReceitas).is(':visible')) {
                     cy.getElementAndClick(fecharRegistrarReceitas);
                 }
-                else {
+                if(cy.url().should('contain', dadosParametros.Url.importarReceitas)){}
                     cy.wait(500);
                     cy.getElementAndClick(dataRecebimentoGrid, dataRecebimentoGrid);
                     cy.capturarNumeroReceita(numeroReceita);
-                }
+                
 
             } else {
                 cy.get('@barraProgressoSalvarReceita', { timeout: 60000 })
