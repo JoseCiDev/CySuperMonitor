@@ -448,7 +448,7 @@ export const dadosParametros: DadosParametros = {
             numeroReceita: 0,
             arquivo: '../fixtures/img/ReceitaJpeg.jpeg',
             prescritor: faker.helpers.arrayElement(['999990-SC']),
-            sugestaoRelacaoPrescritor: false,
+            sugestaoRelacaoPrescritor: true,
             parametroBuscaPaciente: ParametroBuscaPaciente.Cdcli,
             paciente: faker.helpers.arrayElement(['618484']),
             canalRecebimentoReceita: CanalRecebimentoReceita.Whatsapp,
