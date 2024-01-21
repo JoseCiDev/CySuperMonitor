@@ -45,6 +45,15 @@ import '../commands/commandsConfiguracoes'
 
 
 export const {
+  btnSucessoModal,
+  mensagemModal,
+  okModalMensagem,
+  btnmensagemModal,
+  btnFalhaModal,
+
+} = el.Compartilhado;
+
+export const {
   ModalBuscaReceitas,
   filtroDataInicialBuscaReceitas,
   filtroDataFinalBuscaReceitas,
@@ -57,8 +66,6 @@ export const {
   usuarioSelecionado,
   senhaReceita,
   aplicaDesmarcarUso,
-  btnSucessoModal,
-  mensagemModal,
   abaPdfVisualizarReceitas,
   abaOriginalVisualizarReceitas,
   abaObservacoesInternasVisualizarReceitas,
@@ -91,6 +98,39 @@ export const {
   statusRespostaDuvidasTecnicas,
   textoRespostaDuvidasTecnicas,
   enviarRespostaDuvidasTecnicas,
+  canalRecebimentoBusca,
+  clusterBusca,
+  receitaBusca,
+  pacienteBusca,
+  prescritorBusca,
+  orcamentoBusca,
+  ultimoModificadorBusca,
+  orcamentistaBusca,
+  atendenteResponsavelBusca,
+  prescritorReceitas,
+  pacienteReceitas,
+  canalRecebimentoImportacao,
+  atendenteResponsavelReceitas,
+  menuImportarReceitas,
+  importarImagemReceitas,
+  abrirModalRegistrarReceitas,
+  textoObservacaoInternaReceitas,
+  urgenteReceitas,
+  clienteAlertaReceitas,
+  medicamentocontroladoReceitas,
+  dataRecebimentoReceitas,
+  barraProgressoSalvarReceita,
+  salvarReceitas,
+  modalSugestaoRelacaoPrescritor,
+  varejoReceitas,
+  dataRecebimentoGrid,
+  fecharRegistrarReceitas,
+  clusterReceitas,
+  menuReceitasReduzido,
+  checkboxMarcarUso,
+  acoes,
+  visualizarReceitas,
+
 
 } = el.Receitas;
 
@@ -178,53 +218,25 @@ Cypress.Commands.add('lerArquivo', (nomeArquivo) => {
 
 
 
-Cypress.Commands.add('getVisible', (elemento, options) => {
-  const defaultOptions = { timeout: 20000 };
-  const combinedOptions = { ...defaultOptions, ...options };
-  return cy.get(elemento, combinedOptions)
-    .should('be.visible');
-});
-
-
-
-Cypress.Commands.add('inserirData', (campoData: string, data: string): void => {
-  cy.get(campoData)
-    .type(data, { timeout: 1000 })
-    .should('have.value', data);
-});
-
-
-
-
-
-
-Cypress.Commands.add('inserirDataUmDiaMenosDiaAtual', (campoData: string) => {
-  const umDiaMenos = new Date(dadosParametros.dataAtual);
-  umDiaMenos.setDate(umDiaMenos.getDate() - 1);
-  const dataFormatadaDiaAnterior = umDiaMenos.toISOString().slice(0, 16);
-  cy.inserirData(campoData, dataFormatadaDiaAnterior);
-})
-
-
-
-
-
-
 Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
-  elements.forEach(element => {
-    cy.get(element, { timeout: 20000 })
-      .as('element')
-      .then($elements => {
+  cy.wrap(null).then(() => {
+    elements.forEach(element => {
+      cy.get(element, { timeout: 20000 })
+        .each(($input) => {
+          cy.wrap($input)
+            .then($elements => {
 
-        if ($elements.length > 0) {
-          cy.wrap($elements.first())
-            .click({ timeout: 20000, force: true });
-        } else {
-          cy.wrap($elements.eq(0))
-            .click({ timeout: 20000, force: true });
-        }
+              if ($elements.length > 0) {
+                cy.wrap($elements.first())
+                  .click({ timeout: 20000, force: true });
+              } else {
+                cy.wrap($elements.eq(0))
+                  .click({ timeout: 20000, force: true });
+              }
 
-      });
+            });
+        })
+    })
   })
 });
 
@@ -251,26 +263,25 @@ Cypress.Commands.add('getElementAndCheck', (element: string): void => {
 
 
 
-Cypress.Commands.add('getElementAndType', (elemento: string, texto?: string): void => {
-  if (typeof texto !== 'string') {
-    throw new Error('O texto a ser escrito deve ser uma string.');
-  }
-  cy.get(elemento, { timeout: 20000 })
-    .then($elements => {
-
-      if ($elements.length > 1) {
-        cy.wrap($elements.first())
-          .clear()
-          .type(texto, { timeout: 1000 })
-      } else {
-        cy.wrap($elements.eq(0))
-          .clear()
-          .type(texto, { timeout: 1000 })
-      }
-
-    });
+Cypress.Commands.add('getElementAndType', (element: string, text?: string): void => {
+  cy.wrap(null).then(() => {
+    cy.get(element, { timeout: 20000 })
+      .each(($input) => {
+        cy.wrap($input)
+          .then(() => {
+            if ($input.length > 1) {
+              cy.wrap($input.first())
+                .clear()
+                .type(text, { timeout: 1000 })
+            } else {
+              cy.wrap($input.eq(0))
+                .clear()
+                .type(text, { timeout: 1000 })
+            }
+          })
+      })
+  });
 });
-
 
 
 Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void => {
@@ -282,10 +293,22 @@ Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void =>
 
 
 
-Cypress.Commands.add('getSelectOptionByValue', (elemento: string, value: any): void => {
-  cy.get(elemento, { timeout: 20000 })
-    .select(value, { force: true })
+Cypress.Commands.add('getSelectOptionByValue', (element: string, value: any): void => {
+  cy.wrap(null).then(() => {
+    cy.get(element, { timeout: 20000 })
+      .each(($select) => {
+        cy.wrap($select)
+          .then(() => {
+            if ($select.length > 0 && $select.is(':visible')) {
+              cy.get(element, { timeout: 20000 })
+                .select(value, { force: true })
+            }
+
+          })
+      })
+  });
 });
+
 
 
 
@@ -325,15 +348,23 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string, usuarioMarcarUso: 
 });
 
 Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, data: string | number, autocomplete: string) => {
-  cy.get(element)
-    .as('elementAlias')
-    .type(data.toString())
-    .then(() => {
-      cy.contains(autocomplete, data)
-        .as('autocompleteAlias')
-        .click({ force: true })
-    });
+  cy.wrap(null).then(() => {
+    cy.get(element, { timeout: 20000 })
+      .as('elementAlias')
+      .each(($input) => {
+        cy.wrap($input)
+          .type(data.toString())
+          .then(() => {
+            if (cy.contains(autocomplete, data).as('autocompleteAlias')) {
+              cy.get('@autocompleteAlias')
+                .click({ force: true })
+            }
+
+          })
+      })
+  });
 });
+
 
 Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
   cy.wrap(null).then(() => {

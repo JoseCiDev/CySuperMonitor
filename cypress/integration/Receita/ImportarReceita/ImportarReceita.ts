@@ -10,45 +10,96 @@ import 'cypress-wait-until';
 const ambiente = Cypress.env('AMBIENTE');
 const dadosAmbiente = Cypress.env(ambiente);
 
+export const {
+    btnSucessoModal,
+    mensagemModal,
+    okModalMensagem,
+    btnmensagemModal,
+    btnFalhaModal,
+
+} = el.Compartilhado;
 
 export const {
-    dataRecebimentoReceitas,
-    okModalMensagem,
+    ModalBuscaReceitas,
+    filtroDataInicialBuscaReceitas,
+    filtroDataFinalBuscaReceitas,
+    filtroPendenciasBusca,
+    botaoProcurarReceitas,
+    labelProcurarReceitas,
+    numeroReceita,
+    containerInserirUsuario,
+    select,
+    usuarioSelecionado,
+    senhaReceita,
+    aplicaDesmarcarUso,
+    abaPdfVisualizarReceitas,
+    abaOriginalVisualizarReceitas,
+    abaObservacoesInternasVisualizarReceitas,
+    abaInformacoesFcertaVisualizarReceitas,
+    reguaVisualizarReceitas,
+    fecharVisualizarReceitas,
+    clonarReceitas,
+    modalObservacoesClonar,
+    clonarObservacoesFarmaceuticas,
     menuReceitas,
-    menuReceitasReduzido,
-    menuImportarReceitas,
-    abrirModalRegistrarReceitas,
-    importarImagemReceitas,
+    excluirReceitas,
+    abaAdicionarObservacoesFarmaceuticas,
+    senhaObservacoesFarmaceuticas,
+    textoObservacoesFarmaceuticas,
+    fecharModalObservacoesFarmaceuticas,
+    abaExcluirObservacoesFarmaceuticas,
+    excluirObservacoesFarmaceuticas,
+    containerCategoriaDuvidaTecnicas,
+    textoDuvidasTecnicas,
+    containerColaboradores,
+    responsavelRespostas,
+    enviarDuvidasTecnicas,
+    fecharModalDuvidasTecnicas,
+    acessarDuvidasTecnicas,
+    containerResponsavelRespostaDuvidasTecnicas,
+    ResponsavelRespostaDuvidasTecnicas,
+    responsavelAtualRespostaDuvidasTecnicas,
+    marcarDuvidasTecnicaResolvidas,
+    excluirDuvidasTecnicas,
+    statusRespostaDuvidasTecnicas,
+    textoRespostaDuvidasTecnicas,
+    enviarRespostaDuvidasTecnicas,
+    canalRecebimentoBusca,
+    clusterBusca,
+    receitaBusca,
+    pacienteBusca,
+    prescritorBusca,
+    orcamentoBusca,
+    ultimoModificadorBusca,
+    orcamentistaBusca,
+    atendenteResponsavelBusca,
     prescritorReceitas,
-    parametroBuscaPaciente,
     pacienteReceitas,
-    canalRecebimentoReceitas,
-    opcaoTipoReceitas,
+    canalRecebimentoImportacao,
+    atendenteResponsavelReceitas,
+    menuImportarReceitas,
+    importarImagemReceitas,
+    abrirModalRegistrarReceitas,
     textoObservacaoInternaReceitas,
     urgenteReceitas,
     clienteAlertaReceitas,
     medicamentocontroladoReceitas,
+    dataRecebimentoReceitas,
+    barraProgressoSalvarReceita,
+    salvarReceitas,
+    modalSugestaoRelacaoPrescritor,
+    varejoReceitas,
+    dataRecebimentoGrid,
+    fecharRegistrarReceitas,
+    clusterReceitas,
+    menuReceitasReduzido,
     checkboxMarcarUso,
     acoes,
     visualizarReceitas,
-    clonarReceitas,
-    excluirReceitas,
-    acessarObservacoesFarmaceuticas,
-    acessarDuvidasTecnicas,
-    atualizarModalDuvidasTecnicas,
-    mensagemConfirmacaoModal,
-    salvarReceitas,
-    editarReceita,
-    mensagemSucessoModal,
-    atendenteResponsavelReceitas,
-    juntocomReceitas,
-    clusterReceitas,
-    menuGerenciarReceitas,
-    modalSugestaoRelacaoPrescritor,
-    barraProgressoSalvarReceita,
-    autocompleteAtendenteResponsavel
+
 
 } = el.Receitas;
+
 
 
 
@@ -56,7 +107,7 @@ export const inserirObservacaoInterna = (areaTexto: string, conteudo: string, us
     if (useLoremIpsum) {
         conteudo = faker.lorem.paragraph();
     }
-    cy.getVisible(areaTexto)
+    cy.get(areaTexto)
         .should('exist')
         .clear()
         .type(conteudo)
@@ -80,7 +131,7 @@ export const salvarReceita = (salvarImportacao): void => {
         .click({ force: true });
 
     if (Cypress.$(okModalMensagem).length > 0 && Cypress.$(okModalMensagem).is(':visible')) {
-        cy.getVisible(okModalMensagem, { timeout: 20000 })
+        cy.get(okModalMensagem, { timeout: 20000 })
             .click();
     } else {
         cy.log('O teste será prosseguido, uma vez que a modal não foi exibida na tela.')
@@ -304,7 +355,7 @@ describe('Tela importação de receitas.', function () {
 
         cy.excluirReceita(excluirReceitas);
 
-        cy.getElementAndClick(mensagemSucessoModal);
+        cy.getElementAndClick(btnmensagemModal);
     });
 
 
