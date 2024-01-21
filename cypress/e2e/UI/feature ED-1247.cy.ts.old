@@ -141,9 +141,9 @@ describe('Tela importação de receitas.', function () {
             dadosParametros.aromaCapsula.Framboesa,
             dadosParametros.Pedido.textoObservacaoGeral
         );
-        cy.getVisible(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.getVisible(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.getVisible(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
 
     });
 
@@ -167,11 +167,11 @@ describe('Tela importação de receitas.', function () {
             dadosParametros.aromaCapsula.Framboesa,
             dadosParametros.Pedido.textoObservacaoGeral
         );
-        cy.getVisible(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.getVisible(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.getVisible(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
         const capturarDado = (campoCaptura: string, dadoCapturado: string, localArmazenamento: string): Cypress.Chainable<string> => {
-            return cy.getVisible(campoCaptura)
+            return cy.get(campoCaptura)
                 .eq(0)
                 .invoke('text')
                 .then((texto) => {
@@ -215,9 +215,9 @@ describe('Tela importação de receitas.', function () {
             dadosParametros.aromaCapsula.Cacau,
             dadosParametros.Pedido.textoObservacaoGeral
         );
-        cy.getVisible(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.getVisible(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.getVisible(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
         capturarDado(el.Atendimentos.orcamentistaPedido, dadosParametros.Pedido.orcamentista, dadosParametros.Pedido.orcamentista);
         capturarDado(el.Atendimentos.atendentePedido, dadosParametros.Pedido.atendentePedido, dadosParametros.Pedido.atendentePedido);
         cy.log(dadosParametros.Pedido.orcamentista);

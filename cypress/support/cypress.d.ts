@@ -44,85 +44,6 @@ declare global {
       lerArquivo(nomeArquivo: string)
 
       /**
-        * comando customizado para acessar o menu Receitas.
-        * @example cy.acessarMenuReceitas(receitas)
-        */
-      acessarMenuReceitas(receitas: string): Chainable<Element>
-
-      /**
-       * comando customizado para acessar o menu Importação de Receitas.
-       * @example cy.acessarImportarReceitas(importarReceitas)
-       */
-      acessarImportarReceitas(importarReceitas: string): Chainable<Element>
-
-      /**
-       * comando customizado para acessar o menu Importação de Receitas.
-       * @example cy.acessarGerenciarReceitas(gerenciarReceitas)
-       */
-      acessarGerenciarReceitas(gerenciarReceitas: string): Chainable<Element>
-
-
-      /**
-       * comando customizado para selecinar elemento e verificar se esta visivel.
-       * @example cy.getVisible()
-       */
-      getVisible(element: string, options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable>): Chainable<Subject>;
-
-      /**
-       * comando customizado para inserir Data.
-       * @example cy.inserirData()
-       */
-      inserirData(campoData: string, data: string): Chainable<DataHora>
-
-      /**
-       * comando customizado para inserir datas.
-       * @example cy.inserirDataUmDiaMenosDiaAtual()
-       */
-      inserirDataUmDiaMenosDiaAtual(campoData: string): Chainable<Element>;
-
-      /**
-       * comando customizado para inserir Prescritor.
-       * @example cy.inserirPrescritor(dadosPrescritor)
-       */
-      inserirPrescritor(dadosPrescritor: string): Chainable<Element>;
-
-      /**
-       * comando customizado para inserir Paciente.
-       * @example cy.inserirPaciente(dadosPaciente)
-       */
-      inserirPaciente(opcaoSelecaoPaciente: string, paciente: string): Chainable<Element>;
-
-      /**
-       * comando customizado para inserir canal de recebimento.
-       * @example cy.selecionarCanalRecebimento(canalRecebimento)
-       */
-      selecionarCanalRecebimento(canalRecebimentoReceitas: string, canalRecebimento: string): Chainable<Element>;
-
-      /**
-       * comando customizado para inserir selecionar cluster.
-       * @example cy.selecionarCluster(cluster)
-       */
-      selecionarCluster(cluster: string): Chainable<Element>;
-
-      /**
-       * comando customizado para inserir selecionar tipo da receita.
-       * @example cy.inserirTipoReceita(tipoReceita)
-       */
-      inserirTipoReceita(tipoReceita: string): Chainable<Element>;
-
-      /**
-      * comando customizado para aplicar o nome da orçamentista.
-      * @example cy.setOrcamentistaPedido()
-      */
-      setDadoCapturado(dadoCapturado: string): Chainable<Element>;
-
-      /**
-      * comando customizado para setar numero da receita.
-      * @example cy.setReceitaNumero()
-      */
-      setReceitaNumero(numeroReceita: number): Chainable<Element>;
-
-      /**
       * comando customizado para buscar receitas.
       * @example cy.buscarReceita()
       */
@@ -357,7 +278,7 @@ declare global {
      * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
      * @example cy.alterarUsuariosPedido(orcamentista,atendente)
      */
-      getElementAutocompleteTypeAndClick(element: string, data: string | number, autocomplete: string): ValidationResult
+      getElementAutocompleteTypeAndClick(element: string, data: string | number | boolean, autocomplete: string): ValidationResult
 
       /**
      * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .

@@ -7,20 +7,29 @@ import { format } from 'date-fns';
 const ambiente = Cypress.env('AMBIENTE');
 const dadosAmbiente = Cypress.env(ambiente);
 
+const dataAtual = new Date();
+const dataAtualMenos2Minutos = new Date(dataAtual);
+dataAtualMenos2Minutos.setMinutes(dataAtual.getMinutes() - 2);
+const dataRecebimento = dataAtualMenos2Minutos.toISOString().slice(0, 16);
+
+
+
+
 
 export type ValidationResult = Cypress.Chainable<{ error?: string; success?: string; }>
 
 
-interface ImportacaoReceita<S = string> {
+export interface ImportacaoReceita<S = string> {
     numeroReceita: S | number;
     arquivo: S;
     prescritor: S | number;
+    sugestaoRelacaoPrescritor: boolean;
     parametroBuscaPaciente: ParametroBuscaPaciente;
     paciente: S | number;
     canalRecebimentoReceita: CanalRecebimentoReceita;
-    atendenteResponsavel: S;
+    atendenteResponsavel?: boolean | S;
+    cluster?: boolean | ClusterImportarReceitas | S;
     dataRecebimento: S;
-    cluster: any;
     tipoReceita: TipoReceita;
     textoObservacaoReceita: S;
     urgenteReceitas: boolean;
@@ -28,7 +37,7 @@ interface ImportacaoReceita<S = string> {
     medicamentoControlado: boolean;
 }
 
-interface BuscaReceita<S = string> {
+export interface BuscaReceita<S = string> {
     numeroReceita: S | number;
     cluster: any;
     clonarObservacaoFarmaceutica: boolean;
@@ -108,9 +117,6 @@ interface DadosParametros<S = string> {
 
     caminhoArquivo: S;
 
-    dataAtual: Date;
-    dataFormatada: S;
-
     Pedido: {
         tempoTratamento: number;
         tempoRepeticao: number;
@@ -131,6 +137,7 @@ interface DadosParametros<S = string> {
     canalRecebimentoReceita: typeof CanalRecebimentoReceita;
     parametroBuscaPaciente: typeof ParametroBuscaPaciente;
     tipoReceita: typeof TipoReceita;
+
     clusterImportarReceitas: typeof ClusterImportarReceitas;
     clusterRelacoesPrescritorAtendenteCluster: typeof ClusterRelacoesPrescritorAtendenteCluster;
     pendencia: typeof Pendencia;
@@ -306,7 +313,7 @@ enum TipoReceita {
     Repeticao = '3',
 };
 
-enum MarcacoesReceita {
+export enum ReceitaPriority {
     MedicamentoControlado = '#medicamentoControlado',
     Urgente = '#modalUrgente',
     ClienteAlerta = '#clienteAlerta',
@@ -436,30 +443,28 @@ export const dadosParametros: DadosParametros = {
 
     caminhoArquivo: '/',
 
-    dataAtual: new Date(),
-    dataFormatada: new Date().toISOString().slice(0, 16),
-
     Receita: {
         importacao: {
             numeroReceita: 0,
             arquivo: '../fixtures/img/ReceitaJpeg.jpeg',
             prescritor: faker.helpers.arrayElement(['999990-SC']),
+            sugestaoRelacaoPrescritor: false,
             parametroBuscaPaciente: ParametroBuscaPaciente.Cdcli,
             paciente: faker.helpers.arrayElement(['618484']),
             canalRecebimentoReceita: CanalRecebimentoReceita.Whatsapp,
-            atendenteResponsavel: faker.helpers.arrayElement(['Atendente Tamires Silva Luiz']),
-            dataRecebimento: new Date().toISOString().slice(0, 16),
-            cluster: ClusterImportarReceitas.Cluster4,
+            atendenteResponsavel: false ? faker.helpers.arrayElement(['Atendente Tamires Silva Luiz']) : '',
+            cluster: false ? ClusterImportarReceitas.Cluster2 : '',
+            dataRecebimento: dataRecebimento,
             tipoReceita: TipoReceita.Repeticao,
             textoObservacaoReceita: faker.lorem.paragraph(),
-            urgenteReceitas: true,
-            clienteAlerta: true,
-            medicamentoControlado: true,
+            urgenteReceitas: false,
+            clienteAlerta: false,
+            medicamentoControlado: false,
         },
         busca: {
             numeroReceita: 0,
             clonarObservacaoFarmaceutica: true,
-            cluster:ClusterImportarReceitas,
+            cluster: ClusterImportarReceitas,
             senhaObservacaoFarmaceutica: [faker.helpers.arrayElement(['789123'])].toString(),
             textoObservacaoFarmaceutica: [faker.helpers.arrayElement(['Teste'])].toString(),
             textoDuvidaTecnica: [faker.helpers.arrayElement(['Teste'])].toString(),
@@ -470,7 +475,7 @@ export const dadosParametros: DadosParametros = {
             dataInicial: faker.date.between({ from: '2023-01-01T00:00:00.000Z', to: '2023-12-01T00:00:00.000Z' }).toISOString().slice(0, 16),
             dataFinal: faker.date.between({ from: '2023-12-02T00:00:00.000Z', to: '2023-12-20T00:00:00.000Z' }).toISOString().slice(0, 16),
             textoObservacaoInterna: faker.lorem.paragraph(),
-            dataRecebimento: new Date().toISOString().slice(0, 16),
+            dataRecebimento: dataRecebimento,
             atendenteResponsavel: faker.helpers.arrayElement(['tamires silva luiz']),
 
         },

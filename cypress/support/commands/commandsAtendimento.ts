@@ -147,7 +147,7 @@ export const {
     cy.getElementAndType(tempoTratamentoPadrao, tempoTratamento.toString());
     cy.getElementAndClick(cabecalhoModalTempoTratamento)
     cy.getElementAndClick(salvarTempoTratamento);
-    cy.getVisible(modalConfirmacaoPedido)
+    cy.get(modalConfirmacaoPedido)
   })
   
   

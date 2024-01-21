@@ -6,6 +6,12 @@ interface Elements<S = string> {
     Compartilhado: {
         sugestaoAutocomplete: S;
         sugestoesAutocomplete: S;
+        containerMensagem: S;
+        okModalMensagem: S;
+        btnSucessoModal: S;
+        btnFalhaModal: S;
+        mensagemModal: S;
+        btnmensagemModal: S;
     };
 
     Login: {
@@ -45,9 +51,9 @@ interface Elements<S = string> {
         varejoReceitas: S;
         opcaoTipoReceitas: S;
         salvarReceitas: S;
-        fecharRegistrarReceitas:S;
+        fecharRegistrarReceitas: S;
         editarReceita: S;
-        okModalMensagem: S;
+
         ModalBuscaReceitas: S;
         filtroDataInicialBuscaReceitas: S;
         filtroDataFinalBuscaReceitas: S;
@@ -69,9 +75,7 @@ interface Elements<S = string> {
         numeroReceita: S;
         dataRecebimentoGrid: S;
         checkboxMarcarUso: S;
-        btnSucessoModal: S;
-        mensagemModal: S;
-        btnmensagemModal: S;
+
         containerInserirUsuario: S;
         select: S;
         usuarioSelecionado: S;
@@ -216,6 +220,7 @@ interface Elements<S = string> {
         selecionarPrescritor: S;
         adicionarRelacaoAtendenteClusterPrescritor: S;
         containerMensagemRelacao: S;
+
         atendenteRelacaoCriada: S;
         PrescritorRelacaoCriada: S;
         removerRelacaoSelecionada: S;
@@ -233,6 +238,13 @@ export const elements: Elements = {
         // autocompletes
         sugestaoAutocomplete: '.autocomplete-suggestion',
         sugestoesAutocomplete: '.autocomplete-suggestions',
+        //modal
+        containerMensagem: '.bootbox-body',
+        okModalMensagem: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
+        mensagemModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div',
+        btnSucessoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
+        btnFalhaModal: 'div.modal-dialog > div > div.modal-footer > button.btn.btn-secondary.pull-left',
+        btnmensagemModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
     },
 
     Login: {
@@ -282,9 +294,9 @@ export const elements: Elements = {
         // mensagem informando que já existe receita com mesmo paciente e prescritor
         // salvar receita
         salvarReceitas: '#save_receita',
-        fecharRegistrarReceitas:'#modal-receitas > div.modal-dialog > div > div.modal-footer > button.btn.btn-white',
+        fecharRegistrarReceitas: '#modal-receitas > div.modal-dialog > div > div.modal-footer > button.btn.btn-white',
         editarReceita: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .edit-receita',
-        
+
         // buscar receitas importadas
         ModalBuscaReceitas: '#centerHeadFilter',
         filtroDataInicialBuscaReceitas: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
@@ -308,11 +320,6 @@ export const elements: Elements = {
         dataRecebimentoGrid: '#mainTableReceitas > thead > tr > th.sorting.sorting_asc',
         //marcar uso
         checkboxMarcarUso: '#mainTableReceitas > tbody > tr > td.usedTrativa',
-        //okModalMensagem   
-        okModalMensagem: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
-        mensagemModal: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div',
-        btnSucessoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
-        btnmensagemModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
         containerInserirUsuario: '#select2-farma-to-auth-container',
         select: '.select2-dropdown > .select2-search > .select2-search__field',
         usuarioSelecionado: '.select2-results__option--highlighted',

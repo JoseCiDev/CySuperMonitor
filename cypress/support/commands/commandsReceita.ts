@@ -30,8 +30,16 @@
 
 
 import { elements as el } from '../../elements'
-import { CheckAndThrowError, dadosParametros } from '../../DadosParametros'
+import { ImportacaoReceita, CheckAndThrowError, ReceitaPriority, dadosParametros } from '../../DadosParametros'
 
+export const {
+    btnSucessoModal,
+    mensagemModal,
+    okModalMensagem,
+    btnmensagemModal,
+    btnFalhaModal,
+
+} = el.Compartilhado;
 
 export const {
     ModalBuscaReceitas,
@@ -46,8 +54,6 @@ export const {
     usuarioSelecionado,
     senhaReceita,
     aplicaDesmarcarUso,
-    // btnSucessoModal,
-    mensagemModal,
     abaPdfVisualizarReceitas,
     abaOriginalVisualizarReceitas,
     abaObservacoesInternasVisualizarReceitas,
@@ -106,10 +112,9 @@ export const {
     modalSugestaoRelacaoPrescritor,
     varejoReceitas,
     dataRecebimentoGrid,
-    okModalMensagem,
-    btnmensagemModal,
     fecharRegistrarReceitas,
     clusterReceitas,
+
 
 } = el.Receitas;
 
@@ -167,11 +172,6 @@ export const {
 
 } = el.Atendimentos;
 
-
-
-Cypress.Commands.add('setDadoCapturado', (orcamentistaPedido: string): void => {
-    dadosParametros.Pedido.orcamentista = orcamentistaPedido;
-});
 
 
 Cypress.Commands.add('capturarNumeroReceita', (elementNumeroReceita: string) => {
@@ -616,7 +616,7 @@ Cypress.Commands.add('buscarPedido', (pedido: number, filial: number) => {
         .type(pedido.toString())
         .should('have.value', pedido);
 
-    cy.getVisible(buscarFilial, { timeout: 5000 })
+    cy.get(buscarFilial, { timeout: 5000 })
         .clear()
         .type(filial.toString())
         .should('have.value', filial);
@@ -678,8 +678,7 @@ Cypress.Commands.add('visualizarPedido', (botaoVisualizar): void => {
 
     });
 });
-//por que esta selecionando urgente mesmo sendo false?
-//verificar estrutura de parametros
+
 Cypress.Commands.add('importarReceita', (
     arquivo?: Object,
     prescritor?: string | number,
@@ -694,6 +693,16 @@ Cypress.Commands.add('importarReceita', (
     clienteAlerta?: string,
     medicamentoControlado?: string) => {
 
+    if (dadosParametros.Receita.importacao.sugestaoRelacaoPrescritor) {
+        dadosParametros.Receita.importacao.atendenteResponsavel === false;
+        dadosParametros.Receita.importacao.cluster === false;
+
+        cy.log('Condições ajustadas automaticamente: sugestaoRelacaoPrescritor é true, atendenteResponsavel e cluster foram ajustados para false.');
+    } else {
+        dadosParametros.Receita.importacao.atendenteResponsavel;
+        dadosParametros.Receita.importacao.cluster;
+    }
+
     cy.getElementAndClick(abrirModalRegistrarReceitas);
 
     cy.inserirArquivo(dadosParametros.Receita.importacao.arquivo, importarImagemReceitas);
@@ -702,7 +711,12 @@ Cypress.Commands.add('importarReceita', (
         prescritorReceitas,
         dadosParametros.Receita.importacao.prescritor,
         el.Compartilhado.sugestaoAutocomplete);
-    cy.waitModalAndClick(modalSugestaoRelacaoPrescritor, modalSugestaoRelacaoPrescritor);
+
+    if (dadosParametros.Receita.importacao.sugestaoRelacaoPrescritor) {
+        cy.waitModalAndClick(btnSucessoModal, btnSucessoModal);
+    } else {
+        cy.waitModalAndClick(btnFalhaModal, btnFalhaModal);
+    }
 
     cy.getElementAndCheck(dadosParametros.Receita.importacao.parametroBuscaPaciente);
     cy.getElementAutocompleteTypeAndClick(
@@ -716,20 +730,39 @@ Cypress.Commands.add('importarReceita', (
         const $aliasAtendenteResponsavel = cy.get(atendenteResponsavelReceitas);
         $aliasAtendenteResponsavel.invoke('val').then((atendenteResponsavel) => {
             const atendenteResponsavelString = String(atendenteResponsavel).trim();
-            if (atendenteResponsavelString !== '') {
+            if (dadosParametros.Receita.importacao.atendenteResponsavel === false) {
                 cy.log('O teste será prosseguido, pois um atendente responsável já foi designado.');
-            } else {
+            }
+            if (dadosParametros.Receita.importacao.atendenteResponsavel) {
                 cy.getElementAutocompleteTypeAndClick(
                     atendenteResponsavelReceitas,
                     dadosParametros.Receita.importacao.atendenteResponsavel,
-                    el.Receitas.autocompleteAtendenteResponsavel);
+                    el.Receitas.autocompleteAtendenteResponsavel
+                );
+            } else {
+                cy.log('Atendente responsável não será digitado, pois a condição é falsa.');
             }
-        })
+        });
     });
 
     cy.getElementAndType(dataRecebimentoReceitas, dadosParametros.Receita.importacao.dataRecebimento)
 
-    cy.getSelectOptionByValue(clusterReceitas, dadosParametros.Receita.importacao.cluster)
+    cy.wrap(null).then(() => {
+        const $aliasCluster = cy.get(clusterReceitas);
+        $aliasCluster.invoke('val').then((cluster) => {
+            const clusterString = String(cluster).trim();
+
+            if (clusterString !== '' && dadosParametros.Receita.importacao.cluster === false) {
+                cy.log('O teste será prosseguido, pois um cluster já foi designado.');
+            }
+
+            if (dadosParametros.Receita.importacao.cluster) {
+                cy.getSelectOptionByValue(clusterReceitas, dadosParametros.Receita.importacao.cluster);
+            } else {
+                cy.log('Cluster não será selecionado, pois a condição é falsa.');
+            }
+        });
+    });
 
     cy.getElementAndCheck(`input[name="receita_tipo"][value="${dadosParametros.Receita.importacao.tipoReceita}"]`)
 
@@ -738,7 +771,7 @@ Cypress.Commands.add('importarReceita', (
         if ($aliasModal.is(':visible')) {
             cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.');
         } else {
-            cy.get('.bootbox-body', { timeout: 60000 })
+            cy.get(el.Compartilhado.containerMensagem, { timeout: 60000 })
                 .as('mensagemModal')
                 .then(($modals) => {
                     $modals.each((index, $modal) => {
@@ -747,10 +780,10 @@ Cypress.Commands.add('importarReceita', (
                                 const mensagemModal = $modal.text();
                                 if (mensagemModal.includes('Ocorreu um erro ao processar a solicitação. Por favor, tente novamente mais tarde.')) {
                                     throw new Error('Lamentamos informar que ocorreu uma falha de comunicação com o servidor em nuvem responsável pelo armazenamento das receitas. Por favor, verifique a aplicação para obter mais informações.');
-                                } else {
+                                }
+                                else {
                                     cy.wait(500);
-                                    cy.get(btnmensagemModal, { timeout: 60000 })
-                                        .click({ force: true, multiple: true, timeout: 5000 });
+                                    cy.get(btnmensagemModal).click({ force: true, multiple: true, timeout: 5000 });
                                 }
                             });
                     });
@@ -760,23 +793,19 @@ Cypress.Commands.add('importarReceita', (
 
     cy.getElementAndType(textoObservacaoInternaReceitas, dadosParametros.Receita.importacao.textoObservacaoReceita)
 
-    interface ElementMap {
-        [key: string]: boolean;
-    }
-    const checkElements = (params: ElementMap) => {
-        for (const [prop, shouldCheck] of Object.entries(params)) {
-            if (shouldCheck) {
-                cy.getElementAndCheck(el.Receitas[prop]);
+    const checkPriorityReceita = (importacao: ImportacaoReceita): void => {
+        const prioritys: ReceitaPriority[] = [];
+        for (const [prop, value] of Object.entries(importacao)) {
+            if (value && ReceitaPriority[prop]) {
+                prioritys.push(ReceitaPriority[prop]);
             }
         }
+        for (const priority of prioritys) {
+            cy.getElementAndCheck(priority);
+        }
     };
-    checkElements({
-        urgenteReceitas: dadosParametros.Receita.importacao.urgenteReceitas,
-        clienteAlertaReceitas: dadosParametros.Receita.importacao.clienteAlerta,
-        medicamentoControladoReceitas: dadosParametros.Receita.importacao.medicamentoControlado,
-    });
+    checkPriorityReceita(dadosParametros.Receita.importacao);
 
-    cy.pause();
     const message: CheckAndThrowError[] = [
         {
             condition: Cypress.$(importarImagemReceitas).val() !== null && Cypress.$(importarImagemReceitas).val() !== '',
@@ -834,16 +863,16 @@ Cypress.Commands.add('importarReceita', (
                         const mensagemModal = $modal.text();
                         checkAndThrowError(message, mensagemModal);
                     }),
-
                     cy.getElementAndClick(okModalMensagem);
-
                 if (Cypress.$(fecharRegistrarReceitas).is(':visible')) {
                     cy.getElementAndClick(fecharRegistrarReceitas);
                 }
+                else {
+                    cy.wait(500);
+                    cy.getElementAndClick(dataRecebimentoGrid, dataRecebimentoGrid);
+                    cy.capturarNumeroReceita(numeroReceita);
+                }
 
-                cy.getElementAndClick(dataRecebimentoGrid, dataRecebimentoGrid);
-
-                cy.capturarNumeroReceita(numeroReceita);
             } else {
                 cy.get('@barraProgressoSalvarReceita', { timeout: 60000 })
                 throw new Error('Solicitamos a gentileza de verificar o status da importação de receitas, uma vez que o processo ainda não foi concluído após 60 segundos. Agradecemos sua atenção.')

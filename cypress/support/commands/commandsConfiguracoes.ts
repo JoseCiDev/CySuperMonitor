@@ -37,9 +37,92 @@ const dadosAmbiente = Cypress.env(ambiente);
 
 
 export const {
-
     btnSucessoModal,
-    okModalMensagem
+    mensagemModal,
+    okModalMensagem,
+    btnmensagemModal,
+    btnFalhaModal,
+
+} = el.Compartilhado;
+
+export const {
+    ModalBuscaReceitas,
+    filtroDataInicialBuscaReceitas,
+    filtroDataFinalBuscaReceitas,
+    filtroPendenciasBusca,
+    botaoProcurarReceitas,
+    labelProcurarReceitas,
+    numeroReceita,
+    containerInserirUsuario,
+    select,
+    usuarioSelecionado,
+    senhaReceita,
+    aplicaDesmarcarUso,
+    abaPdfVisualizarReceitas,
+    abaOriginalVisualizarReceitas,
+    abaObservacoesInternasVisualizarReceitas,
+    abaInformacoesFcertaVisualizarReceitas,
+    reguaVisualizarReceitas,
+    fecharVisualizarReceitas,
+    clonarReceitas,
+    modalObservacoesClonar,
+    clonarObservacoesFarmaceuticas,
+    menuReceitas,
+    excluirReceitas,
+    abaAdicionarObservacoesFarmaceuticas,
+    senhaObservacoesFarmaceuticas,
+    textoObservacoesFarmaceuticas,
+    fecharModalObservacoesFarmaceuticas,
+    abaExcluirObservacoesFarmaceuticas,
+    excluirObservacoesFarmaceuticas,
+    containerCategoriaDuvidaTecnicas,
+    textoDuvidasTecnicas,
+    containerColaboradores,
+    responsavelRespostas,
+    enviarDuvidasTecnicas,
+    fecharModalDuvidasTecnicas,
+    acessarDuvidasTecnicas,
+    containerResponsavelRespostaDuvidasTecnicas,
+    ResponsavelRespostaDuvidasTecnicas,
+    responsavelAtualRespostaDuvidasTecnicas,
+    marcarDuvidasTecnicaResolvidas,
+    excluirDuvidasTecnicas,
+    statusRespostaDuvidasTecnicas,
+    textoRespostaDuvidasTecnicas,
+    enviarRespostaDuvidasTecnicas,
+    canalRecebimentoBusca,
+    clusterBusca,
+    receitaBusca,
+    pacienteBusca,
+    prescritorBusca,
+    orcamentoBusca,
+    ultimoModificadorBusca,
+    orcamentistaBusca,
+    atendenteResponsavelBusca,
+    prescritorReceitas,
+    pacienteReceitas,
+    canalRecebimentoImportacao,
+    atendenteResponsavelReceitas,
+    menuImportarReceitas,
+    importarImagemReceitas,
+    abrirModalRegistrarReceitas,
+    textoObservacaoInternaReceitas,
+    urgenteReceitas,
+    clienteAlertaReceitas,
+    medicamentocontroladoReceitas,
+    dataRecebimentoReceitas,
+    barraProgressoSalvarReceita,
+    salvarReceitas,
+    modalSugestaoRelacaoPrescritor,
+    varejoReceitas,
+    dataRecebimentoGrid,
+    fecharRegistrarReceitas,
+    clusterReceitas,
+    menuReceitasReduzido,
+    checkboxMarcarUso,
+    acoes,
+    visualizarReceitas,
+
 
 } = el.Receitas;
 
@@ -116,8 +199,8 @@ Cypress.Commands.add('configuraRelacaoAtendenteClusterPrescritor', (nomeArquivo:
                     cy.get(selecionarPrescritor)
                         .type(nomePrescritor)
                         .wait(2000)
-                        .type('{downarrow}{enter}',{timeout:5000});
-                        cy.log(nomePrescritor)
+                        .type('{downarrow}{enter}', { timeout: 5000 });
+                    cy.log(nomePrescritor)
 
                     cy.get(adicionarRelacaoAtendenteClusterPrescritor, { timeout: 5000 })
                         .click({ timeout: 5000 });
