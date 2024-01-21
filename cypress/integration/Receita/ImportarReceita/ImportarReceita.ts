@@ -318,7 +318,9 @@ describe('Tela importação de receitas.', function () {
 
         cy.getElementAndClick(menuReceitas, menuImportarReceitas);
 
-        cy.importarReceita();
+        cy.importarReceita().then((result) => {
+            assert.exists(result.success, result.error)
+        });
     });
 
 

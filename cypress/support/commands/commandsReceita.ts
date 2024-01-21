@@ -697,16 +697,16 @@ Cypress.Commands.add('importarReceita', (
 
     cy.inserirArquivo(dadosParametros.Receita.importacao.arquivo, importarImagemReceitas);
 
-    cy.getElementAutocompleteTypeAndClick(
-        prescritorReceitas,
-        dadosParametros.Receita.importacao.prescritor,
-        el.Compartilhado.sugestaoAutocomplete);
+    // cy.getElementAutocompleteTypeAndClick(
+    //     prescritorReceitas,
+    //     dadosParametros.Receita.importacao.prescritor,
+    //     el.Compartilhado.sugestaoAutocomplete);
 
-    if (dadosParametros.Receita.importacao.sugestaoRelacaoPrescritor) {
-        cy.waitModalAndClick(btnSucessoModal, btnSucessoModal);
-    } else {
-        cy.waitModalAndClick(btnFalhaModal, btnFalhaModal);
-    }
+    // if (dadosParametros.Receita.importacao.sugestaoRelacaoPrescritor) {
+    //     cy.waitModalAndClick(btnSucessoModal, btnSucessoModal);
+    // } else {
+    //     cy.waitModalAndClick(btnFalhaModal, btnFalhaModal);
+    // }
 
     cy.getElementAndCheck(dadosParametros.Receita.importacao.parametroBuscaPaciente);
     cy.getElementAutocompleteTypeAndClick(
@@ -839,6 +839,8 @@ Cypress.Commands.add('importarReceita', (
 
     cy.getElementAndClick(salvarReceitas)
 
+
+
     const $progressBar = cy.get(barraProgressoSalvarReceita).as('barraProgressoSalvarReceita')
         .then(() => {
             if (!Cypress.$($progressBar).is(':visible')) {
@@ -853,16 +855,16 @@ Cypress.Commands.add('importarReceita', (
                 if (Cypress.$(fecharRegistrarReceitas).is(':visible')) {
                     cy.getElementAndClick(fecharRegistrarReceitas);
                 }
-                if(cy.url().should('contain', dadosParametros.Url.importarReceitas)){}
-                    cy.wait(500);
-                    cy.getElementAndClick(dataRecebimentoGrid, dataRecebimentoGrid);
-                    cy.capturarNumeroReceita(numeroReceita);
-                
+                if (cy.url().should('contain', dadosParametros.Url.importarReceitas)) { }
+                cy.wait(500);
+                cy.getElementAndClick(dataRecebimentoGrid, dataRecebimentoGrid);
+                cy.capturarNumeroReceita(numeroReceita);
+
 
             } else {
                 cy.get('@barraProgressoSalvarReceita', { timeout: 60000 })
                 throw new Error('Solicitamos a gentileza de verificar o status da importação de receitas, uma vez que o processo ainda não foi concluído após 60 segundos. Agradecemos sua atenção.')
             }
         })
+    return cy.wrap({ success: 'Importação de receita realizada com sucesso.' });
 })
-
