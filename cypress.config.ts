@@ -1,7 +1,7 @@
 import { defineConfig } from "cypress";
 
 export default defineConfig({
-  projectId: "tx3tt6",
+  projectId: "iwkf6s",
   includeShadowDom: true,
   defaultCommandTimeout: 10000,
   viewportHeight: 1280,

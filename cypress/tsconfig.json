@@ -14,5 +14,5 @@
     "**/*.ts",
     "../cypress.d.ts",
     "support/e2e.ts"
-, "integration/Receita/ImportarReceita/ImportarReceita.ts"  ]
+, "integration/Receita/ImportarReceita/ImportarReceita.ts", "integration/Configuracoes/Clusters/RelacoesClusterMedicoAtendente.ts.old"  ]
 }

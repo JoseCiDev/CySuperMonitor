@@ -693,16 +693,6 @@ Cypress.Commands.add('importarReceita', (
     clienteAlerta?: string,
     medicamentoControlado?: string) => {
 
-    if (dadosParametros.Receita.importacao.sugestaoRelacaoPrescritor) {
-        dadosParametros.Receita.importacao.atendenteResponsavel === false;
-        dadosParametros.Receita.importacao.cluster === false;
-
-        cy.log('Condições ajustadas automaticamente: sugestaoRelacaoPrescritor é true, atendenteResponsavel e cluster foram ajustados para false.');
-    } else {
-        dadosParametros.Receita.importacao.atendenteResponsavel;
-        dadosParametros.Receita.importacao.cluster;
-    }
-
     cy.getElementAndClick(abrirModalRegistrarReceitas);
 
     cy.inserirArquivo(dadosParametros.Receita.importacao.arquivo, importarImagemReceitas);
@@ -739,8 +729,6 @@ Cypress.Commands.add('importarReceita', (
                     dadosParametros.Receita.importacao.atendenteResponsavel,
                     el.Receitas.autocompleteAtendenteResponsavel
                 );
-            } else {
-                cy.log('Atendente responsável não será digitado, pois a condição é falsa.');
             }
         });
     });
@@ -758,8 +746,6 @@ Cypress.Commands.add('importarReceita', (
 
             if (dadosParametros.Receita.importacao.cluster) {
                 cy.getSelectOptionByValue(clusterReceitas, dadosParametros.Receita.importacao.cluster);
-            } else {
-                cy.log('Cluster não será selecionado, pois a condição é falsa.');
             }
         });
     });
