@@ -206,25 +206,25 @@ Cypress.Commands.add('inserirDataUmDiaMenosDiaAtual', (campoData: string) => {
 })
 
 
-
-
-
-
 Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
-  elements.forEach(element => {
-    cy.get(element, { timeout: 20000 })
-      .as('element')
-      .then($elements => {
+  cy.wrap(null).then(() => {
+    elements.forEach(element => {
+      cy.get(element, { timeout: 20000 })
+        .each(($input) => {
+          cy.wrap($input)
+            .then($elements => {
 
-        if ($elements.length > 0) {
-          cy.wrap($elements.first())
-            .click({ timeout: 20000, force: true });
-        } else {
-          cy.wrap($elements.eq(0))
-            .click({ timeout: 20000, force: true });
-        }
+              if ($elements.length > 0) {
+                cy.wrap($elements.first())
+                  .click({ timeout: 20000, force: true });
+              } else {
+                cy.wrap($elements.eq(0))
+                  .click({ timeout: 20000, force: true });
+              }
 
-      });
+            });
+        })
+    })
   })
 });
 
@@ -251,26 +251,25 @@ Cypress.Commands.add('getElementAndCheck', (element: string): void => {
 
 
 
-Cypress.Commands.add('getElementAndType', (elemento: string, texto?: string): void => {
-  if (typeof texto !== 'string') {
-    throw new Error('O texto a ser escrito deve ser uma string.');
-  }
-  cy.get(elemento, { timeout: 20000 })
-    .then($elements => {
-
-      if ($elements.length > 1) {
-        cy.wrap($elements.first())
-          .clear()
-          .type(texto, { timeout: 1000 })
-      } else {
-        cy.wrap($elements.eq(0))
-          .clear()
-          .type(texto, { timeout: 1000 })
-      }
-
-    });
+Cypress.Commands.add('getElementAndType', (element: string, text?: string): void => {
+  cy.wrap(null).then(() => {
+    cy.get(element, { timeout: 20000 })
+      .each(($input) => {
+        cy.wrap($input)
+          .then(() => {
+            if ($input.length > 1) {
+              cy.wrap($input.first())
+                .clear()
+                .type(text, { timeout: 1000 })
+            } else {
+              cy.wrap($input.eq(0))
+                .clear()
+                .type(text, { timeout: 1000 })
+            }
+          })
+      })
+  });
 });
-
 
 
 Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void => {
@@ -282,10 +281,22 @@ Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void =>
 
 
 
-Cypress.Commands.add('getSelectOptionByValue', (elemento: string, value: any): void => {
-  cy.get(elemento, { timeout: 20000 })
-    .select(value, { force: true })
+Cypress.Commands.add('getSelectOptionByValue', (element: string, value: any): void => {
+  cy.wrap(null).then(() => {
+    cy.get(element, { timeout: 20000 })
+      .each(($select) => {
+        cy.wrap($select)
+          .then(() => {
+            if ($select.length > 0 && $select.is(':visible')) {
+              cy.get(element, { timeout: 20000 })
+                .select(value, { force: true })
+            }
+
+          })
+      })
+  });
 });
+
 
 
 

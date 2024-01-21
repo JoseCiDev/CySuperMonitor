@@ -22,7 +22,6 @@ export const {
     prescritorReceitas,
     parametroBuscaPaciente,
     pacienteReceitas,
-    canalRecebimentoReceitas,
     opcaoTipoReceitas,
     textoObservacaoInternaReceitas,
     urgenteReceitas,
@@ -36,17 +35,16 @@ export const {
     acessarObservacoesFarmaceuticas,
     acessarDuvidasTecnicas,
     atualizarModalDuvidasTecnicas,
-    mensagemConfirmacaoModal,
     salvarReceitas,
     editarReceita,
-    mensagemSucessoModal,
     atendenteResponsavelReceitas,
     juntocomReceitas,
     clusterReceitas,
     menuGerenciarReceitas,
     modalSugestaoRelacaoPrescritor,
     barraProgressoSalvarReceita,
-    autocompleteAtendenteResponsavel
+    autocompleteAtendenteResponsavel,
+    btnmensagemModal,
 
 } = el.Receitas;
 
@@ -304,7 +302,7 @@ describe('Tela importação de receitas.', function () {
 
         cy.excluirReceita(excluirReceitas);
 
-        cy.getElementAndClick(mensagemSucessoModal);
+        cy.getElementAndClick(btnmensagemModal);
     });
 
 

@@ -157,7 +157,7 @@ declare global {
        * comando customizado de login.
        * @example cy.getElementAndClick(el.elemento)
        */
-      getElementAndType(element: string, text: string): Chainable<Element>
+      getElementAndType(element: string, text?: string): Chainable<Element>
 
       /**
        * comando customizado para selecionar a opcao radio.
@@ -395,6 +395,6 @@ declare global {
 
 
 
+    }
   }
-}
 }

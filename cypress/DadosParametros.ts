@@ -452,9 +452,9 @@ export const dadosParametros: DadosParametros = {
             cluster: ClusterImportarReceitas.Cluster4,
             tipoReceita: TipoReceita.Repeticao,
             textoObservacaoReceita: faker.lorem.paragraph(),
-            urgenteReceitas: false,
-            clienteAlerta: false,
-            medicamentoControlado: false,
+            urgenteReceitas: true,
+            clienteAlerta: true,
+            medicamentoControlado: true,
         },
         busca: {
             numeroReceita: 0,
