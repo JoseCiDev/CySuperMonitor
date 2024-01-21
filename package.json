@@ -5,7 +5,7 @@
     "main": "index.ts",
     "scripts": {
         "open": "npx cypress open",
-        "run": "npx cypress run --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed"
+        "test": "npx cypress run --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed"
     },
     "author": "Cypress",
     "license": "ISC",
