@@ -697,16 +697,16 @@ Cypress.Commands.add('importarReceita', (
 
     cy.inserirArquivo(dadosParametros.Receita.importacao.arquivo, importarImagemReceitas);
 
-    // cy.getElementAutocompleteTypeAndClick(
-    //     prescritorReceitas,
-    //     dadosParametros.Receita.importacao.prescritor,
-    //     el.Compartilhado.sugestaoAutocomplete);
+    cy.getElementAutocompleteTypeAndClick(
+        prescritorReceitas,
+        dadosParametros.Receita.importacao.prescritor,
+        el.Compartilhado.sugestaoAutocomplete);
 
-    // if (dadosParametros.Receita.importacao.sugestaoRelacaoPrescritor) {
-    //     cy.waitModalAndClick(btnSucessoModal, btnSucessoModal);
-    // } else {
-    //     cy.waitModalAndClick(btnFalhaModal, btnFalhaModal);
-    // }
+    if (dadosParametros.Receita.importacao.sugestaoRelacaoPrescritor) {
+        cy.waitModalAndClick(btnSucessoModal, btnSucessoModal);
+    } else {
+        cy.waitModalAndClick(btnFalhaModal, btnFalhaModal);
+    }
 
     cy.getElementAndCheck(dadosParametros.Receita.importacao.parametroBuscaPaciente);
     cy.getElementAutocompleteTypeAndClick(
@@ -832,14 +832,12 @@ Cypress.Commands.add('importarReceita', (
             if (condition && errorMessage === defaultMessage || !condition && successMessage === defaultMessage) {
                 throw new Error(`${errorMessage}`);
             } else {
-                return cy.wrap({ success: 'A importação da receita foi concluída com êxito.' })
+                return cy.wrap({ success: 'Não foi identificado nenhum erro de condição ou requisito.' })
             }
         }
     }
 
     cy.getElementAndClick(salvarReceitas)
-
-
 
     const $progressBar = cy.get(barraProgressoSalvarReceita).as('barraProgressoSalvarReceita')
         .then(() => {
@@ -850,21 +848,21 @@ Cypress.Commands.add('importarReceita', (
                     .then(($modal) => {
                         const mensagemModal = $modal.text();
                         checkAndThrowError(message, mensagemModal);
-                    }),
-                    cy.getElementAndClick(okModalMensagem);
-                if (Cypress.$(fecharRegistrarReceitas).is(':visible')) {
-                    cy.getElementAndClick(fecharRegistrarReceitas);
+                        cy.getElementAndClick(okModalMensagem);
+                    })
+                if (cy.get(abrirModalRegistrarReceitas).should('be.visible')) {
+                    cy.wrap(null).then(() => {
+                        cy.wait(3000);
+                        cy.getElementAndClick(dataRecebimentoGrid, dataRecebimentoGrid);
+                        cy.capturarNumeroReceita(numeroReceita);
+                        cy.wrap({ success: 'A importação da receita foi concluída com êxito e o número da receita foi registrado.' });
+                    })
                 }
-                if (cy.url().should('contain', dadosParametros.Url.importarReceitas)) { }
-                cy.wait(500);
-                cy.getElementAndClick(dataRecebimentoGrid, dataRecebimentoGrid);
-                cy.capturarNumeroReceita(numeroReceita);
-
-
             } else {
                 cy.get('@barraProgressoSalvarReceita', { timeout: 60000 })
                 throw new Error('Solicitamos a gentileza de verificar o status da importação de receitas, uma vez que o processo ainda não foi concluído após 60 segundos. Agradecemos sua atenção.')
             }
         })
-    return cy.wrap({ success: 'Importação de receita realizada com sucesso.' });
+    cy.wrap({ success: 'O processo de importação foi concluído com êxito.' });
 })
+
