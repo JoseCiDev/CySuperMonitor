@@ -313,7 +313,7 @@ Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: strin
     else {
       cy.get(element, { timeout: 60000 })
         .as('elementAlias')
-      cy.get('@elementAlias', { timeout: 60000 })
+      cy.get('@elementAlias', { timeout: 240000 })
         .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })
         .click({ force: true, multiple: true, timeout: 5000 })
     }
