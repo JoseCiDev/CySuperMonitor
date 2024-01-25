@@ -35,7 +35,7 @@ declare global {
        * comando customizado para inserir arquivos.
        * @example cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.importarImagem);
        */
-      inserirArquivo(fixturePath, elementoBotao): Chainable<unknown>;
+      inserirArquivo(filePath, element, mimeType?): Chainable<unknown>;
 
       /**
        * comando customizado para ler arquivos

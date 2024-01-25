@@ -188,10 +188,27 @@ export const {
 
 } = el.Atendimentos;
 
-Cypress.Commands.add('inserirArquivo', (filePath, element): void => {
+// Cypress.Commands.add('inserirArquivo', (filePath, element): void => {
+//   cy.fixture(filePath, 'base64').then((conteudo_arquivo) => {
+//     const nome = filePath.split('/').pop(); // Extract the file name from the fixture path
+//     const mimeType = 'image/jpeg';
+
+//     const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
+//     const file = new File([blob], nome, { type: mimeType });
+
+//     cy.get(element).then(($element) => {
+//       const event = new Event('change', { bubbles: true });
+//       Object.defineProperty($element[0], 'files', {
+//         value: [file],
+//         writable: false,
+//       });
+//       $element[0].dispatchEvent(event);
+//     });
+//   });
+// });
+Cypress.Commands.add('inserirArquivo', (filePath, element, mimeType?): void => {
   cy.fixture(filePath, 'base64').then((conteudo_arquivo) => {
     const nome = filePath.split('/').pop(); // Extract the file name from the fixture path
-    const mimeType = 'image/jpeg';
 
     const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
     const file = new File([blob], nome, { type: mimeType });

@@ -1,0 +1,13 @@
+{
+    "atendentes": [
+        {
+            "nome": "Alexssandra Dotto",
+            "cluster": "Cluster4",
+            "prescritores": [
+                {
+                    "nome": "YASMIM VILELA SILVA"
+                }
+            ]
+        }
+    ]
+}

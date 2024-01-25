@@ -49,5 +49,4 @@ npm-debug.log
 # Arquivo de configuração do Cypress
 cypress.env.json
 
-# Gravações de testes realizados
-cypress/fixtures/
+
