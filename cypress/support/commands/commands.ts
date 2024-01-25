@@ -188,7 +188,6 @@ export const {
 
 } = el.Atendimentos;
 
-
 Cypress.Commands.add('inserirArquivo', (filePath, element): void => {
   cy.fixture(filePath, 'base64').then((conteudo_arquivo) => {
     const nome = filePath.split('/').pop(); // Extract the file name from the fixture path
@@ -209,35 +208,17 @@ Cypress.Commands.add('inserirArquivo', (filePath, element): void => {
 });
 
 
-
-
 Cypress.Commands.add('lerArquivo', (nomeArquivo) => {
   const caminhoArquivo = `${dadosParametros.caminhoArquivo}${nomeArquivo}`;
   return cy.fixture(caminhoArquivo);
 });
 
-
-
 Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
-  cy.wrap(null).then(() => {
-    elements.forEach(element => {
-      cy.get(element, { timeout: 20000 })
-        .each(($input) => {
-          cy.wrap($input)
-            .then($elements => {
-
-              if ($elements.length > 0) {
-                cy.wrap($elements.first())
-                  .click({ timeout: 20000, force: true });
-              } else {
-                cy.wrap($elements.eq(0))
-                  .click({ timeout: 20000, force: true });
-              }
-
-            });
-        })
-    })
-  })
+  elements.forEach(element => {
+    cy.get(element, { timeout: 20000 }).each(($el) => {
+      cy.wrap($el).click({ timeout: 20000 });
+    });
+  });
 });
 
 Cypress.Commands.add('getElementAndCheck', (element: string): void => {
@@ -261,8 +242,6 @@ Cypress.Commands.add('getElementAndCheck', (element: string): void => {
   })
 });
 
-
-
 Cypress.Commands.add('getElementAndType', (element: string, text?: string): void => {
   cy.wrap(null).then(() => {
     cy.get(element, { timeout: 20000 })
@@ -283,15 +262,12 @@ Cypress.Commands.add('getElementAndType', (element: string, text?: string): void
   });
 });
 
-
 Cypress.Commands.add('getRadioOptionByValue', (elemento: string, value): void => {
   cy.get(elemento, { timeout: 20000 })
     .should('be.visible')
     .find(`input[type="radio"][value="${value}"]`)
     .check({ force: true })
 });
-
-
 
 Cypress.Commands.add('getSelectOptionByValue', (element: string, value: any): void => {
   cy.wrap(null).then(() => {
@@ -308,6 +284,41 @@ Cypress.Commands.add('getSelectOptionByValue', (element: string, value: any): vo
       })
   });
 });
+
+Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, data: string | number, autocomplete: string) => {
+  cy.wrap(null).then(() => {
+    cy.get(element, { timeout: 20000 })
+      .as('elementAlias')
+      .each(($input) => {
+        cy.wrap($input)
+          .type(data.toString())
+          .then(() => {
+            if (cy.contains(autocomplete, data).as('autocompleteAlias')) {
+              cy.get('@autocompleteAlias')
+                .click({ force: true })
+            }
+
+          })
+      })
+  });
+});
+
+Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
+  cy.wrap(null).then(() => {
+    const $aliasModal = Cypress.$(jqueryElement)
+    if (!$aliasModal.each) {
+      cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
+
+    }
+    else {
+      cy.get(element, { timeout: 60000 })
+        .as('elementAlias')
+      cy.get('@elementAlias', { timeout: 60000 })
+        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })
+        .click({ force: true, multiple: true, timeout: 5000 })
+    }
+  });
+})
 
 
 
@@ -346,39 +357,3 @@ Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string, usuarioMarcarUso: 
     });
   });
 });
-
-Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, data: string | number, autocomplete: string) => {
-  cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 20000 })
-      .as('elementAlias')
-      .each(($input) => {
-        cy.wrap($input)
-          .type(data.toString())
-          .then(() => {
-            if (cy.contains(autocomplete, data).as('autocompleteAlias')) {
-              cy.get('@autocompleteAlias')
-                .click({ force: true })
-            }
-
-          })
-      })
-  });
-});
-
-
-Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
-  cy.wrap(null).then(() => {
-    const $aliasModal = Cypress.$(jqueryElement)
-    if (!$aliasModal.each) {
-      cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
-
-    }
-    else {
-      cy.get(element, { timeout: 60000 })
-        .as('elementAlias')
-      cy.get('@elementAlias', { timeout: 60000 })
-        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })
-        .click({ force: true, multiple: true, timeout: 5000 })
-    }
-  });
-})

@@ -42,6 +42,15 @@ import './commandsReceita'
 
 
 export const {
+  btnSucessoModal,
+  mensagemModal,
+  okModalMensagem,
+  btnmensagemModal,
+  btnFalhaModal,
+
+} = el.Compartilhado;
+
+export const {
   ModalBuscaReceitas,
   filtroDataInicialBuscaReceitas,
   filtroDataFinalBuscaReceitas,
@@ -54,8 +63,6 @@ export const {
   usuarioSelecionado,
   senhaReceita,
   aplicaDesmarcarUso,
-  btnSucessoModal,
-  mensagemModal,
   abaPdfVisualizarReceitas,
   abaOriginalVisualizarReceitas,
   abaObservacoesInternasVisualizarReceitas,
@@ -88,6 +95,39 @@ export const {
   statusRespostaDuvidasTecnicas,
   textoRespostaDuvidasTecnicas,
   enviarRespostaDuvidasTecnicas,
+  canalRecebimentoBusca,
+  clusterBusca,
+  receitaBusca,
+  pacienteBusca,
+  prescritorBusca,
+  orcamentoBusca,
+  ultimoModificadorBusca,
+  orcamentistaBusca,
+  atendenteResponsavelBusca,
+  prescritorReceitas,
+  pacienteReceitas,
+  canalRecebimentoImportacao,
+  atendenteResponsavelReceitas,
+  menuImportarReceitas,
+  importarImagemReceitas,
+  abrirModalRegistrarReceitas,
+  textoObservacaoInternaReceitas,
+  urgenteReceitas,
+  clienteAlertaReceitas,
+  medicamentocontroladoReceitas,
+  dataRecebimentoReceitas,
+  barraProgressoSalvarReceita,
+  salvarReceitas,
+  modalSugestaoRelacaoPrescritor,
+  varejoReceitas,
+  dataRecebimentoGrid,
+  fecharRegistrarReceitas,
+  clusterReceitas,
+  menuReceitasReduzido,
+  checkboxMarcarUso,
+  acoes,
+  visualizarReceitas,
+
 
 } = el.Receitas;
 

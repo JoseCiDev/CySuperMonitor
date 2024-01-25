@@ -6,8 +6,7 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    services:
-      - docker
+  
     strategy:
       fail-fast: false
       matrix:
@@ -15,14 +14,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up Docker
-        run: docker info
-      - name: Build Docker image
-        run: docker build -t my-cypress-app .
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          image: my-cypress-app
           start: npm start
           wait-on: 'http://localhost:3000'
           record: true
