@@ -6,7 +6,8 @@
     "scripts": {
         "open": "npx cypress open",
         "test": "npx cypress run --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed",
-        "test:importarReceitaRecordCloud": "npx cypress run --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --spec 'cypress/integration/Receita/ImportarReceita/ImportarReceita.ts'"
+        "test:importarReceitaRecordCloud": "npx cypress run --headless --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --spec 'cypress/integration/Receita/ImportarReceita/ImportarReceita.ts'"
+        
     },
     "author": "Cypress",
     "license": "ISC",
