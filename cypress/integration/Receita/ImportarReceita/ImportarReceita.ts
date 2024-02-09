@@ -16,6 +16,7 @@ export const {
     okModalMensagem,
     btnmensagemModal,
     btnFalhaModal,
+    btnModalChangelog,
 
 } = el.Compartilhado;
 
@@ -315,7 +316,7 @@ describe('Tela importação de receitas.', function () {
 
     it.only('Deve realizar importação de Receitas', function () {
 
-        cy.waitModalAndClick('#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn', '#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn');
+        cy.waitModalAndClick(btnModalChangelog, btnModalChangelog);
 
         cy.getElementAndClick(menuReceitas, menuImportarReceitas);
 

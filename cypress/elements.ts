@@ -12,6 +12,7 @@ interface Elements<S = string> {
         btnFalhaModal: S;
         mensagemModal: S;
         btnmensagemModal: S;
+        btnModalChangelog: S;
     };
 
     Login: {
@@ -245,6 +246,7 @@ export const elements: Elements = {
         btnSucessoModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
         btnFalhaModal: 'div.modal-dialog > div > div.modal-footer > button.btn.btn-secondary.pull-left',
         btnmensagemModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
+        btnModalChangelog: '#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn',
     },
 
     Login: {
