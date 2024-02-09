@@ -315,6 +315,7 @@ describe('Tela importação de receitas.', function () {
 
     it.only('Deve realizar importação de Receitas', function () {
 
+        cy.waitModalAndClick('#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn', '#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn');
 
         cy.getElementAndClick(menuReceitas, menuImportarReceitas);
 
