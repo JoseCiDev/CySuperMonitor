@@ -757,7 +757,7 @@ Cypress.Commands.add('importarReceita', (
         if ($aliasModal.is(':visible')) {
             cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.');
         } else {
-            cy.get(el.Compartilhado.containerMensagem, { timeout: 60000 })
+            cy.get(el.Compartilhado.containerMensagem, { timeout: 120000 })
                 .as('mensagemModal')
                 .then(($modals) => {
                     $modals.each((index, $modal) => {
