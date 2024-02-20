@@ -446,7 +446,7 @@ export const dadosParametros: DadosParametros = {
     Receita: {
         importacao: {
             numeroReceita: 0,
-            arquivo: '../fixtures/img/ReceitaJpeg.jpeg',
+            arquivo: '../fixtures/img/ReceitaJpeg.jpg',
             prescritor: faker.helpers.arrayElement(['999990-SC']),
             sugestaoRelacaoPrescritor: true,
             parametroBuscaPaciente: ParametroBuscaPaciente.Cdcli,
