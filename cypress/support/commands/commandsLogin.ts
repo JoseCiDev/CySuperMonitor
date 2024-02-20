@@ -256,5 +256,4 @@ Cypress.Commands.add('login', (usuario: string, senha: string, elementError: str
 
     });
   return cy.wrap({ success: 'Login realizado com sucesso.' });
-  cy.pause();
 });
