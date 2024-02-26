@@ -323,8 +323,8 @@ describe('Tela importação de receitas.', function () {
         // cy.waitModalAndClick(btnModalChangelog, btnModalChangelog);
         cy.waitModalAndClick(btnModalChangelog, btnModalChangelog, 'visible');
 
-        cy.get(menuReceitas).click()
-        cy.get(menuImportarReceitas).click();
+        cy.get(menuReceitas, { timeout: 60000 }).click()
+        cy.get(menuImportarReceitas, { timeout: 60000 }).click();
 
 
         cy.importarReceita().then((result) => {

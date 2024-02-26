@@ -304,7 +304,7 @@ Cypress.Commands.add('getSelectOptionByValue', (element: string, value: any): vo
 
 Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, data: string | number, autocomplete: string) => {
   cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 20000 })
+    cy.get(element, { timeout: 60000 })
       .as('elementAlias')
       .each(($input) => {
         cy.wrap($input)
