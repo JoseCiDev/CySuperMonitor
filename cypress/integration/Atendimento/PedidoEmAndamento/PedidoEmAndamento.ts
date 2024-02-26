@@ -2,6 +2,7 @@
 import { elements as el } from '../../../elements';
 import { faker } from '@faker-js/faker';
 import { dadosParametros } from '../../../DadosParametros'
+import { BuscaReceita } from './../../../DadosParametros';
 
 
 
@@ -57,7 +58,10 @@ describe('Atendimentos em Andamento', function () {
 
 
     beforeEach(function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD);
+        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
     });
 
 
@@ -75,7 +79,7 @@ describe('Atendimentos em Andamento', function () {
     it('Deve vincular receita ao pedido', function () {
         cy.getElementAndClick(menuAtendimentos,atendimentosEmAndamento);(atendimentosEmAndamento);
         cy.visualizarPedido(botaoVisualizar);
-        cy.vincularPedidoReceita(botaoVincularReceitaTelaAtendimentoAndamento, dadosParametros.Receita.numeroReceita)
+        cy.vincularPedidoReceita(botaoVincularReceitaTelaAtendimentoAndamento, parseInt(dadosParametros.Receita.importacao.numeroReceita as string));
     });
 
     it('Deve desvincular receita ao pedido', function () {

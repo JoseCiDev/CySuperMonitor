@@ -150,10 +150,10 @@ export const salvarReceita = (salvarImportacao): void => {
 describe('Tela importação de receitas.', function () {
 
     beforeEach(function () {
-        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
-            .then((result) => {
-                assert.exists(result.success, result.error)
-            })
+        // cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+        //     .then((result) => {
+        //         assert.exists(result.success, result.error)
+        //     })
     })
 
 
@@ -315,10 +315,17 @@ describe('Tela importação de receitas.', function () {
 
 
     it.only('Deve realizar importação de Receitas', function () {
+        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.waitModalAndClick(btnModalChangelog, btnModalChangelog);
+        // cy.waitModalAndClick(btnModalChangelog, btnModalChangelog);
+        cy.waitModalAndClick(btnModalChangelog, btnModalChangelog, 'visible');
 
-        cy.getElementAndClick(menuReceitas, menuImportarReceitas);
+        cy.get(menuReceitas).click()
+        cy.get(menuImportarReceitas).click();
+
 
         cy.importarReceita().then((result) => {
             assert.exists(result.success, result.error)

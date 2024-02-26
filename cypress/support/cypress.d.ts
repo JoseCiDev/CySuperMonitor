@@ -248,7 +248,7 @@ declare global {
        * * comando customizado para vincular receita ao pedido.
        * @example cy.vincularReceitaPedido(botaoVincularReceitaTelaAtendimentoAndamento,dadosParametros.Receita.numeroReceita)
        */
-      vincularPedidoReceita(botaoVincular: string, numeroReceita: number): Chainable<Element>;
+      vincularPedidoReceita(botaoVincular: string, numeroReceita: number): ValidationResult;
 
       /**
        * * comando customizado para desvincular receita ao pedido.
@@ -284,7 +284,7 @@ declare global {
      * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
      * @example cy.alterarUsuariosPedido(orcamentista,atendente)
      */
-      waitModalAndClick(jqueryElement: string, element: string): ValidationResult
+      waitModalAndClick(jqueryElement: string, element: string, checkType): ValidationResult
 
       /**
      * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .

@@ -320,14 +320,14 @@ Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, dat
   });
 });
 
-Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
+Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string, checkType: 'each' | 'visible') => {
   cy.wrap(null).then(() => {
     const $aliasModal = Cypress.$(jqueryElement)
-    if (!$aliasModal.each) {
+    if (checkType === 'each' && !$aliasModal.each) {
       cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
-
-    }
-    else {
+    } else if (checkType === 'visible' && !Cypress.$($aliasModal).is(':visible')) {
+      cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
+    } else {
       cy.get(element, { timeout: 60000 })
         .as('elementAlias')
       cy.get('@elementAlias', { timeout: 240000 })
