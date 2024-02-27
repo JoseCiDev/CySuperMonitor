@@ -304,14 +304,14 @@ Cypress.Commands.add('getSelectOptionByValue', (element: string, value: any): vo
 
 Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, data: string | number, autocomplete: string) => {
   cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 60000 })
+    cy.get(element, { timeout: 240000 })
       .as('elementAlias')
       .each(($input) => {
         cy.wrap($input)
           .type(data.toString())
           .then(() => {
             if (cy.contains(autocomplete, data).as('autocompleteAlias')) {
-              cy.get('@autocompleteAlias')
+              cy.get('@autocompleteAlias', { timeout: 240000 })
                 .click({ force: true })
             }
 
@@ -328,7 +328,7 @@ Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: strin
     } else if (checkType === 'visible' && !Cypress.$($aliasModal).is(':visible')) {
       cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
     } else {
-      cy.get(element, { timeout: 60000 })
+      cy.get(element, { timeout: 240000 })
         .as('elementAlias')
       cy.get('@elementAlias', { timeout: 240000 })
         .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })

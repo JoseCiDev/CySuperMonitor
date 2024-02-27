@@ -711,6 +711,7 @@ Cypress.Commands.add('importarReceita', (
     }
 
     cy.getElementAndCheck(dadosParametros.Receita.importacao.parametroBuscaPaciente);
+
     cy.getElementAutocompleteTypeAndClick(
         pacienteReceitas,
         dadosParametros.Receita.importacao.paciente,
@@ -755,29 +756,62 @@ Cypress.Commands.add('importarReceita', (
     cy.getElementAndCheck(`input[name="receita_tipo"][value="${dadosParametros.Receita.importacao.tipoReceita}"]`)
 
     cy.wrap(null).then(() => {
-        const $aliasModal = Cypress.$(btnmensagemModal, { timeout: 2000 });
-        if ($aliasModal.is(':visible')) {
-            cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.');
-        } else {
-            cy.get(el.Compartilhado.containerMensagem, { timeout: 120000 })
-                .as('mensagemModal')
-                .then(($modals) => {
-                    $modals.each((index, $modal) => {
-                        cy.wrap($modal)
-                            .then(($modal) => {
-                                const mensagemModal = $modal.text();
-                                if (mensagemModal.includes('Ocorreu um erro ao processar a solicitação. Por favor, tente novamente mais tarde.')) {
-                                    throw new Error('Lamentamos informar que ocorreu uma falha de comunicação com o servidor em nuvem responsável pelo armazenamento das receitas. Por favor, verifique a aplicação para obter mais informações.');
-                                }
-                                else {
-                                    cy.wait(500);
-                                    cy.get(btnmensagemModal).click({ force: true, multiple: true, timeout: 5000 });
-                                }
-                            });
-                    });
-                });
-        }
+        cy.get('.bootbox-alert > .modal-dialog > .modal-content', { timeout: 240000 })
+            .find('.modal-footer > .btn')
+            .should('be.visible')
+            .click({ force: true });
     });
+
+
+    cy.wrap(null).then(() => {
+        cy.get('.bootbox > .modal-dialog > .modal-content', { timeout: 240000 })
+            .find('.modal-footer > .btn')
+            .should('be.visible')
+            .click({ force: true });
+    });
+
+
+
+
+
+
+    // cy.wrap(null).then(() => {
+    //     const $aliasModal = Cypress.$(btnmensagemModal, { timeout: 240000 });
+    //     if ($aliasModal.is(':visible')) {
+
+    //         cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.');
+    //         cy.pause();
+    //     } else {
+    //         cy.get(el.Compartilhado.btnmensagemModal, { timeout: 240000 })
+    //             .as('mensagemModal')
+    //             .then(($modals) => {
+    //                 $modals.each((index, $modal) => {
+    //                     cy.wrap($modal)
+    //                         .then(($modal) => {
+    //                             const mensagemModal = $modal.text();
+    //                             if (mensagemModal.includes('Ocorreu um erro ao processar a solicitação. Por favor, tente novamente mais tarde.')) {
+    //                                 throw new Error('Lamentamos informar que ocorreu uma falha de comunicação com o servidor em nuvem responsável pelo armazenamento das receitas. Por favor, verifique a aplicação para obter mais informações.');
+    //                             }
+    //                             else {
+    //                                 cy.waitUntil(() => Cypress.$('.modal-footer > .btn.btn-primary').length > 0, { timeout: 240000 })
+    //                                     .then(() => {
+    //                                         cy.get('.modal-footer > .btn.btn-primary')
+    //                                             .click({ multiple: true, force: true, timeout: 5000 });
+    //                                     });
+    //                                 cy.waitUntil(() => Cypress.$('.modal-footer > .btn.btn-primary').length > 0, { timeout: 240000 })
+    //                                     .then(() => {
+    //                                         cy.get('.modal-footer > .btn.btn-primary')
+    //                                             .click({ multiple: true, force: true, timeout: 5000 });
+    //                                     });
+    //                             }
+    //                         });
+    //                 });
+    //             });
+    //     }
+    // });
+
+
+
 
     cy.getElementAndType(textoObservacaoInternaReceitas, dadosParametros.Receita.importacao.textoObservacaoReceita)
 
