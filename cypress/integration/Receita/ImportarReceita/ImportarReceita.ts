@@ -323,20 +323,20 @@ describe('Tela importação de receitas.', function () {
         // cy.waitModalAndClick(btnModalChangelog, btnModalChangelog);
         // cy.waitModalAndClick('#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn', '#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn', 'visible');
 
-        cy.wrap(null).then(() => {
-            const $element = Cypress.$('#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn');
-            if ($element.is(':visible')) {
-                const $modal = Cypress.$('.modal-backdrop');
-                if ($modal.is(':visible')) {
-                    cy.get('.modal-backdrop').click({force:true}); // Tente fechar o modal clicando nele
-                    cy.get('.modal-backdrop', { timeout: 10000 }).should('not.exist');
-                }
-                cy.get('#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn', { timeout: 60000 })
-                    .click({ force: true });
-            } else {
-                cy.log(`Elemento não está visível, prosseguindo com o teste.`);
-            }
-        });
+        // cy.wrap(null).then(() => {
+        //     const $element = Cypress.$('#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn');
+        //     if ($element.is(':visible')) {
+        //         const $modal = Cypress.$('.modal-backdrop');
+        //         if ($modal.is(':visible')) {
+        //             cy.get('.modal-backdrop').click({force:true}); // Tente fechar o modal clicando nele
+        //             cy.get('.modal-backdrop', { timeout: 10000 }).should('not.exist');
+        //         }
+        //         cy.get('#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn', { timeout: 60000 })
+        //             .click({ force: true });
+        //     } else {
+        //         cy.log(`Elemento não está visível, prosseguindo com o teste.`);
+        //     }
+        // });
 
         cy.get('#side-menu > li:nth-child(6) > a', { timeout: 60000 }).click({force:true})
         cy.get(menuImportarReceitas, { timeout: 60000 }).click({force:true});

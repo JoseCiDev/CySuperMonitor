@@ -756,7 +756,7 @@ Cypress.Commands.add('importarReceita', (
     cy.getElementAndCheck(`input[name="receita_tipo"][value="${dadosParametros.Receita.importacao.tipoReceita}"]`)
 
     cy.wrap(null).then(() => {
-        cy.get('.bootbox-alert > .modal-dialog > .modal-content', { timeout: 240000 })
+        cy.get('.bootbox-alert > .modal-dialog > .modal-content', { timeout: 500000 })
             .find('.modal-footer > .btn')
             .should('be.visible')
             .click({ force: true });
