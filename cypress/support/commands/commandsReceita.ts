@@ -762,12 +762,14 @@ Cypress.Commands.add('importarReceita', (
             .click({ force: true });
     });
 
-
+    cy.wait(1000);
+    
     cy.wrap(null).then(() => {
         cy.get('.bootbox > .modal-dialog > .modal-content', { timeout: 240000 })
             .find('.modal-footer > .btn')
             .should('be.visible')
             .click({ force: true });
+        // cy.pause();
     });
 
 
