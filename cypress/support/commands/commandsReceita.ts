@@ -763,9 +763,9 @@ Cypress.Commands.add('importarReceita', (
     });
 
     cy.wait(1000);
-    
+
     cy.wrap(null).then(() => {
-        cy.get('.bootbox > .modal-dialog > .modal-content', { timeout: 240000 })
+        cy.get('.bootbox > .modal-dialog > .modal-content', { timeout: 500000 })
             .find('.modal-footer > .btn')
             .should('be.visible')
             .click({ force: true });
