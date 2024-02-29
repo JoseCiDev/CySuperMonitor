@@ -702,13 +702,7 @@ Cypress.Commands.add('importarReceita', (
         dadosParametros.Receita.importacao.prescritor,
         el.Compartilhado.sugestaoAutocomplete);
 
-    if (dadosParametros.Receita.importacao.sugestaoRelacaoPrescritor) {
-        // cy.waitModalAndClick(btnSucessoModal, btnSucessoModal);
-        cy.waitModalAndClick(btnSucessoModal, btnSucessoModal, 'each');
-    } else {
-        // cy.waitModalAndClick(btnFalhaModal, btnFalhaModal);
-        cy.waitModalAndClick(btnSucessoModal, btnSucessoModal, 'each');
-    }
+    cy.waitModalAndClick(btnSucessoModal, btnSucessoModal, 'each');
 
     cy.getElementAndCheck(dadosParametros.Receita.importacao.parametroBuscaPaciente);
 
