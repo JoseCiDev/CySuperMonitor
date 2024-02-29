@@ -5,7 +5,7 @@
     "main": "index.ts",
     "scripts": {
         "open": "npx cypress open",
-        "test": "npx cypress run --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed",
+        "test": "npx cypress run --spec 'cypress/integration/Receita/ImportarReceita/ImportarReceita.ts'",
         "jenkinsCloud":"npx cypress run --headless --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --spec 'cypress/integration/Receita/ImportarReceita/ImportarReceita.ts'"
         
     },

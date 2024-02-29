@@ -340,6 +340,7 @@ Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: strin
 
 
 
+
 Cypress.Commands.add('marcarUso', (checkboxMarcarUso: string, usuarioMarcarUso: string): void => {
   cy.get(`${checkboxMarcarUso} input[type="checkbox"]`, { timeout: 20000 }).then(($checkboxes) => {
     const totalCheckboxes = $checkboxes.length;

@@ -260,7 +260,7 @@ export const elements: Elements = {
 
 
     Receitas: {
-        menuReceitas: '#side-menu > li:nth-child(6) > a > span.nav-label',
+        menuReceitas: '#side-menu > li:nth-child(6) > a',
         menuReceitasReduzido: '#side-menu > li.active',
         //IMPORTAR RECEITAS
         // subMenuImportacaoReceita

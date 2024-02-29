@@ -755,25 +755,22 @@ Cypress.Commands.add('importarReceita', (
 
     cy.getElementAndCheck(`input[name="receita_tipo"][value="${dadosParametros.Receita.importacao.tipoReceita}"]`)
 
-    cy.wrap(null).then(() => {
-        cy.get('.bootbox-alert > .modal-dialog > .modal-content', { timeout: 500000 })
-            .find('.modal-footer > .btn')
-            .should('be.visible')
-            .click({ force: true });
-    });
 
+    function clickModalButton(btnSelector: string) {
+        cy.document().then((doc) => {
+            const $btn = doc.querySelector(btnSelector) as HTMLElement;
+            if ($btn) {
+                cy.getElementAndClick(btnSelector);
+            } else {
+                cy.log('Informativo de Changelog não foi apresentado e, portanto, o teste prosseguirá.');
+            }
+        });
+    }
+
+    // Chame a função para cada modal
+    clickModalButton(btnmensagemModal);
     cy.wait(1000);
-
-    cy.wrap(null).then(() => {
-        cy.get('.bootbox > .modal-dialog > .modal-content', { timeout: 500000 })
-            .find('.modal-footer > .btn')
-            .should('be.visible')
-            .click({ force: true });
-        // cy.pause();
-    });
-
-
-
+    clickModalButton(btnmensagemModal);
 
 
 
