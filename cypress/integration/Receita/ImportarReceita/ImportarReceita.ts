@@ -315,7 +315,7 @@ describe('Tela importação de receitas.', function () {
 
 
     it.only('Deve realizar importação de Receitas', function () {
-        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+        cy.login('jose.djalma', dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
@@ -337,9 +337,10 @@ describe('Tela importação de receitas.', function () {
         //         cy.log(`Elemento não está visível, prosseguindo com o teste.`);
         //     }
         // });
-
-        cy.get('#side-menu > li:nth-child(6) > a', { timeout: 60000 }).click({force:true})
-        cy.get(menuImportarReceitas, { timeout: 60000 }).click({force:true});
+        cy.pause();
+        cy.get('#side-menu > li:nth-child(6) > a', { timeout: 60000 }).click({ force: true })
+        cy.pause();
+        cy.get(menuImportarReceitas, { timeout: 60000 }).click({ force: true });
         cy.importarReceita().then((result) => {
             assert.exists(result.success, result.error)
         });
