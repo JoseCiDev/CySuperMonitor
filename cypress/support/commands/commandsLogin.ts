@@ -227,7 +227,7 @@ Cypress.Commands.add('login', (usuario: string, senha: string, elementError: str
 
           cy.getElementAndClick(el.Login.entrar);
 
-          cy.get(elementError)
+          cy.get(elementError, { timeout: 60000 })
             .invoke('text')
 
             .then((text) => {
