@@ -150,7 +150,7 @@ export const salvarReceita = (salvarImportacao): void => {
 describe('Tela importação de receitas.', function () {
 
     beforeEach(function () {
-       
+
     })
 
 
@@ -312,7 +312,7 @@ describe('Tela importação de receitas.', function () {
 
 
     it.only('Deve realizar importação de Receitas', function () {
-        cy.login('jennifer.santos', dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
+        cy.login(dadosAmbiente.USER_ADMIN, dadosAmbiente.PASSWORD, el.Login.mensagemErroLogin, dadosAmbiente.BASE_URL_HOMOLOG)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
