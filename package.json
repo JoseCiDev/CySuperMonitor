@@ -1,22 +1,21 @@
 {
     "name": "cysupermonitor",
     "version": "1.0.0",
-    "description": "Testes automatizados em SuperMonitor",
+    "description": "Automated tests in SuperMonitor",
     "main": "index.ts",
     "scripts": {
         "open": "npx cypress open",
-        "test": "npx cypress run --spec 'cypress/integration/Receita/ImportarReceita/ImportarReceita.ts'",
-        "jenkinsCloud":"npx cypress run --headless --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --spec 'cypress/integration/Receita/ImportarReceita/ImportarReceita.ts'"
-        
+        "test": "npx cypress run --spec 'cypress/integration/Recipe/ImportarReceita/ImportarReceita.ts'",
+        "jenkinsCloud": "npx cypress run --headless --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --spec 'cypress/integration/Recipe/ImportarReceita/ImportarReceita.ts'"
     },
     "author": "Cypress",
     "license": "ISC",
     "devDependencies": {
         "@faker-js/faker": "^8.3.1",
         "@types/cypress": "^1.1.3",
-        "cypress": "^13.6.2",
+        "cypress": "^13.9.0",
         "cypress-wait-until": "^3.0.1",
-        "typescript": "^5.3.3"
+        "typescript": "^5.4.3"
     },
     "dependencies": {
         "date-fns": "^2.30.0",

@@ -5,7 +5,7 @@ import { mount } from 'cypress/react'
 // load the 3rd party command definition
 /// <reference types="cypress-wait-until" />
 
-import { ValidationResult, dadosParametros } from '../DadosParametros'
+import { ValidationResult, dataParameters } from '../DataParameters/dataParameters'
 
 
 interface DataHora {
@@ -33,33 +33,33 @@ declare global {
 
       /**
        * comando customizado para inserir arquivos.
-       * @example cy.inserirArquivo('img/ReceitaJpeg(1).jpeg', el.importarImagem);
+       * @example cy.insertFile('img/ReceitaJpeg(1).jpeg', el.importarImagem);
        */
-      inserirArquivo(filePath, element, mimeType?): Chainable<unknown>;
+      insertFile(filePath, element, mimeType?): Chainable<unknown>;
 
       /**
        * comando customizado para ler arquivos
-       * @example cy.lerArquivo('orcamentoFilial.json')
+       * @example cy.readFile('orderAndBranch.json')
        */
-      lerArquivo(nomeArquivo: string)
+      readFile(fileName: string)
 
       /**
       * comando customizado para buscar receitas.
-      * @example cy.buscarReceita()
+      * @example cy.searchRecipe()
       */
-      buscarReceita(params?: {
-        dataInicial?: string;
-        dataFinal?: string;
-        pendencia?: string;
+      searchRecipe(params?: {
+        initialDate?: string;
+        finalDate?: string;
+        pendency?: string;
         cluster?: string;
-        canalRecebimento?: string;
-        receita?: number;
-        paciente?: string;
-        prescritor?: string;
-        pedido?: number;
-        ultimoModificador?: string;
-        orcamentista?: string;
-        atendenteResponsavel?: string;
+        channelReceipt?: string;
+        recipe?: number;
+        patient?: string;
+        prescriber?: string;
+        order?: number;
+        lastModifier?: string;
+        budgetist?: string;
+        attendantResponsibleRecipes?: string;
       }): Cypress.Chainable<Element>;
 
       /**
@@ -94,221 +94,221 @@ declare global {
 
       /**
        * comando customizado para marcar uso em receitas e orçamentos.
-       * @example cy.marcarUso(checkboxMarcarUso)
+       * @example cy.marcarUso(checkboxMarkUse)
        */
-      marcarUso(elementMarcarUso: string, usuarioMarcarUso: string): Chainable<Element>
+      markUsage(elementMarkUsage: string, userMarkUsage: string): Chainable<Element>
 
       /**
       * comando customizado para visualizar receitas.
-      * @example cy.visualizarReceita(visualizarReceita)
+      * @example cy.viewRecipe(viewRecipe)
       */
-      visualizarReceita(elementVisualizarReceita: string): Chainable<Element>
+      viewRecipe(viewRecipeElement: string): Chainable<Element>
 
       /**
       * comando customizado para clonar receitas.
-      * @example cy.clonarReceita(clonarReceita)
+      * @example cy.cloneRecipe(cloneRecipe)
       */
-      clonarReceita(abrirModalClonarReceita: string): Chainable<Element>
+      cloneRecipe(openModalCloneRecipe: string): Chainable<Element>
 
       /**
       * comando customizado para excluir receitas.
-      * @example cy.excluirReceita(el.excluirReceita)
+      * @example cy.deleteRecipe(el.deleteRecipe)
       */
-      excluirReceita(excluir: string): Chainable<Element>
+      deleteRecipe(exclude: string): Chainable<Element>
 
       /**
       * comando customizado para inserir observacoes farmaceuticas, em receitas.
-      * @example cy.inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas,dadosParametros.Receita.senhaObservacaoFarmaceutica,dadosParametros.Receita.textoObservacaoFarmaceutica)
+      * @example cy.insertPharmaceuticalObservation(accessPharmaceuticalObservations,dataParameters.Recipe.senhaObservacaoFarmaceutica,dataParameters.Recipe.textoObservacaoFarmaceutica)
       */
-      inserirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas: string, senhaReceita: string, textoObservacao: string): Chainable<Element>
+      insertPharmaceuticalObservation(accessPharmaceuticalObservations: string, passwordRecipe: string, textNote: string): Chainable<Element>
 
       /**
       * comando customizado para excluir observacoes farmaceuticas, em receitas.
-      * @example cy.excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas,dadosParametros.Receita.senhaObservacaoFarmaceutica,dadosParametros.Receita.textoObservacaoFarmaceutica)
+      * @example cy.deletePharmaceuticalObservation(accessPharmaceuticalObservations,dataParameters.Recipe.senhaObservacaoFarmaceutica,dataParameters.Recipe.textoObservacaoFarmaceutica)
       */
-      excluirObservacaoFarmaceutica(acessarObservacoesFarmaceuticas: string): Chainable<Element>
+      deletePharmaceuticalObservation(accessPharmaceuticalObservations: string): Chainable<Element>
 
       /**
       * comando customizado para criar dúvidas técnicas em receitas.
-      * @example cy.CriarDuvidaTecnica()
+      * @example cy.CreateTechnicalDoubt()
       */
-      CriarDuvidaTecnica(acessarDuvidasTecnicas: string, categoria: string, textoDuvidaTecnica: string, colaborador: string): Chainable<Element>
+      CreateTechnicalDoubt(accessingDoubtsTechnical: string, category: string, textoDuvidaTecnica: string, collaborator: string): Chainable<Element>
 
       /**
-      * comando customizado para atualizar modal de dúvidas técnicas, em receitas.
-      * @example cy.atualizarModalDuvidaTecnica(atualizarModalDuvidaTecnica)
+      * comando customizado para update modal de dúvidas técnicas, em receitas.
+      * @example cy.updateModalTechnicalQuestion(updateModalTechnicalQuestion)
       */
-      atualizarModalDuvidaTecnica(atualizar: string): void
+      updateModalTechnicalQuestion(update: string): void
 
       /**
       * comando customizado para alterar o responsável pela resposta da dúvida técnica, em receitas.
-      * @example cy.alterarResponsavelRespostaDuvidaTecnica(atualizarModalDuvidaTecnica)
+      * @example cy.changeResponsibleDoubtTechinical(updateModalTechnicalQuestion)
       */
-      alterarResponsavelRespostaDuvidaTecnica(acessarDuvidasTecnicas: string, responsavelRespostaDuvidaTecnica: string): Chainable<Element>
+      changeResponsibleDoubtTechinical(accessingDoubtsTechnical: string, responsibleResponseDoubtTechnical: string): Chainable<Element>
 
       /**
-     * comando customizado para marcar dúvida técnica como resolvido, em receitas.
+     * comando customizado para marcar dúvida técnica como resolved, em receitas.
      * @example cy.marcarComoResolvidoDuvidaTecnica(MarcarDuvidaTecnicaResolvido)
      */
-      marcarDuvidaTecnicaResolvido(acessarDuvidasTecnicas: string): Chainable<Element>
+      markDoubtTechnicalSolved(accessingDoubtsTechnical: string): Chainable<Element>
 
       /**
      * comando customizado para excluir dúvida técnica, em receitas.
-     * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
+     * @example cy.deleteTechnicalQuestion(deleteTechnicalQuestion)
      */
-      excluirDuvidaTecnica(acessarDuvidasTecnicas: string): Chainable<Element>
+      deleteTechnicalQuestion(accessingDoubtsTechnical: string): Chainable<Element>
 
       /**
      * comando customizado para excluir dúvida técnica, em receitas.
-     * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
+     * @example cy.deleteTechnicalQuestion(deleteTechnicalQuestion)
      */
-      responderDuvidaTecnica(acessarDuvidasTecnicas: string, status: string, texto: string): Chainable<Element>
+      answerDoubtTechnical(accessingDoubtsTechnical: string, status: string, text: string): Chainable<Element>
 
       /**
            * comando customizado para excluir dúvida técnica, em receitas.
-           * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
+           * @example cy.deleteTechnicalQuestion(deleteTechnicalQuestion)
            */
-      atribuirUsuario(campoAtribuicao: string, usuario: string): Chainable<Element>
+      assignUser(fieldAssignment: string, user: string): Chainable<Element>
 
       /**
      * comando customizado para excluir dúvida técnica, em receitas.
-     * @example cy.excluirDuvidaTecnica(excluirDuvidaTecnica)
+     * @example cy.deleteTechnicalQuestion(deleteTechnicalQuestion)
      */
-      editarReceita(imagem: string, botaoImportarImagemReceitas: string, dadosPrescritor: string): Chainable<Element>
+      editRecipe(image: string, buttonImportImageRecipes: string, prescriberData: string): Chainable<Element>
 
       /**
        * * comando customizado para acessar o menu Atendimentos.
        * @example cy.adicionaObservacaoFarmaceutica()
        */
-      acessarMenuAtendimentos(element: string): Chainable<Element>
+      accessMenuServices(element: string): Chainable<Element>
 
       /**
        * * comando customizado para acessar o menu Pedidos em andamento.
        * @example cy.acessarPedidosEmAndamento(atendimentoEmAndamento)
        */
-      acessarAtendimentosEmAndamento(element: string): Chainable<Element>
+      accessServicesInProgress(element: string): Chainable<Element>
 
       /**
        * * comando customizado para acessar selecionar opcao "meus" ou "todos" para buscar orçamentos.
        * @example cy.opcaoMeusETodosBuscaOrcamento(Meus)
        */
-      opcaoMeusETodosBuscaOrcamento(opcoesBusca: string): Chainable<Element>;
+      optionMyAndAllSearchBudget(optionsSearch: string): Chainable<Element>;
 
       /**
-       * * comando customizado para buscar pedidos inserindo orcamento e filial.
-       * @example cy.buscarPedido(pedido,filial)
+       * * comando customizado para buscar pedidos inserindo orcamento e branch.
+       * @example cy.searchOrder(order,branch)
        */
-      buscarPedido(pedido: number, filial: number);
+      searchOrder(order: number, branch: number);
 
       /**
        * * comando customizado para visulizar pedidos.
-       * @example cy.visualizarPedido(botaoVisualizar)
+       * @example cy.viewOrder(buttonView)
        */
-      visualizarPedido(botaoVisualizar): Chainable<Element>;
+      viewOrder(buttonView): Chainable<Element>;
 
       /**
        * * comando customizado para reabrir pedidos.
-       * @example cy.reabrirPedido(pedido,filial)
+       * @example cy.reopenOrder(order,branch)
        */
-      reabrirPedido(pedido: number, filial: number);
+      reopenOrder(order: number, branch: number);
 
       /**
        * * comando customizado para inserir tempo de tratamento.
-       * @example cy.inserirTempoTratamento(tempoTratamento)
+       * @example cy.insertTimeTreatment(timeTreatment)
        */
-      inserirTempoTratamento(tempoTratamento: string): Chainable<Element>;
+      insertTimeTreatment(timeTreatment: string): Chainable<Element>;
 
       /**
        * * comando customizado para confirmar pedidos.
-       * @example cy.confirmarPedido(dadosParametros.formaPagamento.Boleto,
-            dadosParametros.Pedido.tempoRepeticao,
-            dadosParametros.Pedido.textoObservacaoCaixaBalcao,
-            dadosParametros.statusPagamento.Pago,
-            dadosParametros.Pedido.textoObservacaoExpedicao,
-            dadosParametros.formaEnvio.SedexHoje,
-            dadosParametros.dataFormatada,
-            dadosParametros.aromaSache.AromaDaBasePadrao,
-            dadosParametros.aromaCapsula.laranjaComHortelaMenta,
-            dadosParametros.Pedido.textoObservacaoGeral)
+       * @example cy.confirmOrder(dataParameters.formaPagamento.Boleto,
+            dataParameters.Pedido.timeRepetition,
+            dataParameters.Pedido.buttonViewtextObservationCashierCounter,
+            dataParameters.paymentStatus.Pago,
+            dataParameters.Pedido.textNoteShipping,
+            dataParameters.shippingMethod.SedexHoje,
+            dataParameters.formattedDate,
+            dataParameters.aromaSachet.AromaDaBasePadrao,
+            dataParameters.capsuleAroma.laranjaComHortelaMenta,
+            dataParameters.Pedido.textGeneralNote)
        */
-      confirmarPedido(
-        formaPagamentoSelecionada: string,
-        tempoRepeticao: number,
-        observacaoCaixaBalcao: string,
-        statusPagamento: string,
-        textoObservacaoExpedicao: string,
-        formaEnvio: string,
-        prometidoPara: string,
-        aromaSache: string,
-        aromaCapsula: string,
-        textoObservacaoGeral: string,
+      confirmOrder(
+        SelectedPaymentMethod: string,
+        timeRepetition: number,
+        observationFromCashierToCounter: string,
+        paymentStatus: string,
+        textNoteShipping: string,
+        shippingMethod: string,
+        promisedTo: string,
+        aromaSachet: string,
+        capsuleAroma: string,
+        textGeneralNote: string,
       ): Chainable<Element>;
 
       /**
-       * * comando customizado para vincular receita ao pedido.
-       * @example cy.vincularReceitaPedido(botaoVincularReceitaTelaAtendimentoAndamento,dadosParametros.Receita.numeroReceita)
+       * * comando customizado para vincular recipe ao order.
+       * @example cy.vincularReceitaPedido(buttonLinkRecipeScreenServiceProgress,dataParameters.Recipe.numberRecipe)
        */
-      vincularPedidoReceita(botaoVincular: string, numeroReceita: number): ValidationResult;
+      linkOrderRecipe(buttonLink: string, numberRecipe: number): ValidationResult;
 
       /**
-       * * comando customizado para desvincular receita ao pedido.
-       * @example cy.desvincularReceitaPedido(tempoTratamento)
+       * * comando customizado para desvincular recipe ao order.
+       * @example cy.desvincularReceitaPedido(timeTreatment)
        */
-      desvincularPedidoReceita(botaoDesvincular: string): Chainable<Element>;
+      unlinkOrderRecipe(buttonUnlink: string): Chainable<Element>;
 
       /**
       * * comando customizado para importar orçamentos .
-      * @example cy.importarOrcamento(modalImportacao,numerOrcamento,numeroFilial,importarOrcamento)
+      * @example cy.orderImport(modalImportacao,numerOrcamento,branchNumber,orderImport)
       */
-      importarOrcamento(): Chainable<Element>
+      orderImport(): Chainable<Element>
 
       /**
-      * * comando customizado para alterar usuário do pedido .
-      * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+      * * comando customizado para alterar usuário do order .
+      * @example cy.changeUsersOrder(budgetist,attendant)
       */
-      alterarUsuariosPedido(orcamentista: string, atendente: string): Chainable<Element>
+      changeUsersOrder(budgetist: string, attendant: string): Chainable<Element>
 
       /**
-     * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
-     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+     * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .
+     * @example cy.changeUsersOrder(budgetist,attendant)
      */
-      configuraRelacaoAtendenteClusterPrescritor(nomeArquivo: string): ValidationResult
+      configureRelationshipAtendenteClusterPrescriber(fileName: string): ValidationResult
 
       /**
-     * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
-     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+     * * comando customizado para selecionar elemento autocomplete apos digitar e capturar sugestão autocomplete clicando.
+     * @example cy.getElementAutocompleteTypeAndClick(orcamentista,atendente)
      */
       getElementAutocompleteTypeAndClick(element: string, data: string | number | boolean, autocomplete: string): ValidationResult
 
       /**
-     * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
-     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+     * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .
+     * @example cy.changeUsersOrder(budgetist,attendant)
      */
       waitModalAndClick(jqueryElement: string, element: string, checkType): ValidationResult
 
       /**
-     * * comando customizado para configurar relação entre Atendente, cluster e Prescritor .
-     * @example cy.alterarUsuariosPedido(orcamentista,atendente)
+     * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .
+     * @example cy.changeUsersOrder(budgetist,attendant)
      */
-      importarReceita(
-        arquivo?: Object,
-        prescritor?: string | number,
-        parametroBuscaPaciente?: string,
-        paciente?: string | number,
-        canalRecebimento?: string,
-        atendenteResponsavel?: string,
-        dataRecebimento?: Date,
-        tipoReceita?: string,
-        textoObservacaoInterna?: string,
-        urgenteReceitas?: string,
-        clienteAlerta?: string,
-        medicamentoControlado?: string): ValidationResult
+      importRecipe(
+        file?: Object,
+        prescriber?: string | number,
+        parameterSearchPatient?: string,
+        patient?: string | number,
+        channelReceipt?: string,
+        attendantResponsibleRecipes?: string,
+        receivingDate?: Date,
+        recipeType?: string,
+        textInternalObservation?: string,
+        urgentRecipes?: string,
+        clientAlert?: string,
+        medicineControlled?: string): ValidationResult
 
       /**
-     * * comando customizado para capturar o número da receita .
-     * @example cy.capturarNumeroReceita(orcamentista,atendente)
+     * * comando customizado para capturar o número da recipe .
+     * @example cy.captureRecipeNumber(budgetist,attendant)
      */
-      capturarNumeroReceita(elementNumeroReceita: string)
+      captureRecipeNumber(RecipeNumberElement: string)
 
 
 

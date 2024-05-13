@@ -29,7 +29,7 @@
 
 
 import { elements as el } from '../../elements'
-import { dataParameters } from '../../DataParameters/dataParameters'
+import { ValidationResult, dataParameters } from '../../DataParameters/dataParameters'
 import { env } from 'process';
 
 
@@ -37,11 +37,8 @@ const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
 
 
-import './loginCommands'
 import './serviceCommands'
 import './recipeCommands'
-import './configurationCommandsAttendantClusterPrescriberRelationship'
-
 
 
 export const {
@@ -240,173 +237,98 @@ export const {
 
 } = el.Services;
 
+export const {
 
-Cypress.Commands.add('insertFile', (filePath, element, mimeType?): void => {
-  cy.fixture(filePath, 'base64').then((fileContent) => {
-    const name = filePath.split('/').pop();
+  settingsMenu,
+  subMenuClustersGroups,
+  relations,
+  containerFilters,
+  containerProfile,
+  searchFilters,
+  search,
+  manageRelationship,
+  selectCluster,
+  containerSelectPrescriber,
+  selectPrescriber,
+  addAttendantClusterPrescriberRelationship,
+  containerMessageRelationship,
+  createdRelationshipAttendant,
+  prescriberRelationshipCreated,
+  removeSelectedRelationship,
+  SearchPrescriberManageRelationship,
+  searchPrescriberRelationshipManage,
+  selectPrescriberFound,
+} = el.Settings;
 
-    const blob = Cypress.Blob.base64StringToBlob(fileContent, mimeType);
-    const file = new File([blob], name, { type: mimeType });
 
-    cy.get(element).then(($element) => {
-      const event = new Event('change', { bubbles: true });
-      Object.defineProperty($element[0], 'files', {
-        value: [file],
-        writable: false,
-      });
-      $element[0].dispatchEvent(event);
+Cypress.Commands.add('login', (user: string, password: string, elementError: string, baseUrl: string) => {
+
+  cy.log('Iniciando login...');
+  cy.visit(baseUrl);
+
+  cy.get(el.Login.user, { timeout: 10000 })
+    .each(($input) => {
+      cy.wrap($input)
+        .type(user)
+        .then(() => {
+          const $userValue = String($input.val());
+          const $elementError = Cypress.$(elementError);
+
+          if ($userValue.length < 1 && !$elementError.is(':visible')) {
+            throw new Error('Usuário não foi inserido, porém não é apresentado mensagem ao usuário.');
+          };
+
+          if (!$userValue || $userValue.length === 0 && !$elementError.is(':visible')) {
+            throw new Error('Há digitos que não foram preenchidos, porém não é apresentado mensagem ao usuário.');
+          };
+        });
     });
-  });
-});
 
+  cy.get(el.Login.password, { timeout: 10000 })
+    .each(($input) => {
+      cy.wrap($input)
+        .type(password)
+        .then(() => {
+          const passwordValue = String($input.val());
+          const $elementError = Cypress.$(elementError);
 
-// Cypress.Commands.add('readFile', (fileName) => {
-//   const filePath = `${dataParameters.filePath}${fileName}`;
-//   return cy.fixture(filePath);
-// });
+          if (password.length < 1 && !$elementError.is(':visible')) {
+            throw new Error('Senha não foi inserida, porém não é apresentado mensagem ao usuário.');
+          };
 
-Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
-  elements.forEach(element => {
-    cy.get(element, { timeout: 20000 }).each(($el) => {
-      cy.wrap($el).click({ timeout: 20000 });
-    });
-  });
-});
+          if (!passwordValue || passwordValue.length === 0 && !$elementError.is(':visible')) {
+            throw new Error('Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.');
+          };
 
-Cypress.Commands.add('getElementAndCheck', (element: string): void => {
-  cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 20000 })
-      .as('element')
-      .each(($element) => {
-        cy.wrap($element)
-          .then($elements => {
-            cy.get('@element')
+          cy.getElementAndClick(el.Login.acess);
 
-            if ($elements.length > 0) {
-              cy.wrap($elements.first())
-                .check({ timeout: 20000, force: true });
-            } else {
-              cy.wrap($elements.eq(0))
-                .check({ timeout: 20000, force: true });
-            }
-          });
-      })
-  })
-});
+          cy.get(elementError, { timeout: 60000 })
+            .invoke('text')
 
-Cypress.Commands.add('getElementAndType', (element: string, text?: string): void => {
-  cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 20000 })
-      .each(($input) => {
-        cy.wrap($input)
-          .then(() => {
-            if ($input.length > 1) {
-              cy.wrap($input.first())
-                .clear()
-                .type(text, { timeout: 1000 })
-            } else {
-              cy.wrap($input.eq(0))
-                .clear()
-                .type(text, { timeout: 1000 })
-            }
-          })
-      })
-  });
-});
+            .then((text) => {
+              if (text.includes('Usuário ou password inválidos')) {
+                throw new Error('Usuário ou password incorretos. Tente novamente.');
+              }
+            });
+        });
 
-Cypress.Commands.add('getRadioOptionByValue', (element: string, value): void => {
-  cy.get(element, { timeout: 20000 })
-    .should('be.visible')
-    .find(`input[type="radio"][value="${value}"]`)
-    .check({ force: true })
-});
-
-Cypress.Commands.add('getSelectOptionByValue', (element: string, value: any): void => {
-  cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 20000 })
-      .each(($select) => {
-        cy.wrap($select)
-          .then(() => {
-            if ($select.length > 0 && $select.is(':visible')) {
-              cy.get(element, { timeout: 20000 })
-                .select(value, { force: true })
-            }
-
-          })
-      })
-  });
-});
-
-Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, data: string | number, autocomplete: string) => {
-  cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 240000 })
-      .as('elementAlias')
-      .each(($input) => {
-        cy.wrap($input)
-          .type(data.toString())
-          .then(() => {
-            if (cy.contains(autocomplete, data).as('autocompleteAlias')) {
-              cy.get('@autocompleteAlias', { timeout: 240000 })
-                .click({ force: true })
-            }
-
-          })
-      })
-  });
-});
-
-Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string, checkType: 'each' | 'visible') => {
-  cy.wrap(null).then(() => {
-    const $aliasModal = Cypress.$(jqueryElement)
-    if (checkType === 'each' && !$aliasModal.each) {
-      cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
-    } else if (checkType === 'visible' && !Cypress.$($aliasModal).is(':visible')) {
-      cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
-    } else {
-      cy.get(element, { timeout: 240000 })
-        .as('elementAlias')
-      cy.get('@elementAlias', { timeout: 240000 })
-        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })
-        .click({ force: true, multiple: true, timeout: 5000 })
-    }
-  });
-})
-
-
-
-
-
-Cypress.Commands.add('markUsage', (checkboxMarkUse: string, userMarkUsage: string): void => {
-  cy.get(`${checkboxMarkUse} input[type="checkbox"]`, { timeout: 20000 }).then(($checkboxes) => {
-    const totalCheckboxes = $checkboxes.length;
-
-    cy.get(`${checkboxMarkUse} input[type="checkbox"]:checked`, { timeout: 20000 }).then(($checkedCheckboxes) => {
-      const totalChecked = $checkedCheckboxes.length;
-
-      if (totalChecked === totalCheckboxes) {
-        cy.get(`${checkboxMarkUse} input[type="checkbox"]:checked`, { timeout: 20000 })
-          .first()
-          .uncheck();
-        cy.getElementAndClick(containerInsertUser);
-        cy.getElementAndType(select, userMarkUsage);
-        cy.getElementAndClick(selectedUser)
-        cy.getElementAndType(passwordRecipe, dataEnvironment.SENHA_RECEITA_USER);
-        cy.getElementAndClick(applyUncheckUse);
-        cy.getElementAndClick(modalMessage);
-        cy.get(`${checkboxMarkUse} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
-          .first()
-          .check();
-      }
-      else {
-        cy.get(`${checkboxMarkUse} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
-          .first()
-          .check();
+      const $UserErrorElement = Cypress.$(el.Login.user)
+        .prop('prop', 'validationMessage')
+        .prop((text) => {
+          expect(text).to.contain('Preencha este campo.');
+        });
+      const $passwordErrorElement = Cypress.$(el.Login.password)
+        .prop('prop', 'validationMessage')
+        .prop((text) => {
+          expect(text).to.contain('Preencha este campo.');
+        });
+      if ($UserErrorElement) {
+        throw new Error('Usuário ou password incorretos. Tente novamente.');
+      };
+      if ($passwordErrorElement) {
+        throw new Error('Campo password não está preenchido.');
       };
 
-      cy.wait(200);
-      cy.getElementAndClick(btnSuccessModal);
-      cy.wait(200);
-      cy.getElementAndClick(modalMessage);
     });
-  });
+  return cy.wrap({ success: 'Login realizado com sucesso.' });
 });

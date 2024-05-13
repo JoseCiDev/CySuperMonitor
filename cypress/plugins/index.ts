@@ -33,7 +33,7 @@ export default (on: Cypress.PluginEvents, config: Cypress.PluginConfig) => {
 
   on('file:preprocessor', webpackPreprocessor(options));
 
-  // Configurar o ambiente
+  // Configurar o environment
   // Certifique-se de que o cypress.env.json está sendo carregado corretamente
   configureEnvironment(config);
 
@@ -42,17 +42,17 @@ export default (on: Cypress.PluginEvents, config: Cypress.PluginConfig) => {
 };
 
 const configureEnvironment = (config: Cypress.PluginConfig) => {
-  // Verifique se o arquivo cypress.env.json está definido
+  // Verifique se o file cypress.env.json está definido
   if (Cypress.env) {
-    // Verifique se o parâmetro "AMBIENTE" está definido
-    const ambiente = Cypress.env('ambiente');
-    if (!ambiente && Cypress.env[ambiente]) {
-      throw new Error(`Ambiente '${ambiente}' não encontrado no arquivo cypress.env.json`);
+    // Verifique se o parâmetro "ENVIRONMENT" está definido
+    const environment = Cypress.env('environment');
+    if (!environment && Cypress.env[environment]) {
+      throw new Error(`Ambiente '${environment}' não encontrado no file cypress.env.json`);
     }
-    const environmentConfig = Cypress.env[ambiente];
+    const environmentConfig = Cypress.env[environment];
 
-    // Exemplo de uso das variáveis de ambiente
-    console.log(`Ambiente selecionado: ${ambiente}`);
+    // Exemplo de uso das variáveis de environment
+    console.log(`Ambiente selecionado: ${environment}`);
     console.log(`DB Host: ${environmentConfig.DB_HOST}`);
     console.log(`DB User: ${environmentConfig.DB_USER}`);
     console.log(`DB Password: ${environmentConfig.DB_PASSWORD}`);

@@ -35,5 +35,5 @@
   "include": [
     "**/*.ts",
     "../cypress.d.ts"
- ]
+, "cypress/support/e2e.js" ]
 }

@@ -15,16 +15,13 @@ export default defineConfig({
     excludeSpecPattern: [
       'cypress/support/*',
       'cypress/support/commands',
-      'cypress/DadosParametros.ts',
+      'cypress/DataParameters/*',
+      'cypress/DataParameters/Enums/*',
       'cypress/elements.ts',
       'cypress/reports/*',
       'cypress/reports/html/*',
       'cypress/reports/html/assets/*',
       'cypress/reports/.jsons/*',
-      'dist',
-      'cypress/dist/*',
-      'cypress/integration/dist/*',
-      'cypress/integration/Atendimento/PedidoEmAndamento/dist/*',
       'cypress/plugins/*',
       'cypress/support/Connections/*'
     ],

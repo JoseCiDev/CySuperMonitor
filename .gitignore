@@ -1,43 +1,43 @@
 # Node.js
 node_modules/
 
-# Arquivos de log
+# Log files
 logs/
 *.log
 
-# Arquivos temporários
+# Temporary files
 *.tmp
 *.temp
 
-# Arquivos de build
+# Build files
 build/
 dist/
 out/
 *.out
 
-# Ambiente específico
+# Specific environment
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 cypress.env.json
 
-# Arquivos de configuração do Visual Studio Code
+# Visual Studio Code configuration files
 .vscode/
 
-# Arquivos de configuração do WebStorm
+# WebStorm configuration files
 .idea/
 
-# Arquivos de configuração do Sublime Text
+# Sublime Text configuration files
 .sublime-project
 .sublime-workspace
 
-# Arquivos de dependências do Yarn
+# Yarn dependency files
 .yarn
 .yarnrc
 .yarn-integrity
 
-# Dependências do npm
+# npm dependencies
 package-lock.json
 npm-debug.log
 
@@ -46,7 +46,7 @@ npm-debug.log
 /cypress/screenshots/
 /cypress/reports/
 
-# Arquivo de configuração do Cypress
+# Cypress configuration file
 cypress.env.json
 
 

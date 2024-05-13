@@ -1,116 +1,188 @@
 import { elements as el } from '../../elements';
 import '../../support/commands';
 import { faker } from '@faker-js/faker';
-import { dadosParametros, BuscarReceita } from '../../DadosParametros'
+import { dataParameters, SearchRecipe } from '../../DataParameters/dataParameters'
 
 export const {
-    ModalBuscaReceitas,
-    filtroDataInicialBuscaReceitas,
-    filtroDataFinalBuscaReceitas,
-    filtroPendenciasBusca,
-    botaoProcurarReceitas,
-    labelProcurarReceitas,
-    numeroReceita,
-    containerInserirUsuario,
+    menuRecipes,
+    menuRecipesReduced,
+    prescriberRecipes,
+    menuImportRecipes,
+    menuManageRecipes,
+    openModalRegisterRecipes,
+    importPDFRecipes,
+    importImageRecipes,
+    removeImageRecipes,
+    modalSuggestionRelationshipPrescriber,
+    parameterSearchPatient,
+    patientRecipes,
+    channelReceiptImport,
+    clusterRecipes,
+    budgetistRecipes,
+    responsibleForRecipe: attendantResponsibleRecipes,
+    autocompleteResponsibleAttendant,
+    dateReceiptRecipes,
+    juntocomRecipes,
+    autocompleteJuntocomRecipes,
+    internalObservationRecipes,
+    textInternalObservationRecipes,
+    controlledmedicationRecipes,
+    urgentRecipes,
+    clientAlertRecipes,
+    retailRecipes,
+    optionTypeRecipes,
+    saveRecipes,
+    closeRegisterRecipes,
+    editRecipe,
+    recipeSearchModal,
+    filterDateStartSearchRecipes,
+    filterEndDateSearchRecipes,
+    clusterSearch,
+    recipeSearch,
+    patientSearch,
+    prescriberSearch,
+    budgetSearch,
+    lastModifierSearch,
+    budgetistSearch,
+    attendantResponsibleSearch,
+    channelReceiptSearch,
+    filterPendenciasSearch,
+    filterPendenciasAll,
+    pendingFilter,
+    pendingFilterLinked,
+    buttonSearchRecipes,
+    labelSearchRecipes,
+    numberRecipe,
+    dateReceiptGrid,
+    checkboxMarkUse,
+    containerInsertUser,
     select,
-    usuarioSelecionado,
-    senhaReceita,
-    aplicaDesmarcarUso,
-    btnSucessoModal,
-    mensagemModal,
-    abaPdfVisualizarReceitas,
-    abaOriginalVisualizarReceitas,
-    abaObservacoesInternasVisualizarReceitas,
-    abaInformacoesFcertaVisualizarReceitas,
-    exibirReguaVisualizarReceitas,
-    fecharVisualizarReceitas,
-    clonarReceitas,
-    modalObservacoesClonar,
-    clonarObservacoesFarmaceuticas,
-    menuReceitas,
-    excluirReceitas,
-    abaAdicionarObservacoesFarmaceuticas,
-    senhaObservacoesFarmaceuticas,
-    textoObservacoesFarmaceuticas,
-    fecharModalObservacoesFarmaceuticas,
-    abaExcluirObservacoesFarmaceuticas,
-    excluirObservacoesFarmaceuticas,
-    containerCategoriaDuvidaTecnicas,
-    textoDuvidasTecnicas,
-    containerColaboradores,
-    responsavelRespostas,
-    enviarDuvidasTecnicas,
-    fecharModalDuvidasTecnicas,
-    acessarDuvidasTecnicas,
-    containerResponsavelRespostaDuvidasTecnicas,
-    ResponsavelRespostaDuvidasTecnicas,
-    responsavelAtualRespostaDuvidasTecnicas,
-    marcarDuvidasTecnicaResolvidas,
-    excluirDuvidasTecnicas,
-    statusRespostaDuvidasTecnicas,
-    textoRespostaDuvidasTecnicas,
-    enviarRespostaDuvidasTecnicas,
-
-} = el.Receitas;
+    selectedUser,
+    passwordRecipe,
+    applyUncheckUse,
+    viewRecipes,
+    actions,
+    tabPdfViewRecipes,
+    tabOriginalViewRecipes,
+    internalObservationsTabViewRecipes,
+    tabInformationFcertaViewRecipes,
+    rulerViewRecipes,
+    closeViewRecipes,
+    cloneRecipes,
+    modalObservationsClone,
+    clonePharmaceuticalNotes,
+    deleteRecipes,
+    accessPharmaceuticalObservations,
+    tabAddPharmaceuticalObservations,
+    passwordPharmaceuticalObservations,
+    textPharmaceuticalObservations,
+    closeModalPharmaceuticalObservations,
+    tabDeletePharmaceuticalObservations,
+    deletePharmaceuticalObservations,
+    accessDoubtsTechnical,
+    containerCategoryTechnicalQuestions,
+    textDoubtsTechnical,
+    containerCollaborators,
+    responsibleAnswers,
+    sendQuestionsTechnical,
+    closeModalDoubtsTechnical,
+    updateModalTechnicalQuestions,
+    containerResponsibleResponseQuestionsTechnical,
+    ResponsibleResponseQuestionsTechnical,
+    responsibleCurrentResponseQuestionsTechnical,
+    markDoubtsTechnicalResolved,
+    deleteDoubtsTechnical,
+    statusResponseQuestionsTechniques,
+    textResponseQuestionsTechniques,
+    sendReplyQuestionsTechnical,
+    barProgressSaveRecipe,
+    noMainContact,
+} = el.Recipes;
 
 export const {
-    campoBuscarPedido,
-    buscarFilial,
-    enviarBusca,
-    botaoVisualizar,
-    brasileiro,
-    salvarNumeroChatguru,
-    botaoTempoTratamento,
-    tempoTratamentoPadrao,
-    cabecalhoModalTempoTratamento,
-    salvarTempoTratamento,
-    modalConfirmacaoPedido,
-    modalMensagemPedido,
-    orcamentista,
-    containerFormaPagamento,
-    inserirTempoRepeticao,
-    orcamentoEscolhido,
-    monitoramentoAtendimento,
-    salvarDadosConfirmacaoPedido,
-    canalConfirmacaoPedido,
-    enviarEmailRastreamento,
-    naoMostrarPedidoInclusao,
-    naoMostrarPedidoCaixa,
-    observacaoCaixaBalcao,
-    notaDetalhada,
-    campoStatusPagamento,
-    enderecoEnvioSelecionado,
-    enderecoEnvio,
-    observacaoExpedicao,
-    menuAtendimentos,
-    atendimentosEmAndamento,
-    mostrarTodos,
-    juntocomconfirmacaoPedido,
-    observacaoGeral,
-    PossuiReceita,
-    possuiFormulaEspecial,
-    preVisualizarPedido,
-    fecharPreVisualizarPedido,
-    enviarconfirmarPedido,
-    campoFormaEnvio,
-    campoprometidoPara,
-    campoAromaSache,
-    campoAromaCapsula,
-    dispararMensagemChatguru,
-    campoVincularReceita,
-    relacionarReceitaPedido,
-    botaoDesvincularReceitaTelaAtendimentoAndamento,
-    mostrarPedidosEncerrados,
-    reabrirPedido,
-    confirmaReabrirPedido,
-    containerPedidos,
+    menuServices,
+    servicesInProgress,
+    accessWorkFlowService,
+    parameterSearchCardOrder,
+    cardBudget,
+    buttonLinkRecipeScreenServiceProgress,
+    buttonUnlinkRecipeScreenServiceProgress,
+    fieldLinkRecipe,
+    orderInProgress,
+    buttonView,
+    fieldSearchOrder,
+    searchBranch,
+    sendSearch,
+    brazilian,
+    stranger,
+    useFcertaOriginatingTelephoneNumber,
+    phoneCustomer,
+    dontSendCustomerMessage,
+    languageCustomer,
+    cancelChatguruIntegration,
+    saveNumberChatguru,
+    budgetist,
+    treatmentTimeModalHeader,
+    buttonTimeTreatment,
+    standardTreatmentTime,
+    cancelTimeTreatment,
+    reimportFormulas,
+    saveTimeTreatment,
+    orderMessageModal,
+    modalConfirmationOrder,
+    containerPaymentMethod,
+    chosenBudget,
+    insertRepeatTime,
+    saveDataConfirmationOrder,
+    monitoringService,
+    channelConfirmationOrder,
+    sendEmailTracking,
+    noShowOrderInclusion,
+    noShowOrderCaixa,
+    observationFromCashierToCounter,
+    detailedNote,
+    fieldStatusPayment,
+    shippingAddress,
+    addressShippingSelected,
+    shipmentObservation,
+    fieldFormShipping,
+    juntocomOrderConfirmation,
+    juntocomClinicaHigashi,
+    promisedFieldFor,
+    fieldAromasSachet,
+    aromaCapsuleField,
+    generalObservation,
+    hasRecipe,
+    urgentOrder,
+    cancelOrderConfirmation,
+    sendChatguruMessage,
+    PreViewOrder,
+    closePreViewOrder,
+    sendconfirmOrder,
+    showAll,
+    hasSpecialFormula,
+    generateLinkPayment,
+    relateRecipeOrder,
+    showOrdersClosed,
+    reopenOrder,
+    confirmReopenOrder,
+    userOptions,
+    openModalImportBudget,
+    importBudget,
+    importBranch,
+    importHowNewService,
+    syncBudget,
+    hopscotchConfirmedInformationBoard,
+    budgetHopscotchInformationBoardConfirmed,
+    budgetistFrameInformationAmarelinhaConfirmed,
+    inclusionFrameInformationAmarelinhaConfirmed,
+    attendantHopscotchInformationBoardConfirmed,
+    textFrameInformationHopscotchConfirmed,
+    orderBudgetist,
+    OrderAttendant,
+    containerOrders,
 
-
-} = el.Atendimentos;
-
-const ambiente = Cypress.env('AMBIENTE');
-const dadosAmbiente = Cypress.env(ambiente);
-
+} = el.Services;
 
 
 
@@ -118,160 +190,160 @@ const dadosAmbiente = Cypress.env(ambiente);
 describe('Tela importação de receitas.', function () {
 
     beforeEach(function () {
-        // cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD);
+        // cy.login(el.Login.acess, dataParameters.env.USERADMIN, dataParameters.env.PASSWORD);
     });
 
 
 
-    it.only('Deve confirmar pedido logado com perfil administrador e visualizar informações selecionadas no quadro de informações da amarelinha confirmada.', function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD);
+    it.only('Deve confirmar order logado com perfil administrador e visualizar informações selecionadas no quadro de informações da amarelinha confirmada.', function () {
+        cy.login(el.Login.acess, dataParameters.env.USER_ADMIN, dataParameters.env.PASSWORD);
 
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
-        cy.inserirTempoTratamento('30');
-        cy.confirmarPedido(
-            dadosParametros.formaPagamento.BoletoLiberarSemPgto,
-            dadosParametros.Pedido.tempoRepeticao,
-            dadosParametros.Pedido.textoObservacaoCaixaBalcao,
-            dadosParametros.statusPagamento.NaoPago,
-            dadosParametros.Pedido.textoObservacaoExpedicao,
-            dadosParametros.formaEnvio.Sedex10,
-            dadosParametros.dataFormatada,
-            dadosParametros.aromaSache.Laranja,
-            dadosParametros.aromaCapsula.Framboesa,
-            dadosParametros.Pedido.textoObservacaoGeral
+        cy.getElementAndClick(menuServices, servicesInProgress);
+        cy.viewOrder(el.Services.buttonView);
+        cy.insertTimeTreatment('30');
+        cy.confirmOrder(
+            dataParameters.paymentMethod.BoletoReleaseWithoutPayment,
+            dataParameters.Order.timeRepetition,
+            dataParameters.Order.textObservationCashierCounter,
+            dataParameters.paymentStatus.NotPayed,
+            dataParameters.Order.textNoteShipping,
+            dataParameters.shippingMethod.Sedex10,
+            dataParameters.formattedDate,
+            dataParameters.aromaSachet.Orange,
+            dataParameters.capsuleAroma.Raspberry,
+            dataParameters.Order.textGeneralNote
         );
-        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.get(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
+        cy.get(el.Services.hopscotchConfirmedInformationBoard);
+        cy.get(el.Services.hopscotchConfirmedInformationBoard);
+        cy.get(el.Services.budgetHopscotchInformationBoardConfirmed);
 
     });
 
 
 
-    it('Deve confirmar pedido logado com usuário atendente, logar com usuário distinto do primeiro, reabrir amarelinha, alterar atendente, orçamentista, backoffice, tempo de repetição, dias de tratamento, aroma sachê, aroma capsula, observações e confirmar novamente. Validar se é apresentado informações alterada no quadro de informações da amarelinha confirmada.', function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERADMIN, dadosAmbiente.PASSWORD);
+    it('Deve confirmar order logado com usuário atendente, logar com usuário distinto do primeiro, reabrir amarelinha, alterar atendente, orçamentista, backoffice, tempo de repetição, dias de tratamento, aroma sachê, aroma capsula, observações e confirmar novamente. Validar se é apresentado informações alterada no quadro de informações da amarelinha confirmada.', function () {
+        cy.login(el.Login.acess, dataParameters.env.USER_ADMIN, dataParameters.env.PASSWORD);
 
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
-        cy.inserirTempoTratamento('30');
-        cy.confirmarPedido(
-            dadosParametros.formaPagamento.BoletoLiberarSemPgto,
-            dadosParametros.Pedido.tempoRepeticao,
-            dadosParametros.Pedido.textoObservacaoCaixaBalcao,
-            dadosParametros.statusPagamento.NaoPago,
-            dadosParametros.Pedido.textoObservacaoExpedicao,
-            dadosParametros.formaEnvio.Sedex10,
-            dadosParametros.dataFormatada,
-            dadosParametros.aromaSache.Laranja,
-            dadosParametros.aromaCapsula.Framboesa,
-            dadosParametros.Pedido.textoObservacaoGeral
+        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.viewOrder(el.Services.buttonView);
+        cy.insertTimeTreatment('30');
+        cy.confirmOrder(
+            dataParameters.paymentMethod.BoletoReleaseWithoutPayment,
+            dataParameters.Order.timeRepetition,
+            dataParameters.Order.textObservationCashierCounter,
+            dataParameters.paymentStatus.NotPayed,
+            dataParameters.Order.textNoteShipping,
+            dataParameters.shippingMethod.Sedex10,
+            dataParameters.formattedDate,
+            dataParameters.aromaSachet.Orange,
+            dataParameters.capsuleAroma.Raspberry,
+            dataParameters.Order.textGeneralNote
         );
-        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.get(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
-        const capturarDado = (campoCaptura: string, dadoCapturado: string, localArmazenamento: string): Cypress.Chainable<string> => {
-            return cy.get(campoCaptura)
+        cy.get(el.Services.hopscotchConfirmedInformationBoard);
+        cy.get(el.Services.hopscotchConfirmedInformationBoard);
+        cy.get(el.Services.budgetHopscotchInformationBoardConfirmed);
+        const captureData = (fieldCapture: string, dataCaptured: string, locationStorage: string): Cypress.Chainable<string> => {
+            return cy.get(fieldCapture)
                 .eq(0)
                 .invoke('text')
-                .then((texto) => {
-                    const usuarioMatch = texto.match(/\d+/);
+                .then((text) => {
+                    const userMatch = text.match(/\d+/);
 
-                    if (!usuarioMatch) {
-                        throw new Error(`Usuário inválido: ${texto}`);
+                    if (!userMatch) {
+                        throw new Error(`Usuário inválido: ${text}`);
                     }
-                    const userPedido = (usuarioMatch);
-                    cy.wrap(userPedido)
-                        .as('usuario');
-                    cy.setDadoCapturado(dadoCapturado);
-                    localArmazenamento = dadoCapturado;
+                    const userOrder = (userMatch);
+                    cy.wrap(userOrder)
+                        .as('user');
+                    cy.setCapturedData(dataCaptured);
+                    locationStorage = dataCaptured;
                     cy.log(`Usuário não capturado`);
                 });
         }
 
-        capturarDado(el.Atendimentos.orcamentistaPedido, dadosParametros.Pedido.orcamentista, dadosParametros.Pedido.orcamentista);
-        capturarDado(el.Atendimentos.atendentePedido, dadosParametros.Pedido.atendentePedido, dadosParametros.Pedido.atendentePedido);
-        cy.log(dadosParametros.Pedido.orcamentista);
-        cy.log(dadosParametros.Pedido.atendentePedido);
+        captureData(el.Services.orderBudgetist, dataParameters.Order.budgetist, dataParameters.Order.budgetist);
+        captureData(el.Services.OrderAttendant, el.Services.OrderAttendant, el.Services.OrderAttendant);
+        cy.log(dataParameters.Order.budgetist);
+        cy.log(el.Services.OrderAttendant);
 
 
-        cy.login(el.Login.entrar, dadosAmbiente.USERINCLUSAO, dadosAmbiente.PASSWORD);
+        cy.login(el.Login.acess, dataParameters.env.USER_INCLUSAO, dataParameters.env.PASSWORD);
 
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
-        cy.getElementAndClick(el.Atendimentos.mostrarPedidosEncerrados);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
-        cy.getElementAndClick(el.Atendimentos.reabrirPedido), { timeout: 20000 };
-        cy.getElementAndClick(el.Atendimentos.confirmaReabrirPedido);
+        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick(el.Services.showOrdersClosed);
+        cy.viewOrder(el.Services.buttonView);
+        cy.getElementAndClick(el.Services.reopenOrder), { timeout: 20000 };
+        cy.getElementAndClick(el.Services.confirmReopenOrder);
         cy.wait(2000);
-        cy.confirmarPedido(
-            dadosParametros.formaPagamento.CartaoDebito,
-            dadosParametros.Pedido.tempoRepeticao,
-            dadosParametros.Pedido.textoObservacaoCaixaBalcao,
-            dadosParametros.statusPagamento.Pago,
-            dadosParametros.Pedido.textoObservacaoExpedicao,
-            dadosParametros.formaEnvio.SedexFloripa,
-            dadosParametros.dataFormatada,
-            dadosParametros.aromaSache.Cacau,
-            dadosParametros.aromaCapsula.Cacau,
-            dadosParametros.Pedido.textoObservacaoGeral
+        cy.confirmOrder(
+            dataParameters.paymentMethod.CartaoDebito,
+            dataParameters.Order.timeRepetition,
+            dataParameters.Order.textObservationCashierCounter,
+            dataParameters.paymentStatus.Pago,
+            dataParameters.Order.textNoteShipping,
+            dataParameters.shippingMethod.SedexFloripa,
+            dataParameters.formattedDate,
+            dataParameters.aromaSachet.Cacau,
+            dataParameters.capsuleAroma.Cacau,
+            dataParameters.Order.textGeneralNote
         );
-        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.get(el.Atendimentos.quadroInformacoesAmarelinhaConfirmada);
-        cy.get(el.Atendimentos.orcamentoQuadroInformacoesAmarelinhaConfirmada);
-        capturarDado(el.Atendimentos.orcamentistaPedido, dadosParametros.Pedido.orcamentista, dadosParametros.Pedido.orcamentista);
-        capturarDado(el.Atendimentos.atendentePedido, dadosParametros.Pedido.atendentePedido, dadosParametros.Pedido.atendentePedido);
-        cy.log(dadosParametros.Pedido.orcamentista);
-        cy.log(dadosParametros.Pedido.atendentePedido);
+        cy.get(el.Services.hopscotchConfirmedInformationBoard);
+        cy.get(el.Services.hopscotchConfirmedInformationBoard);
+        cy.get(el.Services.budgetHopscotchInformationBoardConfirmed);
+        captureData(el.Services.orderBudgetist, dataParameters.Order.budgetist, dataParameters.Order.budgetist);
+        captureData(el.Services.OrderAttendant, dataParameters.Order.orderAttendant, dataParameters.Order.orderAttendant);
+        cy.log(dataParameters.Order.budgetist);
+        cy.log(dataParameters.Order.orderAttendant);
 
     });
 
 
-    it('Deve confirmar pedido juntocom e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE, dadosAmbiente.PASSWORD);
+    it('Deve confirmar order juntocom e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', function () {
+        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
 
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
-
-    })
-
-    it('Deve confirmar pedido vinculado a receita e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE1, dadosAmbiente.PASSWORD);
-
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
+        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.viewOrder(el.Services.buttonView);
 
     })
 
+    it('Deve confirmar order vinculado a recipe e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', function () {
+        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
 
-    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil farmacêutico.', function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE1, dadosAmbiente.PASSWORD);
-
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
-
-    })
-
-    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil recepção.', function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE1, dadosAmbiente.PASSWORD);
-
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
+        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.viewOrder(el.Services.buttonView);
 
     })
 
-    it('Deve confirmar pedido, logado com perfil atendente.', function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERATENDENTE1, dadosAmbiente.PASSWORD);
 
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
+    it('Deve confirmar order e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil farmacêutico.', function () {
+        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
+
+        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.viewOrder(el.Services.buttonView);
 
     })
 
-    it('Deve confirmar pedido e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil inclusão.', function () {
-        cy.login(el.Login.entrar, dadosAmbiente.USERINCLUSAO, dadosAmbiente.PASSWORD);
+    it('Deve confirmar order e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil recepção.', function () {
+        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
 
-        cy.getElementAndClick(menuAtendimentos, atendimentosEmAndamento); (el.Atendimentos.atendimentosEmAndamento);
-        cy.visualizarPedido(el.Atendimentos.botaoVisualizar);
+        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.viewOrder(el.Services.buttonView);
+
+    })
+
+    it('Deve confirmar order, logado com perfil atendente.', function () {
+        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
+
+        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.viewOrder(el.Services.buttonView);
+
+    })
+
+    it('Deve confirmar order e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil inclusão.', function () {
+        cy.login(el.Login.acess, dataParameters.env.USER_INCLUSAO, dataParameters.env.PASSWORD);
+
+        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.viewOrder(el.Services.buttonView);
 
     })
 

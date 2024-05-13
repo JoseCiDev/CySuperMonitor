@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-      "baseUrl": ".",
+    "baseUrl": ".",
     "target": "es5",
     "lib": [
       "es5",
@@ -14,6 +14,6 @@
   "include": [
     "**/*.ts",
     "../cypress.d.ts",
-    "support/e2e.ts"
-, "integration/Receita/ImportarReceita/ImportarReceita.ts", "integration/Configuracoes/Clusters/RelacoesClusterMedicoAtendente.ts"  ]
+    "support/e2e.ts",
+  ]
 }
