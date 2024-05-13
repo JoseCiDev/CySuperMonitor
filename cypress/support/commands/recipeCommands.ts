@@ -828,7 +828,7 @@ Cypress.Commands.add('importRecipe', (
             }
         });
     });
-cy.pause();
+
     cy.getElementAndCheck(`input[name="receita_tipo"][value="${dataParameters.Recipe.import.recipeType}"]`)
 
 
