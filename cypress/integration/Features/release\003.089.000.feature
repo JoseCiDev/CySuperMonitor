@@ -1156,7 +1156,7 @@ Feature: Conferência de Saída
     @RemoverPendencia
     Scenario: Remover pendência de saída
         Given que estou na tela de pendências de saída
-        When removo a pendência do orçamento "27839/5" 
+        When removo a pendência do orçamento "27839/5"
         Then o orçamento deve ser removido da lista de pendências de saída
         And uma mensagem de confirmação é exibida
 
@@ -1165,3 +1165,83 @@ Feature: Conferência de Saída
         Given que estou na tela de conferência de saída
         When retorno o orçamento para a conferência de entrada
         Then o orçamento deve estar marcado como "retornado para conferência de entrada"
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#=========####################==================EXPEDIÇÃO====================####################==================#
+
+Feature: Expedição de Produtos
+    Como um usuário da expedição
+    Quero gerenciar a expedição dos produtos
+    Para garantir que os produtos sejam entregues corretamente aos clientes
+
+    Background:
+        Given que estou logado no sistema
+
+    @PrepararPostagem
+    Scenario Outline: Preparar postagem
+        Given que estou na tela de preparação de postagem
+        When preencho os detalhes da postagem:
+            | campo                 | valor           |
+            | "Serviço de Postagem" | <servico>       |
+            | "Nome"                | <nome>          |
+            | "Aos Cuidados"        | <aosCuidados>   |
+            | "Email"               | <email>         |
+            | "Endereço Cadastrado" | <endereco>      |
+            | "Dados de Endereço"   | <dadosEndereco> |
+        And clico em "Salvar"
+        Then a postagem deve ser salva com os detalhes:
+            | campo                 | valor           |
+            | "Serviço de Postagem" | <servico>       |
+            | "Nome"                | <nome>          |
+            | "Aos Cuidados"        | <aosCuidados>   |
+            | "Email"               | <email>         |
+            | "Endereço Cadastrado" | <endereco>      |
+            | "Dados de Endereço"   | <dadosEndereco> |
+
+        Examples:
+            | servico            | nome         | aosCuidados    | email              | endereco     | dadosEndereco    |
+            | "Correios"         | "João Silva" | "Maria Souza"  | "joao@example.com" | "Rua 1, 123" | "Apt 2, Bloco B" |
+            | "Transportadora X" | "Ana Lima"   | "Pedro Santos" | "ana@example.com"  | "Av. 2, 456" | "Casa 3"         |
+
+    @VisualizarDados
+    Scenario: Visualizar dados do cliente do pedido
+        Given que estou na tela de expedição
+        When visualizo os dados do cliente do pedido "Pedido123"
+        Then devo ver os dados do cliente "João Silva" com endereço "Rua 1, 123"
+
+    @VisualizarAmarelinha
+    Scenario: Visualizar amarelinha
+        Given que estou na tela de expedição
+        When visualizo a amarelinha do pedido "Pedido123"
+        Then devo ver a confirmação do pedido impressa
+
+    @FinalizarExpedicao
+    Scenario: Finalizar expedição do pedido
+        Given que estou na tela de expedição
+        When finalizo a expedição do pedido "Pedido123" com opção de envio "Expedida" e observações "Entregar pela manhã"
+        Then o pedido "Pedido123" deve estar marcado como "Expedida" com observações "Entregar pela manhã"
+
+    @ExcluirPedido
+    Scenario: Excluir pedido
+        Given que estou na tela de expedição
+        When excluo o pedido "Pedido123"
+        Then o pedido "Pedido123" não deve mais aparecer na lista de pedidos
+
+    @ImprimirEtiqueta
+    Scenario: Imprimir etiqueta
+        Given que estou na tela de expedição
+        When imprimo a etiqueta do pedido "Pedido123"
+        Then a etiqueta deve ser gerada e exibida para impressão
+
+    @ConsultarRastreamento
+    Scenario: Consultar código de rastreamento
+        Given que estou na tela de expedição
+        When consulto o código de rastreamento do pedido "Pedido123"
+        Then devo ver o código de rastreamento "ABC123456"
+
+    @EnviarRastreamento
+    Scenario: Enviar código de rastreamento via email
+        Given que estou na tela de expedição
+        When envio o código de rastreamento do pedido "Pedido123" para o email "joao@example.com"
+        Then o email deve ser enviado com o código de rastreamento "ABC123456"
