@@ -15,19 +15,15 @@
             Quando cliente preenche o endereço com "<endereco>"
             E confirma o pagamento
             Então o pagamento deve ser realizado com sucesso
-            E o endereço "<endereco>" deve ser apresentado na <tela>
-            E a forma de pagamento "<forma_de_pagamento>" deve ser apresentada na tela <tela>
+            E o endereço "<endereco>" deve ser apresentado no atendimento em andamento
+            E a forma de pagamento "<forma_de_pagamento>" deve ser apresentada na tela de atendimento em andamento
 
             Exemplos:
-            | forma_de_pagamento | endereco             | tela                     |
-            | credito            | Rua A, 123, Cidade X | atendimento em andamento |
-            | credito            | Rua A, 123, Cidade X | atendimento encerrado    |
-            | pix                | Rua B, 456, Cidade Y | atendimento em andamento |
-            | pix                | Rua B, 456, Cidade Y | atendimento encerrado    |
-            | indefinido-credito | Rua C, 789, Cidade Z | atendimento em andamento |
-            | indefinido-credito | Rua C, 789, Cidade Z | atendimento encerrado    |
-            | indefinido-pix     | Rua C, 789, Cidade Z | atendimento em andamento |
-            | indefinido-pix     | Rua C, 789, Cidade Z | atendimento encerrado    |
+            | forma_de_pagamento | endereco             |
+            | credito            | Rua A, 123, Cidade X |
+            | pix                | Rua B, 456, Cidade Y |
+            | indefinido-credito | Rua C, 789, Cidade Z |
+            | indefinido-pix     | Rua C, 789, Cidade Z |
 
             @funcional
             @forma_pagamento
@@ -50,3 +46,28 @@
             | credito            | Rua A, 123, Cidade X | Rua D, 101, Cidade W |
             | pix                | Rua B, 456, Cidade Y | Rua E, 202, Cidade V |
             | indefinido         | Rua C, 789, Cidade Z | Rua F, 303, Cidade U |
+
+    # Tags para categorização dos cenários
+    @funcional
+    Funcionalidade: Reabertura de atendimento e alteração do endereço
+
+    # Background comum para todos os cenários
+    Background:
+            Dado que eu estou logado como um usuário atendente
+
+            # Esquema de Cenário para reabertura de atendimento
+            @funcional
+            @reabertura
+            Esquema do Cenário: Reabrir atendimento e verificar forma de pagamento e endereço
+            Dado que eu estou na tela de atendimento encerrado
+            E eu selecionei a forma de pagamento <forma_de_pagamento>
+            E o endereço preenchido foi "<endereco>"
+            Quando eu reabro o atendimento
+            Então a forma de pagamento "<forma_de_pagamento>" deve ser apresentada na tela de atendimento em andamento
+            E o endereço "<endereco>" deve ser apresentado na tela de atendimento em andamento
+
+            Exemplos:
+            | forma_de_pagamento | endereco             |
+            | credito            | Rua A, 123, Cidade X |
+            | pix                | Rua B, 456, Cidade Y |
+            | indefinido         | Rua C, 789, Cidade Z |
