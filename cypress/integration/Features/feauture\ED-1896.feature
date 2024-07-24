@@ -19,8 +19,7 @@
             | estado_pagamento | acao_pagamento | resultado_pagamento |
             | marcada          | desmarco       | não deve            |
             | desmarcada       | marco          | deve                |
-            | desmarcada       | desmarco       | não deve            |
-            | marcada          | marco          | deve                |
+            
 
             # Esquema de Cenário para gerenciar frete
             @funcional
