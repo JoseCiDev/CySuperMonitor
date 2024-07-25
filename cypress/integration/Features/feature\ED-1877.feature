@@ -21,7 +21,7 @@ Feature: Desvincular receita de atendimento encerrado
       | atendimento encerrado | alexsandra.ferreira | encerrado         |
 
 
-@nao_functional
+@non_functional
 Feature: Desvincular receita de atendimento em andamento
 
   Background:
