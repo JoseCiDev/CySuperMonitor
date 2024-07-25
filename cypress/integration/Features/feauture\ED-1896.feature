@@ -1,4 +1,3 @@
-    # Tags para categorização dos cenários
     @funcional
     Funcionalidade: Gerenciamento de opções de pagamento e frete na tela de atendimento em andamento
 
@@ -19,7 +18,7 @@
             | estado_pagamento | acao_pagamento | resultado_pagamento |
             | marcada          | desmarco       | não deve            |
             | desmarcada       | marco          | deve                |
-            
+
 
             # Esquema de Cenário para gerenciar frete
             @funcional
