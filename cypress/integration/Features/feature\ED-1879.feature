@@ -1,8 +1,8 @@
 Feature: Envio automático de mensagens via WhatsApp para clientes
 
-    # Cenário 1: Confirmar pedido com número de telefone de cliente
+    # Cenário 1: Confirmar pedido com dados de contato de cliente
     Scenario Outline: Enviar mensagem ao confirmar pedido
-        Given O atendente configurou o número de telefone de contato corretamente "<telefone_cliente>"
+        Given O atendente configurou os dados de contato corretamente "<telefone_cliente>"
         And O pedido foi "<acao_pedido>"
         When O sistema processa o pedido
         Then Uma mensagem automática deve ser enviada para o cliente
@@ -12,9 +12,9 @@ Feature: Envio automático de mensagens via WhatsApp para clientes
             | 5548991888641    | confirmado  | 5548988661772       |
 
 
-    # Cenário 2: Confirmar pedido com número de telefone de cliente
+    # Cenário 2: Confirmar pedido com dados de contato de cliente
     Scenario Outline: Enviar mensagem ao confirmar pedido
-        Given O atendente configurou o número de telefone de contato corretamente "<telefone_cliente>"
+        Given O atendente configurou os dados de contato de contato corretamente "<telefone_cliente>"
         And O pedido foi "<acao_pedido>"
         When O sistema processa o pedido
         Then Uma mensagem automática não deve ser enviada para o cliente
@@ -26,7 +26,7 @@ Feature: Envio automático de mensagens via WhatsApp para clientes
 
     # Cenário 4: Configuração para enviar mensagem em dois locais
     Scenario Outline: Enviar mensagem com configuração para enviar mensagem em dois locais
-        Given O atendente configurou o número de contato corretamente como "<telefone_cliente>"
+        Given O atendente configurou os dados de contato corretamente como "<telefone_cliente>"
         And A opção para enviar mensagem está marcada em Configurar contato
         And A opção para enviar mensagem está marcada ao confirmar o pedido
         And O pedido foi "<acao_pedido>"
@@ -40,7 +40,7 @@ Feature: Envio automático de mensagens via WhatsApp para clientes
 
     # Cenário 5: Configuração para não enviar mensagem em dois locais
     Scenario Outline: Não enviar mensagem com configuração para não enviar mensagem em dois locais
-        Given O atendente configurou o número de telefone de contato corretamente como "<telefone_cliente>"
+        Given O atendente configurou os dados de contato corretamente como "<telefone_cliente>"
         And A opção para enviar mensagem está desmarcada em Configurar contato
         And A opção para enviar mensagem está marcada ao confirmar o pedido
         And O pedido foi "<acao_pedido>"
@@ -54,7 +54,7 @@ Feature: Envio automático de mensagens via WhatsApp para clientes
 
     # Cenário 6: Confirmar pedido com cliente diferente de paciente
     Scenario Outline: Enviar mensagem para cliente que não é paciente
-        Given O atendente configurou o contato corretamente como "<telefone_cliente>"
+        Given O atendente configurou os dados de contato corretamente como "<telefone_cliente>"
         And O cliente é "<tipo_cliente>"
         And O pedido foi "<acao_pedido>"
         When O sistema processa o pedido
@@ -67,7 +67,7 @@ Feature: Envio automático de mensagens via WhatsApp para clientes
 
     # Cenário 7: Confirmar pedido com cliente de filiais de manipulados
     Scenario Outline: Enviar mensagem para cliente de filiais de manipulados
-        Given O atendente configurou o número de telefone de contato corretamente como "<telefone_cliente>"
+        Given O atendente configurou os dados de contato corretamente como "<telefone_cliente>"
         And O pedido é de filiais de manipulados
         And O pedido foi "<acao_pedido>"
         When O sistema processa o pedido
@@ -80,7 +80,7 @@ Feature: Envio automático de mensagens via WhatsApp para clientes
 
     # Cenário 8: Confirmar pedido com cliente de injetáveis
     Scenario Outline: Enviar mensagem para cliente de injetáveis
-        Given O atendente configurou o contato corretamente em dados cliente como "<telefone_cliente>"
+        Given O atendente configurou os dados de contato corretamente como "<telefone_cliente>"
         And O cliente é de injetáveis
         And O pedido foi "<acao_pedido>"
         When O sistema processa o pedido
@@ -94,7 +94,7 @@ Feature: Envio automático de mensagens via WhatsApp para clientes
     # Cenário 9: Cliente com mais de um cliente com o mesmo número de telefone
     Scenario Outline: Enviar mensagem quando há mais de um cliente com o mesmo número de telefone
         Given Há mais de um cliente com o número de telefone "<telefone_cliente>"
-        And O atendente configurou o número de telefone de contato corretamente em dados cliente
+        And O atendente configurou os dados de contato corretamente
         And O pedido foi "<acao_pedido>"
         When O sistema processa o pedido
         Then Uma mensagem automática deve ser enviada para "<telefone_cliente>"
@@ -107,10 +107,10 @@ Feature: Envio automático de mensagens via WhatsApp para clientes
 
 
     # Cenário 10: Cliente sem número telefônico
-    Scenario Outline: Não enviar mensagem quando o cliente não tem número telefônico no cadastro e não é configurado em Configurar contato
-        Given O cliente não tem número telefônico no cadastro
-        And O número telefônico não foi configurado em Configurar contato
-        When O salva os dados de contato
+    Scenario Outline: Não enviar mensagem quando o cliente não tem os dados de contato no cadastro e não é configurado no atendimento
+        Given O cliente não tem os dados de contato no cadastro
+        And O número telefônico não foi configurado em Configurar contato, no atendimento
+        When O usuário salva os dados de contato
         Then visualiza mensagem de obrigatoriedade de preenchimento do campo contato telefônico
         And a modal permanece aberta
 
