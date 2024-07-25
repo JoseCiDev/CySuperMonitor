@@ -1,16 +1,16 @@
     # Tags para categorização dos cenários
-    @funcional
+    @functional
     Funcionalidade: Apresentar endereço e forma de pagamento na tela de atendimento
 
     # Background comum para todos os cenários
     Background:
-            Dado que eu estou logado como um usuário atendente
+            Given que eu estou logado como um usuário atendente
 
             # Esquema de Cenário para diferentes formas de pagamento
-            @funcional
+            @functional
             @forma_pagamento
             Esquema do Cenário: Preencher endereço e pagar com sucesso
-            Dado que eu estou na tela de atendimento
+            Given que eu estou na tela de atendimento
             E eu seleciono a forma de pagamento <forma_de_pagamento> e envio link de pagamento ao cliente
             Quando cliente preenche o endereço com "<endereco>"
             E confirma o pagamento
@@ -25,10 +25,10 @@
             | indefinido-credito | Rua C, 789, Cidade Z |
             | indefinido-pix     | Rua C, 789, Cidade Z |
 
-            @funcional
+            @functional
             @forma_pagamento
             Esquema do Cenário: Preencher endereço, pagamento retorna tente novamente, preencher outro endereço e pagar com sucesso
-            Dado que eu estou na tela de atendimento
+            Given que eu estou na tela de atendimento
             E eu seleciono a forma de pagamento <forma_de_pagamento>
             Quando eu preencho o endereço com "<endereco_inicial>"
             E eu confirmo o pagamento
@@ -48,18 +48,18 @@
             | indefinido         | Rua C, 789, Cidade Z | Rua F, 303, Cidade U |
 
     # Tags para categorização dos cenários
-    @funcional
+    @functional
     Funcionalidade: Reabertura de atendimento e alteração do endereço
 
     # Background comum para todos os cenários
     Background:
-            Dado que eu estou logado como um usuário atendente
+            Given que eu estou logado como um usuário atendente
 
             # Esquema de Cenário para reabertura de atendimento
-            @funcional
+            @functional
             @reabertura
             Esquema do Cenário: Reabrir atendimento e verificar forma de pagamento e endereço
-            Dado que eu estou na tela de atendimento encerrado
+            Given que eu estou na tela de atendimento encerrado
             E eu selecionei a forma de pagamento <forma_de_pagamento>
             E o endereço preenchido foi "<endereco>"
             Quando eu reabro o atendimento
