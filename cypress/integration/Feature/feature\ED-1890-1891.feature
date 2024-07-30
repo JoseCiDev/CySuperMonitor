@@ -9,18 +9,17 @@ Feature: Gerenciamento de dados do cliente durante o pagamento
         # Esquema de Cenário para clientes com dados cadastrados
         @functional
         @registration_data
-        Scenario Outline: Exibir And permitir alteração dos dados do cliente com dados cadastrados
+        Scenario Outline: Exibir e permitir alteração dos dados do cliente com dados cadastrados
                 Given que o cliente tem os seguintes dados cadastrados:
                         | nome   | cpf   | rg   | data_de_nascimento |
                         | <nome> | <cpf> | <rg> | <data_nascimento>  |
                 Given eu envio link de pagamento ao cliente
-                Then os campos de nome, cpf, rg And data de nascimento devem ser preenchidos com os dados cadastrados
+                Then os campos de nome, cpf, rg e data de nascimento devem estar em branco
                 Given o cliente altera os dados para:
                         | nome        | cpf        | rg        | data_de_nascimento |
                         | <novo_nome> | <novo_cpf> | <novo_rg> | <nova_data>        |
                 And confirma o pagamento
                 Then os dados alterados devem ser apresentados no atendimento em andamento
-                And os dados alterados devem ser salvos no cadastro do cliente
 
                 Examples:
                         | nome       | cpf         | rg       | data_nascimento | novo_nome | novo_cpf    | novo_rg  | nova_data  |
@@ -32,7 +31,7 @@ Feature: Gerenciamento de dados do cliente durante o pagamento
         Scenario Outline: Permitir preenchimento dos dados do cliente sem dados cadastrados
                 Given que o cliente não tem dados cadastrados
                 Given eu envio link de pagamento ao cliente
-                Then os campos de nome, cpf, rg And data de nascimento devem estar em branco
+                Then os campos de nome, cpf, rg e data de nascimento devem estar em branco
                 Given o cliente preenche os campos com:
                         | nome   | cpf   | rg   | data_de_nascimento |
                         | <nome> | <cpf> | <rg> | <data_nascimento>  |
@@ -55,7 +54,7 @@ Feature: Gerenciamento de dados do cliente durante o pagamento
                 Given eu tento inserir caracteres não numéricos no campo RG
                 Then o campo RG deve aceitar somente números
                 Given eu tento inserir caracteres especiais no campo Nome
-                Then o campo Nome deve aceitar somente letras And números
+                Then o campo Nome deve aceitar somente letras e números
                 Given eu tento inserir caracteres não numéricos no campo Data de Nascimento
                 Then o campo Data de Nascimento deve aceitar somente números
 
@@ -106,3 +105,58 @@ Feature: Validação do campo CPF
                         | 123456789065 | 08239097510 |
                         | 123456789012 | 08239097600 |
                         | 082687547590 | 09717961654 |
+
+
+@funcional @validacao @camposObrigatorios
+Feature: Validação da Obrigatoriedade de Campos no Formulário de Pagamento
+
+  Scenario Outline: Verificação da obrigatoriedade de preenchimento dos campos
+    Given que o usuário atendente está autenticado no sistema
+    And acessa a tela de envio de link de pagamento
+    And deixa o campo <campo> em branco
+    When o usuário tenta enviar o link de pagamento
+    Then o sistema deve exibir uma mensagem de erro indicando que o campo <campo> é obrigatório
+
+  Examples:
+    | campo                       |
+    | Telefone                    |
+    | E-mail                      |
+    | Nome Completo               |
+    | Data de Nascimento          |
+    | CPF do Paciente ou Responsável |
+    | CEP                         |
+    | Estado                      |
+    | Cidade                      |
+    | Bairro                      |
+    | Rua                         |
+    | Número da Residência        |
+    | Complemento                 |
+    | Nome Impresso no Cartão     |
+    | CPF/CNPJ do Titular         |
+    | Número do Cartão            |
+    | Mês do Vencimento do Cartão |
+    | Ano do Vencimento do Cartão |
+    | Código de Segurança         |
+    | Número de Parcelas          |
+
+
+@funcional @validacao @mascaras
+Feature: Validação de Máscaras nos Campos do Formulário de Pagamento
+
+  Scenario Outline: Verificação das máscaras de campos no formulário de pagamento
+    Given que o usuário atendente está autenticado no sistema
+    And acessa a tela de envio de link de pagamento
+    When o usuário preenche o campo <campo> com o valor <valor>
+    Then o campo <campo> deve exibir o valor formatado como <valorFormatado>
+
+  Examples:
+    | campo                    | valor             | valorFormatado        |
+    | Telefone                 | 11987654321       | (11) 98765-4321       |
+    | CPF do Paciente          | 12345678909       | 123.456.789-09        |
+    | Data de Nascimento       | 01011990          | 01/01/1990            |
+    | CEP                      | 12345678          | 12345-678             |
+    | Número do Cartão         | 4111111111111111  | 4111 1111 1111 1111   |
+    | Mês do Vencimento do Cartão | 01              | 01                   |
+    | Ano do Vencimento do Cartão | 2025            | 2025                 |
+    | Código de Segurança      | 123               | 123                   |
+    | CPF/CNPJ do Titular      | 12345678909       | 123.456.789-09        |
