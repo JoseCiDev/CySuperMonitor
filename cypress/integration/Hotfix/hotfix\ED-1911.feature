@@ -72,5 +72,3 @@ Feature: Verificação de Atualização do Status de Pagamento para Pedidos Inje
         Then o sistema deve retornar o status de pagamento atualizado corretamente
         And deve exibir corretamente a forma de pagamento e os dados pessoais preenchidos pelo cliente no momento do pagamento
         And deve garantir que foi feito somente um pagamento para o pedido
-
-
