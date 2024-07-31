@@ -11,6 +11,7 @@ Feature: Alteração de Imagem de Produto
         Then o produto deve ser adicionado ao orçamento com sucesso
         And a imagem do produto deve ser exibida corretamente no selfcheckout com SKU "14585"
 
+
     @edicao_produto
     Scenario: Editar o produto no orçamento
         Given que estou na página de edição de orçamento
@@ -20,6 +21,7 @@ Feature: Alteração de Imagem de Produto
         Then o produto deve ser atualizado no orçamento com sucesso
         And a imagem do produto deve ser exibida corretamente no selfcheckout com SKU "14585"
 
+
     @remocao_produto
     Scenario: Remover o produto do orçamento
         Given que estou na página de edição de orçamento
@@ -27,6 +29,7 @@ Feature: Alteração de Imagem de Produto
         When eu removo o produto do orçamento
         And eu salvo o orçamento
         Then o produto deve ser removido do orçamento com sucesso
+
 
     @validacao_imagem
     Scenario Outline: Validar a imagem do produto no selfcheckout
