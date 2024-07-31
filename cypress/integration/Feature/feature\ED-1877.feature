@@ -18,11 +18,7 @@ Feature: Desvincular receita de atendimento encerrado
       | atendimento encerrado | alexsandra.ferreira | encerrado         |
 
 
-<<<<<<< HEAD:cypress/integration/Feature/feature\ED-1877.feature
 @atendimentoEmAndamento
-=======
-@non_functional
->>>>>>> feature/ED-1877:cypress/integration/Features/feature\ED-1877.feature
 Feature: Desvincular receita de atendimento em andamento
 
   Background:

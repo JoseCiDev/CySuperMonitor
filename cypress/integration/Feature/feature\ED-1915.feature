@@ -5,7 +5,7 @@ Feature: Alteração de Imagem de Produto
     Eu quero criar, editar e remover um produto do orçamento
     Para validar se a alteração da imagem/sku do produto surtiu efeito
 
-    @criacao_produto
+    @productCreation
     Scenario: Criar um orçamento com o produto MONDZ 1 PACOTE 50G ESSENTIAL
 
         Given que estou na página de criação de orçamento
@@ -14,7 +14,7 @@ Feature: Alteração de Imagem de Produto
         Then o produto deve ser adicionado ao orçamento com sucesso
         And a imagem do produto deve ser exibida corretamente no selfcheckout com SKU "14636"
 
-    @criacao_produto
+    @productCreation
     Scenario: Criar um orçamento com o produto MG COMPLEX POTE 90 CAPS ESSENT
 
         Given que estou na página de criação de orçamento
@@ -23,7 +23,7 @@ Feature: Alteração de Imagem de Produto
         Then o produto deve ser adicionado ao orçamento com sucesso
         And a imagem do produto deve ser exibida corretamente no selfcheckout com SKU "15151"
 
-    @edicao_produto
+    @productEdition
     Scenario: Editar o produto MONDZ 1 PACOTE 50G ESSENTIAL no orçamento
 
         Given que estou na página de edição de orçamento
@@ -33,7 +33,7 @@ Feature: Alteração de Imagem de Produto
         Then o produto deve ser atualizado no orçamento com sucesso
         And a imagem do produto deve ser exibida corretamente no selfcheckout com SKU "15151"
 
-    @edicao_produto
+    @productEdition
     Scenario: Editar o produto MG COMPLEX POTE 90 CAPS ESSENT no orçamento
 
         Given que estou na página de edição de orçamento
@@ -43,7 +43,7 @@ Feature: Alteração de Imagem de Produto
         Then o produto deve ser atualizado no orçamento com sucesso
         And a imagem do produto deve ser exibida corretamente no selfcheckout com SKU "14636"
 
-    @remocao_produto
+    @removalProduct
     Scenario: Remover o produto MONDZ 1 PACOTE 50G ESSENTIAL do orçamento
 
         Given que estou na página de edição de orçamento
@@ -52,7 +52,7 @@ Feature: Alteração de Imagem de Produto
         And eu salvo o orçamento
         Then o produto deve ser removido do orçamento com sucesso
 
-    @remocao_produto
+    @removalProduct
     Scenario: Remover o produto MG COMPLEX POTE 90 CAPS ESSENT do orçamento
 
         Given que estou na página de edição de orçamento
@@ -61,7 +61,7 @@ Feature: Alteração de Imagem de Produto
         And eu salvo o orçamento
         Then o produto deve ser removido do orçamento com sucesso
 
-    @validacao_imagem
+    @validation_image
     Scenario Outline: Validar a imagem do produto no selfcheckout
 
         Given que estou na página de selfcheckout
