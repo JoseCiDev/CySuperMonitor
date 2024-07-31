@@ -9,7 +9,7 @@ Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedido
         And seleciona um orçamento com status de pagamento pendente no qual o cliente enviou o comprovante de pagamento.
         When o usuário clica no botão de atualizar status de pagamento
         Then o sistema deve retornar o status de pagamento pago
-        And deve exibir corretamente a forma de pagamento e os dados pessoais preenchidos pelo cliente no momento do pagamento
+        And deve exibir corretamente a forma de pagamento e o endereço do cliente armazenado no fcerta
         And deve garantir que foi feito somente um pagamento para o pedido
 
 
@@ -22,7 +22,7 @@ Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedido
         And seleciona um pedido com status de pagamento pendente no qual o cliente enviou o comprovante de pagamento.
         When o usuário clica no botão de atualizar status de pagamento
         Then o sistema deve retornar o status de pagamento pago
-        And deve exibir corretamente a forma de pagamento e os dados pessoais preenchidos pelo cliente no momento do pagamento
+        And deve exibir corretamente a forma de pagamento e o endereço do cliente armazenado no fcerta
         And deve garantir que foi feito somente um pagamento para o pedido
 
 
@@ -59,7 +59,7 @@ Feature: Verificação de Atualização do Status de Pagamento para Pedidos Mani
         Given que o erro na atualização do status de pagamento foi corrigido
         When o usuário atendente clica no botão de atualizar status de pagamento dentro da tela de atendimento para pedidos manipulados
         Then o sistema deve retornar o status de pagamento atualizado corretamente
-        And deve exibir corretamente a forma de pagamento e os dados pessoais preenchidos pelo cliente no momento do pagamento
+        And deve exibir corretamente a forma de pagamento e o endereço do cliente armazenado no fcerta
         And deve garantir que foi feito somente um pagamento para o pedido
 
 
@@ -70,5 +70,5 @@ Feature: Verificação de Atualização do Status de Pagamento para Pedidos Inje
         Given que o erro na atualização do status de pagamento foi corrigido
         When o usuário atendente clica no botão de atualizar status de pagamento dentro da tela de atendimento para pedidos injetáveis
         Then o sistema deve retornar o status de pagamento atualizado corretamente
-        And deve exibir corretamente a forma de pagamento e os dados pessoais preenchidos pelo cliente no momento do pagamento
+        And deve exibir corretamente a forma de pagamento e o endereço do cliente armazenado no fcerta
         And deve garantir que foi feito somente um pagamento para o pedido
