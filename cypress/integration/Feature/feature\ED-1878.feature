@@ -191,4 +191,3 @@ Feature: Validação dos Limites de Valor para Exibição dos Ícones de Classif
             | 1500.00        | ouro     |
             | 1500.01        | diamante |
             | 2000.00        | diamante |
-
