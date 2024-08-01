@@ -72,3 +72,4 @@ Feature: Geração de Link de Pagamento
     Given que o cliente está preenchendo o formulário de endereço para entrega
     When o cliente tenta prosseguir sem preencher os campos "cep", "endereço", "número", "complemento", "bairro", "uf" e "município"
     Then o sistema deve impedir a continuação e destacar os campos "cep", "endereço", "número", "complemento", "bairro", "uf" e "município" como obrigatórios
+    
