@@ -42,7 +42,7 @@
 Feature: Importar Receitas
     Como um usuário do sistema de farmácia
     Eu quero importar receitas em diferentes formatos
-    Para que eu possa registrar e processar pedidos de medicamentos
+    Para que eu possa registrar e processar orçamentos de medicamentos
 
     Background: Usuário logado e na página de importação de receitas
         Given que o usuário está logado no sistema
@@ -739,8 +739,8 @@ Feature: Gerenciamento de Orçamentos no Backoffice
 #tempo de repeticao
 #canal de fechamento do orçamento
 #enviar email de rastreamento
-#Liberar pedido para INCLUSÃO:
-#Liberar pedido para CAIXA:
+#Liberar orçamento para INCLUSÃO:
+#Liberar orçamento para CAIXA:
 #Observações Caixa / Balcão:
 #Deseja Nota Detalhada:
 #Pago/nao pago
@@ -754,7 +754,7 @@ Feature: Gerenciamento de Orçamentos no Backoffice
 #Aroma / Sachê / Shake / Solução Oral / Caps. Sublingual
 #Observações Gerais
 #Possui Receita:sim/nao/repeticao
-#pedido urgente
+#orçamento urgente
 
 
 #Enviar link de avialiação NPS
@@ -1205,43 +1205,43 @@ Feature: Expedição de Produtos
             | "Transportadora X" | "Ana Lima"   | "Pedro Santos" | "ana@example.com"  | "Av. 2, 456" | "Casa 3"         |
 
     @VisualizarDados
-    Scenario: Visualizar dados do cliente do pedido
+    Scenario: Visualizar dados do cliente do orçamento
         Given que estou na tela de expedição
-        When visualizo os dados do cliente do pedido "Pedido123"
+        When visualizo os dados do cliente do orçamento "Pedido123"
         Then devo ver os dados do cliente "João Silva" com endereço "Rua 1, 123"
 
     @VisualizarAmarelinha
     Scenario: Visualizar amarelinha
         Given que estou na tela de expedição
-        When visualizo a amarelinha do pedido "Pedido123"
-        Then devo ver a confirmação do pedido impressa
+        When visualizo a amarelinha do orçamento "Pedido123"
+        Then devo ver a confirmação do orçamento impressa
 
     @FinalizarExpedicao
-    Scenario: Finalizar expedição do pedido
+    Scenario: Finalizar expedição do orçamento
         Given que estou na tela de expedição
-        When finalizo a expedição do pedido "Pedido123" com opção de envio "Expedida" e observações "Entregar pela manhã"
-        Then o pedido "Pedido123" deve estar marcado como "Expedida" com observações "Entregar pela manhã"
+        When finalizo a expedição do orçamento "Pedido123" com opção de envio "Expedida" e observações "Entregar pela manhã"
+        Then o orçamento "Pedido123" deve estar marcado como "Expedida" com observações "Entregar pela manhã"
 
     @ExcluirPedido
-    Scenario: Excluir pedido
+    Scenario: Excluir orçamento
         Given que estou na tela de expedição
-        When excluo o pedido "Pedido123"
-        Then o pedido "Pedido123" não deve mais aparecer na lista de pedidos
+        When excluo o orçamento "Pedido123"
+        Then o orçamento "Pedido123" não deve mais aparecer na lista de orçamentos
 
     @ImprimirEtiqueta
     Scenario: Imprimir etiqueta
         Given que estou na tela de expedição
-        When imprimo a etiqueta do pedido "Pedido123"
+        When imprimo a etiqueta do orçamento "Pedido123"
         Then a etiqueta deve ser gerada e exibida para impressão
 
     @ConsultarRastreamento
     Scenario: Consultar código de rastreamento
         Given que estou na tela de expedição
-        When consulto o código de rastreamento do pedido "Pedido123"
+        When consulto o código de rastreamento do orçamento "Pedido123"
         Then devo ver o código de rastreamento "ABC123456"
 
     @EnviarRastreamento
     Scenario: Enviar código de rastreamento via email
         Given que estou na tela de expedição
-        When envio o código de rastreamento do pedido "Pedido123" para o email "joao@example.com"
+        When envio o código de rastreamento do orçamento "Pedido123" para o email "joao@example.com"
         Then o email deve ser enviado com o código de rastreamento "ABC123456"

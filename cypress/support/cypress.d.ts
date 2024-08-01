@@ -195,19 +195,19 @@ declare global {
       optionMyAndAllSearchBudget(optionsSearch: string): Chainable<Element>;
 
       /**
-       * * comando customizado para buscar pedidos inserindo orcamento e branch.
+       * * comando customizado para buscar orçamentos inserindo orcamento e branch.
        * @example cy.searchOrder(order,branch)
        */
       searchOrder(order: number, branch: number);
 
       /**
-       * * comando customizado para visulizar pedidos.
+       * * comando customizado para visulizar orçamentos.
        * @example cy.viewOrder(buttonView)
        */
       viewOrder(buttonView): Chainable<Element>;
 
       /**
-       * * comando customizado para reabrir pedidos.
+       * * comando customizado para reabrir orçamentos.
        * @example cy.reopenOrder(order,branch)
        */
       reopenOrder(order: number, branch: number);
@@ -219,7 +219,7 @@ declare global {
       insertTimeTreatment(timeTreatment: string): Chainable<Element>;
 
       /**
-       * * comando customizado para confirmar pedidos.
+       * * comando customizado para confirmar orçamentos.
        * @example cy.confirmOrder(dataParameters.formaPagamento.Boleto,
             dataParameters.Pedido.timeRepetition,
             dataParameters.Pedido.buttonViewtextObservationCashierCounter,

@@ -49,7 +49,7 @@ Feature: Geração de Link de Pagamento
     When o cliente tenta alterar o endereço de entrega
     Then o sistema não apresenta a tela para alteração do endereço
     And deve apresentar a mensagem "Pedido Recebido"
-    And a tela de pedido finalizado com sucesso é exibida
+    And a tela de orçamento finalizado com sucesso é exibida
 
   Scenario: Remoção de endereço antes da confirmação do pagamento
     Given que o cliente preencheu o endereço no formulário de pagamento
@@ -59,8 +59,8 @@ Feature: Geração de Link de Pagamento
 
   Scenario: Alteração de endereço pelo usuário do sistema e visualização pelo cliente e no SuperMonitor
     Given que o usuário do sistema altera o endereço de entrega no cadastro do cliente Fcerta
-    And o cliente visualiza o novo endereço de entrega atualizado na tela de confirmação de pedido
-    When o cliente realiza o pagamento do pedido
+    And o cliente visualiza o novo endereço de entrega atualizado na tela de confirmação de orçamento
+    When o cliente realiza o pagamento do orçamento
     Then o novo endereço de entrega é apresentado no registro do pagamento no SuperMonitor em atendimentos em andamento
 
   Scenario: Cliente não cadastrado visualiza campos de endereço para preenchimento
