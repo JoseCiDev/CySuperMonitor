@@ -158,3 +158,4 @@ Feature: Validação de Máscaras nos Campos do Formulário de Pagamento
             | CEP                         | 12345678         | 12345-678           |
             | Número do Cartão            | 4111111111111111 | 4111 1111 1111 1111 |
             | CPF/CNPJ do Titular         | 12345678909      | 123.456.789-09      |
+            
