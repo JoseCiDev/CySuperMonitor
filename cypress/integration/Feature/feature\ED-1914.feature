@@ -10,6 +10,46 @@
             Quando eu clicar no botão "Efetuar pagamento"
             Então o link de pagamento deve ser salvo
             E o valor do orçamento deve ser salvo
+#---------------------
+#Desktop
+#selfcheckout
+#credito
+#voltandoPagina
+#http://192.168.0.66:9242/payment/Mzc0Mzg2/SFoNJ0RW4TAdbqR9wYFsF8viynYm9JRR
+#http://192.168.0.66:9242/payment/Mzc0Mzg2/SFoNJ0RW4TAdbqR9wYFsF8viynYm9JRR
+#http://192.168.0.66:9242/payment/Mzc0Mzg2/SFoNJ0RW4TAdbqR9wYFsF8viynYm9JRR
+#http://192.168.0.66:9242/payment/Mzc0Mzg2/SFoNJ0RW4TAdbqR9wYFsF8viynYm9JRR
+#http://192.168.0.66:9242/payment/Mzc0Mzg2/SFoNJ0RW4TAdbqR9wYFsF8viynYm9JRR
+#http://192.168.0.66:9242/payment/Mzc0Mzg2/SFoNJ0RW4TAdbqR9wYFsF8viynYm9JRR
+#recarregandoPagina
+#http://192.168.0.66:9242/payment/Mzc0Mzg2/SFoNJ0RW4TAdbqR9wYFsF8viynYm9JRR
+#
+#
+#
+#
+#fechandoPaginaAbrindoNovamente
+#http://192.168.0.66:9422/?key=56P-66ab7c2d5df9b&company=aGtt&orcamento=82883
+#http://192.168.0.66:9422/?key=56P-66ab7c2d5df9b&company=aGtt&orcamento=82883
+#---------------------
+#selfcheckout
+#pix
+##Depois de selecionar a opção credito não é possível selecionar outra forma de pagamento##
+#voltandoPagina
+#recarregandoPagina
+#fechandoPaginaAbrindoNovamente
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#Mobile
+#selfcheckout
+#credito
+#voltandoPagina
+#recarregandoPagina
+#fechandoPaginaAbrindoNovamente
+
+#pix
+#selfcheckout
+#voltandoPagina
+#recarregandoPagina
+#fechandoPaginaAbrindoNovamente
 
             Exemplos:
             | campo     | valor |
