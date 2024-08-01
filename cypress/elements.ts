@@ -374,7 +374,7 @@ export const elements: Elements = {
         buttonUnlinkRecipeScreenServiceProgress: '.r-vinc-rec',
         fieldLinkRecipe: '#receitaCod',
         relateRecipeOrder: '#modal-recipe-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo',
-        // order em andamento em atendimento, elemento foi alterado, lista de pedidos em andamento movido para Recipes -> Importar Atendimentos
+        // order em andamento em atendimento, elemento foi alterado, lista de orçamentos em andamento movido para Recipes -> Importar Atendimentos
         containerOrders: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div > table > tbody > tr',
         orderInProgress: '#side-menu > li.active > ul > li:nth-child(1) > a',
         buttonView: ':nth-child(2) > :nth-child(6) > a.visualizarFvc',

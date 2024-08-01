@@ -753,7 +753,7 @@ Cypress.Commands.add('viewOrder', (buttonView): void => {
         }
 
         if (allOrdersUsed) {
-            throw new Error('Todos os números de pedidos já foram usados.')
+            throw new Error('Todos os números de orçamentos já foram usados.')
         };
 
     });
