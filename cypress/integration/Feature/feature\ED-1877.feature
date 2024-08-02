@@ -1,5 +1,4 @@
-
-@atendimentoEncerrado
+@serviceClosed
 Feature: Desvincular receita de atendimento encerrado
 
   Background:
@@ -18,7 +17,7 @@ Feature: Desvincular receita de atendimento encerrado
       | atendimento encerrado | alexsandra.ferreira | encerrado         |
 
 
-@atendimentoEmAndamento
+@serviceInProgress
 Feature: Desvincular receita de atendimento em andamento
 
   Background:
@@ -35,13 +34,12 @@ Feature: Desvincular receita de atendimento em andamento
       | gerenciar receitas       | jeniffer.santos     | em andamento      |
       | atendimento em andamento | alexsandra.ferreira | em andamento      |
 
-@mensagemAviso
+@messageWarning
 Feature: Validar mensagem de aviso ao desvincular receita
 
   Background:
     Given que eu estou logado como um usuário <usuario> na tela de atendimento <tela>
 
-  # Verificar mensagem de aviso para desvincular receitas vinculadas
   Scenario: Verificar mensagem de aviso para desvincular receitas não vinculadas
     And eu tenho uma receita que está vinculada a atendimento confirmado
     When eu tento desvincular a receita

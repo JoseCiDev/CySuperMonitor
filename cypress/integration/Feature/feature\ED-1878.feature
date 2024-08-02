@@ -1,6 +1,6 @@
 #/home/jose/projetos/CySuperMonitor/cypress/integration/Feature/feature\ED-1878.feature
 
-@funcional @visualizacao @orcamento
+@functional  @value @serviceInProgress
 Feature: Exibição do Valor do Orçamento na Tela de Atendimento
 
     Scenario: Exibição do valor do orçamento na tela de visualização do atendimento
@@ -10,7 +10,7 @@ Feature: Exibição do Valor do Orçamento na Tela de Atendimento
         Then o valor do orçamento deve ser exibido em reais acima da informação de débito e crédito do cliente.
 
 
-@funcional @classificacao @atendimentosAndamento
+@functional  @ratingIcon @serviceInProgress
 Feature: Classificação do Valor do Orçamento na tela de Atendimentos em Andamento
 
     Scenario Outline: Classificação do valor do orçamento na tela de atendimentos em andamento
@@ -26,7 +26,7 @@ Feature: Classificação do Valor do Orçamento na tela de Atendimentos em Andam
             | 2000.00        | diamante |
 
 
-@funcional @classificacao @buscasPagamentos
+@functional  @ratingIcon @searchPayments
 Feature: Classificação do Valor do Orçamento na Grid de Pagamentos no Módulo de Buscas
 
     Scenario Outline: Classificação do valor do orçamento na grid de pagamentos no módulo de buscas
@@ -42,7 +42,7 @@ Feature: Classificação do Valor do Orçamento na Grid de Pagamentos no Módulo
             | 2000.00        | diamante |
 
 
-@funcional @classificacao @backofficeAndamento
+@functional  @ratingIcon @backofficeProgress
 Feature: Classificação do Valor do Orçamento na Grid de Backoffice em Andamento
 
     Scenario Outline: Classificação do valor do orçamento na grid da tela de backoffice em andamento
@@ -58,7 +58,7 @@ Feature: Classificação do Valor do Orçamento na Grid de Backoffice em Andamen
             | 2000.00        | diamante |
 
 
-@funcional @criacao @orcamento
+@functional  @value @ratingIcon @createBudget
 Feature: Criação de Orçamento com Valor e Classificação Correta
 
     Scenario Outline: Criação de orçamento com valor e classificação correta
@@ -75,7 +75,7 @@ Feature: Criação de Orçamento com Valor e Classificação Correta
             | 2000.00        | diamante |
 
 
-@funcional @edicao @orcamento
+@functional  @value @ratingIcon @editBudget
 Feature: Edição de Orçamento Alterando o Valor e Classificação Correta
 
     Scenario Outline: Edição de orçamento alterando o valor e classificação correta
@@ -92,7 +92,7 @@ Feature: Edição de Orçamento Alterando o Valor e Classificação Correta
             | 2000.00        | diamante |
 
 
-@funcional @remocao @orcamento
+@functional  @value @ratingIcon @removeProduct
 Feature: Remoção de Produtos do Orçamento Alterando o Valor e Classificação Correta
 
     Scenario Outline: Remoção de produtos do orçamento alterando o valor e classificação correta
@@ -109,7 +109,7 @@ Feature: Remoção de Produtos do Orçamento Alterando o Valor e Classificação
             | 2000.00        | diamante |
 
 
-@funcional @desconto @orcamento
+@functional  @value @ratingIcon @discount
 Feature: Desconto em Produtos do Orçamento Alterando o Valor e Classificação Correta
 
     Scenario Outline: Desconto em produtos do orçamento alterando o valor e classificação correta
@@ -126,7 +126,7 @@ Feature: Desconto em Produtos do Orçamento Alterando o Valor e Classificação 
             | 2000.00        | diamante |
 
 
-@regressivo @validacao @orcamento
+@regressive @createBudget
 Feature: Verificação da Exibição e Classificação Correta do Valor do Orçamento
 
     Scenario Outline: Verificação da exibição e classificação correta do valor do orçamento após criação
@@ -142,7 +142,7 @@ Feature: Verificação da Exibição e Classificação Correta do Valor do Orça
             | 2000.00        | diamante |
 
 
-@regressivo @validacao @orcamento
+@regressive  @editBudget
 Feature: Verificação da Exibição e Classificação Correta do Valor do Orçamento
 
     Scenario Outline: Verificação da exibição e classificação correta do valor do orçamento após edição
@@ -158,7 +158,7 @@ Feature: Verificação da Exibição e Classificação Correta do Valor do Orça
             | 2000.00        | diamante |
 
 
-@regressivo @validacao @orcamento
+@regressive  @removeProduct
 Feature: Verificação da Exibição e Classificação Correta do Valor do Orçamento
 
     Scenario Outline: Verificação da exibição e classificação correta do valor do orçamento após remoção de produtos
@@ -174,7 +174,7 @@ Feature: Verificação da Exibição e Classificação Correta do Valor do Orça
             | 2000.00        | diamante |
 
 
-@funcional @classificacao @limites
+@functional @ratingIcon @limits
 Feature: Validação dos Limites de Valor para Exibição dos Ícones de Classificação do Orçamento
 
     Scenario Outline: Validação dos limites de valor para exibição do ícone de classificação do orçamento

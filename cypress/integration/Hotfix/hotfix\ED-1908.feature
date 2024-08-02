@@ -1,5 +1,5 @@
 #/home/jose/projetos/CySuperMonitor/cypress/integration/Hotfix/hotfix\ED-1908
-@funcional @busca @nomePaciente
+@functional @searchBudget @patientName
 Feature: Busca de Orçamentos por Nome do Paciente
 
   Scenario Outline: Busca de orçamentos antigos por nome do paciente
@@ -18,7 +18,7 @@ Feature: Busca de Orçamentos por Nome do Paciente
       | LARISSA PAULI                |
 
 
-@funcional @busca @nomePrescritor
+@functional @searchBudget @prescriberName
 Feature: Busca de Orçamentos por Nome do Prescritor
 
   Scenario Outline: Busca de orçamentos antigos por nome do prescritor
@@ -37,7 +37,7 @@ Feature: Busca de Orçamentos por Nome do Prescritor
       | Dra. Fernanda Rocha |
 
 
-@funcional @busca @nomeAtendente
+@functional @searchBudget @attendantName
 Feature: Busca de Orçamentos por Nome da Atendente
 
   Scenario Outline: Busca de orçamentos antigos por nome da atendente
@@ -56,7 +56,7 @@ Feature: Busca de Orçamentos por Nome da Atendente
       | Bruno Mendes     |
 
 
-@funcional @busca @numeroOrcamento
+@functional @searchBudget @budgetNumber
 Feature: Busca de Orçamentos por Número do Orçamento
 
   Scenario Outline: Busca de orçamentos antigos por número do orçamento
@@ -75,7 +75,7 @@ Feature: Busca de Orçamentos por Número do Orçamento
       | 44556           |
 
 
-@funcional @busca @statusOrcamento
+@functional @searchBudget @budgetStatus
 Feature: Busca de Orçamentos por Status
 
   Scenario Outline: Busca de orçamentos antigos por status (finalizado ou não)
@@ -92,7 +92,7 @@ Feature: Busca de Orçamentos por Status
       | não finalizado  |
 
 
-@funcional @busca @todosCriterios
+@functional @searchBudget @allCriteria
 Feature: Busca de Orçamentos por Todos os Critérios
 
   Scenario Outline: Busca de orçamentos antigos por todos os critérios
@@ -116,7 +116,7 @@ Feature: Busca de Orçamentos por Todos os Critérios
       | Ana Pereira    | Dra. Fernanda Rocha | Bruno Mendes     | 44556           | todos            | não finalizado  |
 
 
-@regressivo @busca
+@regressive @searchBudget @oldBudget
 Feature: Verificação da Correção da Busca de Orçamentos Antigos
 
   Scenario: Verificação da funcionalidade de busca de orçamentos antigos corrigida

@@ -1,5 +1,5 @@
 #/home/jose/projetos/CySuperMonitor/cypress/integration/Hotfix/hotfix\ED-1908
-@funcional @busca @nomePaciente
+@functional @SearchBudget @patientName
 Feature: Busca de Orçamentos por Nome do Paciente
 
     Scenario Outline: Busca de orçamentos antigos por nome do paciente
@@ -15,8 +15,7 @@ Feature: Busca de Orçamentos por Nome do Paciente
             | LOUISE FABIANA LIMONGI KOVALESKI |
             | LUCA DESCHAMPS GHANEM            |
 
-
-@funcional @busca @nomePrescritor
+@functional @SearchBudget @prescriberName
 Feature: Busca de Orçamentos por Nome do Prescritor
 
     Scenario Outline: Busca de orçamentos antigos por nome do prescritor
@@ -32,8 +31,7 @@ Feature: Busca de Orçamentos por Nome do Prescritor
             | TICIANE ARAGAO DA SILVEIRA GOMES |
             | BRUNO AUGUSTO BARIZZA            |
 
-
-@funcional @busca @nomeAtendente
+@functional @SearchBudget @attendantName
 Feature: Busca de Orçamentos por Nome da Atendente
 
     Scenario Outline: Busca de orçamentos antigos por nome da atendente
@@ -51,8 +49,7 @@ Feature: Busca de Orçamentos por Nome da Atendente
             | Larissa Ferreira |
             | Bruno Mendes     |
 
-
-@funcional @busca @numeroOrcamento
+@functional @SearchBudget @budgetNumber
 Feature: Busca de Orçamentos por Número do Orçamento
 
     Scenario Outline: Busca de orçamentos antigos por número do orçamento
@@ -70,8 +67,7 @@ Feature: Busca de Orçamentos por Número do Orçamento
             | 11223           |
             | 44556           |
 
-
-@funcional @busca @statusOrcamento
+@functional @SearchBudget @budgetStatus
 Feature: Busca de Orçamentos por Status
 
     Scenario Outline: Busca de orçamentos antigos por status (finalizado ou não)
@@ -87,8 +83,7 @@ Feature: Busca de Orçamentos por Status
             | finalizado      |
             | não finalizado  |
 
-
-@funcional @busca @todosCriterios
+@functional @SearchBudget @allCriteria
 Feature: Busca de Orçamentos por Todos os Critérios
 
     Scenario Outline: Busca de orçamentos antigos por todos os critérios
@@ -111,8 +106,7 @@ Feature: Busca de Orçamentos por Todos os Critérios
             | Carlos Souza   | Dr. Pedro Costa     | Larissa Ferreira | 11223           | usuário          | finalizado      |
             | Ana Pereira    | Dra. Fernanda Rocha | Bruno Mendes     | 44556           | todos            | não finalizado  |
 
-
-@regressivo @busca
+@regressive @SearchBudget
 Feature: Verificação da Correção da Busca de Orçamentos Antigos
 
     Scenario: Verificação da funcionalidade de busca de orçamentos antigos corrigida

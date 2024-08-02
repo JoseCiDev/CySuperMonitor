@@ -1,133 +1,126 @@
-    #/home/jose/projetos/CySuperMonitor/cypress/integration/Feature/feature\ED-1914.feature
+#/home/jose/projetos/CySuperMonitor/cypress/integration/Feature/feature\ED-1914.feature
+@payment
+Feature: Gerenciamento de opções de pagamento em orçamentos
 
     Background:
-    Dado que estou na página de selfcheckout
-    E estou logado como cliente
+        Given que estou na página de selfcheckout
+        And estou logado como cliente
 
-    @funcional @desktop @mobile @selfcheckout @templateOrcamento @formaPagamentoSelecionada
+    @desktop @selfcheckout @selectPaymentMethod
     Scenario Outline: Possibilitar seleção da forma de pagamento novamente
-        Dado que o checkbox "Permitir pagamento" está marcado
-        E eu já cliquei no botão "Efetuar pagamento" anteriormente
-        E fechei a tela de pagamento
-        Quando eu clicar no botão "Efetuar pagamento" novamente
-        Então devo ser direcionado para a página de seleção de forma de pagamento
-        E as opções de forma de pagamento <paymentMethod> devem ser apresentadas ao cliente.
+        Given que o checkbox "Permitir pagamento" está marcado
+        And eu já cliquei no botão "Efetuar pagamento" anteriormente
+        And fechei a tela de pagamento
+        When eu clicar no botão "Efetuar pagamento" novamente
+        Then devo ser direcionado para a página de seleção de forma de pagamento
+        And as opções de forma de pagamento <paymentMethod> devem ser apresentadas ao cliente.
 
         Examples:
-            | paymentMethod |
-            | crédito       |
-            | PIX           |
+            | formaDePagamento |
+            | crédito          |
+            | PIX              |
 
-
-    @funcional @desktop @mobile @selfcheckout @templateOrcamento @voltandoPagina
+    @mobile @templateOrcamento @returningPage
     Scenario Outline: Direcionar para o mesmo link de pagamento ao clicar em "Efetuar pagamento" novamente
-        Dado que o checkbox "Permitir pagamento" está marcado
-        E eu já cliquei no botão "Efetuar pagamento" anteriormente
-        Quando eu clicar no botão "Efetuar pagamento" novamente
-        E voltar a página anterior
-        Então devo ser direcionado para o mesmo link de pagamento salvo anteriormente
+        Given que o checkbox "Permitir pagamento" está marcado
+        And eu já cliquei no botão "Efetuar pagamento" anteriormente
+        When eu clicar no botão "Efetuar pagamento" novamente
+        And voltar a página anterior
+        Then devo ser direcionado para o mesmo link de pagamento salvo anteriormente
 
         Examples:
-            | paymentMethod |
-            | crédito       |
-            | PIX           |
+            | formaDePagamento |
+            | crédito          |
+            | PIX              |
 
-
-            @funcional @desktop @mobile @selfcheckout @templateOrcamento @linkPagamento
-            Esquema do Cenário: Direcionar para o mesmo link de pagamento ao clicar em "Efetuar pagamento" novamente
-            Dado que o checkbox "Permitir pagamento" está marcado
-            E eu já cliquei no botão "Efetuar pagamento" anteriormente
-            Quando eu clicar no botão "Efetuar pagamento" novamente
-            Então devo ser direcionado para o mesmo link de pagamento salvo anteriormente
+        @desktop  @selfcheckout  @samePaymentLink
+        Esquema do Cenário: Direcionar para o mesmo link de pagamento ao clicar em "Efetuar pagamento" novamente
+        Given que o checkbox "Permitir pagamento" está marcado
+        And eu já cliquei no botão "Efetuar pagamento" anteriormente
+        When eu clicar no botão "Efetuar pagamento" novamente
+        Then devo ser direcionado para o mesmo link de pagamento salvo anteriormente
 
             Exemplos:
-            | clickPrevious | true |
+            | cliqueAnterior | true |
 
-
-    @funcional @desktop @mobile @selfcheckout @templateOrcamento @orcamento
+    @mobile @templateOrcamento @newPaymentLink
     Scenario Outline: Gerar novo link de pagamento quando o valor do orçamento é alterado
-        Dado que o checkbox "Permitir pagamento" está marcado
-        E o valor do <campoAlterado> foi alterado no sistema
-        Quando eu clicar no botão "Efetuar pagamento"
-        Então um novo link de pagamento deve ser gerado
+        Given que o checkbox "Permitir pagamento" está marcado
+        And o valor do <campoAlterado> foi alterado no sistema
+        When eu clicar no botão "Efetuar pagamento"
+        Then um novo link de pagamento deve ser gerado
 
         Examples:
             | campoAlterado |
             | orçamento     |
 
-
-    @funcional @desktop @mobile @selfcheckout @templateOrcamento  @frete
+    @desktop @selfcheckout @shipping
     Scenario Outline: Gerar novo link de pagamento quando o valor do frete é alterado
-        Dado que o checkbox "Permitir pagamento" está marcado
-        E o valor do <campoAlterado> foi alterado no sistema
-        Quando eu clicar no botão "Efetuar pagamento"
-        Então um novo link de pagamento não deve ser gerado
+        Given que o checkbox "Permitir pagamento" está marcado
+        And o valor do <campoAlterado> foi alterado no sistema
+        When eu clicar no botão "Efetuar pagamento"
+        Then um novo link de pagamento não deve ser gerado
         And o valor total deve atualizar conforme o valor do frete
 
         Examples:
             | campoAlterado |
             | frete         |
 
-
-        @funcional @desktop @mobile @selfcheckout @templateOrcamento @semAlteracoes
+        @mobile @templateOrcamento @withoutChanges
         Esquema do Cenário: Manter o mesmo link de pagamento quando o valor do orçamento ou frete não é alterado
-        Dado que o checkbox "Permitir pagamento" está marcado
-        E o valor do <campoAlterado> não foi alterado no sistema
-        Quando realizo alterações no orçamento eu clicar no botão "Efetuar pagamento"
-        Então devo ser direcionado para o mesmo link de pagamento salvo anteriormente
+        Given que o checkbox "Permitir pagamento" está marcado
+        And o valor do <campoAlterado> não foi alterado no sistema
+        When realizo alterações no orçamento eu clicar no botão "Efetuar pagamento"
+        Then devo ser direcionado para o mesmo link de pagamento salvo anteriormente
 
         Examples:
             | campoAlterado |
             | orçamento     |
             | frete         |
 
-
-            @funcional @desktop @mobile @selfcheckout @templateOrcamento @pago
-            Esquema do Cenário: Desabilitar botão "Efetuar pagamento" quando o status do pagamento é "PAGO"
-            Dado que o status do pagamento no GPE é "PAGO"
-            Então o botão "Efetuar pagamento" deve estar desabilitado
+        @desktop @selfcheckout @paymentStatusPaid
+        Esquema do Cenário: Desabilitar botão "Efetuar pagamento" quando o status do pagamento é "PAGO"
+        Given que o status do pagamento no GPE é "PAGO"
+        Then o botão "Efetuar pagamento" deve estar desabilitado
 
             Exemplos:
-            | status_pagamento |
-            | PAGO             |
+            | statusPagamento |
+            | PAGO            |
 
-
-            @funcional @desktop @mobile @selfcheckout @templateOrcamento @rejeitado
-            Esquema do Cenário: Desabilitar botão "Efetuar pagamento" para orçamentos encerrados/rejeitados
-            Dado que o orçamento foi <status>
-            Então o botão "Efetuar pagamento" deve estar desabilitado
+        @mobile @templateOrcamento @budgetRejected
+        Esquema do Cenário: Desabilitar botão "Efetuar pagamento" para orçamentos encerrados/rejeitados
+        Given que o orçamento foi <status>
+        Then o botão "Efetuar pagamento" deve estar desabilitado
 
             Exemplos:
             | status    |
             | encerrado |
             | rejeitado |
 
-
-            @funcional @desktop @mobile @selfcheckout @templateOrcamento @permitirPagamento
-            Esquema do Cenário: Não apresentar botão "Efetuar pagamento" quando o checkbox "Permitir pagamento" está desmarcado
-            Dado que o checkbox "Permitir pagamento" está desmarcado
-            Então o botão "Efetuar pagamento" não deve ser apresentado
-
-            Exemplos:
-            | checkbox_permitir_pagamento |
-            | false                       |
-
-
-            @funcional @desktop @mobile @selfcheckout @templateOrcamento @permitirPagamento
-            Esquema do Cenário: Apresentar botão "Efetuar pagamento" quando o checkbox "Permitir pagamento" está marcado
-            Dado que o checkbox "Permitir pagamento" está marcado
-            Então o botão "Efetuar pagamento" deve ser apresentado
+        @desktop @selfcheckout @allowPayment
+        Esquema do Cenário: Não apresentar botão "Efetuar pagamento" quando o checkbox "Permitir pagamento" está desmarcado
+        Given que o checkbox "Permitir pagamento" está desmarcado
+        Then o botão "Efetuar pagamento" não deve ser apresentado
 
             Exemplos:
-            | checkbox_permitir_pagamento |
-            | true                        |
+            | checkboxPermitirPagamento |
+            | false                     |
 
+        @mobile @templateOrcamento @allowPayment
+        Esquema do Cenário: Apresentar botão "Efetuar pagamento" quando o checkbox "Permitir pagamento" está marcado
+        Given que o checkbox "Permitir pagamento" está marcado
+        Then o botão "Efetuar pagamento" deve ser apresentado
 
+            Exemplos:
+            | checkboxPermitirPagamento |
+            | true                      |
+
+    @desktop @selfcheckout @budgetConfirmed
     Scenario Outline: Apresentar botão "Efetuar pagamento" quando o status do orçamento é "CONFIRMADO"
-            Dado que o status do orçamento é <status>
-            Quando eu visualizar a tela de pagamento
-            Então o botão "Efetuar pagamento" deve ser apresentado
-            E deve possibilitar o cliente pagar após a confirmação
+        Given que o status do orçamento é <status>
+        When eu visualizar a tela de pagamento
+        Then o botão "Efetuar pagamento" deve ser apresentado
+        And deve possibilitar o cliente pagar após a confirmação
 
             Exemplos:
             | status     |

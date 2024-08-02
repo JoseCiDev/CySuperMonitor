@@ -1,5 +1,6 @@
     #/home/jose/projetos/CySuperMonitor/cypress/integration/Hotfix/hotfix\ED-1921.feature
 
+@payment @pix @injectableBudget
     Scenario: Não exibir dados pessoais e endereço ao efetuar pagamento via PIX pelo Easy para orçamentos de injetáveis
         Given que estou na página de pagamento via PIX pelo Easy
         And o orçamento é de injetáveis

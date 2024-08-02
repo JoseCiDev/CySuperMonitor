@@ -1,6 +1,6 @@
 #/home/jose/projetos/CySuperMonitor/cypress/integration/Hotfix/hotfix\ED-1911.feature
 
-@funcional @atualizacao @statusPagamento @pedidoManipulado
+@functional  @paymentStatus @serviceScreen @compoundedMedicationBudget
 Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedidos Manipulados
 
     Scenario: Atualização do status de pagamento dentro da tela de atendimento para orçamentos manipulados
@@ -12,8 +12,7 @@ Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedido
         And deve exibir corretamente a forma de pagamento e o endereço do cliente armazenado no fcerta
         And deve garantir que foi feito somente um pagamento para o orçamento
 
-
-@funcional @atualizacao @statusPagamento @pedidoInjetavel
+@functional @paymentStatus @serviceScreen @injectableBudget
 Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedidos Injetáveis
 
     Scenario: Atualização do status de pagamento dentro da tela de atendimento para orçamentos injetáveis
@@ -25,8 +24,7 @@ Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedido
         And deve exibir corretamente a forma de pagamento e o endereço do cliente armazenado no fcerta
         And deve garantir que foi feito somente um pagamento para o orçamento
 
-
-@funcional @atualizacao @listaAtendimentos @pedidoManipulado
+@functional @paymentStatus @listOfServices @compoundedMedicationBudget
 Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Pedidos Manipulados
 
     Scenario: Atualização do status de pagamento na lista de atendimentos para orçamentos manipulados
@@ -38,8 +36,7 @@ Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Pedi
         And deve garantir que o status de ambos os orçamentos está atualizado para "pago"
         And deve garantir que foi feito somente um pagamento para cada orçamento
 
-
-@funcional @atualizacao @listaAtendimentos @pedidoInjetavel
+@functional @paymentStatus @listOfServices @injectableBudget
 Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Pedidos Injetáveis
 
     Scenario: Atualização do status de pagamento na lista de atendimentos para orçamentos injetáveis
@@ -51,8 +48,7 @@ Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Pedi
         And deve garantir que o status de ambos os orçamentos está atualizado para "pago"
         And deve garantir que foi feito somente um pagamento para cada orçamento
 
-
-@regressivo @atualizacao @statusPagamento @pedidoManipulado
+@regressive  @paymentStatus @compoundedMedicationBudget
 Feature: Verificação de Atualização do Status de Pagamento para Pedidos Manipulados
 
     Scenario: Verificação de atualização correta do status de pagamento na tela de atendimento para orçamentos manipulados
@@ -62,8 +58,7 @@ Feature: Verificação de Atualização do Status de Pagamento para Pedidos Mani
         And deve exibir corretamente a forma de pagamento e o endereço do cliente armazenado no fcerta
         And deve garantir que foi feito somente um pagamento para o orçamento
 
-
-@regressivo @atualizacao @statusPagamento @pedidoInjetavel
+@regressive  @paymentStatus @injectableBudget
 Feature: Verificação de Atualização do Status de Pagamento para Pedidos Injetáveis
 
     Scenario: Verificação de atualização correta do status de pagamento na tela de atendimento para orçamentos injetáveis

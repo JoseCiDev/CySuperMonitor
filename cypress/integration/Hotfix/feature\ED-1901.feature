@@ -1,6 +1,6 @@
 #/home/jose/projetos/CySuperMonitor/cypress/integration/Hotfix/feature\ED-1901.feature
 
-@funcional @criacao
+@functional @createBudget
 Feature: Criação de Orçamento
 
     Scenario Outline: Criação de orçamento 64260/5000 com várias fórmulas e ativos
@@ -21,7 +21,7 @@ Feature: Criação de Orçamento
             | Duo Lipo          | 4                | 3              | 3           |
 
 
-@funcional @edicao
+@functional @editBudget
 Feature: Edição de Orçamento
 
     Scenario Outline: Edição de um orçamento existente
@@ -42,7 +42,7 @@ Feature: Edição de Orçamento
             | Duo Lipo          | 3                | 3              | 3           |
 
 
-@funcional @rejeicao
+@functional @formulaRejection
 Feature: Rejeição de Fórmulas ou Ativos de Orçamento
 
     Scenario: Rejeição de fórmulas ou ativos de um orçamento
@@ -63,7 +63,7 @@ Feature: Rejeição de Fórmulas ou Ativos de Orçamento
             | Duo Lipo          | 3              | 3           |
 
 
-@regressivo @edicao
+@regressive @amountOfMedicine
 Feature: Verificação de Quantidade de Medicamento
 
     Scenario Outline: Verificação da quantidade de medicamento no template de orçamento após criação
