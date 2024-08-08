@@ -39,7 +39,7 @@ Feature: Gerenciamento de dados do cliente durante o pagamento
             | Jose Djalma Ferreira Mendes         | 08239097510 | 6850748     | 1990-01-10     |
 
         @acceptedDataType
-        Cenário: Validar tipos de dados aceitos nos campos de pagamento
+        Scenario: Validar tipos de dados aceitos nos campos de pagamento
         Given que eu estou na tela de pagamento
         Given eu tento inserir caracteres não numéricos no campo CPF
         Then o campo CPF deve aceitar somente números
@@ -71,7 +71,7 @@ Feature: Validação do campo CPF
         Given que eu estou logado como um usuário atendente
         And eu estou na tela de pagamento
 
-        Cenário: Validar o campo CPF
+        Scenario: Validar o campo CPF
         Given que eu estou na tela de pagamento
         Given eu tento inserir caracteres não numéricos no campo CPF
         Then o campo CPF deve aceitar somente números

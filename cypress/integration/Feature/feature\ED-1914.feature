@@ -34,7 +34,7 @@ Feature: Gerenciamento de opções de pagamento em orçamentos
             | PIX              |
 
         @desktop  @selfcheckout  @samePaymentLink
-        Esquema do Cenário: Direcionar para o mesmo link de pagamento ao clicar em "Efetuar pagamento" novamente
+        Scenario Outline: Direcionar para o mesmo link de pagamento ao clicar em "Efetuar pagamento" novamente
         Given que o checkbox "Permitir pagamento" está marcado
         And eu já cliquei no botão "Efetuar pagamento" anteriormente
         When eu clicar no botão "Efetuar pagamento" novamente
@@ -67,7 +67,7 @@ Feature: Gerenciamento de opções de pagamento em orçamentos
             | frete         |
 
         @mobile @templateOrcamento @withoutChanges
-        Esquema do Cenário: Manter o mesmo link de pagamento quando o valor do orçamento ou frete não é alterado
+        Scenario Outline: Manter o mesmo link de pagamento quando o valor do orçamento ou frete não é alterado
         Given que o checkbox "Permitir pagamento" está marcado
         And o valor do <campoAlterado> não foi alterado no sistema
         When realizo alterações no orçamento eu clicar no botão "Efetuar pagamento"
@@ -79,7 +79,7 @@ Feature: Gerenciamento de opções de pagamento em orçamentos
             | frete         |
 
         @desktop @selfcheckout @paymentStatusPaid
-        Esquema do Cenário: Desabilitar botão "Efetuar pagamento" quando o status do pagamento é "PAGO"
+        Scenario Outline: Desabilitar botão "Efetuar pagamento" quando o status do pagamento é "PAGO"
         Given que o status do pagamento no GPE é "PAGO"
         Then o botão "Efetuar pagamento" deve estar desabilitado
 
@@ -88,7 +88,7 @@ Feature: Gerenciamento de opções de pagamento em orçamentos
             | PAGO            |
 
         @mobile @templateOrcamento @budgetRejected
-        Esquema do Cenário: Desabilitar botão "Efetuar pagamento" para orçamentos encerrados/rejeitados
+        Scenario Outline: Desabilitar botão "Efetuar pagamento" para orçamentos encerrados/rejeitados
         Given que o orçamento foi <status>
         Then o botão "Efetuar pagamento" deve estar desabilitado
 
@@ -98,7 +98,7 @@ Feature: Gerenciamento de opções de pagamento em orçamentos
             | rejeitado |
 
         @desktop @selfcheckout @allowPayment
-        Esquema do Cenário: Não apresentar botão "Efetuar pagamento" quando o checkbox "Permitir pagamento" está desmarcado
+        Scenario Outline: Não apresentar botão "Efetuar pagamento" quando o checkbox "Permitir pagamento" está desmarcado
         Given que o checkbox "Permitir pagamento" está desmarcado
         Then o botão "Efetuar pagamento" não deve ser apresentado
 
@@ -107,7 +107,7 @@ Feature: Gerenciamento de opções de pagamento em orçamentos
             | false                     |
 
         @mobile @templateOrcamento @allowPayment
-        Esquema do Cenário: Apresentar botão "Efetuar pagamento" quando o checkbox "Permitir pagamento" está marcado
+        Scenario Outline: Apresentar botão "Efetuar pagamento" quando o checkbox "Permitir pagamento" está marcado
         Given que o checkbox "Permitir pagamento" está marcado
         Then o botão "Efetuar pagamento" deve ser apresentado
 
