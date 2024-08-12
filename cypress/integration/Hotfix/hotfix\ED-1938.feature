@@ -1,46 +1,66 @@
-Feature: Manter o estado dos botões de pausa e atividade extra ao pausar, retomar e gerar relatório
-    Para garantir a consistência e precisão na contabilidade de horas extras
+Feature: Gestão de observações em orçamentos e sua apresentação ao cliente
+    Para garantir que cada orçamento apresente corretamente as observações inseridas
     Como um usuário do sistema
-    Eu quero que o estado dos botões de pausa e atividade extra seja mantido corretamente
-    E quero que o relatório de horas reflita o tempo correto de pausa e atividades extras
+    Eu quero que cada observação seja apresentada corretamente no template do orçamento correspondente
 
-    Background: Usuário autenticado e com atividades em andamento
+    Background: Usuário autenticado e com acesso à criação de orçamentos
     Dado que o usuário está autenticado no sistema
-    E o usuário tem uma atividade extra iniciada
-    E o usuário tem a atividade pausada
+    E o usuário está na página de criação de orçamentos
 
-    Scenario: Iniciar e finalizar a atividade extra
-    Quando o usuário clica no botão de atividade extra para finalizar a atividade
-    Então o botão de atividade extra deve mudar o estado para iniciar atividade extra
-    E o sistema deve registrar o término da atividade extra
-    Quando o usuário clica no botão de atividade extra novamente para iniciar uma nova atividade
-    Então o botão de atividade extra deve mudar o estado para iniciado
-    E o sistema deve criar um novo registro para a atividade extra
+    Scenario: Inserir observação em um orçamento e verificar a exibição correta no template
+    Quando o usuário cria um novo orçamento
+    E o usuário insere uma observação "Protocolos, orçados conforme nosso portfólio."
+    E o usuário gera o template do orçamento
+    Então a observação "Protocolos, orçados conforme nosso portfólio." deve ser exibida no template do orçamento gerado
 
-    Scenario: Pausar e despausar ficha de produção
-    Quando o usuário clica no botão de pausa para despausar a atividade
-    Então o botão de pausa deve mudar o estado para ativo
-    E o sistema deve registrar o tempo de pausa
-    Quando o usuário clica no botão de pausa novamente para pausar a atividade
-    Então o botão de pausa deve mudar o estado para pausado
-    E o sistema deve registrar o tempo de pausa
+    Scenario: Inserir múltiplas observações em orçamentos separados e validar a exibição correta
+    Quando o usuário cria o orçamento "Orçamento A"
+    E o usuário insere a observação "Protocolos, orçados conforme nosso portfólio." no "Orçamento A"
+    E o usuário cria o orçamento "Orçamento B"
+    E o usuário insere a observação "Metilfolato 2,5mg/2mL, Validade: 12/2024." no "Orçamento B"
+    E o usuário envia o link SelfCheckout para o cliente
+    Então o "Orçamento A" deve exibir apenas a observação "Protocolos, orçados conforme nosso portfólio."
+    E o "Orçamento B" deve exibir apenas a observação "Metilfolato 2,5mg/2mL, Validade: 12/2024."
 
-    Scenario: Verificar persistência do estado ao sair e retornar ao app
-    Quando o usuário pausa a ficha e inicia atividade extra
-    E o usuário sai do app
-    E o usuário abre o app novamente
-    Então o botão de pausa deve permanecer no estado pausado
-    E o botão de atividade extra deve permanecer no estado iniciado ou finalizado conforme o estado anterior
-    E o sistema deve impedir que as atividades sejam reiniciadas ou retomadas automaticamente
+    Scenario: Juntar orçamentos e verificar a exibição correta das observações
+    Quando o usuário cria o orçamento "Orçamento A"
+    E o usuário insere a observação "Vitamina B12 50mg + Procaina 1%/ 2ml. EM FALTA, previsão 13/ 08. Após aberto, validade de 90 dias." no "Orçamento A"
+    E o usuário cria o orçamento "Orçamento B"
+    E o usuário insere a observação "Ativo orçado conforme nosso portfólio:
+    - Testosterona Propionato 50mg, orçado Testosterona Propionato (5%) 50mg / 1mL - Veículo Oleoso, Uso Exclusivo IM.
+    Medicamento controlado:
+    Sua receita contém medicamento controlado: TESTOSTERONA PROPIONATO 50MG/1ML. Estamos aceitando receituários de controle especial com assinatura digital.
+    De acordo com a permissão da Anvisa, aceitamos receitas eletrônicas, com assinatura eletrônica e certificado digital pelo ICP-Brasil.
+    Você tem a opção de encaminhar, via Correios, a receita original de controle especial, mas antes solicito que me encaminhe foto da receita, para verificação." no "Orçamento B"
+    E os "Orçamentos A e B" estão juntos
+    Então o "Orçamento A" deve exibir as observações "Vitamina B12 50mg + Procaina 1%/ 2ml. EM FALTA, previsão 13/ 08. Após aberto, validade de 90 dias." e o "Orçamento B" "Ativo orçado conforme nosso portfólio:
+    - Testosterona Propionato 50mg, orçado Testosterona Propionato (5%) 50mg / 1mL - Veículo Oleoso, Uso Exclusivo IM.
+    Medicamento controlado:
+    Sua receita contém medicamento controlado: TESTOSTERONA PROPIONATO 50MG/1ML. Estamos aceitando receituários de controle especial com assinatura digital.
+    De acordo com a permissão da Anvisa, aceitamos receitas eletrônicas, com assinatura eletrônica e certificado digital pelo ICP-Brasil.
+    Você tem a opção de encaminhar, via Correios, a receita original de controle especial, mas antes solicito que me encaminhe foto da receita, para verificação."
+    E não deve exibir observações de orçamentos que não foram incluídos
 
-    Scenario: Conferir tempo de pausa e registros de atividades extras no relatório
-    Quando o usuário administrador consulta o relatório do laboratório
-    Então o relatório deve mostrar corretamente o tempo de pausa
-    E o relatório deve incluir os registros das atividades extras, cada uma com seu tempo correspondente
+    Scenario: Verificar que uma observação de um orçamento não aparece em outro
+    Quando o usuário cria o orçamento "Orçamento A"
+    E o usuário insere a observação "Entregar em 5 dias úteis" no "Orçamento A"
+    E o usuário cria o orçamento "Orçamento B"
+    E o usuário não insere nenhuma observação no "Orçamento B"
+    E o usuário envia o template Selfcheckout para o cliente
+    Então a "Orçamento B" não deve exibir a observação "Entregar em 5 dias úteis"
 
-    Scenario: Verificar contabilidade após múltiplas pausas e retomadas
-Quando o usuário pausa e despausa a atividade várias vezes
-E o usuário pausa e finaliza a atividade extra várias vezes
-E o usuário administrador consulta o relatório do laboratório
-Então o relatório deve mostrar corretamente o tempo total de pausa acumulado
-E o relatório deve incluir todos os registros de atividades extras, cada uma com seu tempo correspondente
+    Scenario: Verificar a junção de orçamentos sem observações
+    Quando o usuário cria o orçamento "Orçamento C"
+    E o usuário não insere nenhuma observação no "Orçamento C"
+    E o usuário cria o orçamento "Orçamento D"
+    E o usuário não insere nenhuma observação no "Orçamento D"
+    E o usuário envia o template Selfcheckout para o cliente
+    Então não deve exibir nenhuma observação
+
+    Scenario: Validar comportamento com observações duplicadas em orçamentos combinados
+    Quando o usuário cria o orçamento "Orçamento A"
+    E o usuário insere a observação "Entregar em 5 dias úteis" no "Orçamento A"
+    E o usuário cria o orçamento "Orçamento B"
+    E o usuário insere a mesma observação "Entregar em 5 dias úteis" no "Orçamento B"
+    E o usuário envia o template Selfcheckout para o cliente
+    Então o a observação "Entregar em 5 dias úteis" deve ser exibida no "Orçamento A" e "Orçamento B"
