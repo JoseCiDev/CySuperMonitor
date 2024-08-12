@@ -53,12 +53,12 @@ Feature: Gestão de Status e Links de Pagamentos
         Then o sistema deve impedir a desativação e exibir uma mensagem de erro "Não é possível desativar um link de pagamento para um orçamento já pago."
 
     Scenario Outline: Sincronizar status do orçamento
-        Given que o orçamento vinculado ao link de pagamento está com status "<status_inicial>"
+        Given que o orçamento vinculado ao link de pagamento está com status "<statusInicial>"
         When o usuário "<acao>" o link de pagamento
-        Then o status do orçamento deve ser atualizado para "<status_atualizado>"
+        Then o status do orçamento deve ser atualizado para "<statusAtualizado>"
 
         Examples:
-            | status_inicial | acao    | status_atualizado |
+            | statusInicial | acao    | statusAtualizado |
             | Em Andamento   | inativa | Em Andamento      |
             | Em Andamento   | ativa   | Em Andamento      |
             | Encerrado      | inativa | Encerrado         |
