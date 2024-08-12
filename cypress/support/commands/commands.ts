@@ -23,15 +23,14 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-/// <reference types="Cypress" />
 /// <reference path="../cypress.d.ts" />
 
 
-
-import { elements as el } from '../../elements'
-import { dataParameters } from '../../DataParameters/dataParameters'
-import { env } from 'process';
-
+import {
+  elements as el,
+  dataParameters,
+  ElementTypeAndValueOpcional,
+} from '../../import'
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
@@ -241,12 +240,13 @@ export const {
 } = el.Services;
 
 
-Cypress.Commands.add('insertFile', (filePath, element, mimeType?): void => {
-  cy.fixture(filePath, 'base64').then((fileContent) => {
-    const name = filePath.split('/').pop();
+Cypress.Commands.add('insertFile', (element, filePath): void => {
+  cy.fixture(filePath, 'base64').then((conteudo_arquivo) => {
+    const nome = filePath.split('/').pop(); // Extract the file name from the fixture path
+    const mimeType = 'image/jpeg';
 
-    const blob = Cypress.Blob.base64StringToBlob(fileContent, mimeType);
-    const file = new File([blob], name, { type: mimeType });
+    const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
+    const file = new File([blob], nome, { type: mimeType });
 
     cy.get(element).then(($element) => {
       const event = new Event('change', { bubbles: true });
@@ -259,118 +259,109 @@ Cypress.Commands.add('insertFile', (filePath, element, mimeType?): void => {
   });
 });
 
+Cypress.Commands.add('readFileFromFixture', (fileName) => {
+  // const filePath = `${dataParameters.filePath}${fileName}`;
+  // return cy.fixture(filePath);
+});
 
 // Cypress.Commands.add('readFile', (fileName) => {
 //   const filePath = `${dataParameters.filePath}${fileName}`;
 //   return cy.fixture(filePath);
 // });
 
-Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
+Cypress.Commands.add('getElementAndClick', (elements: string[]): void => {
   elements.forEach(element => {
-    cy.get(element, { timeout: 20000 }).each(($el) => {
-      cy.wrap($el).click({ timeout: 20000 });
+    cy.get(element, { timeout: 20000 }).then($elements => {
+      if ($elements.length > 0) {
+        cy.wrap($elements.first())
+          .click({ force: true });
+      }
     });
   });
 });
 
-Cypress.Commands.add('getElementAndCheck', (element: string): void => {
-  cy.wrap(null).then(() => {
+Cypress.Commands.add('getElementAndCheck', (elements: ElementTypeAndValueOpcional): void => {
+  elements.forEach(({ element, value }) => {
     cy.get(element, { timeout: 20000 })
-      .as('element')
-      .each(($element) => {
-        cy.wrap($element)
-          .then($elements => {
-            cy.get('@element')
-
-            if ($elements.length > 0) {
-              cy.wrap($elements.first())
-                .check({ timeout: 20000, force: true });
-            } else {
-              cy.wrap($elements.eq(0))
-                .check({ timeout: 20000, force: true });
-            }
-          });
-      })
+      .then($elements => {
+        if ($elements.length > 0) {
+          cy.wrap($elements.first())
+            .check(value, { force: true });
+        }
+      });
   })
 });
 
-Cypress.Commands.add('getElementAndType', (element: string, text?: string): void => {
+Cypress.Commands.add('getElementAndType', (elements: { [key: string]: string }): void => {
   cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 20000 })
-      .each(($input) => {
-        cy.wrap($input)
-          .then(() => {
-            if ($input.length > 1) {
+    Object.entries(elements).forEach(([element, text]) => {
+      cy.get(element, { timeout: 20000 })
+        .each(($input) => {
+          cy.wrap($input)
+            .then(() => {
               cy.wrap($input.first())
-                .clear()
+                .clear({ force: true })
                 .type(text, { timeout: 1000 })
-            } else {
-              cy.wrap($input.eq(0))
-                .clear()
-                .type(text, { timeout: 1000 })
-            }
-          })
-      })
+            })
+            .invoke('val')
+            .then(val => {
+              if (!val) {
+                return cy.wrap({ error: 'Field is empty after typing' });
+              }
+            });
+        })
+    });
   });
 });
 
-Cypress.Commands.add('getRadioOptionByValue', (element: string, value): void => {
-  cy.get(element, { timeout: 20000 })
-    .should('be.visible')
-    .find(`input[type="radio"][value="${value}"]`)
-    .check({ force: true })
-});
-
-Cypress.Commands.add('getSelectOptionByValue', (element: string, value: any): void => {
-  cy.wrap(null).then(() => {
+Cypress.Commands.add('getRadioOptionByValue', (elements: ElementTypeAndValueOpcional): void => {
+  Object.entries(elements).forEach(([element, value]) => {
     cy.get(element, { timeout: 20000 })
-      .each(($select) => {
+      .should('be.visible')
+      .find(`input[type="radio"][value="${value}"]`)
+      .check({ force: true });
+  })
+});
+
+Cypress.Commands.add('getSelectOptionByValue', (elements: ElementTypeAndValueOpcional): void => {
+  Object.entries(elements).forEach(([element, value]) => {
+    cy.get(element, { timeout: 20000 }).then(($select) => {
+      if ($select.length > 0 && $select.is(':visible')) {
         cy.wrap($select)
-          .then(() => {
-            if ($select.length > 0 && $select.is(':visible')) {
-              cy.get(element, { timeout: 20000 })
-                .select(value, { force: true })
-            }
-
-          })
-      })
+          .select(value.value, { force: true });
+      }
+    })
   });
 });
 
-Cypress.Commands.add('getElementAutocompleteTypeAndClick', (element: string, data: string | number, autocomplete: string) => {
+Cypress.Commands.add('getElementAutocompleteTypeAndClick', (elements: { [key: string]: string }, autocomplete: string) => {
   cy.wrap(null).then(() => {
-    cy.get(element, { timeout: 240000 })
+    Object.entries(elements).forEach(([element, text]) => {
+      cy.get(element, { timeout: 20000 })
+        .each(($input) => {
+          cy.wrap($input)
+            .type(text)
+            .then(() => {
+              cy.get(autocomplete)
+                .as('autocompleteAlias')
+                .click({ force: true });
+            })
+        })
+    })
+  });
+});
+
+Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
+  const $aliasModal = Cypress.$(jqueryElement);
+  if (!$aliasModal.each) {
+    cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.');
+  } else {
+    cy.get(element, { timeout: 60000 })
       .as('elementAlias')
-      .each(($input) => {
-        cy.wrap($input)
-          .type(data.toString())
-          .then(() => {
-            if (cy.contains(autocomplete, data).as('autocompleteAlias')) {
-              cy.get('@autocompleteAlias', { timeout: 240000 })
-                .click({ force: true })
-            }
-
-          })
-      })
-  });
+      .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })
+      .click({ force: true, multiple: true, timeout: 5000 });
+  }
 });
-
-Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string, checkType: 'each' | 'visible') => {
-  cy.wrap(null).then(() => {
-    const $aliasModal = Cypress.$(jqueryElement)
-    if (checkType === 'each' && !$aliasModal.each) {
-      cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
-    } else if (checkType === 'visible' && !Cypress.$($aliasModal).is(':visible')) {
-      cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.')
-    } else {
-      cy.get(element, { timeout: 240000 })
-        .as('elementAlias')
-      cy.get('@elementAlias', { timeout: 240000 })
-        .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })
-        .click({ force: true, multiple: true, timeout: 5000 })
-    }
-  });
-})
 
 
 
@@ -387,12 +378,12 @@ Cypress.Commands.add('markUsage', (checkboxMarkUse: string, userMarkUsage: strin
         cy.get(`${checkboxMarkUse} input[type="checkbox"]:checked`, { timeout: 20000 })
           .first()
           .uncheck();
-        cy.getElementAndClick(containerInsertUser);
-        cy.getElementAndType(select, userMarkUsage);
-        cy.getElementAndClick(selectedUser)
-        cy.getElementAndType(passwordRecipe, dataEnvironment.SENHA_RECEITA_USER);
-        cy.getElementAndClick(applyUncheckUse);
-        cy.getElementAndClick(modalMessage);
+        cy.getElementAndClick([containerInsertUser]);
+        cy.getElementAndType({ [select]: userMarkUsage });
+        cy.getElementAndClick([selectedUser])
+        cy.getElementAndType({ [passwordRecipe]: dataEnvironment.SENHA_RECEITA_USER });
+        cy.getElementAndClick([applyUncheckUse]);
+        cy.getElementAndClick([modalMessage]);
         cy.get(`${checkboxMarkUse} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
           .first()
           .check();
@@ -404,9 +395,9 @@ Cypress.Commands.add('markUsage', (checkboxMarkUse: string, userMarkUsage: strin
       };
 
       cy.wait(200);
-      cy.getElementAndClick(btnSuccessModal);
+      cy.getElementAndClick([btnSuccessModal]);
       cy.wait(200);
-      cy.getElementAndClick(modalMessage);
+      cy.getElementAndClick([modalMessage]);
     });
   });
 });

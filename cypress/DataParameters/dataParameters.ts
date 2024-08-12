@@ -1,6 +1,4 @@
-import { faker } from '@faker-js/faker';
-import * as fakerBr from 'faker-br';
-import { format } from 'date-fns';
+
 
 import {
     AromaSachet,
@@ -16,12 +14,17 @@ import {
     RelationshipsPrescriberAttendantAndCluster,
     ShippingMethod,
     TechnicalDoubtCategory,
-    TechnicalDoubtStatus
+    TechnicalDoubtStatus,
+    RecipeReceiptChannel,
+    RecipeImportCluster,
+    SearchOrder,
+    PaymentMethod,
+    faker,
+    fakerBr,
+    format,
+    DataParameters,
+    CheckAndThrowError,
 } from '../import'
-import { RecipeReceiptChannel } from '../import'
-import { RecipeImportCluster } from '../import'
-import { SearchOrder } from '../import'
-import { PaymentMethod } from './Enums/paymentMethod';
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
@@ -30,157 +33,6 @@ const currentDate = new Date();
 const currentdateLessTwoMinutes = new Date(currentDate);
 currentdateLessTwoMinutes.setMinutes(currentDate.getMinutes() - 2);
 const receivingDateRecipe = currentdateLessTwoMinutes.toISOString().slice(0, 16);
-
-
-
-
-
-export type ValidationResult = Cypress.Chainable<{ error?: string; success?: string; }>
-
-
-export interface RecipeImport<S = string> {
-    numberRecipe: S | number;
-    file: S;
-    prescriber: S;
-    suggestionRelationshipPrescriber: boolean;
-    parameterSearchPatient: PatientSearchParameter;
-    patient: S;
-    channelReceiptRecipe: RecipeReceiptChannel;
-    attendantResponsibleRecipes?: boolean | S;
-    cluster?: boolean | RecipeImportCluster | S;
-    receivingDate: S;
-    recipeType: RecipeType;
-    textNoteRecipe: S;
-    urgentRecipes: boolean;
-    clientAlert: boolean;
-    controlledMedication: boolean;
-}
-
-export interface SearchRecipe<S = string> {
-    numberRecipe: S | number;
-    cluster: any;
-    clonePharmaceuticalObservation: boolean;
-    passwordPharmaceuticalObservation: S;
-    textPharmaceuticalObservation: S;
-    textTechnicalQuestion: S;
-    markUserUsage: S;
-    responsibleCurrentAnswerTechnicalQuestion: S;
-    textResponseDoubtTechnical: S;
-    valueJuntocom: S;
-    initialDate: S;
-    finalDate: S;
-    textInternalObservation: S;
-    receivingDate: S;
-    attendantResponsibleRecipes: S;
-}
-
-export interface CheckAndThrowError {
-    condition: boolean;
-    errorMessage: string;
-}
-
-interface DataParameters<S = string> {
-
-    env: {
-        ENV: 1;
-        USER_ADMIN: S;
-        USER_ATENDENTE1: S;
-        USER_ATENDENTE2: S;
-        USER_INCLUSAO: S;
-        USER_CONFENTRADA: S;
-        USER_CONFSAIDA: S;
-        USER_EXPEDICAO: S;
-        PASSWORD: S;
-        BASE_URL_PRODUCTION: S;
-        BASE_URL_HOMOLOG: S;
-        DB_NAME: S;
-        DB_USER: S;
-        DB_HOST: S;
-        DB_PORT: S;
-        DB_PASSWORD: S;
-        RECIPE_PASSWORD_USER: S;
-        AUTH_TOKEN: S;
-        USER_ID: S;
-        USER_PASSWORD: S;
-    }
-
-    Url: {
-        start: S;
-        importRecipes: S;
-        manageRecipes: S;
-        services: S;
-        servicesInProgress: S;
-    };
-
-    User: {
-        userAssigned: S;
-    }
-
-    Recipe: {
-        import: RecipeImport;
-        search: SearchRecipe;
-    };
-
-    Prescriber: {
-        crmPrescriber: S;
-    };
-
-    Patient: {
-        codePatient: S;
-    }
-
-    OrderAndBranch: {
-        order: any;
-        branch: any;
-    };
-
-    filePath: S;
-
-    Order: {
-        timeTreatment: number;
-        timeRepetition: number;
-        textObservationCashierCounter: S;
-        textNoteShipping: S;
-        juntocomOrder: S;
-        textGeneralNote: S;
-        promisedTo: Date;
-        budgetist: S;
-        orderAttendant: S;
-    }
-
-    searchOrder: typeof SearchOrder;
-    paymentStatus: typeof PaymentStatus;
-    paymentMethod: typeof PaymentMethod;
-    orderClosingChannel: typeof OrderClosingChannel;
-    pendingsFilter: typeof PendingsFilter;
-    recipeReceiptChannel: typeof RecipeReceiptChannel;
-    patientSearchParameter: typeof PatientSearchParameter;
-    recipeType: typeof RecipeType;
-
-    recipeImportCluster: typeof RecipeImportCluster;
-    relationshipsPrescriberAttendantAndCluster: typeof RelationshipsPrescriberAttendantAndCluster;
-    pendency: typeof Pendency;
-    // OpcaoParametroBuscaPaciente: typeof OpcaoParametroBuscaPaciente;
-    technicalDoubtCategory: typeof TechnicalDoubtCategory;
-    technicalDoubtStatus: typeof TechnicalDoubtStatus;
-    profile: typeof Profile;
-    shippingMethod: typeof ShippingMethod;
-    aromaSachet: typeof AromaSachet;
-    capsuleAroma: typeof CapsuleAroma;
-    orderHasRecipe: typeof OrderHasRecipe;
-
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 export const dataParameters: DataParameters = {

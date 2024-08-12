@@ -1,9 +1,12 @@
 /// <reference types="cypress" />
 
-import { elements as el } from '../../../elements';
-import { faker } from '@faker-js/faker';
-import { dataParameters } from '../../../DataParameters/dataParameters';
 
+import {
+    elements as el,
+    faker,
+    dataParameters,
+    SearchRecipe,
+} from '../../../import';
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);

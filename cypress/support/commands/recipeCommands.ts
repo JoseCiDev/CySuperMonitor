@@ -23,15 +23,19 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-/// <reference types="Cypress" />
 /// <reference path="../cypress.d.ts" />
 
+import {
+    elements as el,
+    faker,
+    dataParameters,
+    SearchRecipe,
+    mount,
+    RecipeImport,
+    CheckAndThrowError,
+    PriorityRecipe
+} from '../../import';
 
-
-
-import { elements as el } from '../../elements'
-import { RecipeImport, CheckAndThrowError, dataParameters } from '../../DataParameters/dataParameters'
-import { PriorityRecipe } from 'DataParameters/Enums/priorityRecipe';
 
 export const {
     suggestionAutocomplete,
@@ -313,7 +317,7 @@ Cypress.Commands.add('searchRecipe', (
         budgetist?: string,
         attendantResponsibleRecipes?: string
     }) => {
-        cy.getElementAndClick(buttonSearchRecipes);
+        cy.getElementAndClick([buttonSearchRecipes]);
 
         cy.captureRecipeNumber(numberRecipe);
     };
@@ -322,8 +326,8 @@ Cypress.Commands.add('searchRecipe', (
         .as('recipeSearchModal')
     cy.get('@recipeSearchModal')
         .click();
-    cy.getElementAndType(filterDateStartSearchRecipes, params.initialDate);
-    cy.getElementAndType(filterEndDateSearchRecipes, params.finalDate);
+    cy.getElementAndType({ [filterDateStartSearchRecipes]: params.initialDate });
+    cy.getElementAndType({ [filterEndDateSearchRecipes]: params.finalDate });
 
     if (params.cluster) {
         cy.get(clusterSearch)
@@ -333,15 +337,15 @@ Cypress.Commands.add('searchRecipe', (
     }
 
     if (params.pendency) {
-        cy.getSelectOptionByValue(filterPendenciasSearch, params.pendency);
+        cy.getSelectOptionByValue([{ [filterPendenciasSearch]: params.pendency }]);
     }
 
     if (params.channelReceipt) {
-        cy.getSelectOptionByValue(channelReceiptSearch, params.channelReceipt);
+        cy.getSelectOptionByValue([{ [channelReceiptSearch]: params.channelReceipt }]);
     }
 
     if (params.recipe) {
-        cy.getElementAndType(recipeSearch, params.recipe.toString());
+        cy.getElementAndType({ [recipeSearch]: params.recipe.toString() });
     }
 
     if (params.patient) {
@@ -353,39 +357,39 @@ Cypress.Commands.add('searchRecipe', (
     }
 
     if (params.prescriber) {
-        cy.getElementAndType(prescriberSearch, params.prescriber.toString())
+        cy.getElementAndType({ [prescriberSearch]: params.prescriber.toString() })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.order) {
-        cy.getElementAndType(budgetSearch, params.order.toString())
+        cy.getElementAndType({ [budgetSearch]: params.order.toString() })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.lastModifier) {
-        cy.getElementAndType(lastModifierSearch, params.lastModifier.toString())
+        cy.getElementAndType({ [lastModifierSearch]: params.lastModifier.toString() })
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.budgetist) {
-        cy.getElementAndType(budgetistSearch, params.budgetist.toString())
+        cy.getElementAndType({ [budgetistSearch]: params.budgetist.toString() })
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.attendantResponsibleRecipes) {
-        cy.getElementAndType(attendantResponsibleSearch, params.attendantResponsibleRecipes.toString())
+        cy.getElementAndType({ [attendantResponsibleSearch]: params.attendantResponsibleRecipes.toString() })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
-    cy.getElementAndClick(buttonSearchRecipes);
+    cy.getElementAndClick([buttonSearchRecipes]);
 
     cy.captureRecipeNumber(numberRecipe);
 
@@ -397,14 +401,14 @@ Cypress.Commands.add('searchRecipe', (
 
 Cypress.Commands.add('viewRecipe', (openModalviewRecipe: string,): void => {
     cy.getElementAndClick(
-        openModalviewRecipe,
-        tabPdfViewRecipes,
-        tabOriginalViewRecipes,
-        internalObservationsTabViewRecipes,
-        tabInformationFcertaViewRecipes,
-        rulerViewRecipes,
-        rulerViewRecipes,
-        closeViewRecipes
+        [openModalviewRecipe,
+            tabPdfViewRecipes,
+            tabOriginalViewRecipes,
+            internalObservationsTabViewRecipes,
+            tabInformationFcertaViewRecipes,
+            rulerViewRecipes,
+            rulerViewRecipes,
+            closeViewRecipes]
     )
 });
 
@@ -418,19 +422,19 @@ Cypress.Commands.add('cloneRecipe', (cloneRecipe: string): void => {
         cy.get(modalObservationsClone, { timeout: 20000 }).then(($element) => {
 
             if (!$element.is(':visible')) {
-                cy.getElementAndClick(btnModalMessage);
+                cy.getElementAndClick([btnModalMessage]);
             }
             else {
                 if (dataParameters.Recipe.search.clonePharmaceuticalObservation) {
-                    cy.getElementAndClick(btnModalMessage);
+                    cy.getElementAndClick([btnModalMessage]);
                 }
                 if (!dataParameters.Recipe.search.clonePharmaceuticalObservation) {
                     cy.get(clonePharmaceuticalNotes, { timeout: 20000 })
                         .uncheck();
-                    cy.getElementAndClick(btnModalMessage);
+                    cy.getElementAndClick([btnModalMessage]);
                 }
             }
-            cy.getElementAndClick(btnModalMessage);
+            cy.getElementAndClick([btnModalMessage]);
         });
     });
 });
@@ -450,53 +454,53 @@ Cypress.Commands.add('deleteRecipe', (excluir: string): void => {
 
 
 Cypress.Commands.add('insertPharmaceuticalObservation', (accessPharmaceuticalObservations: string, passwordRecipe: string, textNote: string): void => {
-    cy.getElementAndClick(accessPharmaceuticalObservations);
-    cy.getElementAndClick(tabAddPharmaceuticalObservations);
-    cy.getElementAndType(passwordPharmaceuticalObservations, passwordRecipe);
-    cy.getElementAndType(textPharmaceuticalObservations, textNote);
-    cy.getElementAndClick('#modal_receita_add_obs');
-    cy.getElementAndClick(btnModalMessage);
+    cy.getElementAndClick([accessPharmaceuticalObservations]);
+    cy.getElementAndClick([tabAddPharmaceuticalObservations]);
+    cy.getElementAndType({ [passwordPharmaceuticalObservations]: passwordRecipe });
+    cy.getElementAndType({ [textPharmaceuticalObservations]: textNote });
+    cy.getElementAndClick(['#modal_receita_add_obs']);
+    cy.getElementAndClick([btnModalMessage]);
     cy.wait(1000);
     cy.get(modalMessage, { timeout: 60000 })
         .click();
-    cy.getElementAndClick(closeModalPharmaceuticalObservations);
+    cy.getElementAndClick([closeModalPharmaceuticalObservations]);
 });
 
 
 
 Cypress.Commands.add('deletePharmaceuticalObservation', (accessPharmaceuticalObservations: string): void => {
-    cy.getElementAndClick(accessPharmaceuticalObservations);
-    cy.getElementAndClick(tabDeletePharmaceuticalObservations);
-    cy.getElementAndClick(deletePharmaceuticalObservations);
-    cy.getElementAndClick(btnModalMessage);
+    cy.getElementAndClick([accessPharmaceuticalObservations]);
+    cy.getElementAndClick([tabDeletePharmaceuticalObservations]);
+    cy.getElementAndClick([deletePharmaceuticalObservations]);
+    cy.getElementAndClick([btnModalMessage]);
     cy.wait(1000);
     cy.get(modalMessage, { timeout: 60000 })
         .click();
-    cy.getElementAndClick(closeModalPharmaceuticalObservations);
+    cy.getElementAndClick([closeModalPharmaceuticalObservations]);
 });
 
 
 
 Cypress.Commands.add('CreateTechnicalDoubt', (accessingDoubtsTechnical: string, category: string, text: string, responsibleResponseDoubtTechnical: string): void => {
-    cy.getElementAndClick(accessingDoubtsTechnical);
-    cy.getElementAndClick(containerCategoryTechnicalQuestions);
+    cy.getElementAndClick([accessingDoubtsTechnical]);
+    cy.getElementAndClick([containerCategoryTechnicalQuestions]);
     cy.get(select, { timeout: 20000 })
         .type(`${category}{enter}`);
-    cy.getElementAndType(textDoubtsTechnical, text);
-    cy.getElementAndClick(containerCollaborators);
+    cy.getElementAndType({ [textDoubtsTechnical]: text });
+    cy.getElementAndClick([containerCollaborators]);
     cy.get(responsibleAnswers, { timeout: 20000 })
         .type(`${responsibleResponseDoubtTechnical}{enter}`);
-    cy.getElementAndClick(sendQuestionsTechnical);
-    cy.getElementAndClick(btnModalMessage);
-    cy.getElementAndClick(modalMessage);
-    cy.getElementAndClick(closeModalDoubtsTechnical);
-    cy.getElementAndClick(modalMessage);
+    cy.getElementAndClick([sendQuestionsTechnical]);
+    cy.getElementAndClick([btnModalMessage]);
+    cy.getElementAndClick([modalMessage]);
+    cy.getElementAndClick([closeModalDoubtsTechnical]);
+    cy.getElementAndClick([modalMessage]);
 });
 
 
 
 // Cypress.Commands.add('updateModalTechnicalQuestion', (update: string): void => {
-//     cy.getElementAndClick(accessingDoubtsTechnical);
+//     cy.getElementAndClick([accessingDoubtsTechnical]);
 //     cy.getElementAndClick(update)
 //         .should('have.attr', 'disabled');
 //     cy.get(update, { timeout: 20000 }).then(($element) => {
@@ -505,26 +509,26 @@ Cypress.Commands.add('CreateTechnicalDoubt', (accessingDoubtsTechnical: string, 
 //             cy.log('Já pode update a modal.')
 //         }
 //         cy.wait(8000);
-//         cy.getElementAndClick(closeModalDoubtsTechnical);
+//         cy.getElementAndClick([closeModalDoubtsTechnical]);
 //     });
 // });
 
 Cypress.Commands.add('updateModalTechnicalQuestion', (update: string): void => {
-    cy.getElementAndClick(accessDoubtsTechnical);
+    cy.getElementAndClick([accessDoubtsTechnical]);
 
     cy.get(update)
         .should('not.be.disabled')
         .as('buttonUpdate')
         .click();
 
-    cy.getElementAndClick('@buttonUpdate', closeModalDoubtsTechnical);
+    cy.getElementAndClick(['@buttonUpdate', closeModalDoubtsTechnical]);
 });
 
 
 
 
 // Cypress.Commands.add('changeResponsibleDoubtTechinical', (accessingDoubtsTechnical: string, responsibleResponseDoubtTechnical: string): void => {
-//   cy.getElementAndClick(accessingDoubtsTechnical);
+//   cy.getElementAndClick([accessingDoubtsTechnical]);
 
 //   let name;
 //   cy.get(responsibleCurrentResponseQuestionsTechnical, { timeout: 20000 })
@@ -555,15 +559,15 @@ Cypress.Commands.add('updateModalTechnicalQuestion', (update: string): void => {
 //     cy.get(responsibleAnswers, { timeout: 20000 })
 //       .type(`${responsibleResponseDoubtTechnical}{enter}`);
 //     cy.wait(1000);
-//     cy.getElementAndClick(modalMessage);
-//     cy.getElementAndClick(closeModalDoubtsTechnical);
+//     cy.getElementAndClick([modalMessage]);
+//     cy.getElementAndClick([closeModalDoubtsTechnical]);
 //   
 // });
 
 
 
 Cypress.Commands.add('changeResponsibleDoubtTechinical', (accessingDoubtsTechnical: string, responsibleResponseDoubtTechnical: string): void => {
-    cy.getElementAndClick(accessingDoubtsTechnical);
+    cy.getElementAndClick([accessingDoubtsTechnical]);
 
     let allSolved = true;
 
@@ -610,15 +614,15 @@ Cypress.Commands.add('changeResponsibleDoubtTechinical', (accessingDoubtsTechnic
         .click();
     cy.get(responsibleAnswers, { timeout: 20000 })
         .type(`${responsibleResponseDoubtTechnical}{enter}`);
-    cy.getElementAndClick(modalMessage);
-    cy.getElementAndClick(closeModalDoubtsTechnical);
+    cy.getElementAndClick([modalMessage]);
+    cy.getElementAndClick([closeModalDoubtsTechnical]);
 });
 
 
 
 
 Cypress.Commands.add('markDoubtTechnicalSolved', (accessingDoubtsTechnical: string): void => {
-    cy.getElementAndClick(accessingDoubtsTechnical);
+    cy.getElementAndClick([accessingDoubtsTechnical]);
 
     let doubtResolved = false;
     cy.get('#chatDuvTec', { timeout: 20000 }).then(() => {
@@ -636,12 +640,12 @@ Cypress.Commands.add('markDoubtTechnicalSolved', (accessingDoubtsTechnical: stri
 
             $doubt.find('button.resolveDuvT').first().click();
             cy.wait(1000);
-            cy.getElementAndClick(btnModalMessage);
+            cy.getElementAndClick([btnModalMessage]);
             cy.wait(1000);
-            cy.getElementAndClick(modalMessage);
+            cy.getElementAndClick([modalMessage]);
             cy.wait(1000);
             cy.log(`Dúvida técnica ${index + 1} marcada como resolvida.`);
-            cy.getElementAndClick(closeModalDoubtsTechnical);
+            cy.getElementAndClick([closeModalDoubtsTechnical]);
 
             doubtResolved = true;
         });
@@ -652,36 +656,36 @@ Cypress.Commands.add('markDoubtTechnicalSolved', (accessingDoubtsTechnical: stri
 
 
 Cypress.Commands.add('deleteTechnicalQuestion', (accessingDoubtsTechnical: string) => {
-    cy.getElementAndClick(accessingDoubtsTechnical);
+    cy.getElementAndClick([accessingDoubtsTechnical]);
     cy.get(deleteDoubtsTechnical)
         .click()
-    cy.getElementAndClick(btnModalMessage);
+    cy.getElementAndClick([btnModalMessage]);
     cy.wait(1000);
-    cy.getElementAndClick(modalMessage);
+    cy.getElementAndClick([modalMessage]);
     cy.wait(1000);
     cy.log(`Dúvida técnica excluída com sucesso.`);
-    cy.getElementAndClick(closeModalDoubtsTechnical);
+    cy.getElementAndClick([closeModalDoubtsTechnical]);
 });
 
 
 
 
 Cypress.Commands.add('answerDoubtTechnical', (accessingDoubtsTechnical: string, status: string, text: string) => {
-    cy.getElementAndClick(accessingDoubtsTechnical);
+    cy.getElementAndClick([accessingDoubtsTechnical]);
 
     cy.get(statusResponseQuestionsTechniques, { timeout: 20000 })
         .first()
         .select(status);
 
-    cy.getElementAndType(textResponseQuestionsTechniques, text);
+    cy.getElementAndType({ [textResponseQuestionsTechniques]: text });
     cy.get(sendReplyQuestionsTechnical, { timeout: 20000 })
         .first()
         .click();
 
-    cy.getElementAndClick(btnModalMessage);
-    cy.getElementAndClick(modalMessage);
-    cy.getElementAndClick(closeModalDoubtsTechnical);
-    cy.getElementAndClick(modalMessage);
+    cy.getElementAndClick([btnModalMessage]);
+    cy.getElementAndClick([modalMessage]);
+    cy.getElementAndClick([closeModalDoubtsTechnical]);
+    cy.getElementAndClick([modalMessage]);
 })
 
 
@@ -699,20 +703,20 @@ Cypress.Commands.add('searchOrder', (order: number, branch: number) => {
         .type(branch.toString())
         .should('have.value', branch);
 
-    cy.getElementAndClick(showAll);
+    cy.getElementAndClick([showAll]);
 
 });
 
 Cypress.Commands.add('reopenOrder', (order: number, branch: number) => {
     cy.searchOrder(order, branch);
 
-    cy.getElementAndClick(showOrdersClosed);
-    cy.getElementAndClick(sendSearch);
-    cy.getElementAndClick(buttonView);
+    cy.getElementAndClick([showOrdersClosed]);
+    cy.getElementAndClick([sendSearch]);
+    cy.getElementAndClick([buttonView]);
 
-    cy.getElementAndClick(reopenOrder);
-    cy.getElementAndClick(confirmReopenOrder);
-    cy.getElementAndClick(orderMessageModal);
+    cy.getElementAndClick([reopenOrder]);
+    cy.getElementAndClick([confirmReopenOrder]);
+    cy.getElementAndClick([orderMessageModal]);
 })
 
 Cypress.Commands.add('viewOrder', (buttonView): void => {
@@ -728,7 +732,7 @@ Cypress.Commands.add('viewOrder', (buttonView): void => {
             const branch = budget.branchNumber;
 
             cy.searchOrder(order, branch);
-            cy.getElementAndClick(sendSearch);
+            cy.getElementAndClick([sendSearch]);
 
             cy.get(containerOrders).then($element => {
                 if ($element.length < 2) {
@@ -737,7 +741,7 @@ Cypress.Commands.add('viewOrder', (buttonView): void => {
                 }
                 else {
                     allOrdersUsed = false;
-                    cy.getElementAndClick(buttonView);
+                    cy.getElementAndClick([buttonView]);
                     orderViewed;
                 }
 
@@ -773,30 +777,34 @@ Cypress.Commands.add('importRecipe', (
     clientAlert?: string,
     medicineControlled?: string) => {
 
-    cy.getElementAndClick(openModalRegisterRecipes);
+    cy.getElementAndClick([openModalRegisterRecipes]);
 
     cy.insertFile(dataParameters.Recipe.import.file, importImageRecipes);
 
-    cy.getElementAndClick(noMainContact);
+    cy.getElementAndClick([noMainContact]);
 
     cy.getElementAutocompleteTypeAndClick(
-        prescriberRecipes,
-        dataParameters.Recipe.import.prescriber,
+        {
+            [prescriberRecipes]:
+                dataParameters.Recipe.import.prescriber
+        },
         el.Shared.suggestionAutocomplete
     );
 
     cy.waitModalAndClick(btnSuccessModal, btnSuccessModal, 'each');
 
-    cy.getElementAndCheck(dataParameters.Recipe.import.parameterSearchPatient);
-    
+    cy.getElementAndCheck([{ element: dataParameters.Recipe.import.parameterSearchPatient },]);
+
     cy.getElementAutocompleteTypeAndClick(
-        patientRecipes,
-        dataParameters.Recipe.import.patient,
+        {
+            [patientRecipes]:
+                dataParameters.Recipe.import.patient
+        },
         el.Shared.suggestionAutocomplete
     );
 
-    cy.getSelectOptionByValue(channelReceiptImport, dataParameters.Recipe.import.channelReceiptRecipe);
-    
+    cy.getSelectOptionByValue([{ [channelReceiptImport]: dataParameters.Recipe.import.channelReceiptRecipe }]);
+
     cy.wrap(null).then(() => {
         const $aliasResponsibleAttendant = cy.get(responsibleForRecipe);
         $aliasResponsibleAttendant.invoke('val').then((responsibleForRecipe) => {
@@ -805,16 +813,16 @@ Cypress.Commands.add('importRecipe', (
                 cy.log('O teste será prosseguido, pois um atendente responsável já foi designado.');
             }
             if (dataParameters.Recipe.import.attendantResponsibleRecipes) {
+                const attendantResponsible = String(dataParameters.Recipe.import.attendantResponsibleRecipes);
                 cy.getElementAutocompleteTypeAndClick(
-                    String(responsibleForRecipe),
-                    dataParameters.Recipe.import.attendantResponsibleRecipes,
+                    { [atendenteResponsavelString]: attendantResponsible },
                     el.Recipes.autocompleteResponsibleAttendant
                 );
             }
         });
     });
 
-    cy.getElementAndType(dateReceiptRecipes, dataParameters.Recipe.import.receivingDate)
+    cy.getElementAndType({ [dateReceiptRecipes]: dataParameters.Recipe.import.receivingDate })
 
     cy.wrap(null).then(() => {
         const $aliasCluster = cy.get(clusterRecipes);
@@ -824,19 +832,19 @@ Cypress.Commands.add('importRecipe', (
                 cy.log('O teste será prosseguido, pois um cluster já foi designado.');
             }
             if (dataParameters.Recipe.import.cluster) {
-                cy.getSelectOptionByValue(clusterRecipes, dataParameters.Recipe.import.cluster);
+                cy.getSelectOptionByValue([{ [clusterRecipes]: String(dataParameters.Recipe.import.cluster) }]);
             }
         });
     });
 
-    cy.getElementAndCheck(`input[name="receita_tipo"][value="${dataParameters.Recipe.import.recipeType}"]`)
+    cy.getElementAndCheck([{ element: `input[name="receita_tipo"][value="${dataParameters.Recipe.import.recipeType}"]` },])
 
 
     function clickModalButton(btnSelector: string) {
         cy.document().then((doc) => {
             const $btn = doc.querySelector(btnSelector) as HTMLElement;
             if ($btn) {
-                cy.getElementAndClick(btnSelector);
+                cy.getElementAndClick([btnSelector]);
             } else {
                 cy.log('Informativo de Changelog não foi apresentado e, portanto, o teste prosseguirá.');
             }
@@ -887,7 +895,7 @@ Cypress.Commands.add('importRecipe', (
 
 
 
-    cy.getElementAndType(textInternalObservationRecipes, dataParameters.Recipe.import.textNoteRecipe)
+    cy.getElementAndType({ [textInternalObservationRecipes]: dataParameters.Recipe.import.textNoteRecipe })
 
     const checkPriorityRecipe = (importData: any): void => {
         const prioritys: PriorityRecipe[] = [];
@@ -897,7 +905,7 @@ Cypress.Commands.add('importRecipe', (
             }
         }
         for (const priority of prioritys) {
-            cy.getElementAndCheck(priority);
+            cy.getElementAndCheck([{ element: priority },]);
         }
     };
     checkPriorityRecipe(dataParameters.Recipe.import);
@@ -947,7 +955,7 @@ Cypress.Commands.add('importRecipe', (
         }
     }
 
-    cy.getElementAndClick(saveRecipes)
+    cy.getElementAndClick([saveRecipes])
 
     const $progressBar = cy.get(barProgressSaveRecipe).as('barProgressSaveRecipe')
         .then(() => {
@@ -958,12 +966,12 @@ Cypress.Commands.add('importRecipe', (
                     .then(($modal) => {
                         const modalMessage = $modal.text();
                         checkAndThrowError(message, modalMessage);
-                        cy.getElementAndClick(okModalMessage);
+                        cy.getElementAndClick([okModalMessage]);
                     })
                 if (cy.get(openModalRegisterRecipes).should('be.visible')) {
                     cy.wrap(null).then(() => {
                         cy.wait(3000);
-                        cy.getElementAndClick(dateReceiptRecipes, dateReceiptRecipes);
+                        cy.getElementAndClick([dateReceiptRecipes, dateReceiptRecipes]);
                         cy.captureRecipeNumber(numberRecipe);
                         cy.wrap({ success: 'A importação da recipe foi concluída com êxito e o número da recipe foi registrado.' });
                     })

@@ -1,12 +1,12 @@
-// load the global Cypress types
 /// <reference types="cypress" />
-
-import { mount } from 'cypress/react'
-// load the 3rd party command definition
 /// <reference types="cypress-wait-until" />
 
-import { ValidationResult, dataParameters } from '../DataParameters/dataParameters'
-
+import {
+  ElementTypeAndValueOpcional,
+  ValidationResult,
+  dataParameters,
+  mount
+} from '../import'
 
 interface DataHora {
   DATA_FORMATADA: string;
@@ -44,6 +44,12 @@ declare global {
       readFile(fileName: string)
 
       /**
+            * comando customizado para ler arquivos
+      * @example cy.lerArquivo('orcamentoFilial.json')
+        */
+      readFileFromFixture(fileName: string): ValidationResult;
+
+      /**
       * comando customizado para buscar receitas.
       * @example cy.searchRecipe()
       */
@@ -63,34 +69,34 @@ declare global {
       }): Cypress.Chainable<Element>;
 
       /**
-       * comando customizado para capturar elemento e clicar.
-       * @example cy.getElementAndClick(el.elemento)
-       */
-      getElementAndClick(...elements: string[]): Chainable<Element>
+      * comando customizado para selecionar o elemento e clicar.
+      * @example cy.getElementAndClick(el.elemento)
+      */
+      getElementAndClick(elements: string[]): ValidationResult;
+
+      /**
+      * comando customizado de login.
+      * @example cy.getElementAndClick(el.elemento)
+      */
+      getElementAndType(elements: { [key: string]: string }): ValidationResult
 
       /**
        * comando customizado para capturar elemento e marcar checkbox.
        * @example cy.getElementAndCheck(el.elemento)
        */
-      getElementAndCheck(...elements: string[]): Chainable<Element>
-
-      /**
-       * comando customizado de login.
-       * @example cy.getElementAndClick(el.elemento)
-       */
-      getElementAndType(element: string, text?: string): Chainable<Element>
+      getElementAndCheck(elements: ElementTypeAndValueOpcional): ValidationResult;
 
       /**
        * comando customizado para selecionar a opcao radio.
-       * @example cy.getRadioOptionByValue(elemento)
+       * @example cy.getRadioOptionByValue(element,valor)
        */
-      getRadioOptionByValue(element: string, value: any): Chainable<Element>
+      getRadioOptionByValue(elements: ElementTypeAndValueOpcional): ValidationResult
 
       /**
-       * comando customizado de login.
-       * @example cy.selecionarRadioOptionByValue(el.elemento)
-       */
-      getSelectOptionByValue(element: string, value: any): Chainable<Element>
+      * comando customizado para selecionar opção do select.
+      * @example cy.getSelectOptionByValue(el.elemento)
+      */
+      getSelectOptionByValue(elements: ElementTypeAndValueOpcional): ValidationResult;
 
       /**
        * comando customizado para marcar uso em receitas e orçamentos.
@@ -275,10 +281,10 @@ declare global {
       configureRelationshipAtendenteClusterPrescriber(fileName: string): ValidationResult
 
       /**
-     * * comando customizado para selecionar elemento autocomplete apos digitar e capturar sugestão autocomplete clicando.
-     * @example cy.getElementAutocompleteTypeAndClick(orcamentista,atendente)
-     */
-      getElementAutocompleteTypeAndClick(element: string, data: string | number | boolean, autocomplete: string): ValidationResult
+       * * comando customizado para selecionar elemento autocomplete apos digitar e capturar sugestão autocomplete clicando.
+       * @example cy.getElementAutocompleteTypeAndClick(orcamentista,atendente)
+       */
+      getElementAutocompleteTypeAndClick(elements: { [key: string]: string }, autocomplete: string): ValidationResult;
 
       /**
      * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .

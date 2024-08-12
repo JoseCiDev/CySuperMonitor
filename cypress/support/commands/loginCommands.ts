@@ -23,15 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-/// <reference types="Cypress" />
 /// <reference path="../cypress.d.ts" />
 
 
-
-import { elements as el } from '../../elements'
-import { ValidationResult, dataParameters } from '../../DataParameters/dataParameters'
-import { env } from 'process';
-
+import {
+  elements as el,
+  faker,
+  dataParameters,
+  SearchRecipe,
+  mount
+} from '../../import';
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
@@ -300,7 +301,7 @@ Cypress.Commands.add('login', (user: string, password: string, elementError: str
             throw new Error('Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.');
           };
 
-          cy.getElementAndClick(el.Login.acess);
+          cy.getElementAndClick([el.Login.acess]);
 
           cy.get(elementError, { timeout: 60000 })
             .invoke('text')

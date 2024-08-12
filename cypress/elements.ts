@@ -1,4 +1,4 @@
-import { dataParameters } from './DataParameters/dataParameters';
+import { dataParameters } from './import';
 
 
 interface Elements<S = string> {

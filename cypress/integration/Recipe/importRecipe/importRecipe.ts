@@ -1,11 +1,10 @@
 /// <reference types="cypress" />
 
-import { elements as el } from '../../../elements';
-import { } from '../../../support/commands/commands';
-import { faker } from '@faker-js/faker';
-import { dataParameters } from '../../../DataParameters/dataParameters';
-import 'cypress-wait-until';
-
+import {
+    elements as el,
+    faker,
+    dataParameters,
+} from '../../../import';
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
@@ -135,15 +134,15 @@ export const insertInternalObservation = (areaText: string, content: string, use
 };
 
 export const markUrgent = (urgent: string): void => {
-    cy.getElementAndClick(urgent)
+    cy.getElementAndClick([urgent]);
 };
 
 export const markCustomerAlert = (clientAlert: string): void => {
-    cy.getElementAndClick(clientAlert)
+    cy.getElementAndClick([clientAlert])
 };
 
 export const markMedicineControlled = (medicineControlled: string): void => {
-    cy.getElementAndClick(medicineControlled)
+    cy.getElementAndClick([medicineControlled])
 };
 
 export const saveRecipe = (saveImport): void => {
@@ -178,7 +177,7 @@ describe('Tela importação de receitas.', function () {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.getElementAndClick(menuRecipes, menuImportRecipes, menuRecipesReduced);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
     });
 
     it('Deve acessar importar receitas logado com perfil inclusão', function () {
@@ -186,7 +185,7 @@ describe('Tela importação de receitas.', function () {
         cy.login(dataEnvironment.USER_INCLUSAO, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.getElementAndClick(menuRecipes, menuImportRecipes, menuRecipesReduced);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
     })
 
     it('Deve acessar importar receitas logado com perfil conferência de entrada', function () {
@@ -194,7 +193,7 @@ describe('Tela importação de receitas.', function () {
         cy.login(dataEnvironment.USER_CONFENTRADA, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.getElementAndClick(menuRecipes, menuImportRecipes, menuRecipesReduced);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
     })
 
     it('Deve acessar importar receitas logado com perfil conferência de saída', function () {
@@ -202,7 +201,7 @@ describe('Tela importação de receitas.', function () {
         cy.login(dataEnvironment.USER_CONFSAIDA, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.getElementAndClick(menuRecipes, menuImportRecipes, menuRecipesReduced);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
     })
 
     it('Deve acessar importar receitas logado com perfil expedição', function () {
@@ -210,7 +209,7 @@ describe('Tela importação de receitas.', function () {
         cy.login(dataEnvironment.USER_EXPEDICAO, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.getElementAndClick(menuRecipes, menuImportRecipes, menuRecipesReduced);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
     })
 
 
@@ -220,7 +219,7 @@ describe('Tela importação de receitas.', function () {
         cy.login(dataEnvironment.USER_ORCAMENTISTA, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
             assert.exists(result.success, result.error)
         });
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
 
         cy.searchRecipe({
             initialDate: dataParameters.Recipe.search.initialDate,
@@ -236,7 +235,7 @@ describe('Tela importação de receitas.', function () {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
 
         cy.searchRecipe({
             initialDate: dataParameters.Recipe.search.initialDate,
@@ -252,7 +251,7 @@ describe('Tela importação de receitas.', function () {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
 
 
         cy.searchRecipe({
@@ -267,7 +266,7 @@ describe('Tela importação de receitas.', function () {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
         cy.searchRecipe({
             initialDate: dataParameters.Recipe.search.initialDate,
             finalDate: dataParameters.Recipe.search.finalDate,
@@ -280,7 +279,7 @@ describe('Tela importação de receitas.', function () {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
         cy.searchRecipe({
             initialDate: dataParameters.Recipe.search.initialDate,
             finalDate: dataParameters.Recipe.search.finalDate,
@@ -294,7 +293,7 @@ describe('Tela importação de receitas.', function () {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
         cy.searchRecipe({
             initialDate: dataParameters.Recipe.search.initialDate,
             finalDate: dataParameters.Recipe.search.finalDate,
@@ -307,7 +306,7 @@ describe('Tela importação de receitas.', function () {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
         cy.searchRecipe({
             initialDate: dataParameters.Recipe.search.initialDate,
             finalDate: dataParameters.Recipe.search.finalDate,
@@ -320,7 +319,7 @@ describe('Tela importação de receitas.', function () {
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
         cy.searchRecipe({
             initialDate: dataParameters.Recipe.search.initialDate,
             finalDate: dataParameters.Recipe.search.finalDate,
@@ -334,7 +333,7 @@ describe('Tela importação de receitas.', function () {
 
 
     it('Deve realizar marcação de uso nas receitas.', function () {
-        cy.getElementAndClick(menuRecipes, menuImportRecipes);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes]);
 
         cy.markUsage(checkboxMarkUse, dataParameters.Recipe.search.markUserUsage);
     });
@@ -342,7 +341,7 @@ describe('Tela importação de receitas.', function () {
 
 
     it('Deve visualizar receitas', function () {
-        cy.getElementAndClick(menuRecipes, menuImportRecipes, actions);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes, actions]);
 
         cy.viewRecipe(viewRecipes);
     });
@@ -361,11 +360,11 @@ describe('Tela importação de receitas.', function () {
 
     it('Deve excluir receitas.', function () {
 
-        cy.getElementAndClick(menuRecipes, menuImportRecipes, actions);
+        cy.getElementAndClick([menuRecipes, menuImportRecipes, actions]);
 
         cy.deleteRecipe(deleteRecipes);
 
-        cy.getElementAndClick(btnModalMessage);
+        cy.getElementAndClick([btnModalMessage]);
     });
 
 

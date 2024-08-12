@@ -1,10 +1,11 @@
 /// <reference types="cypress" />
-import { elements as el } from '../../../elements';
-import { faker } from '@faker-js/faker';
-import { dataParameters } from '../../../DataParameters/dataParameters'
-import { SearchRecipe } from '../../../DataParameters/dataParameters';
 
-
+import {
+    elements as el,
+    faker,
+    dataParameters,
+    SearchRecipe,
+} from '../../../import';
 
 
 
@@ -120,9 +121,9 @@ describe('Atendimentos em Andamento', function () {
 
 
     it.only('Deve confirmar order', function () {
-        cy.getElementAndClick(btnModalChangelog);
+        cy.getElementAndClick([btnModalChangelog]);
         
-        cy.getElementAndClick(menuServices);
+        cy.getElementAndClick([menuServices]);
         
         cy.get(servicesInProgress).click({force:true});
         
@@ -133,13 +134,13 @@ describe('Atendimentos em Andamento', function () {
 
 
     it('Deve vincular recipe ao order', function () {
-        cy.getElementAndClick(menuServices,servicesInProgress);(servicesInProgress);
+        cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
         cy.viewOrder(buttonView);
         cy.linkOrderRecipe(buttonLinkRecipeScreenServiceProgress, parseInt(dataParameters.Recipe.import.numberRecipe as string));
     });
 
     it('Deve desvincular recipe ao order', function () {
-        cy.getElementAndClick(menuServices,servicesInProgress);(servicesInProgress);
+        cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
         
         cy.viewOrder(buttonView);
         cy.unlinkOrderRecipe(buttonUnlinkRecipeScreenServiceProgress)

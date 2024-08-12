@@ -1,7 +1,31 @@
-import { elements as el } from '../../elements';
-import '../../support/commands';
-import { faker } from '@faker-js/faker';
-import { dataParameters, SearchRecipe } from '../../DataParameters/dataParameters'
+
+
+import {
+    AromaSachet,
+    CapsuleAroma,
+    OrderClosingChannel,
+    OrderHasRecipe,
+    PatientSearchParameter,
+    PaymentStatus,
+    Pendency,
+    PendingsFilter,
+    Profile,
+    RecipeType,
+    RelationshipsPrescriberAttendantAndCluster,
+    ShippingMethod,
+    TechnicalDoubtCategory,
+    TechnicalDoubtStatus,
+    RecipeReceiptChannel,
+    RecipeImportCluster,
+    SearchOrder,
+    PaymentMethod,
+    faker,
+    fakerBr,
+    format,
+    elements as el,
+    SearchRecipe,
+    dataParameters
+} from '../../import'
 
 export const {
     menuRecipes,
@@ -185,6 +209,8 @@ export const {
 } = el.Services;
 
 
+const environment = Cypress.env('ENVIRONMENT');
+const dataEnvironment = Cypress.env(environment);
 
 
 describe('Tela importação de receitas.', function () {
@@ -194,11 +220,13 @@ describe('Tela importação de receitas.', function () {
     });
 
 
-
     it.only('Deve confirmar order logado com perfil administrador e visualizar informações selecionadas no quadro de informações da amarelinha confirmada.', function () {
-        cy.login(el.Login.acess, dataParameters.env.USER_ADMIN, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]);
         cy.viewOrder(el.Services.buttonView);
         cy.insertTimeTreatment('30');
         cy.confirmOrder(
@@ -222,9 +250,12 @@ describe('Tela importação de receitas.', function () {
 
 
     it('Deve confirmar order logado com usuário atendente, logar com usuário distinto do primeiro, reabrir amarelinha, alterar atendente, orçamentista, backoffice, tempo de repetição, dias de tratamento, aroma sachê, aroma capsula, observações e confirmar novamente. Validar se é apresentado informações alterada no quadro de informações da amarelinha confirmada.', function () {
-        cy.login(el.Login.acess, dataParameters.env.USER_ADMIN, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]); (el.Services.servicesInProgress);
         cy.viewOrder(el.Services.buttonView);
         cy.insertTimeTreatment('30');
         cy.confirmOrder(
@@ -267,9 +298,12 @@ describe('Tela importação de receitas.', function () {
         cy.log(el.Services.OrderAttendant);
 
 
-        cy.login(el.Login.acess, dataParameters.env.USER_INCLUSAO, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]); (el.Services.servicesInProgress);
         cy.getElementAndClick(el.Services.showOrdersClosed);
         cy.viewOrder(el.Services.buttonView);
         cy.getElementAndClick(el.Services.reopenOrder), { timeout: 20000 };
@@ -299,50 +333,68 @@ describe('Tela importação de receitas.', function () {
 
 
     it('Deve confirmar order juntocom e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', function () {
-        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]); (el.Services.servicesInProgress);
         cy.viewOrder(el.Services.buttonView);
 
     })
 
     it('Deve confirmar order vinculado a recipe e visualizar dados confirmados no quadro de informações da amarelinha confirmada.', function () {
-        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]); (el.Services.servicesInProgress);
         cy.viewOrder(el.Services.buttonView);
 
     })
 
 
     it('Deve confirmar order e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil farmacêutico.', function () {
-        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]); (el.Services.servicesInProgress);
         cy.viewOrder(el.Services.buttonView);
 
     })
 
     it('Deve confirmar order e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil recepção.', function () {
-        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]); (el.Services.servicesInProgress);
         cy.viewOrder(el.Services.buttonView);
 
     })
 
     it('Deve confirmar order, logado com perfil atendente.', function () {
-        cy.login(el.Login.acess, dataParameters.env.USER_ATENDENTE1, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]); (el.Services.servicesInProgress);
         cy.viewOrder(el.Services.buttonView);
 
     })
 
     it('Deve confirmar order e visualizar dados confirmados no quadro de informações da amarelinha confirmada, logado com perfil inclusão.', function () {
-        cy.login(el.Login.acess, dataParameters.env.USER_INCLUSAO, dataParameters.env.PASSWORD);
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+            .then((result) => {
+                assert.exists(result.success, result.error)
+            })
 
-        cy.getElementAndClick(menuServices, servicesInProgress); (el.Services.servicesInProgress);
+        cy.getElementAndClick([menuServices, servicesInProgress]); (el.Services.servicesInProgress);
         cy.viewOrder(el.Services.buttonView);
 
     })

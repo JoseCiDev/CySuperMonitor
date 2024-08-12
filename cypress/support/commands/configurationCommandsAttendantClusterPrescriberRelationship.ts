@@ -23,13 +23,18 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-/// <reference types="Cypress" />
 /// <reference path="../cypress.d.ts" />
 
 
 
-import { elements as el } from '../../elements'
-import { dataParameters } from '../../DataParameters/dataParameters'
+
+import {
+    elements as el,
+    faker,
+    dataParameters,
+    SearchRecipe,
+    mount
+} from '../../import';
 
 
 const environment = Cypress.env('ENVIRONMENT');
@@ -285,22 +290,22 @@ Cypress.Commands.add('configureRelationshipAtendenteClusterPrescriber', (fileNam
             const prescribers = ClusterPrescriberAttendant.prescribers;
 
             cy.getElementAndClick(
-                settingsMenu,
-                subMenuClustersGroups,
-                relations,
-                searchFilters
+                [settingsMenu,
+                    subMenuClustersGroups,
+                    relations,
+                    searchFilters]
             );
 
-            cy.getElementAndType(search, attendant);
+            cy.getElementAndType({ [search]: attendant });
 
-            cy.getElementAndClick(manageRelationship);
+            cy.getElementAndClick([manageRelationship]);
 
             for (const prescriberData of prescribers) {
                 const prescriberName = prescriberData.name;
                 const createRelationship = (): void => {
-                    cy.getSelectOptionByValue(selectCluster, cluster);
+                    cy.getSelectOptionByValue([{ [selectCluster]: cluster }]);
                     cy.log(cluster)
-                    cy.getElementAndClick(containerSelectPrescriber);
+                    cy.getElementAndClick([containerSelectPrescriber]);
 
                     cy.get(selectPrescriber)
                         .type(prescriberName)
@@ -336,35 +341,35 @@ Cypress.Commands.add('configureRelationshipAtendenteClusterPrescriber', (fileNam
                                                 nameAttendantRelationship = matchArray[1];
 
                                                 if (nameAttendantRelationship !== attendant) {
-                                                    cy.getElementAndClick(okModalMessage), { timeout: 10000 };
+                                                    cy.getElementAndClick([okModalMessage]), { timeout: 10000 };
                                                     deleteRelationship();
                                                     cy.getElementAndClick(
-                                                        relations,
-                                                        searchFilters
+                                                        [relations,
+                                                            searchFilters]
                                                     );
-                                                    cy.getElementAndType(search, attendant);
-                                                    cy.getElementAndClick(manageRelationship);
+                                                    cy.getElementAndType({ [search]: attendant });
+                                                    cy.getElementAndClick([manageRelationship]);
                                                 }
                                                 else {
-                                                    cy.getElementAndClick(okModalMessage), { timeout: 10000 };
+                                                    cy.getElementAndClick([okModalMessage]), { timeout: 10000 };
                                                 }
                                             })
                                     });
                             }
                             else {
-                                cy.getElementAndClick(okModalMessage), { timeout: 10000 };
+                                cy.getElementAndClick([okModalMessage]), { timeout: 10000 };
                             }
                         })
                 }
                 createRelationship();
 
                 const deleteRelationship = (): void => {
-                    cy.getElementAndClick(relations);
+                    cy.getElementAndClick([relations]);
 
                     cy.get(search)
                         .type(nameAttendantRelationship);
 
-                    cy.getElementAndClick(manageRelationship);
+                    cy.getElementAndClick([manageRelationship]);
 
                     cy.get(searchPrescriberRelationshipManage, { timeout: 1000 })
                         .type(NamePrescriberRelationship.trim(), { timeout: 1000 });
@@ -382,14 +387,14 @@ Cypress.Commands.add('configureRelationshipAtendenteClusterPrescriber', (fileNam
                         .click({ timeout: 1000 });
 
                     cy.getElementAndClick(
-                        okModalMessage,
-                        relations,
-                        searchFilters
+                        [okModalMessage,
+                            relations,
+                            searchFilters]
                     ), { timeout: 10000 };
 
-                    cy.getElementAndType(search, attendant);
+                    cy.getElementAndType({ [search]: attendant });
 
-                    cy.getElementAndClick(manageRelationship);
+                    cy.getElementAndClick([manageRelationship]);
 
                     createRelationship();
                 }

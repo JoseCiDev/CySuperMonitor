@@ -23,15 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-/// <reference types="Cypress" />
 /// <reference path="../cypress.d.ts" />
 
 
+import {
+  elements as el,
+  faker,
+  dataParameters,
+  SearchRecipe,
 
-
-import { elements as el } from '../../elements'
-import { dataParameters } from '../../DataParameters/dataParameters'
-import { env } from 'process';
+} from '../../import';
 
 
 export const {
@@ -255,11 +256,11 @@ export const {
 
 
 Cypress.Commands.add('insertTimeTreatment', (timeTreatment: string) => {
-  cy.getElementAndClick(buttonTimeTreatment);
+  cy.getElementAndClick([buttonTimeTreatment]);
   cy.wait(2000);
-  cy.getElementAndType(standardTreatmentTime, timeTreatment.toString());
-  cy.getElementAndClick(treatmentTimeModalHeader)
-  cy.getElementAndClick(saveTimeTreatment);
+  cy.getElementAndType({[standardTreatmentTime]: timeTreatment.toString()});
+  cy.getElementAndClick([treatmentTimeModalHeader])
+  cy.getElementAndClick([saveTimeTreatment]);
   cy.get(modalConfirmationOrder)
 })
 
@@ -277,61 +278,62 @@ Cypress.Commands.add('confirmOrder', (
   textGeneralNote: string,
 ): void => {
 
-  cy.getElementAndClick(modalConfirmationOrder), { timeout: 20000 };
+  cy.getElementAndClick([modalConfirmationOrder]), { timeout: 20000 };
 
-  cy.getSelectOptionByValue(containerPaymentMethod, SelectedPaymentMethod);
-  cy.getElementAndCheck(chosenBudget);
-  cy.getElementAndType(insertRepeatTime, timeRepetition.toString());
-  // cy.getElementAndCheck(monitoramentoAtendimento);
-  cy.getElementAndClick(saveDataConfirmationOrder), { timeout: 20000 };
+  cy.getSelectOptionByValue([{[containerPaymentMethod]: SelectedPaymentMethod}]);
+  
+  cy.getElementAndCheck([{element:chosenBudget},]);
+  cy.getElementAndCheck([{element:dataParameters.Recipe.import.parameterSearchPatient },]);
+  cy.getElementAndType({[insertRepeatTime]: timeRepetition.toString()});
+  // cy.getElementAndCheck([{element:monitoramentoAtendimento},]);
+  cy.getElementAndClick([saveDataConfirmationOrder]), { timeout: 20000 };
 
-  cy.getElementAndType(observationFromCashierToCounter, buttonViewtextObservationCashierCounter), { timeout: 20000 };
-  cy.getElementAndCheck(detailedNote);
-  cy.getElementAndCheck(paymentStatus);
-  cy.getElementAndClick(shippingAddress);
-  cy.getElementAndType(shipmentObservation, textNoteShipping)
-  cy.getSelectOptionByValue(fieldFormShipping, shippingMethod), { timeout: 20000 }
+  cy.getElementAndType({[observationFromCashierToCounter]: buttonViewtextObservationCashierCounter});{ timeout: 20000 };
+  cy.getElementAndCheck([{element:detailedNote},]);
+  cy.getElementAndCheck([{element:paymentStatus},]);
+  cy.getElementAndClick([shippingAddress]);
+  cy.getElementAndType({[shipmentObservation]: textNoteShipping});
+  cy.getSelectOptionByValue([{[fieldFormShipping]: shippingMethod}]);{ timeout: 20000 }
 
-  // cy.getElementAndType(juntocom, juntocomPedido);
+  // cy.getElementAndType({[juntocom]: juntocomPedido});
   //   .wait(500)
   //   .type('{downarrow}{enter}')
-  cy.getElementAndType(promisedFieldFor, promisedTo)
+  cy.getElementAndType({[promisedFieldFor]: promisedTo})
     .type('{enter}')
     .type('{enter}');
-  cy.getSelectOptionByValue(fieldAromasSachet, aromaSachet);
-  cy.getSelectOptionByValue(aromaCapsuleField, capsuleAroma);
-  cy.getElementAndType(generalObservation, textGeneralNote);
-  cy.getElementAndCheck(hasRecipe);
-  cy.getElementAndCheck(hasSpecialFormula), { timeout: 20000 };
-  cy.getElementAndCheck(sendChatguruMessage), { timeout: 20000 };
+  cy.getSelectOptionByValue([{[fieldAromasSachet]: aromaSachet}]);;
+  cy.getSelectOptionByValue([{[aromaCapsuleField]: capsuleAroma}]);;
+  cy.getElementAndType({[generalObservation]: textGeneralNote});
+  cy.getElementAndCheck([{element:hasRecipe},]);
+  cy.getElementAndCheck([{element:hasSpecialFormula},]), { timeout: 20000 };
+  cy.getElementAndCheck([{element:sendChatguruMessage},]), { timeout: 20000 };
 
-
-  cy.getElementAndClick(PreViewOrder), { timeout: 20000 };
-  cy.getElementAndClick(closePreViewOrder), { timeout: 20000 };
-  cy.getElementAndClick(sendconfirmOrder), { timeout: 20000 };
+  cy.getElementAndClick([PreViewOrder]), { timeout: 20000 };
+  cy.getElementAndClick([closePreViewOrder]), { timeout: 20000 };
+  cy.getElementAndClick([sendconfirmOrder]), { timeout: 20000 };
 
 });
 
 
 Cypress.Commands.add('linkOrderRecipe', (buttonLink: string, numberRecipe: number): void => {
-  cy.getElementAndClick(buttonLink);
+  cy.getElementAndClick([buttonLink]);
   cy.get(fieldLinkRecipe, { timeout: 20000 })
     .type(numberRecipe.toString(), { timeout: 20000 })
     .wait(2000)
     .type('{downarrow}{enter}', { timeout: 20000 });
-  cy.getElementAndClick(relateRecipeOrder);
-  cy.getElementAndClick(btnSuccessModal)
+  cy.getElementAndClick([relateRecipeOrder]);
+  cy.getElementAndClick([btnSuccessModal])
     .wait(2000);
-  cy.getElementAndClick(modalMessage);
+  cy.getElementAndClick([modalMessage]);
 })
 
 
 
 Cypress.Commands.add('unlinkOrderRecipe', (buttonUnlink: string) => {
-  cy.getElementAndClick(buttonUnlink);
-  cy.getElementAndClick(btnSuccessModal)
+  cy.getElementAndClick([buttonUnlink]);
+  cy.getElementAndClick([btnSuccessModal])
     .wait(2000);
-  cy.getElementAndClick(modalMessage);
+  cy.getElementAndClick([modalMessage]);;
 })
 
 
