@@ -1,4 +1,11 @@
 ///home/jose/projetos/CySuperMonitor/cypress/import.ts
+/// <reference types="cypress-wait-until" />
+
+import './support/commands/commandsLogin';
+import './support/commands/commandsService';
+import './support/commands/commandsRecipe';
+import './support/commands/commandsConfigurationAttendantClusterPrescriberRelationship';
+
 import * as loadash from 'lodash';
 export { loadash };
 
@@ -39,6 +46,14 @@ export {
 export {
     dataParameters,
 } from './DataParameters/dataParameters';
+
+export {
+    validateEmail,
+    validatePassword,
+    checkInput,
+} from './utils';
+
+export {Messages} from './messages';
 
 export { PatientSearchParameter } from './DataParameters/Enums/patientSearchParameter';
 export { SearchOrder } from './DataParameters/Enums/searchOrder';

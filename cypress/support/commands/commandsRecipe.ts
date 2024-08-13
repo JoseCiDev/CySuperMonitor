@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 /// <reference path="../cypress.d.ts" />
 
+import { Messages } from 'messages';
 import {
     elements as el,
     faker,
@@ -913,35 +914,35 @@ Cypress.Commands.add('importRecipe', (
     const message: CheckAndThrowError[] = [
         {
             condition: Cypress.$(importImageRecipes).val() !== null && Cypress.$(importImageRecipes).val() !== '',
-            errorMessage: 'Por favor, faça a importação de uma imagem de recipe.',
+            errorMessage: Messages.validation.IMPORT_IMAGE,
         },
         {
             condition: Cypress.$(prescriberRecipes).val() !== null && Cypress.$(prescriberRecipes).val() !== '',
-            errorMessage: 'Por favor, relacione um médico a esta recipe.',
+            errorMessage: Messages.validation.RELATE_PRESCRIBER,
         },
         {
             condition: Cypress.$(patientRecipes).val() !== null && Cypress.$(patientRecipes).val() !== '',
-            errorMessage: 'Por favor, relacione um patient a esta recipe.',
+            errorMessage: Messages.validation.RELATE_PATIENT,
         },
         {
             condition: Cypress.$(attendantResponsibleRecipes).val() !== null && Cypress.$(attendantResponsibleRecipes).val() !== '',
-            errorMessage: 'Por favor, relacione um atendente responsável a esta recipe.',
+            errorMessage: Messages.validation.RELATE_ATTENDANT,
         },
         {
             condition: Cypress.$(channelReceiptImport).val() !== null && Cypress.$(channelReceiptImport).val() !== '',
-            errorMessage: 'Por favor, escolha um canal de contato.',
+            errorMessage: Messages.validation.CHOOSE_CHANNEL,
         },
         {
             condition: Cypress.$(dateReceiptRecipes).val() !== null && Cypress.$(dateReceiptRecipes).val() !== '',
-            errorMessage: 'Por favor, defina uma data de recebimento da recipe.',
+            errorMessage: Messages.validation.DEFINE_DATE,
         },
         {
             condition: Cypress.$(`input[name="receita_tipo"][value="${dataParameters.Recipe.import.numberRecipe}"]`).val() !== null && Cypress.$(`input[name="receita_tipo"][value="${dataParameters.Recipe.import.numberRecipe}"]`).val() !== '',
-            errorMessage: 'Por favor, defina qual o tipo da recipe.',
+            errorMessage: Messages.validation.DEFINE_TYPE,
         },
         {
             condition: Cypress.$(clusterRecipes).val() !== null && Cypress.$(clusterRecipes).val() !== '',
-            errorMessage: 'Por favor, escolha um cluster.',
+            errorMessage: Messages.validation.CHOOSE_CLUSTER,
         },
     ]
     const checkAndThrowError = (params: CheckAndThrowError[], defaultMessage: string) => {

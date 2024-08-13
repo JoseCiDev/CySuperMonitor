@@ -1,7 +1,7 @@
 #/home/jose/projetos/CySuperMonitor/cypress/integration/Hotfix/hotfix\ED-1911.feature
 
 @functional  @paymentStatus @serviceScreen @compoundedMedicationBudget
-Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedidos Manipulados
+Feature: Atualização do Status de Pagamento na Tela de Atendimento para Orçamentos Manipulados
 
     Scenario: Atualização do status de pagamento dentro da tela de atendimento para orçamentos manipulados
         Given que o usuário atendente está autenticado no sistema
@@ -13,7 +13,7 @@ Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedido
         And deve garantir que foi feito somente um pagamento para o orçamento
 
 @functional @paymentStatus @serviceScreen @injectableBudget
-Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedidos Injetáveis
+Feature: Atualização do Status de Pagamento na Tela de Atendimento para Orçamentos Injetáveis
 
     Scenario: Atualização do status de pagamento dentro da tela de atendimento para orçamentos injetáveis
         Given que o usuário atendente está autenticado no sistema
@@ -25,7 +25,7 @@ Feature: Atualização do Status de Pagamento na Tela de Atendimento para Pedido
         And deve garantir que foi feito somente um pagamento para o orçamento
 
 @functional @paymentStatus @listOfServices @compoundedMedicationBudget
-Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Pedidos Manipulados
+Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Orçamentos Manipulados
 
     Scenario: Atualização do status de pagamento na lista de atendimentos para orçamentos manipulados
         Given que o usuário atendente está autenticado no sistema
@@ -37,7 +37,7 @@ Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Pedi
         And deve garantir que foi feito somente um pagamento para cada orçamento
 
 @functional @paymentStatus @listOfServices @injectableBudget
-Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Pedidos Injetáveis
+Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Orçamentos Injetáveis
 
     Scenario: Atualização do status de pagamento na lista de atendimentos para orçamentos injetáveis
         Given que o usuário atendente está autenticado no sistema
@@ -49,7 +49,7 @@ Feature: Atualização do Status de Pagamento na Lista de Atendimentos para Pedi
         And deve garantir que foi feito somente um pagamento para cada orçamento
 
 @regressive  @paymentStatus @compoundedMedicationBudget
-Feature: Verificação de Atualização do Status de Pagamento para Pedidos Manipulados
+Feature: Verificação de Atualização do Status de Pagamento para Orçamentos Manipulados
 
     Scenario: Verificação de atualização correta do status de pagamento na tela de atendimento para orçamentos manipulados
         Given que o erro na atualização do status de pagamento foi corrigido
@@ -59,7 +59,7 @@ Feature: Verificação de Atualização do Status de Pagamento para Pedidos Mani
         And deve garantir que foi feito somente um pagamento para o orçamento
 
 @regressive  @paymentStatus @injectableBudget
-Feature: Verificação de Atualização do Status de Pagamento para Pedidos Injetáveis
+Feature: Verificação de Atualização do Status de Pagamento para Orçamentos Injetáveis
 
     Scenario: Verificação de atualização correta do status de pagamento na tela de atendimento para orçamentos injetáveis
         Given que o erro na atualização do status de pagamento foi corrigido

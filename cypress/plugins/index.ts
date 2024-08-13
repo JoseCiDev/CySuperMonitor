@@ -1,4 +1,9 @@
 /// <reference types="cypress" />
+
+import {
+  Messages
+} from "import";
+
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -47,7 +52,7 @@ const configureEnvironment = (config: Cypress.PluginConfig) => {
     // Verifique se o parâmetro "ENVIRONMENT" está definido
     const environment = Cypress.env('environment');
     if (!environment && Cypress.env[environment]) {
-      throw new Error(`Ambiente '${environment}' não encontrado no file cypress.env.json`);
+      throw new Error(Messages.return.failure.ENV_NOT_FOUND.replace('{environment}', environment));
     }
     const environmentConfig = Cypress.env[environment];
 

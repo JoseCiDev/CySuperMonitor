@@ -9,11 +9,14 @@
     "types": [
       "cypress",
       "node"
-    ]
+    ],
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "**/*.ts",
     "../cypress.d.ts",
-    "support/e2e.ts",
+    "support/e2e.ts"
   ]
 }

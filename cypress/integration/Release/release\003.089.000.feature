@@ -184,7 +184,7 @@ Feature: Gerenciamento de Dúvidas Técnicas
             | Dúvida Conferencias     |
             | Aguardando autorização  |
             | Dúvida Téc. Urgente     |
-            | Pedido Isento           |
+            | Orçamento Isento           |
 
     @technicalQuestions @deleteTechnicalQuestions
     Scenario: Excluir uma dúvida técnica
@@ -625,12 +625,12 @@ Feature: Atendimento em Andamento
     @serviceInProgress @ConfirmService
     Scenario Outline: Confirmar atendimento com diversos parâmetros
         Given o atendente está finalizando o atendimento "28477 / 5"
-        When o atendente confirma o atendimento com os seguintes detalhes <FormaPagamento>, <TempoRepeticao>, <CanalFechamento>, <EmailContato>, <StatusPedido>, <StatusPagamento>, <EnderecoEntrega>, <FormaEnvio>, <OrçamentoJunto>, <DataPrometidaEntrega>, <Aroma>, <PossuiReceita>, <UrgenciaPedido>
+        When o atendente confirma o atendimento com os seguintes detalhes <FormaPagamento>, <TempoRepeticao>, <CanalFechamento>, <EmailContato>, <StatusOrçamento>, <StatusPagamento>, <EnderecoEntrega>, <FormaEnvio>, <OrçamentoJunto>, <DataPrometidaEntrega>, <Aroma>, <PossuiReceita>, <UrgenciaOrçamento>
         Then o sistema confirma o atendimento com todos os detalhes fornecidos
         And uma mensagem de confirmação com sucesso é exibida
 
         Examples:
-            | FormaPagamento    | TempoRepeticao | CanalFechamento | EmailContato         | StatusPedido | StatusPagamento | EnderecoEntrega    | FormaEnvio | OrçamentoJunto | DataPrometidaEntrega | Aroma        | PossuiReceita | UrgenciaPedido |
+            | FormaPagamento    | TempoRepeticao | CanalFechamento | EmailContato         | StatusOrçamento | StatusPagamento | EnderecoEntrega    | FormaEnvio | OrçamentoJunto | DataPrometidaEntrega | Aroma        | PossuiReceita | UrgenciaOrçamento |
             | Cartão de Crédito | 30 dias        | E-mail          | cliente@example.com  | INCLUSÃO     | Pago            | Rua Exemplo, 123   | Correios   | ORC789         | 15/10/2023           | Lavanda      | sim           | Não urgente    |
             | Boleto Bancário   | 15 dias        | WhatsApp        | cliente2@example.com | CAIXA        | Não pago        | Av. Fictícia, 987  | SEDEX      | ORC790         | 20/11/2023           | Sem Aroma    | não           | Urgente        |
             | PIX               | Sem repetição  | Telefone        | cliente3@example.com | INCLUSÃO     | Pago            | Travessa Real, 456 | Motoboy    | ORC791         | 05/12/2023           | Solução Oral | repetição     | Não urgente    |
@@ -883,41 +883,41 @@ Feature: Expedição de Produtos
     @expedition @ViewData
     Scenario: Visualizar dados do cliente do orçamento
         Given que estou na tela de expedição
-        When visualizo os dados do cliente do orçamento "Pedido123"
+        When visualizo os dados do cliente do orçamento "Orçamento123"
         Then devo ver os dados do cliente "João Silva" com endereço "Rua 1, 123"
 
     @expedition @ViewOrder
     Scenario: Visualizar amarelinha
         Given que estou na tela de expedição
-        When visualizo a amarelinha do orçamento "Pedido123"
+        When visualizo a amarelinha do orçamento "Orçamento123"
         Then devo ver a confirmação do orçamento impressa
 
     @expedition @FinalizeShipping
     Scenario: Finalizar expedição do orçamento
         Given que estou na tela de expedição
-        When finalizo a expedição do orçamento "Pedido123" com opção de envio "Expedida" e observações "Entregar pela manhã"
-        Then o orçamento "Pedido123" deve estar marcado como "Expedida" com observações "Entregar pela manhã"
+        When finalizo a expedição do orçamento "Orçamento123" com opção de envio "Expedida" e observações "Entregar pela manhã"
+        Then o orçamento "Orçamento123" deve estar marcado como "Expedida" com observações "Entregar pela manhã"
 
     @expedition @DeleteOrder
     Scenario: Excluir orçamento
         Given que estou na tela de expedição
-        When excluo o orçamento "Pedido123"
-        Then o orçamento "Pedido123" não deve mais aparecer na lista de orçamentos
+        When excluo o orçamento "Orçamento123"
+        Then o orçamento "Orçamento123" não deve mais aparecer na lista de orçamentos
 
     @expedition @PrintLabel
     Scenario: Imprimir etiqueta
         Given que estou na tela de expedição
-        When imprimo a etiqueta do orçamento "Pedido123"
+        When imprimo a etiqueta do orçamento "Orçamento123"
         Then a etiqueta deve ser gerada e exibida para impressão
 
     @expedition @CheckTracking
     Scenario: Consultar código de rastreamento
         Given que estou na tela de expedição
-        When consulto o código de rastreamento do orçamento "Pedido123"
+        When consulto o código de rastreamento do orçamento "Orçamento123"
         Then devo ver o código de rastreamento "ABC123456"
 
     @expedition @SendTracking
     Scenario: Enviar código de rastreamento via email
         Given que estou na tela de expedição
-        When envio o código de rastreamento do orçamento "Pedido123" para o email "joao@example.com"
+        When envio o código de rastreamento do orçamento "Orçamento123" para o email "joao@example.com"
         Then o email deve ser enviado com o código de rastreamento "ABC123456"

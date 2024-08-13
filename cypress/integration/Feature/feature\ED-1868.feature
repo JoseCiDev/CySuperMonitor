@@ -7,7 +7,7 @@ Feature: Geração de Link de Pagamento
     When o cliente escolhe a forma de pagamento "crédito"
     Then o formulário de pagamento deve apresentar as opções de pagamento com cartão de crédito
     And o cliente realiza o pagamento com sucesso
-    Then o cliente deve visualizar a mensagem "Pedido Recebido" na tela
+    Then o cliente deve visualizar a mensagem "Orçamento Recebido" na tela
 
   @pix
   Scenario: Cliente escolhe pagar com Pix
@@ -15,7 +15,7 @@ Feature: Geração de Link de Pagamento
     When o cliente escolhe a forma de pagamento "Pix"
     Then o formulário de pagamento deve apresentar a opção de pagamento via Pix
     And o cliente realiza o pagamento com sucesso
-    Then o cliente deve visualizar a mensagem "Pedido Recebido" na tela
+    Then o cliente deve visualizar a mensagem "Orçamento Recebido" na tela
 
   @pix
   Scenario: Usuário gera link de pagamento via Pix com apenas nome do cliente
@@ -24,7 +24,7 @@ Feature: Geração de Link de Pagamento
     And o cliente informa telefone, email e endereço
     Then o link de pagamento é gerado com sucesso
     And o cliente realiza o pagamento usando o link de Pix
-    And o cliente deve visualizar a mensagem "Pedido Recebido" na tela
+    And o cliente deve visualizar a mensagem "Orçamento Recebido" na tela
 
   @fcertaDataAdress
   Scenario: Puxar endereço do Fcerta ao gerar link de pagamento
@@ -55,7 +55,7 @@ Feature: Geração de Link de Pagamento
     And o pagamento foi confirmado com sucesso
     When o cliente tenta alterar o endereço de entrega
     Then o sistema não apresenta a tela para alteração do endereço
-    And deve apresentar a mensagem "Pedido Recebido"
+    And deve apresentar a mensagem "Orçamento Recebido"
     And a tela de orçamento finalizado com sucesso é exibida
 
   @deleteAdressBeforeConfirmPayment

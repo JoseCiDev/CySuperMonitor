@@ -81,13 +81,13 @@ Feature: Gestão e apresentação de observações nos orçamentos
     Scenario: Verificar comportamento ao juntar orçamentos onde um deles não tem observação
         Given que o "Orçamento A" não possui observação
         And o "Orçamento B" possui a observação "Protocolos,
-        orçados seguindo nosso portfólio endovenoso, seguindo histórico de pedidos da clinica.
+        orçados seguindo nosso portfólio endovenoso, seguindo histórico de orçamentos da clinica.
         O protocolo para perda de gordura e ganho de massa magra, passou por uma alteração em sua nomenclatura e agora se chama:
         Protocolo Emagrecimento e ganho de massa magra, Posologia e ativos se mantem os mesmos."
         When o usuário junta os "Orçamentos A e B"
         And o usuário acessa o selfcheckout
         Then o cliente deve ver a observação "Protocolos,
-        orçados seguindo nosso portfólio endovenoso, seguindo histórico de pedidos da clinica.
+        orçados seguindo nosso portfólio endovenoso, seguindo histórico de orçamentos da clinica.
         O protocolo para perda de gordura e ganho de massa magra, passou por uma alteração em sua nomenclatura e agora se chama:
         Protocolo Emagrecimento e ganho de massa magra, Posologia e ativos se mantem os mesmos." no "Orçamento B"
         And o cliente não deve ver nenhuma observação no "Orçamento A"
@@ -116,7 +116,7 @@ Feature: Gestão e apresentação de observações nos orçamentos
 
         Examples:
             | observacaoA                                                                    |
-            | Orçado o nosso protocolo endovenoso, seguindo histórico de pedidos da clinica. |
+            | Orçado o nosso protocolo endovenoso, seguindo histórico de orçamentos da clinica. |
             | Protocolos, ativos descritos no orçamento acima.                               |
 
     Scenario Outline: Validar comportamento com junção de orçamentos com observações duplicadas

@@ -462,7 +462,7 @@ describe('Tela importação de receitas.', function () {
 
 
 
-    // it('Deve editar recipe', function () {
+    // it('Deve editar receita', function () {
     //     cy.acessarMenuReceitas(menuRecipes);
 
     //     cy.acessarImportarReceitas(menuImportRecipes);

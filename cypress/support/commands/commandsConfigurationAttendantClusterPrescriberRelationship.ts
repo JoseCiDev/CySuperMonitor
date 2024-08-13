@@ -33,7 +33,8 @@ import {
     faker,
     dataParameters,
     SearchRecipe,
-    mount
+    mount,
+    Messages
 } from '../../import';
 
 
@@ -276,7 +277,7 @@ Cypress.Commands.add('configureRelationshipAtendenteClusterPrescriber', (fileNam
                 case 'Cluster5':
                     return dataParameters.relationshipsPrescriberAttendantAndCluster.Cluster5;
                 default:
-                    throw new Error('Cluster que procura não está cadastrado.');
+                    throw new Error(Messages.return.failure.CLUSTER_NOT_REGISTERED);
             }
         }
 
@@ -323,7 +324,7 @@ Cypress.Commands.add('configureRelationshipAtendenteClusterPrescriber', (fileNam
                             ];
                             for (const successMessage of messages) {
                                 if (cluster.length < 1 && $modal.text().includes(successMessage)) {
-                                    throw new Error(`Erro: Cluster ou prescriber não selecionado, mas mensagem "${successMessage}" apresentada.`);
+                                    throw new Error(Messages.return.failure.CLUSTER_OR_PRESCRIBER_NOT_SELECTED.replace('{successMessage}', successMessage));
                                 }
                             }
                             if ($modal.text().includes('Não foi possível adicionar.')) {

@@ -189,8 +189,8 @@ declare global {
       accessMenuServices(element: string): Chainable<Element>
 
       /**
-       * * comando customizado para acessar o menu Pedidos em andamento.
-       * @example cy.acessarPedidosEmAndamento(atendimentoEmAndamento)
+       * * comando customizado para acessar o menu Orçamentos em andamento.
+       * @example cy.acessarOrçamentosEmAndamento(atendimentoEmAndamento)
        */
       accessServicesInProgress(element: string): Chainable<Element>
 
@@ -227,15 +227,15 @@ declare global {
       /**
        * * comando customizado para confirmar orçamentos.
        * @example cy.confirmOrder(dataParameters.formaPagamento.Boleto,
-            dataParameters.Pedido.timeRepetition,
-            dataParameters.Pedido.buttonViewtextObservationCashierCounter,
+            dataParameters.Orçamento.timeRepetition,
+            dataParameters.Orçamento.buttonViewtextObservationCashierCounter,
             dataParameters.paymentStatus.Pago,
-            dataParameters.Pedido.textNoteShipping,
+            dataParameters.Orçamento.textNoteShipping,
             dataParameters.shippingMethod.SedexHoje,
             dataParameters.formattedDate,
             dataParameters.aromaSachet.AromaDaBasePadrao,
             dataParameters.capsuleAroma.laranjaComHortelaMenta,
-            dataParameters.Pedido.textGeneralNote)
+            dataParameters.Orçamento.textGeneralNote)
        */
       confirmOrder(
         SelectedPaymentMethod: string,
@@ -252,13 +252,13 @@ declare global {
 
       /**
        * * comando customizado para vincular recipe ao order.
-       * @example cy.vincularReceitaPedido(buttonLinkRecipeScreenServiceProgress,dataParameters.Recipe.numberRecipe)
+       * @example cy.vincularReceitaOrçamento(buttonLinkRecipeScreenServiceProgress,dataParameters.Recipe.numberRecipe)
        */
       linkOrderRecipe(buttonLink: string, numberRecipe: number): ValidationResult;
 
       /**
        * * comando customizado para desvincular recipe ao order.
-       * @example cy.desvincularReceitaPedido(timeTreatment)
+       * @example cy.desvincularReceitaOrçamento(timeTreatment)
        */
       unlinkOrderRecipe(buttonUnlink: string): Chainable<Element>;
 

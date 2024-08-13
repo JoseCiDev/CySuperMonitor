@@ -295,7 +295,7 @@ Cypress.Commands.add('confirmOrder', (
   cy.getElementAndType({[shipmentObservation]: textNoteShipping});
   cy.getSelectOptionByValue([{[fieldFormShipping]: shippingMethod}]);{ timeout: 20000 }
 
-  // cy.getElementAndType({[juntocom]: juntocomPedido});
+  // cy.getElementAndType({[juntocom]: juntocomOrçamento});
   //   .wait(500)
   //   .type('{downarrow}{enter}')
   cy.getElementAndType({[promisedFieldFor]: promisedTo})

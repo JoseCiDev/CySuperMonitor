@@ -36,12 +36,6 @@ const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
 
 
-import './loginCommands'
-import './serviceCommands'
-import './recipeCommands'
-import './configurationCommandsAttendantClusterPrescriberRelationship'
-
-
 
 export const {
   suggestionAutocomplete,

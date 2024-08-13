@@ -31,15 +31,14 @@ import {
   faker,
   dataParameters,
   SearchRecipe,
-  mount
+  mount,
+  validateEmail,
+  validatePassword,
+  checkInput,
 } from '../../import';
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
-
-
-import './serviceCommands'
-import './recipeCommands'
 
 
 export const {
@@ -262,74 +261,55 @@ export const {
 } = el.Settings;
 
 
-Cypress.Commands.add('login', (user: string, password: string, elementError: string, baseUrl: string) => {
-
+Cypress.Commands.add('login', (baseUrl: string, user: string, password: string, elementError?: string) => {
   cy.log('Iniciando login...');
   cy.visit(baseUrl);
 
   cy.get(el.Login.user, { timeout: 10000 })
     .each(($input) => {
       cy.wrap($input)
-        .type(user)
+        .type(String(user), { log: false })
+        .should('have.value', user, { log: false })
         .then(() => {
-          const $userValue = String($input.val());
-          const $elementError = Cypress.$(elementError);
-
-          if ($userValue.length < 1 && !$elementError.is(':visible')) {
-            throw new Error('Usuário não foi inserido, porém não é apresentado mensagem ao usuário.');
-          };
-
-          if (!$userValue || $userValue.length === 0 && !$elementError.is(':visible')) {
-            throw new Error('Há digitos que não foram preenchidos, porém não é apresentado mensagem ao usuário.');
-          };
+          checkInput($input, elementError, 'Usuário não foi inserido, porém não é apresentado mensagem ao usuário.');
+          const userError = validateEmail(user);
+          if (userError) {
+            return cy.wrap({ error: userError });
+          }
         });
     });
 
   cy.get(el.Login.password, { timeout: 10000 })
     .each(($input) => {
       cy.wrap($input)
-        .type(password)
+        .type(String(password), { log: false })
+        .should('have.value', password, { log: false })
         .then(() => {
-          const passwordValue = String($input.val());
-          const $elementError = Cypress.$(elementError);
-
-          if (password.length < 1 && !$elementError.is(':visible')) {
-            throw new Error('Senha não foi inserida, porém não é apresentado mensagem ao usuário.');
-          };
-
-          if (!passwordValue || passwordValue.length === 0 && !$elementError.is(':visible')) {
-            throw new Error('Alguns dígitos não foram preenchidos, porém não é apresentada mensagem de erro ao usuário.');
-          };
-
-          cy.getElementAndClick([el.Login.acess]);
-
-          cy.get(elementError, { timeout: 60000 })
-            .invoke('text')
-
-            .then((text) => {
-              if (text.includes('Usuário ou password inválidos')) {
-                throw new Error('Usuário ou password incorretos. Tente novamente.');
-              }
-            });
+          checkInput($input, elementError, 'Senha não foi inserida, porém não é apresentado mensagem ao usuário.');
+          if (!validatePassword(password)) {
+            return cy.wrap({ error: 'Senha com formato inválido. A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.' });
+          }
         });
-
-      const $UserErrorElement = Cypress.$(el.Login.user)
-        .prop('prop', 'validationMessage')
-        .prop((text) => {
-          expect(text).to.contain('Preencha este campo.');
-        });
-      const $passwordErrorElement = Cypress.$(el.Login.password)
-        .prop('prop', 'validationMessage')
-        .prop((text) => {
-          expect(text).to.contain('Preencha este campo.');
-        });
-      if ($UserErrorElement) {
-        throw new Error('Usuário ou password incorretos. Tente novamente.');
-      };
-      if ($passwordErrorElement) {
-        throw new Error('Campo password não está preenchido.');
-      };
-
     });
+
+  cy.getElementAndClick([el.Login.acess])
+    .then(() => {
+      cy.get('body').then(($body) => {
+        if ($body.find(elementError).length > 0) {
+          cy.get(elementError).then(($modal) => {
+            const messageModal = $modal.text().trim();
+            if (messageModal.includes('Usuário ou password inválidos')) {
+              return cy.wrap({ error: 'Foi informado usuário ou senha incorretos na aplicação' });
+            }
+            if (messageModal.includes('The password field is required.')) {
+              return cy.wrap({ error: 'Foi inserida uma senha incorreta na aplicação ou não foi fornecida nenhuma senha na aplicação.' });
+            }
+          });
+        } else {
+          console.log('Element not found');
+        }
+      });
+    });
+
   return cy.wrap({ success: 'Login realizado com sucesso.' });
 });

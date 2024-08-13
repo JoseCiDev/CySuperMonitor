@@ -270,7 +270,7 @@ export const elements: Elements = {
         importPDFRecipes: '#btnImportPdfRec',
         importImageRecipes: 'input.tui-image-editor-load-btn[type="file"][accept="image/*"]',
         removeImageRecipes: '.btn btn-danger btn-del-img m-sm',
-        // informacoes da recipe
+        // informacoes da receita
         prescriberRecipes: '#modalMedicoRec',
         modalSuggestionRelationshipPrescriber: '.bootbox .modal-dialog .modal-content .modal-footer .btn-primary',
         parameterSearchPatient: '#t2_154c',
@@ -291,7 +291,7 @@ export const elements: Elements = {
         retailRecipes: '#checkboxVarejo',
         optionTypeRecipes: `input[name="receita_tipo"][value="${dataParameters.recipeType}"]`,
         // mensagem informando que já existe recipe com mesmo patient e prescriber
-        // salvar recipe
+        // salvar receita
         saveRecipes: '#save_receita',
         closeRegisterRecipes: '#modal-receitas > div.modal-dialog > div > div.modal-footer > button.btn.btn-white',
         editRecipe: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .edit-recipe',
