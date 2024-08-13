@@ -4,9 +4,9 @@ Feature: Gestão de Status e Links de Pagamentos
     Eu quero que os status de pagamento sejam atualizados corretamente e os links de pagamento sejam ativados/desativados de acordo com as regras de negócios
 
     Background: Usuário autenticado
-        Given que o usuário está autenticado no sistema Supermonitor
+        Given que o usuário está autenticado no sistema
 
-    Scenario Outline: Atualizar status de pagamento nas telas do Supermonitor
+    Scenario Outline: Atualizar status de pagamento nas telas
         Given que o usuário está na tela "<tela>"
         When o usuário faz uma requisição para atualizar o status de pagamento
         And o sistema retorna o status "<statusGpe>" do GPE
@@ -37,7 +37,7 @@ Feature: Gestão de Status e Links de Pagamentos
         Given que o usuário gerou um link de pagamento ativo
         When o usuário desativa o link de pagamento
         Then o status do link de pagamento deve ser alterado para "Inativo"
-        And o formulário de pagamento deve ser removido e a tela deve exibir "Pedido encerrado"
+        And o formulário de pagamento deve ser removido e a tela deve exibir "orçamento encerrado"
 
     Scenario: Reativar link de pagamento
         Given que o usuário inativou um link de pagamento
@@ -59,12 +59,12 @@ Feature: Gestão de Status e Links de Pagamentos
 
         Examples:
             | statusInicial | acao    | statusAtualizado |
-            | Em Andamento   | inativa | Em Andamento      |
-            | Em Andamento   | ativa   | Em Andamento      |
-            | Encerrado      | inativa | Encerrado         |
-            | Encerrado      | ativa   | Encerrado         |
+            | Em Andamento  | inativa | Em Andamento     |
+            | Em Andamento  | ativa   | Em Andamento     |
+            | Encerrado     | inativa | Encerrado        |
+            | Encerrado     | ativa   | Encerrado        |
 
-    Scenario: Garantir que o status do Supermonitor seja atualizado ao desativar/ativar link no GPE
+    Scenario: Garantir que o status do pagamento seja atualizado ao desativar/ativar link no GPE
         Given que o link de pagamento está com status "Ativo" no GPE
         When o link de pagamento é desativado no GPE
         Then o status do link de pagamento deve ser atualizado para "Inativo"
@@ -72,7 +72,7 @@ Feature: Gestão de Status e Links de Pagamentos
         And na tela de atendimento em andamento o status do link de pagamento deve ser atualizado para "Inativo"
 
     Scenario: Impedir inativação de link de pagamento após pagamento concluído
-        Given que o link de pagamento está associado a um pedido com status "Pago"
+        Given que o link de pagamento está associado a um orçamento com status "Pago"
         When o usuário tenta desativar o link de pagamento
         Then o sistema deve impedir a desativação
-        And deve exibir uma mensagem de erro "Não é possível inativar o link de pagamento para um pedido já pago."
+        And deve exibir uma mensagem de erro "Não é possível inativar o link de pagamento para um orçamento já pago."
