@@ -83,3 +83,4 @@ Feature: Otimizar e melhorar apresentação dos dados no relatório NPS
     Scenario: Ajustar label da coluna 'Finalizado por'
         When eu visualizo a coluna 'Finalizado por' no grid
         Then a label deve ser ajustada para 'Atendente responsável'
+        
