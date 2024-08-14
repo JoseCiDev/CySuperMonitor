@@ -26,8 +26,8 @@ export { fakerBr };
 
 export { mount } from 'cypress/react'
 
-import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
-export { Given, When, Then };
+// import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
+// export { Given, When, Then };
 
 import 'cypress-wait-until';
 
