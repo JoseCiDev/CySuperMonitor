@@ -1,4 +1,4 @@
-///home/jose/projetos/Cygecom/cypress/tsconfig.json
+///home/jose/projetos/CySupermonitor/cypress/tsconfig.json
 {
   "compilerOptions": {
     "esModuleInterop": true,
@@ -22,6 +22,5 @@
     "cypress/**/*.json",
     "cypress/support/**/*.ts",
     "cypress/support/**/*.d.ts",
-    "esbuild.d.ts"
   ]
 }

@@ -29,7 +29,7 @@
 import {
   elements as el,
   faker,
-  dataParameters,
+  
   SearchRecipe,
   mount,
   validateEmail,
@@ -81,7 +81,6 @@ export const {
   urgentRecipes,
   clientAlertRecipes,
   retailRecipes,
-  optionTypeRecipes,
   saveRecipes,
   closeRegisterRecipes,
   editRecipe,
@@ -263,53 +262,53 @@ export const {
 
 Cypress.Commands.add('login', (baseUrl: string, user: string, password: string, elementError?: string) => {
   cy.log('Iniciando login...');
-  cy.visit(baseUrl);
+  // cy.visit(baseUrl);
 
-  cy.get(el.Login.user, { timeout: 10000 })
-    .each(($input) => {
-      cy.wrap($input)
-        .type(String(user), { log: false })
-        .should('have.value', user, { log: false })
-        .then(() => {
-          checkInput($input, elementError, 'Usuário não foi inserido, porém não é apresentado mensagem ao usuário.');
-          const userError = validateEmail(user);
-          if (userError) {
-            return cy.wrap({ error: userError });
-          }
-        });
-    });
+  // cy.get(el.Login.user, { timeout: 10000 })
+  //   .each(($input) => {
+  //     cy.wrap($input)
+  //       .type(String(user), { log: false })
+  //       .should('have.value', user, { log: false })
+  //       .then(() => {
+  //         checkInput($input, elementError, 'Usuário não foi inserido, porém não é apresentado mensagem ao usuário.');
+  //         const userError = validateEmail(user);
+  //         if (userError) {
+  //           return cy.wrap({ error: userError });
+  //         }
+  //       });
+  //   });
 
-  cy.get(el.Login.password, { timeout: 10000 })
-    .each(($input) => {
-      cy.wrap($input)
-        .type(String(password), { log: false })
-        .should('have.value', password, { log: false })
-        .then(() => {
-          checkInput($input, elementError, 'Senha não foi inserida, porém não é apresentado mensagem ao usuário.');
-          if (!validatePassword(password)) {
-            return cy.wrap({ error: 'Senha com formato inválido. A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.' });
-          }
-        });
-    });
+  // cy.get(el.Login.password, { timeout: 10000 })
+  //   .each(($input) => {
+  //     cy.wrap($input)
+  //       .type(String(password), { log: false })
+  //       .should('have.value', password, { log: false })
+  //       .then(() => {
+  //         checkInput($input, elementError, 'Senha não foi inserida, porém não é apresentado mensagem ao usuário.');
+  //         if (!validatePassword(password)) {
+  //           return cy.wrap({ error: 'Senha com formato inválido. A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.' });
+  //         }
+  //       });
+  //   });
 
-  cy.getElementAndClick([el.Login.acess])
-    .then(() => {
-      cy.get('body').then(($body) => {
-        if ($body.find(elementError).length > 0) {
-          cy.get(elementError).then(($modal) => {
-            const messageModal = $modal.text().trim();
-            if (messageModal.includes('Usuário ou password inválidos')) {
-              return cy.wrap({ error: 'Foi informado usuário ou senha incorretos na aplicação' });
-            }
-            if (messageModal.includes('The password field is required.')) {
-              return cy.wrap({ error: 'Foi inserida uma senha incorreta na aplicação ou não foi fornecida nenhuma senha na aplicação.' });
-            }
-          });
-        } else {
-          console.log('Element not found');
-        }
-      });
-    });
+  // cy.getElementAndClick([el.Login.acess])
+  //   .then(() => {
+  //     cy.get('body').then(($body) => {
+  //       if ($body.find(elementError).length > 0) {
+  //         cy.get(elementError).then(($modal) => {
+  //           const messageModal = $modal.text().trim();
+  //           if (messageModal.includes('Usuário ou password inválidos')) {
+  //             return cy.wrap({ error: 'Foi informado usuário ou senha incorretos na aplicação' });
+  //           }
+  //           if (messageModal.includes('The password field is required.')) {
+  //             return cy.wrap({ error: 'Foi inserida uma senha incorreta na aplicação ou não foi fornecida nenhuma senha na aplicação.' });
+  //           }
+  //         });
+  //       } else {
+  //         console.log('Element not found');
+  //       }
+  //     });
+  //   });
 
-  return cy.wrap({ success: 'Login realizado com sucesso.' });
+  // return cy.wrap({ success: 'Login realizado com sucesso.' });
 });

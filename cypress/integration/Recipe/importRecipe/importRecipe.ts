@@ -3,7 +3,7 @@
 import {
     elements as el,
     faker,
-    dataParameters,
+dataParameters,
 } from '../../../import';
 
 const environment = Cypress.env('ENVIRONMENT');
@@ -49,7 +49,6 @@ export const {
         urgentRecipes,
         clientAlertRecipes,
         retailRecipes,
-        optionTypeRecipes,
         saveRecipes,
         closeRegisterRecipes,
         editRecipe,

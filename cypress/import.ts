@@ -1,47 +1,25 @@
 ///home/jose/projetos/CySuperMonitor/cypress/import.ts
-/// <reference types="cypress-wait-until" />
-
-import './support/commands/commandsLogin';
-import './support/commands/commandsService';
-import './support/commands/commandsRecipe';
-import './support/commands/commandsConfigurationAttendantClusterPrescriberRelationship';
 
 import * as loadash from 'lodash';
 export { loadash };
-// npm i -g npm
-// npm i --save lodash
 
-// import * as data from './fixtures/data.json';
-// export { data };
 
 import * as dateFns from 'date-fns';
 export { dateFns };
-export { format } from 'date-fns';
-// npm install date-fns --save
 
 export { faker } from '@faker-js/faker'
-// npm install @faker-js/faker --save-dev
-
-export { elements } from './elements'
 
 import { fakerBr } from '@js-brasil/fakerbr';
 export { fakerBr };
-// npm i @js-brasil/fakerbr
 
 export { mount } from 'cypress/react'
 
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 export { Given, When, Then };
-// npm install @badeball/cypress-cucumber-preprocessor
-
-import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
-export { addCucumberPreprocessorPlugin };
-
-import webpack from "@cypress/webpack-preprocessor";
-export { webpack };
-// npm install --save-dev @cypress/webpack-preprocessor
 
 import 'cypress-wait-until';
+
+
 
 export {
     DataParameters,
@@ -65,7 +43,9 @@ export {
     checkInput,
 } from './utils';
 
-export {Messages} from './messages';
+export { Messages } from './messages';
+
+export { elements } from './elements'
 
 export { PatientSearchParameter } from './DataParameters/Enums/patientSearchParameter';
 export { SearchOrder } from './DataParameters/Enums/searchOrder';

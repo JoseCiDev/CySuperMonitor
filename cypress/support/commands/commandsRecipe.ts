@@ -25,7 +25,6 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 /// <reference path="../cypress.d.ts" />
 
-import { Messages } from 'messages';
 import {
     elements as el,
     faker,
@@ -34,7 +33,8 @@ import {
     mount,
     RecipeImport,
     CheckAndThrowError,
-    PriorityRecipe
+    PriorityRecipe,
+    Messages
 } from '../../import';
 
 
@@ -78,7 +78,6 @@ export const {
     urgentRecipes,
     clientAlertRecipes,
     retailRecipes,
-    optionTypeRecipes,
     saveRecipes,
     closeRegisterRecipes,
     editRecipe,

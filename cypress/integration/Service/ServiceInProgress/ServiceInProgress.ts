@@ -3,7 +3,7 @@
 import {
     elements as el,
     faker,
-    dataParameters,
+dataParameters,
     SearchRecipe,
 } from '../../../import';
 

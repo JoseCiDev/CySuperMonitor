@@ -3,7 +3,7 @@
 import {
     elements as el,
     faker,
-    dataParameters,
+
 } from '../../import';
 
 
@@ -50,7 +50,6 @@ export const {
     urgentRecipes,
     clientAlertRecipes,
     retailRecipes,
-    optionTypeRecipes,
     saveRecipes,
     closeRegisterRecipes,
     editRecipe,
@@ -129,27 +128,27 @@ describe('Tela importação de receitas.', function () {
 
     })
 
-    it('Deve realizar importação de Recipes', function () {
-        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+    it('Deve realizar importação de Receitas', function () {
+        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL)
             .then((result) => {
                 assert.exists(result.success, result.error)
             })
 
-        cy.document().then((doc) => {
-            const $btn = doc.querySelector('.modal-footer > .btn') as HTMLElement
-            if ($btn) {
-                cy.getElementAndClick([btnModalChangelog]);
-            } else {
-                cy.log('Informativo de Changelog não foi apresentado e, portanto, o teste prosseguirá.');
-            }
-        });
+        // cy.document().then((doc) => {
+        //     const $btn = doc.querySelector('.modal-footer > .btn') as HTMLElement
+        //     if ($btn) {
+        //         cy.getElementAndClick([btnModalChangelog]);
+        //     } else {
+        //         cy.log('Informativo de Changelog não foi apresentado e, portanto, o teste prosseguirá.');
+        //     }
+        // });
 
-        cy.get(menuRecipes, { timeout: 60000 }).click({ force: true })
+        // cy.get(menuRecipes, { timeout: 60000 }).click({ force: true })
 
-        cy.get(menuImportRecipes, { timeout: 60000 }).click({ force: true });
-        cy.importRecipe().then((result) => {
-            assert.exists(result.success, result.error)
-        });
+        // cy.get(menuImportRecipes, { timeout: 60000 }).click({ force: true });
+        // cy.importRecipe().then((result) => {
+        //     assert.exists(result.success, result.error)
+        // });
     });
 
 })

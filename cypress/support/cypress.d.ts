@@ -4,7 +4,7 @@
 import {
   ElementTypeAndValueOpcional,
   ValidationResult,
-  dataParameters,
+  
   mount
 } from '../import'
 
@@ -17,7 +17,7 @@ interface DataHora {
 declare global {
   namespace Cypress {
     interface Chainable<Subject = any> {
-      mount: typeof mount
+      // mount: typeof mount
 
       /**
        * Custom command to select DOM element by data-cy attribute.

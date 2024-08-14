@@ -1,9 +1,7 @@
 ///home/jose/projetos/CySuperMonitor/cypress.config.ts
 import { defineConfig } from "cypress";
-import {
-  addCucumberPreprocessorPlugin,
-  webpack
-} from "./cypress/import";
+import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-preprocessor';
+import webpack from "@cypress/webpack-preprocessor";
 
 
 
@@ -53,15 +51,21 @@ export default defineConfig({
   projectId: "iwkf6s",
   includeShadowDom: true,
   defaultCommandTimeout: 10000,
-  viewportHeight: 1280,
-  viewportWidth: 1024,
+  pageLoadTimeout: 30000,
+  responseTimeout: 30000,
+  waitForAnimations: false,
+  numTestsKeptInMemory: 5,
+
+  experimentalMemoryManagement: true,
   e2e: {
     setupNodeEvents,
+    baseUrl: 'http://192.168.0.66:9202/',
     supportFile: 'cypress/support/e2e.{js,jsx,ts,tsx}',
     specPattern: 'cypress/**/*.{js,jsx,ts,tsx,feature}',
     redirectionLimit: 5000,
-    numTestsKeptInMemory: 15,
-    experimentalMemoryManagement: true,
+    viewportHeight: 1280,
+    viewportWidth: 1024,
+    numTestsKeptInMemory: 1,
     excludeSpecPattern: [
       'cypress/support/*',
       'cypress/support/commands',
@@ -72,13 +76,12 @@ export default defineConfig({
       'cypress/reports/html/*',
       'cypress/reports/html/assets/*',
       'cypress/reports/.jsons/*',
-      'cypress/plugins/*',
       'cypress/support/Connections/*',
       'cypress/DataParameters/Enums/*',
       'cypress/DataParameters/Interfaces/*',
       'cypress/DataParameters/Types/*',
     ],
-    video: false,
+    video: true,
     screenshotOnRunFailure: true,
     videosFolder: 'cypress/videos',
     screenshotsFolder: 'cypress/screenshots',

@@ -21,7 +21,6 @@ import {
     PaymentMethod,
     faker,
     fakerBr,
-    format,
     DataParameters,
     CheckAndThrowError,
 } from '../import'

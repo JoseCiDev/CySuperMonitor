@@ -1,4 +1,4 @@
-import { dataParameters } from './import';
+
 
 
 interface Elements<S = string> {
@@ -50,7 +50,6 @@ interface Elements<S = string> {
         urgentRecipes: S;
         clientAlertRecipes: S;
         retailRecipes: S;
-        optionTypeRecipes: S;
         saveRecipes: S;
         closeRegisterRecipes: S;
         editRecipe: S;
@@ -289,7 +288,7 @@ export const elements: Elements = {
         urgentRecipes: '#modalUrgente',
         clientAlertRecipes: '#clientAlert',
         retailRecipes: '#checkboxVarejo',
-        optionTypeRecipes: `input[name="receita_tipo"][value="${dataParameters.recipeType}"]`,
+
         // mensagem informando que já existe recipe com mesmo patient e prescriber
         // salvar receita
         saveRecipes: '#save_receita',
