@@ -1,7 +1,10 @@
 ///home/jose/projetos/CySuperMonitor/cypress.config.ts
 import { defineConfig } from "cypress";
-import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
-import webpack from "@cypress/webpack-preprocessor";
+import {
+  addCucumberPreprocessorPlugin,
+  webpack
+} from "./cypress/import";
+
 
 
 async function setupNodeEvents(
@@ -55,7 +58,7 @@ export default defineConfig({
   e2e: {
     setupNodeEvents,
     supportFile: 'cypress/support/e2e.{js,jsx,ts,tsx}',
-    specPattern: '/**/*.{js,jsx,ts,tsx,feature}',
+    specPattern: 'cypress/**/*.{js,jsx,ts,tsx,feature}',
     redirectionLimit: 5000,
     numTestsKeptInMemory: 15,
     experimentalMemoryManagement: true,

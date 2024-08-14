@@ -1,22 +1,27 @@
+///home/jose/projetos/Cygecom/cypress/tsconfig.json
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es5",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "target": "es6",
     "lib": [
-      "es5",
+      "es6",
       "dom"
     ],
     "types": [
       "cypress",
       "node"
-    ],
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    ]
   },
   "include": [
     "**/*.ts",
-    "../cypress.d.ts",
-    "support/e2e.ts"
+    "./support/cypress.d.ts",
+    "cypress/**/*.json",
+    "cypress/support/**/*.ts",
+    "cypress/support/**/*.d.ts",
+    "esbuild.d.ts"
   ]
 }

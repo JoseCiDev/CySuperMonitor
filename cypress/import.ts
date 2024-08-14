@@ -8,26 +8,38 @@ import './support/commands/commandsConfigurationAttendantClusterPrescriberRelati
 
 import * as loadash from 'lodash';
 export { loadash };
+// npm i -g npm
+// npm i --save lodash
 
 // import * as data from './fixtures/data.json';
 // export { data };
 
 import * as dateFns from 'date-fns';
 export { dateFns };
+export { format } from 'date-fns';
+// npm install date-fns --save
 
 export { faker } from '@faker-js/faker'
+// npm install @faker-js/faker --save-dev
 
 export { elements } from './elements'
 
-export { format } from 'date-fns';
-
 import { fakerBr } from '@js-brasil/fakerbr';
 export { fakerBr };
+// npm i @js-brasil/fakerbr
 
 export { mount } from 'cypress/react'
 
-// import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
-// export { Given, When, Then };
+import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
+export { Given, When, Then };
+// npm install @badeball/cypress-cucumber-preprocessor
+
+import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
+export { addCucumberPreprocessorPlugin };
+
+import webpack from "@cypress/webpack-preprocessor";
+export { webpack };
+// npm install --save-dev @cypress/webpack-preprocessor
 
 import 'cypress-wait-until';
 
@@ -73,4 +85,4 @@ export { ShippingMethod } from './DataParameters/Enums/shippingMethod';
 export { AromaSachet } from './DataParameters/Enums/aromaSachet';
 export { CapsuleAroma } from './DataParameters/Enums/capsuleAroma';
 export { OrderHasRecipe } from './DataParameters/Enums/orderHasRecipe';
-export { PriorityRecipe } from 'DataParameters/Enums/priorityRecipe';
+export { PriorityRecipe } from './DataParameters/Enums/priorityRecipe';
