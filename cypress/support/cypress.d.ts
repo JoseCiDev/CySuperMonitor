@@ -1,10 +1,13 @@
 /// <reference types="cypress" />
+import {
+  mount
+} from '../import'
 /// <reference types="cypress-wait-until" />
 
 import {
   ElementTypeAndValueOpcional,
   ValidationResult,
-  
+
   mount
 } from '../import'
 

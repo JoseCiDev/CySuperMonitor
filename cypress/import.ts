@@ -19,8 +19,6 @@ export { Given, When, Then };
 
 import 'cypress-wait-until';
 
-
-
 export {
     DataParameters,
     CheckAndThrowError,
