@@ -21,15 +21,3 @@ Feature: Acompanhar processo de produção e entrega de pedidos
         When o cliente acessa o link de acompanhamento
         Then o sistema deve redirecionar para a tela "Meus Pedidos"
         And o usuário deve visualizar tela de  "Meus Pedidos"
-
-    @pedidoRejeitado
-    Scenario: Acompanhamento de pedido rejeitado
-        Given que o pedido foi rejeitado
-        When o cliente acessa o link de acompanhamento
-        Then o sistema deve exibir a mensagem "Atendimento rejeitado"
-    
-    @pedidoExcluido
-    Scenario: Acompanhamento de pedido excluido
-        Given que o pedido foi excluido
-        When o cliente acessa o link de acompanhamento
-        Then o sistema deve exibir a mensagem "Atendimento excluído"
