@@ -96,6 +96,7 @@ Feature: Seleção de aroma pelo cliente no self-checkout
         Then o aroma "Morango" deve estar selecionado no self-checkout
     #93176 / 5
 
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     @alteracaoFormula
     Scenario: O usuario muda para uma fórmula diferente após o cliente selecionar um aroma
         Given que o cliente acessa o self-checkout
@@ -105,7 +106,8 @@ Feature: Seleção de aroma pelo cliente no self-checkout
         And a tela de atendimento para a fórmula número "8901" deve não exibir o aroma "Uva"
         And deve exibir o novo aroma selecionado
     #64881 / 5000
-
+    #65059 / 5000
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     @limpezaCookies
     Scenario: O cliente seleciona um aroma e depois limpa cookies e dados do navegador
         Given que o cliente acessa o self-checkout
