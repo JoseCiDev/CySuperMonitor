@@ -886,7 +886,7 @@ Feature: Expedição de Produtos
         When visualizo os dados do cliente do orçamento "Orçamento123"
         Then devo ver os dados do cliente "João Silva" com endereço "Rua 1, 123"
 
-    @expedition @ViewOrder
+    @expedition @ViewBudget
     Scenario: Visualizar amarelinha
         Given que estou na tela de expedição
         When visualizo a amarelinha do orçamento "Orçamento123"
@@ -898,7 +898,7 @@ Feature: Expedição de Produtos
         When finalizo a expedição do orçamento "Orçamento123" com opção de envio "Expedida" e observações "Entregar pela manhã"
         Then o orçamento "Orçamento123" deve estar marcado como "Expedida" com observações "Entregar pela manhã"
 
-    @expedition @DeleteOrder
+    @expedition @DeleteBudget
     Scenario: Excluir orçamento
         Given que estou na tela de expedição
         When excluo o orçamento "Orçamento123"

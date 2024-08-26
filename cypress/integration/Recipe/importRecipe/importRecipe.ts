@@ -273,7 +273,7 @@ describe('Tela importação de receitas.', function () {
         });
     });
 
-    it('Deve realizar search de Recipes filtrando por order', function () {
+    it('Deve realizar search de Recipes filtrando por budget', function () {
         cy.login(dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
             .then((result) => {
                 assert.exists(result.success, result.error)
@@ -282,7 +282,7 @@ describe('Tela importação de receitas.', function () {
         cy.searchRecipe({
             initialDate: dataParameters.Recipe.search.initialDate,
             finalDate: dataParameters.Recipe.search.finalDate,
-            order: dataParameters.OrderAndBranch.order,
+            budget: dataParameters.BudgetAndBranch.budget,
             pendency: dataParameters.pendency.All
         });
     });

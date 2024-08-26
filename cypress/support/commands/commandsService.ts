@@ -124,14 +124,14 @@ export const {
   menuServices,
   servicesInProgress,
   accessWorkFlowService,
-  parameterSearchCardOrder,
+  parameterSearchBudget: parameterSearchCardBudget,
   cardBudget,
   buttonLinkRecipeScreenServiceProgress,
   buttonUnlinkRecipeScreenServiceProgress,
   fieldLinkRecipe,
-  orderInProgress,
+  budgetInProgress: budgetInProgress,
   buttonView,
-  fieldSearchOrder,
+  fieldSearchBudget: fieldSearchBudget,
   searchBranch,
   sendSearch,
   brazilian,
@@ -149,17 +149,17 @@ export const {
   cancelTimeTreatment,
   reimportFormulas,
   saveTimeTreatment,
-  orderMessageModal,
-  modalConfirmationOrder,
+  budgetMessageModal: budgetMessageModal,
+  modalConfirmationBudget: modalConfirmationBudget,
   containerPaymentMethod,
   chosenBudget,
   insertRepeatTime,
-  saveDataConfirmationOrder,
+  saveDataConfirmationBudget: saveDataConfirmationBudget,
   monitoringService,
-  channelConfirmationOrder,
+  channelConfirmationBudget: channelConfirmationBudget,
   sendEmailTracking,
-  noShowOrderInclusion,
-  noShowOrderCaixa,
+  noShowBudgetInclusion: noShowBudgetInclusion,
+  noShowBudgetCaixa: noShowBudgetCaixa,
   observationFromCashierToCounter,
   detailedNote,
   fieldStatusPayment,
@@ -167,26 +167,26 @@ export const {
   addressShippingSelected,
   shipmentObservation,
   fieldFormShipping,
-  juntocomOrderConfirmation,
+  juntocomBudgetConfirmation: juntocomBudgetConfirmation,
   juntocomClinicaHigashi,
   promisedFieldFor,
   fieldAromasSachet,
   aromaCapsuleField,
   generalObservation,
   hasRecipe,
-  urgentOrder,
-  cancelOrderConfirmation,
+  urgentBudget: urgentBudget,
+  cancelBudgetConfirmation: cancelBudgetConfirmation,
   sendChatguruMessage,
-  PreViewOrder,
-  closePreViewOrder,
-  sendconfirmOrder,
+  PreViewBudget: PreViewBudget,
+  closePreViewBudget: closePreViewBudget,
+  sendconfirmBudget: sendconfirmBudget,
   showAll,
   hasSpecialFormula,
   generateLinkPayment,
-  relateRecipeOrder,
-  showOrdersClosed,
-  reopenOrder,
-  confirmReopenOrder,
+  relateRecipeBudget: relateRecipeBudget,
+  showBudgetsClosed: showBudgetsClosed,
+  reopenBudget,
+  confirmReopenBudget,
   userOptions,
   openModalImportBudget,
   importBudget,
@@ -199,9 +199,9 @@ export const {
   inclusionFrameInformationAmarelinhaConfirmed,
   attendantHopscotchInformationBoardConfirmed,
   textFrameInformationHopscotchConfirmed,
-  orderBudgetist,
-  OrderAttendant,
-  containerOrders,
+  budgetBudgetist,
+  BudgetAttendant,
+  containerBudgets,
 
 } = el.Services;
 
@@ -235,11 +235,11 @@ Cypress.Commands.add('insertTimeTreatment', (timeTreatment: string) => {
   cy.getElementAndType({[standardTreatmentTime]: timeTreatment.toString()});
   cy.getElementAndClick([treatmentTimeModalHeader])
   cy.getElementAndClick([saveTimeTreatment]);
-  cy.get(modalConfirmationOrder)
+  cy.get(modalConfirmationBudget)
 })
 
 
-Cypress.Commands.add('confirmOrder', (
+Cypress.Commands.add('confirmBudget', (
   SelectedPaymentMethod,
   timeRepetition: number,
   buttonViewtextObservationCashierCounter: string,
@@ -252,7 +252,7 @@ Cypress.Commands.add('confirmOrder', (
   textGeneralNote: string,
 ): void => {
 
-  cy.getElementAndClick([modalConfirmationOrder]), { timeout: 20000 };
+  cy.getElementAndClick([modalConfirmationBudget]), { timeout: 20000 };
 
   cy.getSelectOptionByValue([{[containerPaymentMethod]: SelectedPaymentMethod}]);
   
@@ -260,7 +260,7 @@ Cypress.Commands.add('confirmOrder', (
   cy.getElementAndCheck([{element:dataParameters.Recipe.import.parameterSearchPatient },]);
   cy.getElementAndType({[insertRepeatTime]: timeRepetition.toString()});
   // cy.getElementAndCheck([{element:monitoramentoAtendimento},]);
-  cy.getElementAndClick([saveDataConfirmationOrder]), { timeout: 20000 };
+  cy.getElementAndClick([saveDataConfirmationBudget]), { timeout: 20000 };
 
   cy.getElementAndType({[observationFromCashierToCounter]: buttonViewtextObservationCashierCounter});{ timeout: 20000 };
   cy.getElementAndCheck([{element:detailedNote},]);
@@ -282,20 +282,20 @@ Cypress.Commands.add('confirmOrder', (
   cy.getElementAndCheck([{element:hasSpecialFormula},]), { timeout: 20000 };
   cy.getElementAndCheck([{element:sendChatguruMessage},]), { timeout: 20000 };
 
-  cy.getElementAndClick([PreViewOrder]), { timeout: 20000 };
-  cy.getElementAndClick([closePreViewOrder]), { timeout: 20000 };
-  cy.getElementAndClick([sendconfirmOrder]), { timeout: 20000 };
+  cy.getElementAndClick([PreViewBudget]), { timeout: 20000 };
+  cy.getElementAndClick([closePreViewBudget]), { timeout: 20000 };
+  cy.getElementAndClick([sendconfirmBudget]), { timeout: 20000 };
 
 });
 
 
-Cypress.Commands.add('linkOrderRecipe', (buttonLink: string, numberRecipe: number): void => {
+Cypress.Commands.add('linkBudgetRecipe', (buttonLink: string, numberRecipe: number): void => {
   cy.getElementAndClick([buttonLink]);
   cy.get(fieldLinkRecipe, { timeout: 20000 })
     .type(numberRecipe.toString(), { timeout: 20000 })
     .wait(2000)
     .type('{downarrow}{enter}', { timeout: 20000 });
-  cy.getElementAndClick([relateRecipeOrder]);
+  cy.getElementAndClick([relateRecipeBudget]);
   cy.getElementAndClick([btnSuccessModal])
     .wait(2000);
   cy.getElementAndClick([modalMessage]);
@@ -303,7 +303,7 @@ Cypress.Commands.add('linkOrderRecipe', (buttonLink: string, numberRecipe: numbe
 
 
 
-Cypress.Commands.add('unlinkOrderRecipe', (buttonUnlink: string) => {
+Cypress.Commands.add('unlinkBudgetRecipe', (buttonUnlink: string) => {
   cy.getElementAndClick([buttonUnlink]);
   cy.getElementAndClick([btnSuccessModal])
     .wait(2000);
@@ -312,6 +312,6 @@ Cypress.Commands.add('unlinkOrderRecipe', (buttonUnlink: string) => {
 
 
 
-Cypress.Commands.add('changeUsersOrder', (budgetist: string, attendant: string) => {
+Cypress.Commands.add('changeUsersBudget', (budgetist: string, attendant: string) => {
 
 })

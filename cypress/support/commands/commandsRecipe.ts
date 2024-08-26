@@ -151,14 +151,14 @@ export const {
     menuServices,
     servicesInProgress,
     accessWorkFlowService,
-    parameterSearchCardOrder,
+    parameterSearchBudget: parameterSearchCardBudget,
     cardBudget,
     buttonLinkRecipeScreenServiceProgress,
     buttonUnlinkRecipeScreenServiceProgress,
     fieldLinkRecipe,
-    orderInProgress,
+    budgetInProgress: budgetInProgress,
     buttonView,
-    fieldSearchOrder,
+    fieldSearchBudget: fieldSearchBudget,
     searchBranch,
     sendSearch,
     brazilian,
@@ -176,17 +176,17 @@ export const {
     cancelTimeTreatment,
     reimportFormulas,
     saveTimeTreatment,
-    orderMessageModal,
-    modalConfirmationOrder,
+    budgetMessageModal: budgetMessageModal,
+    modalConfirmationBudget: modalConfirmationBudget,
     containerPaymentMethod,
     chosenBudget,
     insertRepeatTime,
-    saveDataConfirmationOrder,
+    saveDataConfirmationBudget: saveDataConfirmationBudget,
     monitoringService,
-    channelConfirmationOrder,
+    channelConfirmationBudget: channelConfirmationBudget,
     sendEmailTracking,
-    noShowOrderInclusion,
-    noShowOrderCaixa,
+    noShowBudgetInclusion: noShowBudgetInclusion,
+    noShowBudgetCaixa: noShowBudgetCaixa,
     observationFromCashierToCounter,
     detailedNote,
     fieldStatusPayment,
@@ -194,26 +194,26 @@ export const {
     addressShippingSelected,
     shipmentObservation,
     fieldFormShipping,
-    juntocomOrderConfirmation,
+    juntocomBudgetConfirmation: juntocomBudgetConfirmation,
     juntocomClinicaHigashi,
     promisedFieldFor,
     fieldAromasSachet,
     aromaCapsuleField,
     generalObservation,
     hasRecipe,
-    urgentOrder,
-    cancelOrderConfirmation,
+    urgentBudget: urgentBudget,
+    cancelBudgetConfirmation: cancelBudgetConfirmation,
     sendChatguruMessage,
-    PreViewOrder,
-    closePreViewOrder,
-    sendconfirmOrder,
+    PreViewBudget: PreViewBudget,
+    closePreViewBudget: closePreViewBudget,
+    sendconfirmBudget: sendconfirmBudget,
     showAll,
     hasSpecialFormula,
     generateLinkPayment,
-    relateRecipeOrder,
-    showOrdersClosed,
-    reopenOrder,
-    confirmReopenOrder,
+    relateRecipeBudget: relateRecipeBudget,
+    showBudgetsClosed: showBudgetsClosed,
+    reopenBudget,
+    confirmReopenBudget,
     userOptions,
     openModalImportBudget,
     importBudget,
@@ -226,9 +226,9 @@ export const {
     inclusionFrameInformationAmarelinhaConfirmed,
     attendantHopscotchInformationBoardConfirmed,
     textFrameInformationHopscotchConfirmed,
-    orderBudgetist,
-    OrderAttendant,
-    containerOrders,
+    budgetBudgetist,
+    BudgetAttendant,
+    containerBudgets,
 
 } = el.Services;
 
@@ -295,7 +295,7 @@ Cypress.Commands.add('searchRecipe', (
         recipe?: number,
         patient?: string,
         prescriber?: string,
-        order?: number,
+        budget?: number,
         lastModifier?: string,
         budgetist?: string,
         attendantResponsibleRecipes?: string
@@ -312,7 +312,7 @@ Cypress.Commands.add('searchRecipe', (
         recipe?: number,
         patient?: string,
         prescriber?: string,
-        order?: number,
+        budget?: number,
         lastModifier?: string,
         budgetist?: string,
         attendantResponsibleRecipes?: string
@@ -363,8 +363,8 @@ Cypress.Commands.add('searchRecipe', (
             .type('{enter}');
     }
 
-    if (params.order) {
-        cy.getElementAndType({ [budgetSearch]: params.order.toString() })
+    if (params.budget) {
+        cy.getElementAndType({ [budgetSearch]: params.budget.toString() })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
@@ -691,12 +691,12 @@ Cypress.Commands.add('answerDoubtTechnical', (accessingDoubtsTechnical: string, 
 
 
 
-Cypress.Commands.add('searchOrder', (order: number, branch: number) => {
+Cypress.Commands.add('searchBudget', (budget: number, branch: number) => {
 
-    cy.get(fieldSearchOrder, { timeout: 20000 })
+    cy.get(fieldSearchBudget, { timeout: 20000 })
         .clear()
-        .type(order.toString())
-        .should('have.value', order);
+        .type(budget.toString())
+        .should('have.value', budget);
 
     cy.get(searchBranch, { timeout: 5000 })
         .clear()
@@ -707,56 +707,56 @@ Cypress.Commands.add('searchOrder', (order: number, branch: number) => {
 
 });
 
-Cypress.Commands.add('reopenOrder', (order: number, branch: number) => {
-    cy.searchOrder(order, branch);
+Cypress.Commands.add('reopenBudget', (budget: number, branch: number) => {
+    cy.searchBudget(budget, branch);
 
-    cy.getElementAndClick([showOrdersClosed]);
+    cy.getElementAndClick([showBudgetsClosed]);
     cy.getElementAndClick([sendSearch]);
     cy.getElementAndClick([buttonView]);
 
-    cy.getElementAndClick([reopenOrder]);
-    cy.getElementAndClick([confirmReopenOrder]);
-    cy.getElementAndClick([orderMessageModal]);
+    cy.getElementAndClick([reopenBudget]);
+    cy.getElementAndClick([confirmReopenBudget]);
+    cy.getElementAndClick([budgetMessageModal]);
 })
 
-Cypress.Commands.add('viewOrder', (buttonView): void => {
+Cypress.Commands.add('viewBudget', (buttonView): void => {
 
-    cy.readFile('orderAndBranch.json').then((orderAndBranch) => {
+    cy.readFile('budgetAndBranch.json').then((budgetAndBranch) => {
 
-        // Assuming orderAndBranch is an array of objects with properties budgetNumber and branchNumber
-        let allOrdersUsed = true;
-        let orderViewed = false;
+        // Assuming budgetAndBranch is an array of objects with properties budgetNumber and branchNumber
+        let allBudgetsUsed = true;
+        let budgetViewed = false;
 
-        for (const budget of orderAndBranch) {
-            const order = budget.budgetNumber;
+        for (const budget of budgetAndBranch) {
+            const budget = budget.budgetNumber;
             const branch = budget.branchNumber;
 
-            cy.searchOrder(order, branch);
+            cy.searchBudget(budget, branch);
             cy.getElementAndClick([sendSearch]);
 
-            cy.get(containerOrders).then($element => {
+            cy.get(containerBudgets).then($element => {
                 if ($element.length < 2) {
                     // Execute o código dentro desta condição somente se o elemento não for visível
-                    cy.reopenOrder(order, branch)
+                    cy.reopenBudget(budget, branch)
                 }
                 else {
-                    allOrdersUsed = false;
+                    allBudgetsUsed = false;
                     cy.getElementAndClick([buttonView]);
-                    orderViewed;
+                    budgetViewed;
                 }
 
-                if (orderViewed = true) {
+                if (budgetViewed = true) {
                     return false;
                 };
             });
 
-            if (orderViewed = true) {
+            if (budgetViewed = true) {
                 break;
             };
 
         }
 
-        if (allOrdersUsed) {
+        if (allBudgetsUsed) {
             throw new Error('Todos os números de orçamentos já foram usados.')
         };
 

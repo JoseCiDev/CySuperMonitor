@@ -42,7 +42,7 @@ declare global {
 
       /**
        * comando customizado para ler arquivos
-       * @example cy.readFile('orderAndBranch.json')
+       * @example cy.readFile('budgetAndBranch.json')
        */
       readFile(fileName: string)
 
@@ -65,7 +65,7 @@ declare global {
         recipe?: number;
         patient?: string;
         prescriber?: string;
-        order?: number;
+        budget?: number;
         lastModifier?: string;
         budgetist?: string;
         attendantResponsibleRecipes?: string;
@@ -205,21 +205,21 @@ declare global {
 
       /**
        * * comando customizado para buscar orçamentos inserindo orcamento e branch.
-       * @example cy.searchOrder(order,branch)
+       * @example cy.searchBudget(budget,branch)
        */
-      searchOrder(order: number, branch: number);
+      searchBudget(budget: number, branch: number);
 
       /**
        * * comando customizado para visulizar orçamentos.
-       * @example cy.viewOrder(buttonView)
+       * @example cy.viewBudget(buttonView)
        */
-      viewOrder(buttonView): Chainable<Element>;
+      viewBudget(buttonView): Chainable<Element>;
 
       /**
        * * comando customizado para reabrir orçamentos.
-       * @example cy.reopenOrder(order,branch)
+       * @example cy.reopenBudget(budget,branch)
        */
-      reopenOrder(order: number, branch: number);
+      reopenBudget(budget: number, branch: number);
 
       /**
        * * comando customizado para inserir tempo de tratamento.
@@ -229,7 +229,7 @@ declare global {
 
       /**
        * * comando customizado para confirmar orçamentos.
-       * @example cy.confirmOrder(dataParameters.formaPagamento.Boleto,
+       * @example cy.confirmBudget(dataParameters.formaPagamento.Boleto,
             dataParameters.Orçamento.timeRepetition,
             dataParameters.Orçamento.buttonViewtextObservationCashierCounter,
             dataParameters.paymentStatus.Pago,
@@ -240,7 +240,7 @@ declare global {
             dataParameters.capsuleAroma.laranjaComHortelaMenta,
             dataParameters.Orçamento.textGeneralNote)
        */
-      confirmOrder(
+      confirmBudget(
         SelectedPaymentMethod: string,
         timeRepetition: number,
         observationFromCashierToCounter: string,
@@ -254,32 +254,32 @@ declare global {
       ): Chainable<Element>;
 
       /**
-       * * comando customizado para vincular recipe ao order.
+       * * comando customizado para vincular recipe ao budget.
        * @example cy.vincularReceitaOrçamento(buttonLinkRecipeScreenServiceProgress,dataParameters.Recipe.numberRecipe)
        */
-      linkOrderRecipe(buttonLink: string, numberRecipe: number): ValidationResult;
+      linkBudgetRecipe(buttonLink: string, numberRecipe: number): ValidationResult;
 
       /**
-       * * comando customizado para desvincular recipe ao order.
+       * * comando customizado para desvincular recipe ao budget.
        * @example cy.desvincularReceitaOrçamento(timeTreatment)
        */
-      unlinkOrderRecipe(buttonUnlink: string): Chainable<Element>;
+      unlinkBudgetRecipe(buttonUnlink: string): Chainable<Element>;
 
       /**
       * * comando customizado para importar orçamentos .
-      * @example cy.orderImport(modalImportacao,numerOrcamento,branchNumber,orderImport)
+      * @example cy.budgetImport(modalImportacao,numerOrcamento,branchNumber,budgetImport)
       */
-      orderImport(): Chainable<Element>
+      budgetImport(): Chainable<Element>
 
       /**
-      * * comando customizado para alterar usuário do order .
-      * @example cy.changeUsersOrder(budgetist,attendant)
+      * * comando customizado para alterar usuário do budget .
+      * @example cy.changeUsersBudget(budgetist,attendant)
       */
-      changeUsersOrder(budgetist: string, attendant: string): Chainable<Element>
+      changeUsersBudget(budgetist: string, attendant: string): Chainable<Element>
 
       /**
      * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .
-     * @example cy.changeUsersOrder(budgetist,attendant)
+     * @example cy.changeUsersBudget(budgetist,attendant)
      */
       configureRelationshipAtendenteClusterPrescriber(fileName: string): ValidationResult
 
@@ -291,13 +291,13 @@ declare global {
 
       /**
      * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .
-     * @example cy.changeUsersOrder(budgetist,attendant)
+     * @example cy.changeUsersBudget(budgetist,attendant)
      */
       waitModalAndClick(jqueryElement: string, element: string, checkType): ValidationResult
 
       /**
      * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .
-     * @example cy.changeUsersOrder(budgetist,attendant)
+     * @example cy.changeUsersBudget(budgetist,attendant)
      */
       importRecipe(
         file?: Object,

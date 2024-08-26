@@ -123,14 +123,14 @@ interface Elements<S = string> {
         menuServices: S;
         servicesInProgress: S;
         accessWorkFlowService: S;
-        parameterSearchCardOrder: S;
+        parameterSearchBudget: S;
         cardBudget: S;
         buttonLinkRecipeScreenServiceProgress: S;
         buttonUnlinkRecipeScreenServiceProgress: S;
         fieldLinkRecipe: S;
-        orderInProgress: S;
+        budgetInProgress: S;
         buttonView: S;
-        fieldSearchOrder: S;
+        fieldSearchBudget: S;
         searchBranch: S;
         sendSearch: S;
         brazilian: S;
@@ -148,17 +148,17 @@ interface Elements<S = string> {
         cancelTimeTreatment: S;
         reimportFormulas: S;
         saveTimeTreatment: S;
-        orderMessageModal: S;
-        modalConfirmationOrder: S;
+        budgetMessageModal: S;
+        modalConfirmationBudget: S;
         containerPaymentMethod: S;
         chosenBudget: S;
         insertRepeatTime: S;
-        saveDataConfirmationOrder: S;
+        saveDataConfirmationBudget: S;
         monitoringService: S;
-        channelConfirmationOrder: S;
+        channelConfirmationBudget: S;
         sendEmailTracking: S;
-        noShowOrderInclusion: S;
-        noShowOrderCaixa: S;
+        noShowBudgetInclusion: S;
+        noShowBudgetCaixa: S;
         observationFromCashierToCounter: S;
         detailedNote: S;
         fieldStatusPayment: S;
@@ -166,26 +166,26 @@ interface Elements<S = string> {
         addressShippingSelected: S;
         shipmentObservation: S;
         fieldFormShipping: S;
-        juntocomOrderConfirmation: S;
+        juntocomBudgetConfirmation: S;
         juntocomClinicaHigashi: S;
         promisedFieldFor: S;
         fieldAromasSachet: S;
         aromaCapsuleField: S;
         generalObservation: S;
         hasRecipe: S;
-        urgentOrder: S;
-        cancelOrderConfirmation: S;
+        urgentBudget: S;
+        cancelBudgetConfirmation: S;
         sendChatguruMessage: S;
-        PreViewOrder: S;
-        closePreViewOrder: S;
-        sendconfirmOrder: S;
+        PreViewBudget: S;
+        closePreViewBudget: S;
+        sendconfirmBudget: S;
         showAll: S;
         hasSpecialFormula: S;
         generateLinkPayment: S;
-        relateRecipeOrder: S;
-        showOrdersClosed: S;
-        reopenOrder: S;
-        confirmReopenOrder: S;
+        relateRecipeBudget: S;
+        showBudgetsClosed: S;
+        reopenBudget: S;
+        confirmReopenBudget: S;
         userOptions: S;
         openModalImportBudget: S;
         importBudget: S;
@@ -198,9 +198,9 @@ interface Elements<S = string> {
         inclusionFrameInformationAmarelinhaConfirmed: S;
         attendantHopscotchInformationBoardConfirmed: S;
         textFrameInformationHopscotchConfirmed: S;
-        orderBudgetist: S;
-        OrderAttendant: S;
-        containerOrders: S;
+        budgetBudgetist: S;
+        BudgetAttendant: S;
+        containerBudgets: S;
 
     };
 
@@ -367,17 +367,17 @@ export const elements: Elements = {
         menuServices: '#side-menu > li:nth-child(8)',
         servicesInProgress: '.active > .nav-second-level > :nth-child(1) > a',
         accessWorkFlowService: '.nav-second-level > .active > .nav > li > a',
-        parameterSearchCardOrder: '#select2-tipo-filtro-container',
+        parameterSearchBudget: '#select2-tipo-filtro-container',
         cardBudget: '#atendimentos-em-andamento > div.ibox-workflow > div.grid > div > div:nth-child(1) > div > div.container-coluna > ul > li:nth-child(8)',
         buttonLinkRecipeScreenServiceProgress: '.vinc-rec',
         buttonUnlinkRecipeScreenServiceProgress: '.r-vinc-rec',
         fieldLinkRecipe: '#receitaCod',
-        relateRecipeOrder: '#modal-recipe-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo',
-        // order em andamento em atendimento, elemento foi alterado, lista de orçamentos em andamento movido para Recipes -> Importar Atendimentos
-        containerOrders: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div > table > tbody > tr',
-        orderInProgress: '#side-menu > li.active > ul > li:nth-child(1) > a',
+        relateRecipeBudget: '#modal-recipe-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo',
+        // budget em andamento em atendimento, elemento foi alterado, lista de orçamentos em andamento movido para Recipes -> Importar Atendimentos
+        containerBudgets: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div > table > tbody > tr',
+        budgetInProgress: '#side-menu > li.active > ul > li:nth-child(1) > a',
         buttonView: ':nth-child(2) > :nth-child(6) > a.visualizarFvc',
-        fieldSearchOrder: '#top-search',
+        fieldSearchBudget: '#top-search',
         searchBranch: '#search-form > div:nth-child(1) > input:nth-child(2)',
         sendSearch: '#search-form > div.checkbox.m-l.m-r-xs > [type="submit"][value="buscar"]',
         showAll: '#search-form > div.form-group:nth-child(2) > label input[type="radio"][value="1"]',
@@ -398,19 +398,19 @@ export const elements: Elements = {
         cancelTimeTreatment: '#customTimeModal > div.modal-dialog > div > div.modal-footer > button.btn.btn-white',
         reimportFormulas: '#reimporter',
         saveTimeTreatment: '#saveByCustomTimeFormula',
-        orderMessageModal: '#toast-container > div > div.toast-message',
-        // confirmOrder primeira etapa
-        modalConfirmationOrder: '#bt-confirma-modal',
+        budgetMessageModal: '#toast-container > div > div.toast-message',
+        // confirmBudget primeira etapa
+        modalConfirmationBudget: '#bt-confirma-modal',
         containerPaymentMethod: '#confirmar-modal-body > div.form-group > div.col-sm-7 > select.small-right-space',
         chosenBudget: '#confirmar-modal-body > div.form-group > div.col-sm-7 > label > .small-right-space',
         insertRepeatTime: '#confirmar-modal-body > div:nth-child(4) > div > input',
-        saveDataConfirmationOrder: '#confirmacao-atendimento > div.modal-footer > input',
+        saveDataConfirmationBudget: '#confirmacao-atendimento > div.modal-footer > input',
         monitoringService: '#confirmar-modal-body > div:nth-child(5) > div > input[type=checkbox]',
-        // confirmOrder segunda etapa
-        channelConfirmationOrder: '#confirmar-modal-body > div > div:nth-child(1) > div > select',
+        // confirmBudget segunda etapa
+        channelConfirmationBudget: '#confirmar-modal-body > div > div:nth-child(1) > div > select',
         sendEmailTracking: '#confirmar-modal-body > div > div:nth-child(2) > div > input.small-right-space',
-        noShowOrderInclusion: '#confirmar-modal-body > div > div:nth-child(3) > div > input.small-right-space',
-        noShowOrderCaixa: '#confirmar-modal-body > div > div:nth-child(4) > div > input.small-right-space',
+        noShowBudgetInclusion: '#confirmar-modal-body > div > div:nth-child(3) > div > input.small-right-space',
+        noShowBudgetCaixa: '#confirmar-modal-body > div > div:nth-child(4) > div > input.small-right-space',
         observationFromCashierToCounter: '#confirmar-modal-body > div > div:nth-child(1) > div > textarea',
         detailedNote: '#confirmar-modal-body > div > div:nth-child(2) > div > input.small-right-space',
         fieldStatusPayment: '`input[name="pago"][value="${opcao}"]`',
@@ -418,7 +418,7 @@ export const elements: Elements = {
         addressShippingSelected: '#endereco-cliente',
         shipmentObservation: '#confirmar-modal-body > div > div:nth-child(5) > div > textarea',
         fieldFormShipping: '#confirmar-modal-body > div > div:nth-child(6) > div > select',
-        juntocomOrderConfirmation: '#juntocom',
+        juntocomBudgetConfirmation: '#juntocom',
         juntocomClinicaHigashi: '#confirmar-modal-body > div > div:nth-child(13) > div > input.small-right-space',
         promisedFieldFor: '#confirmar-modal-body > div > div:nth-child(9) > div > input',
         fieldAromasSachet: '#confirmar-modal-body > div > div:nth-child(10) > div > select',
@@ -426,20 +426,20 @@ export const elements: Elements = {
         generalObservation: '#confirmar-modal-body > div > div:nth-child(12) > div > textarea',
         hasRecipe: '#confirmar-modal-body > div > div:nth-child(13) > div > label:nth-child(2) > input',
         hasSpecialFormula: '#confirmar-modal-body > div > div:nth-child(14) > div > input.small-right-space',
-        urgentOrder: '#confirmar-modal-body > div > div:nth-child(20) > div > input.small-right-space',
-        cancelOrderConfirmation: '#form-amarelinha > div.modal-footer > div > div:nth-child(2) > button.btn.btn-white',
+        urgentBudget: '#confirmar-modal-body > div > div:nth-child(20) > div > input.small-right-space',
+        cancelBudgetConfirmation: '#form-amarelinha > div.modal-footer > div > div:nth-child(2) > button.btn.btn-white',
         sendChatguruMessage: '#form-amarelinha > div.modal-footer > div > div:nth-child(1) > input[type=checkbox]:nth-child(3)',
-        PreViewOrder: '#preview',
-        closePreViewOrder: '#modal-preview-lg-content > div.modal-footer > button',
-        sendconfirmOrder: '#submit',
+        PreViewBudget: '#preview',
+        closePreViewBudget: '#modal-preview-lg-content > div.modal-footer > button',
+        sendconfirmBudget: '#submit',
         generateLinkPayment: '#bt-pagamento-modal',
-        //order encerrado
-        showOrdersClosed: '#search-form > div.checkbox.m-l.m-r-xs > input[type=checkbox]:nth-child(1)',
-        reopenOrder: '#reabrir',
-        confirmReopenOrder: 'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-footer > button.btn.btn-danger.pull-right',
+        //budget encerrado
+        showBudgetsClosed: '#search-form > div.checkbox.m-l.m-r-xs > input[type=checkbox]:nth-child(1)',
+        reopenBudget: '#reabrir',
+        confirmReopenBudget: 'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-footer > button.btn.btn-danger.pull-right',
         //importar orcamento manualmente
         userOptions: '#username-link',
-        openModalImportBudget: '#page-wrapper > div.row.border-bottom > nav > ul > li:nth-child(1) > div > ul > li:nth-child(3) > a',
+        openModalImportBudget: '#page-wrapper > div.row.bbudget-bottom > nav > ul > li:nth-child(1) > div > ul > li:nth-child(3) > a',
         importBudget: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(1) > div > input',
         importBranch: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(3) > div > input',
         importHowNewService: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(5) > div > span > input',
@@ -452,8 +452,8 @@ export const elements: Elements = {
         attendantHopscotchInformationBoardConfirmed: '#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(4)',
         textFrameInformationHopscotchConfirmed: '#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao',
         //Usuarios do atendimento
-        orderBudgetist: '#budgetist',
-        OrderAttendant: '#attendant',
+        budgetBudgetist: '#budgetist',
+        BudgetAttendant: '#attendant',
         //toast toast-error
         //toast toast-sucess
     },

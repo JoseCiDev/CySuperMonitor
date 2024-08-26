@@ -5,8 +5,8 @@ import {
     CapsuleAroma,
     dateFns,
     faker,
-    OrderClosingChannel,
-    OrderHasRecipe,
+    BudgetClosingChannel,
+    BudgetHasRecipe,
     PatientSearchParameter,
     PaymentMethod,
     PaymentStatus,
@@ -17,7 +17,7 @@ import {
     RecipeReceiptChannel,
     RecipeType,
     RelationshipsPrescriberAttendantAndCluster,
-    SearchOrder,
+    SearchBudget,
     ShippingMethod,
     TechnicalDoubtCategory,
     TechnicalDoubtStatus,
@@ -115,29 +115,29 @@ export interface DataParameters<S = string> {
         codePatient: S;
     }
 
-    OrderAndBranch: {
-        order: any;
+    BudgetAndBranch: {
+        budget: any;
         branch: any;
     };
 
     filePath: S;
 
-    Order: {
+    Budget: {
         timeTreatment: number;
         timeRepetition: number;
         textObservationCashierCounter: S;
         textNoteShipping: S;
-        juntocomOrder: S;
+        juntocomBudget: S;
         textGeneralNote: S;
         promisedTo: Date;
         budgetist: S;
-        orderAttendant: S;
+        budgetAttendant: S;
     }
 
-    searchOrder: typeof SearchOrder;
+    searchBudget: typeof SearchBudget;
     paymentStatus: typeof PaymentStatus;
     paymentMethod: typeof PaymentMethod;
-    orderClosingChannel: typeof OrderClosingChannel;
+    budgetClosingChannel: typeof BudgetClosingChannel;
     pendingsFilter: typeof PendingsFilter;
     recipeReceiptChannel: typeof RecipeReceiptChannel;
     patientSearchParameter: typeof PatientSearchParameter;
@@ -153,6 +153,6 @@ export interface DataParameters<S = string> {
     shippingMethod: typeof ShippingMethod;
     aromaSachet: typeof AromaSachet;
     capsuleAroma: typeof CapsuleAroma;
-    orderHasRecipe: typeof OrderHasRecipe;
+    budgetHasRecipe: typeof BudgetHasRecipe;
 
 }

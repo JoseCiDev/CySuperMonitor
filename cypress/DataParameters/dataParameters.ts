@@ -3,8 +3,8 @@
 import {
     AromaSachet,
     CapsuleAroma,
-    OrderClosingChannel,
-    OrderHasRecipe,
+    BudgetClosingChannel,
+    BudgetHasRecipe,
     PatientSearchParameter,
     PaymentStatus,
     Pendency,
@@ -17,7 +17,7 @@ import {
     TechnicalDoubtStatus,
     RecipeReceiptChannel,
     RecipeImportCluster,
-    SearchOrder,
+    SearchBudget,
     PaymentMethod,
     faker,
     fakerBr,
@@ -58,8 +58,8 @@ export const dataParameters: DataParameters = {
         codePatient: faker.helpers.arrayElement(['618484']),
     },
 
-    OrderAndBranch: {
-        order: faker.helpers.arrayElement(['896662', '896663', '899551', '905771']),
+    BudgetAndBranch: {
+        budget: faker.helpers.arrayElement(['896662', '896663', '899551', '905771']),
         branch: faker.helpers.arrayElement(['4']),
     },
 
@@ -103,22 +103,22 @@ export const dataParameters: DataParameters = {
         },
     },
 
-    Order: {
+    Budget: {
         timeTreatment: 30,
         timeRepetition: 0,
         textObservationCashierCounter: faker.lorem.paragraph(),
         textNoteShipping: faker.lorem.paragraph(),
-        juntocomOrder: faker.helpers.arrayElements([107456, 107246]).toString(),
+        juntocomBudget: faker.helpers.arrayElements([107456, 107246]).toString(),
         textGeneralNote: faker.lorem.paragraph(),
         promisedTo: new Date(),
         budgetist: '',
-        orderAttendant: '',
+        budgetAttendant: '',
     },
 
-    searchOrder: SearchOrder,
+    searchBudget: SearchBudget,
     paymentStatus: PaymentStatus,
     paymentMethod: PaymentMethod,
-    orderClosingChannel: OrderClosingChannel,
+    budgetClosingChannel: BudgetClosingChannel,
     pendingsFilter: PendingsFilter,
     recipeReceiptChannel: RecipeReceiptChannel,
     patientSearchParameter: PatientSearchParameter,
@@ -133,6 +133,6 @@ export const dataParameters: DataParameters = {
     shippingMethod: ShippingMethod,
     aromaSachet: AromaSachet,
     capsuleAroma: CapsuleAroma,
-    orderHasRecipe: OrderHasRecipe,
+    budgetHasRecipe: BudgetHasRecipe,
 
 };

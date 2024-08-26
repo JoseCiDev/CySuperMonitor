@@ -21,14 +21,14 @@ export const {
     menuServices,
     servicesInProgress,
     accessWorkFlowService,
-    parameterSearchCardOrder,
+    parameterSearchBudget: parameterSearchCardBudget,
     cardBudget,
     buttonLinkRecipeScreenServiceProgress,
     buttonUnlinkRecipeScreenServiceProgress,
     fieldLinkRecipe,
-    orderInProgress,
+    budgetInProgress: budgetInProgress,
     buttonView,
-    fieldSearchOrder,
+    fieldSearchBudget: fieldSearchBudget,
     searchBranch,
     sendSearch,
     brazilian,
@@ -46,17 +46,17 @@ export const {
     cancelTimeTreatment,
     reimportFormulas,
     saveTimeTreatment,
-    orderMessageModal,
-    modalConfirmationOrder,
+    budgetMessageModal: budgetMessageModal,
+    modalConfirmationBudget: modalConfirmationBudget,
     containerPaymentMethod,
     chosenBudget,
     insertRepeatTime,
-    saveDataConfirmationOrder,
+    saveDataConfirmationBudget: saveDataConfirmationBudget,
     monitoringService,
-    channelConfirmationOrder,
+    channelConfirmationBudget: channelConfirmationBudget,
     sendEmailTracking,
-    noShowOrderInclusion,
-    noShowOrderCaixa,
+    noShowBudgetInclusion: noShowBudgetInclusion,
+    noShowBudgetCaixa: noShowBudgetCaixa,
     observationFromCashierToCounter,
     detailedNote,
     fieldStatusPayment,
@@ -64,26 +64,26 @@ export const {
     addressShippingSelected,
     shipmentObservation,
     fieldFormShipping,
-    juntocomOrderConfirmation,
+    juntocomBudgetConfirmation: juntocomBudgetConfirmation,
     juntocomClinicaHigashi,
     promisedFieldFor,
     fieldAromasSachet,
     aromaCapsuleField,
     generalObservation,
     hasRecipe,
-    urgentOrder,
-    cancelOrderConfirmation,
+    urgentBudget: urgentBudget,
+    cancelBudgetConfirmation: cancelBudgetConfirmation,
     sendChatguruMessage,
-    PreViewOrder,
-    closePreViewOrder,
-    sendconfirmOrder,
+    PreViewBudget: PreViewBudget,
+    closePreViewBudget: closePreViewBudget,
+    sendconfirmBudget: sendconfirmBudget,
     showAll,
     hasSpecialFormula,
     generateLinkPayment,
-    relateRecipeOrder,
-    showOrdersClosed,
-    reopenOrder,
-    confirmReopenOrder,
+    relateRecipeBudget: relateRecipeBudget,
+    showBudgetsClosed: showBudgetsClosed,
+    reopenBudget,
+    confirmReopenBudget,
     userOptions,
     openModalImportBudget,
     importBudget,
@@ -96,9 +96,9 @@ export const {
     inclusionFrameInformationAmarelinhaConfirmed,
     attendantHopscotchInformationBoardConfirmed,
     textFrameInformationHopscotchConfirmed,
-    orderBudgetist,
-    OrderAttendant,
-    containerOrders,
+    budgetBudgetist,
+    BudgetAttendant,
+    containerBudgets,
 
 } = el.Services;
 
@@ -120,34 +120,34 @@ describe('Atendimentos em Andamento', function () {
 
 
 
-    it.only('Deve confirmar order', function () {
+    it.only('Deve confirmar budget', function () {
         cy.getElementAndClick([btnModalChangelog]);
         
         cy.getElementAndClick([menuServices]);
         
         cy.get(servicesInProgress).click({force:true});
         
-        cy.viewOrder(buttonView);
+        cy.viewBudget(buttonView);
         cy.insertTimeTreatment('30');
 
     });
 
 
-    it('Deve vincular recipe ao order', function () {
+    it('Deve vincular recipe ao budget', function () {
         cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
-        cy.viewOrder(buttonView);
-        cy.linkOrderRecipe(buttonLinkRecipeScreenServiceProgress, parseInt(dataParameters.Recipe.import.numberRecipe as string));
+        cy.viewBudget(buttonView);
+        cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgress, parseInt(dataParameters.Recipe.import.numberRecipe as string));
     });
 
-    it('Deve desvincular recipe ao order', function () {
+    it('Deve desvincular recipe ao budget', function () {
         cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
         
-        cy.viewOrder(buttonView);
-        cy.unlinkOrderRecipe(buttonUnlinkRecipeScreenServiceProgress)
+        cy.viewBudget(buttonView);
+        cy.unlinkBudgetRecipe(buttonUnlinkRecipeScreenServiceProgress)
     });
 
 
-    it('Deve gerar link de pagamento order', function () {
+    it('Deve gerar link de pagamento budget', function () {
 
 
     });
@@ -162,7 +162,7 @@ describe('Atendimentos em Andamento', function () {
 
     });
 
-    it('Deve excluir order', function () {
+    it('Deve excluir budget', function () {
 
     });
 

@@ -1,4 +1,4 @@
-export enum OrderClosingChannel {
+export enum BudgetClosingChannel {
     Whatsapp = 'whatsapp',
     Email = 'email',
     Telephone = 'telefone',

@@ -1,4 +1,4 @@
-export enum SearchOrder {
+export enum SearchBudget {
     My = 'Meus',
     All = 'Todos',
     Closed = 'Encerrados',
