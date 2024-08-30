@@ -83,10 +83,8 @@ Feature: Validação do campo de e-mail no Self-Checkout
 
         Examples:
             | email                |
-            | cliente@ example.com |
-            | cliente @example.com |
-            | cliente@example.com  |
-            | cliente@example.com  |
+            | DNLAREIS @ GMAIL.COM |
+            | DNLAREIS@GMAIL . COM |
 
     @payment-retry
     Scenario: Repetição de pagamento após recusa
@@ -107,7 +105,6 @@ Feature: Validação do campo de e-mail no Self-Checkout
 
     @email-validation @order-confirmation
     Scenario: Exibição de e-mail no atendimento encerrado
-
         Given o cliente insere "<email>" no campo de e-mail
         And o cliente finaliza o pagamento
         And a atendente confirma o pedido no sistema
