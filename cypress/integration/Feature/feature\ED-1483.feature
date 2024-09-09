@@ -8,35 +8,35 @@ Feature: Gestão de receitas com continuação de fórmulas
     Scenario Outline: Visualizar receita com continuação de fórmulas
         Dado que o usuário acessa a receita vinculada ao atendimento com <tipoAtendimento>
         Quando o usuário visualiza a receita
-        Então deve apresentar a aba de histórico de continuação de fórmulas
-        E deve apresentar o histórico de continuação de fórmulas na aba
-        E o histórico de continuação deve exibir as últimos cinco atendimentos confirmados do paciente
-        E o histórico deve apresentar número de atendimento/filial, data e hora de importação da fórmula, valor total, total de fórmulas do atendimento, lista das fórmulas, tempo de tratamento, aromas selecionados e sinalização de continuação
+        Então deve apresentar a aba de histórico de pedidos
+        E deve apresentar o histórico de pedidos na aba
+        E o histórico de pedidos deve exibir as últimos cinco atendimentos confirmados do paciente
+        E o histórico deve apresentar número de atendimento/filial, data e hora de recebimento da receita, valor total do atendimento, lista das fórmulas, aroma, tempo de tratamento e sinalização de continuação
         E a aba histórico de continuação de fórmula deve ser apresentada antes da aba L.I.D.E.
         #65525/5000 medicamentoManipulado
-            #FÓRMULA COM COQ10 E DEMAIS ATIVOS - Baunilha - 30 - C
-            #FÓRMULA COM IMUNEL E DEMAIS ATIVOS - Laranja - 30 - C
-            #FÓRMULA COM MAGNESIO BISGLICINATO E DEMAIS ATIVOS - Morango - 30 - C
+        #FÓRMULA COM COQ10 E DEMAIS ATIVOS - Baunilha - 30 - C
+        #FÓRMULA COM IMUNEL E DEMAIS ATIVOS - Laranja - 30 - C
+        #FÓRMULA COM MAGNESIO BISGLICINATO E DEMAIS ATIVOS - Morango - 30 - C
 
         #65526/5000 medicamentoManipulado
-            #FÓRMULA COM VIT C TAMPONADA E DEMAIS ATIVOS - Abacaxi - 30 - C
-            #FÓRMULA COM OXANDROLONA E DEMAIS ATIVOS - Morango - 60 - N/A
-            #FÓRMULA COM GLUTAMINA E DEMAIS ATIVOS - Cacau - Morango 90 - C
+        #FÓRMULA COM VIT C TAMPONADA E DEMAIS ATIVOS - Abacaxi - 30 - C
+        #FÓRMULA COM OXANDROLONA E DEMAIS ATIVOS - Morango - 60 - N/A
+        #FÓRMULA COM GLUTAMINA E DEMAIS ATIVOS - Cacau - Morango 90 - C
 
         #65527/5000 medicamentoManipulado
-            #FÓRMULA COM GLUTAMINA E DEMAIS ATIVOS - Sem Aroma - 90
-            #FÓRMULA COM CITRULINA DIMALATO E DEMAIS ATIVOS - Uva - 60
-            #FÓRMULA COM ARGININA CLORIDRATO E DEMAIS ATIVOS - Limão - 30
-            #65527 - 3	FÓRMULA COM ARGININA CLORIDRATO / ASHWAGANDHA EXTRATO SECO / CATUABA EXT SECO / EPIMEDIUM EXTRATO (10% ICARIIN / MACA PERUANA / PANAX GINSENG / POTE 30 SACHES - N/A - 30
+        #FÓRMULA COM GLUTAMINA E DEMAIS ATIVOS - Sem Aroma - 90
+        #FÓRMULA COM CITRULINA DIMALATO E DEMAIS ATIVOS - Uva - 60
+        #FÓRMULA COM ARGININA CLORIDRATO E DEMAIS ATIVOS - Limão - 30
+        #65527 - 3	FÓRMULA COM ARGININA CLORIDRATO / ASHWAGANDHA EXTRATO SECO / CATUABA EXT SECO / EPIMEDIUM EXTRATO (10% ICARIIN / MACA PERUANA / PANAX GINSENG / POTE 30 SACHES - N/A - 30
 
         #65528/5000 medicamentoManipulado
-            #FÓRMULA COM METILCOBALAMINA P/ FILME ORODI E DEMAIS ATIVOS - Menta - 30 - C
+        #FÓRMULA COM METILCOBALAMINA P/ FILME ORODI E DEMAIS ATIVOS - Menta - 30 - C
 
         #65529/5000 medicamentoManipulado
-            #FÓRMULA COM METILCOBALAMINA - Hortelã - 60 - C
-            #FÓRMULA COM MAGNESIO INOSITOL E DEMAIS ATIVOS - Sem Aroma - 90 - C
+        #FÓRMULA COM METILCOBALAMINA - Hortelã - 60 - C
+        #FÓRMULA COM MAGNESIO INOSITOL E DEMAIS ATIVOS - Sem Aroma - 90 - C
 
-         #65535/5000 vinculado a receita 425353
+        #65535/5000 vinculado a receita 425353
 
         Examples:
             | tipoAtendimento          |
