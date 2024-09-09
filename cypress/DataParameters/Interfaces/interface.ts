@@ -5,8 +5,8 @@ import {
     CapsuleAroma,
     dateFns,
     faker,
-    BudgetClosingChannel,
-    BudgetHasRecipe,
+    // BudgetClosingChannel,
+    // BudgetHasRecipe,
     PatientSearchParameter,
     PaymentMethod,
     PaymentStatus,
@@ -137,7 +137,7 @@ export interface DataParameters<S = string> {
     searchBudget: typeof SearchBudget;
     paymentStatus: typeof PaymentStatus;
     paymentMethod: typeof PaymentMethod;
-    budgetClosingChannel: typeof BudgetClosingChannel;
+    // budgetClosingChannel: typeof BudgetClosingChannel;
     pendingsFilter: typeof PendingsFilter;
     recipeReceiptChannel: typeof RecipeReceiptChannel;
     patientSearchParameter: typeof PatientSearchParameter;
@@ -153,6 +153,6 @@ export interface DataParameters<S = string> {
     shippingMethod: typeof ShippingMethod;
     aromaSachet: typeof AromaSachet;
     capsuleAroma: typeof CapsuleAroma;
-    budgetHasRecipe: typeof BudgetHasRecipe;
+    // budgetHasRecipe: typeof BudgetHasRecipe;
 
 }

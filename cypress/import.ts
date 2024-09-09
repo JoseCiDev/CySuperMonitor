@@ -31,9 +31,7 @@ export {
     ElementTypeAndValueOpcional,
 } from './DataParameters/Types/types';
 
-export {
-    dataParameters,
-} from './DataParameters/dataParameters';
+
 
 export {
     validateEmail,
@@ -52,7 +50,7 @@ export { RecipeReceiptChannel } from './DataParameters/Enums/recipeReceiptChanne
 export { RecipeImportCluster } from './DataParameters/Enums/recipeImportCluster';
 export { RecipeType } from './DataParameters/Enums/recipeType';
 export { PaymentMethod } from './DataParameters/Enums/paymentMethod';
-export { BudgetClosingChannel } from './DataParameters/Enums/budgetClosingChannel';
+// export { BudgetClosingChannel } from './DataParameters/Enums/budgetClosingChannel';
 export { PendingsFilter } from './DataParameters/Enums/pendingsFilter';
 export { RelationshipsPrescriberAttendantAndCluster } from './DataParameters/Enums/relationshipsPrescriberAttendantAndCluster';
 export { Pendency } from './DataParameters/Enums/pendency';
@@ -62,5 +60,5 @@ export { Profile } from './DataParameters/Enums/profile';
 export { ShippingMethod } from './DataParameters/Enums/shippingMethod';
 export { AromaSachet } from './DataParameters/Enums/aromaSachet';
 export { CapsuleAroma } from './DataParameters/Enums/capsuleAroma';
-export { BudgetHasRecipe } from './DataParameters/Enums/budgetHasRecipe';
+// export { BudgetHasRecipe } from './DataParameters/Enums/budgetHasRecipe';
 export { PriorityRecipe } from './DataParameters/Enums/priorityRecipe';

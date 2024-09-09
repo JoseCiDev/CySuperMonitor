@@ -1,9 +1,5 @@
 /// <reference path="../cypress.d.ts" />
 
-import './support/commands/commandsLogin';
-import './support/commands/commandsService';
-import './support/commands/commandsRecipe';
-import './support/commands/commandsConfigurationAttendantClusterPrescriberRelationship';
 
 import {
   elements as el,

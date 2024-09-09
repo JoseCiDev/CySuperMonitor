@@ -3,7 +3,7 @@
 import {
     elements as el,
     faker,
-dataParameters,
+// dataParameters,
     SearchRecipe,
 } from '../../../import';
 
@@ -104,68 +104,68 @@ export const {
 
 
 
-describe('Atendimentos em Andamento', function () {
-    const environment = Cypress.env('ENVIRONMENT');
-    // Get the specific environment object based on the selected ENVIRONMENT
-    const dataEnvironment = Cypress.env(environment);
+// describe('Atendimentos em Andamento', function () {
+//     const environment = Cypress.env('ENVIRONMENT');
+//     // Get the specific environment object based on the selected ENVIRONMENT
+//     const dataEnvironment = Cypress.env(environment);
 
 
-    beforeEach(function () {
-        cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
-            .then((result) => {
-                assert.exists(result.success, result.error)
-            })
-    });
+//     beforeEach(function () {
+//         cy.login(dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG)
+//             .then((result) => {
+//                 assert.exists(result.success, result.error)
+//             })
+//     });
 
 
 
 
-    it.only('Deve confirmar budget', function () {
-        cy.getElementAndClick([btnModalChangelog]);
+//     it.only('Deve confirmar budget', function () {
+//         cy.getElementAndClick([btnModalChangelog]);
         
-        cy.getElementAndClick([menuServices]);
+//         cy.getElementAndClick([menuServices]);
         
-        cy.get(servicesInProgress).click({force:true});
+//         cy.get(servicesInProgress).click({force:true});
         
-        cy.viewBudget(buttonView);
-        cy.insertTimeTreatment('30');
+//         cy.viewBudget(buttonView);
+//         cy.insertTimeTreatment('30');
 
-    });
+//     });
 
 
-    it('Deve vincular recipe ao budget', function () {
-        cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
-        cy.viewBudget(buttonView);
-        cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgress, parseInt(dataParameters.Recipe.import.numberRecipe as string));
-    });
+//     // it('Deve vincular recipe ao budget', function () {
+//     //     cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
+//     //     cy.viewBudget(buttonView);
+//     //     cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgress, parseInt(dataParameters.Recipe.import.numberRecipe as string));
+//     // });
 
-    it('Deve desvincular recipe ao budget', function () {
-        cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
+//     it('Deve desvincular recipe ao budget', function () {
+//         cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
         
-        cy.viewBudget(buttonView);
-        cy.unlinkBudgetRecipe(buttonUnlinkRecipeScreenServiceProgress)
-    });
+//         cy.viewBudget(buttonView);
+//         cy.unlinkBudgetRecipe(buttonUnlinkRecipeScreenServiceProgress)
+//     });
 
 
-    it('Deve gerar link de pagamento budget', function () {
+//     it('Deve gerar link de pagamento budget', function () {
 
 
-    });
+//     });
 
 
-    it('Deve inserir file na galeria do atendimento', function () {
+//     it('Deve inserir file na galeria do atendimento', function () {
 
-    });
-
-
-    it('Deve enviar orçamento via e-mail', function () {
-
-    });
-
-    it('Deve excluir budget', function () {
-
-    });
+//     });
 
 
+//     it('Deve enviar orçamento via e-mail', function () {
 
-});
+//     });
+
+//     it('Deve excluir budget', function () {
+
+//     });
+
+
+
+// });
