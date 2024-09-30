@@ -58,8 +58,15 @@ export default defineConfig({
 
   experimentalMemoryManagement: true,
   e2e: {
-    watchForFileChanges : true,
-    // setupNodeEvents,
+    watchForFileChanges: true,
+    setupNodeEvents(on, config) {
+      on('before:browser:launch', (browser: Cypress.Browser, launchOptions) => {
+        if (browser.name === 'chrome' || browser.name === 'edge') {
+          launchOptions.args.push('--disable-save-password-bubble');
+        }
+        return launchOptions;
+      });
+    },
     baseUrl: 'http://192.168.0.66:9202/',
     supportFile: 'cypress/support/e2e.{js,jsx,ts,tsx}',
     specPattern: 'cypress/**/*.{js,jsx,ts,tsx,feature}',
