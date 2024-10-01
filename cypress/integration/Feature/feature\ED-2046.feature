@@ -114,8 +114,3 @@ Feature: Gerenciamento do funil de vendas
             | 425440  | Prata      | 126273 / 5      | 126283 / 5    | Diamante  |
             | 425441  | Gold       | 126025 / 5      | 126055 / 5    | Bronze    |
             | 425442  | Diamond    | 333170 / 1000   | 333178 / 1000 | Prata     |
-
-
-
-#orcamento junto
-#juntocom
