@@ -14,8 +14,8 @@ Feature: Gerenciamento do funil de vendas
             | valorOrcamento | etapaEsperada | orcamentoFilialVinculadoReceita |
             | 200            | Bronze        | 108604 / 5 <> 425416            |
             | 400            | Prata         | 110726 / 5  <> 425417           |
-            | 1000           | Gold          | 92585 / 5 <> 425418             |
-            | 2000           | Diamond       | 92653 / 5 <> 425419             |
+            | 1000           | Ouro          | 92585 / 5 <> 425418             |
+            | 2000           | Diamante       | 92653 / 5 <> 425419             |
 
     @urgent @funnel
     Scenario: Mover receita urgente para etapa urgente
@@ -69,8 +69,8 @@ Feature: Gerenciamento do funil de vendas
 
         Examples:
             | receita | etapaAtual | orçamento    | novoValorOrcamento | novaEtapaEsperada |
-            | 425433  | Gold       | 65535 / 5000 | 400                | Prata             |
-            | 425434  | Diamond    | 64899 / 5000 | 1000               | Gold              |
+            | 425433  | Ouro       | 65535 / 5000 | 400                | Prata             |
+            | 425434  | Diamante    | 64899 / 5000 | 1000               | Ouro              |
 
     @concluded @funnel
     Scenario Outline: Pedido confirmado move a receita para a etapa Concluído
@@ -83,8 +83,8 @@ Feature: Gerenciamento do funil de vendas
             | receita | etapaAtual | orcamentoFilial |
             | 425435  | Bronze     | 127783 / 5      |
             | 425436  | Prata      | 128426 / 5      |
-            | 425437  | Gold       | 126799 / 5      |
-            | 425438  | Diamond    | 127930 / 5      |
+            | 425437  | Ouro       | 126799 / 5      |
+            | 425438  | Diamante    | 127930 / 5      |
 
     @rejected @funnel
     Scenario Outline: Pedido rejeitado move a receita para a etapa Rejeitado
@@ -97,8 +97,8 @@ Feature: Gerenciamento do funil de vendas
             | receita | etapaAtual | orcamentoFilial |
             | 425439  | Bronze     | 127474 / 5      |
             | 425440  | Prata      | 126273 / 5      |
-            | 425441  | Gold       | 126025 / 5      |
-            | 425442  | Diamond    | 333170 / 1000   |
+            | 425441  | Ouro       | 126025 / 5      |
+            | 425442  | Diamante    | 333170 / 1000   |
 
     @linkRecipe @funnel
     Scenario Outline: Alterado o vinculo entre receita e orçamento
@@ -112,5 +112,5 @@ Feature: Gerenciamento do funil de vendas
             | receita | etapaAtual | orcamentoFilial | novoOrcamento | novaEtapa |
             | 425439  | Bronze     | 127474 / 5      | 127476 / 5    | Ouro      |
             | 425440  | Prata      | 126273 / 5      | 126283 / 5    | Diamante  |
-            | 425441  | Gold       | 126025 / 5      | 126055 / 5    | Bronze    |
-            | 425442  | Diamond    | 333170 / 1000   | 333178 / 1000 | Prata     |
+            | 425441  | Ouro       | 126025 / 5      | 126055 / 5    | Bronze    |
+            | 425442  | Diamante    | 333170 / 1000   | 333178 / 1000 | Prata     |
