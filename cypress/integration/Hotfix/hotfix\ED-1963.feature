@@ -103,7 +103,7 @@ Feature: Validação do campo de e-mail no Self-Checkout
         When o pagamento é recusado pelo sistema
         Then o e-mail "cliente@example.com" não deve ser exibido na tela de atendimento
 
-    @email-validation @order-confirmation
+    @email-validation @budget-confirmation
     Scenario: Exibição de e-mail no atendimento encerrado
         Given o cliente insere "<email>" no campo de e-mail
         And o cliente finaliza o pagamento

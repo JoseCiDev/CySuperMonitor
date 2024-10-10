@@ -77,7 +77,7 @@ Feature: Gerenciamento de receitas no funil de vendas
             | 1000           |
             | 2000           |
 
-    @concludeOrder @funnel
+    @concludeBudget @funnel
     Scenario Outline: Mover receita para etapa Concluído quando o pedido é fechado
         Given que a receita está vinculada a um orçamento de valor <valorOrcamento>
         When o pedido da receita é confirmado
@@ -90,7 +90,7 @@ Feature: Gerenciamento de receitas no funil de vendas
             | 1000           |
             | 2000           |
 
-    @rejectOrder @funnel
+    @rejectBudget @funnel
     Scenario Outline: Mover receita para etapa Rejeitado quando o pedido é encerrado ou rejeitado
         Given que a receita está vinculada a um orçamento de valor <valorOrcamento>
         When o pedido da receita é rejeitado

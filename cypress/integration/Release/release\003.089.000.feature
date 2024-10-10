@@ -10,7 +10,7 @@ Feature: Importar Receitas
         Given que o usuário está logado no sistema
         And está na página de "Importar Receitas"
 
-    @importRecipes @retailRecipe
+    @importRecipes @retailRecipeElement
     Scenario Outline: Importar receita de varejo com todos os dados preenchidos
         When o usuário seleciona a opção "Varejo"
         And preenche todos os campos obrigatórios para varejo
@@ -54,7 +54,7 @@ Feature: Importar Receitas
             | Prescritor Teste QA | Cliente Teste QA     | Whatsapp clinica     | Ingrid Lorrane Pereira Gomes | 02/02/2023 |
             | PAULO KAUFFMAN      | Leila Maria de Souza | Visitação            | Ana Paula Neves              | 03/03/2023 |
 
-    @importRecipes @retailRecipe @urgency
+    @importRecipes @retailRecipeElement @urgency
     Scenario Outline: Importar receita de varejo com aviso de urgência
         When o usuário seleciona a opção "Varejo"
         And marca a opção de "Aviso de urgência"

@@ -75,19 +75,19 @@ declare global {
       * comando customizado para selecionar o elemento e clicar.
       * @example cy.getElementAndClick(el.elemento)
       */
-      getElementAndClick(elements: string[]): ValidationResult;
+      getElementAndClick(...elements: string[]): ValidationResult;
 
       /**
       * comando customizado de login.
       * @example cy.getElementAndClick(el.elemento)
       */
-      getElementAndType(elements: { [key: string]: string }): ValidationResult
+      getElementAndType(elements: { [key: string]: string | number }): ValidationResult
 
       /**
        * comando customizado para capturar elemento e marcar checkbox.
        * @example cy.getElementAndCheck(el.elemento)
        */
-      getElementAndCheck(elements: ElementTypeAndValueOpcional): ValidationResult;
+      getElementAndCheck(elements: ElementControl[]): ValidationResult;
 
       /**
        * comando customizado para selecionar a opcao radio.
@@ -213,7 +213,7 @@ declare global {
        * * comando customizado para visulizar orçamentos.
        * @example cy.viewBudget(buttonView)
        */
-      viewBudget(buttonView): Chainable<Element>;
+      viewBudget(): Chainable<Element>;
 
       /**
        * * comando customizado para reabrir orçamentos.
@@ -225,39 +225,15 @@ declare global {
        * * comando customizado para inserir tempo de tratamento.
        * @example cy.insertTimeTreatment(timeTreatment)
        */
-      insertTimeTreatment(timeTreatment: string): Chainable<Element>;
-
-      /**
-       * * comando customizado para confirmar orçamentos.
-       * @example cy.confirmBudget(dataParameters.formaPagamento.Boleto,
-            dataParameters.Orçamento.timeRepetition,
-            dataParameters.Orçamento.buttonViewtextObservationCashierCounter,
-            dataParameters.paymentStatus.Pago,
-            dataParameters.Orçamento.textNoteShipping,
-            dataParameters.shippingMethod.SedexHoje,
-            dataParameters.formattedDate,
-            dataParameters.aromaSachet.AromaDaBasePadrao,
-            dataParameters.capsuleAroma.laranjaComHortelaMenta,
-            dataParameters.Orçamento.textGeneralNote)
-       */
-      confirmBudget(
-        SelectedPaymentMethod: string,
-        timeRepetition: number,
-        observationFromCashierToCounter: string,
-        paymentStatus: string,
-        textNoteShipping: string,
-        shippingMethod: string,
-        promisedTo: string,
-        aromaSachet: string,
-        capsuleAroma: string,
-        textGeneralNote: string,
-      ): Chainable<Element>;
+      insertTimeTreatment(options?: {
+        timeTreatment?: string | number,
+      }): ValidationResult;
 
       /**
        * * comando customizado para vincular recipe ao budget.
        * @example cy.vincularReceitaOrçamento(buttonLinkRecipeScreenServiceProgress,dataParameters.Recipe.numberRecipe)
        */
-      linkBudgetRecipe(buttonLink: string, numberRecipe: number): ValidationResult;
+      linkBudgetRecipe(buttonLink: string, numberRecipe?: number): ValidationResult;
 
       /**
        * * comando customizado para desvincular recipe ao budget.
@@ -296,22 +272,24 @@ declare global {
       waitModalAndClick(jqueryElement: string, element: string, checkType): ValidationResult
 
       /**
-     * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .
-     * @example cy.changeUsersBudget(budgetist,attendant)
+     * * comando customizado para importar receitas.
+     * @example cy.importRecipe( file: 'path/to/file.jpg')
      */
-      importRecipe(
-        file?: Object,
-        prescriber?: string | number,
-        parameterSearchPatient?: string,
-        patient?: string | number,
-        channelReceipt?: string,
-        attendantResponsibleRecipes?: string,
-        receivingDate?: Date,
-        recipeType?: string,
-        textInternalObservation?: string,
-        urgentRecipes?: string,
-        clientAlert?: string,
-        medicineControlled?: string): ValidationResult
+      importRecipe(options?: {
+        file?: string;
+        prescriber?: string | number;
+        parameterSearchPatient?: string;
+        patient?: string | number;
+        channelReceipt?: string;
+        attendantResponsibleRecipes?: string;
+        receivingDate?: string;
+        recipeType?: string;
+        textInternalObservation?: string;
+        urgentRecipe?: boolean;
+        clientAlert?: boolean;
+        medicineControlled?: boolean;
+        customerPhone?: string | number
+      }): Chainable<ValidationResult>;
 
       /**
      * * comando customizado para capturar o número da recipe .
@@ -319,11 +297,51 @@ declare global {
      */
       captureRecipeNumber(RecipeNumberElement: string)
 
+      /**
+       * * comando customizado para confirmar orçamentos.
+       * @example cy.fillOrcamentistaAndAtendente()
+       */
+      fillOrcamentistaAndAtendente(options?: {
+        budgetist?: string,
+        budgetAttendant?: string,
+      }): ValidationResult;
 
+      /**
+      * * comando customizado para confirmar orçamentos.
+      * @example cy.selectCustomerContact()
+      */
+      selectCustomerContact(options?: {
+        customerContactPhoneNumber?: string,
+      }): ValidationResult;
 
-
-
-
+      /**
+       * * comando customizado para confirmar orçamentos.
+       * @example cy.confirmBudget()
+       */
+      confirmBudget(options?: {
+        budgetist?: string,
+        budgetAttendant?: string,
+        paymentMethod?: PaymentMethod,
+        chosenBudget?: string,
+        timeRepetition?: number,
+        budgetClosingChannel?: BudgetClosingChannel,
+        sendTrackingEmail?: boolean,
+        releaseBudgetForInclusion?: boolean,
+        releaseBudgetCashier?: boolean,
+        cashierObservation?: string,
+        detailedSale?: boolean,
+        paymentStatus?: PaymentStatus,
+        address?: string,
+        expeditionObservation?: string,
+        shippingMethod?: ShippingMethod,
+        juntocomBudget?: string,
+        promisedTo?: Date,
+        aromaSachet?: AromaSachet,
+        capsuleAroma?: CapsuleAroma,
+        generalObservation?: string,
+        urgentBudget?: boolean,
+        automaticMessageTriggering?: boolean,
+      }): ValidationResult;
 
     }
   }

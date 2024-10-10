@@ -20,12 +20,11 @@ export const {
     modalMessage,
     btnModalMessage,
     btnModalChangelog,
-
+    modalElement,
 } = el.Shared;
 
 export const {
     menuRecipesElement,
-    
     prescriberRecipes,
     menuImportRecipesElement,
     menuManageRecipes,
@@ -119,39 +118,53 @@ export const {
 
 } = el.Recipes;
 
+export const {
+    menuServices,
+    servicesInProgress,
+    buttonLinkRecipeScreenServiceProgressElement,
+
+} = el.Services;
 
 
 
-describe('Tela importação de receitas.', function () {
+
+describe('Tela Atendimentos.', function () {
 
     beforeEach(function () {
 
     })
 
-    it('Deve realizar importação de Receitas', function () {
+    it('Deve realizar a confirmação do orçamento', function () {
         cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error);
-        });
-
+            .then((result) => {
+                assert.exists(result.success, result.error);
+            });
 
         cy.document().then((doc) => {
-            const $btn = doc.querySelector(btnModalChangelog) as HTMLElement
+            const $btn = doc.querySelector(modalElement) as HTMLElement
             if ($btn) {
                 cy.getElementAndClick(btnModalChangelog);
             } else {
-                cy.log('Modal não foi apresentada e, portanto, o teste prosseguirá.');
+                cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
             }
         });
+        /*
 
-        cy.getElementAndClick(menuRecipesElement,menuImportRecipesElement);
-        
-        cy.importRecipe({
-            
 
-        }).then((result) => {
-            assert.exists(result.success, result.error);
-        });
+        */
+
+        cy.getElementAndClick(menuServices, servicesInProgress);
+
+        cy.viewBudget();
+
+        cy.fillOrcamentistaAndAtendente();
+
+        cy.selectCustomerContact();
+
+        cy.insertTimeTreatment();
+
+        cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgressElement);
+
+        cy.confirmBudget();
     });
-})
-
+});

@@ -1,39 +1,26 @@
+///home/jose/projetos/CySupermonitor/cypress/tsconfig.json
 {
   "compilerOptions": {
-    /* Language and Environment */
-    "target": "es2016",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "target": "es6",
     "lib": [
       "es6",
       "dom"
     ],
     "types": [
-      "cypress"
-    ],
-    /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    /* Modules */
-    "module": "commonjs",
-    /* Specify what module code is generated. */
-    /* Emit */
-    "sourceMap": true,
-    /* Create source map files for emitted JavaScript files. */
-    "outDir": "dist",
-    /* Specify an output folder for all emitted files. */
-    /* Interop Constraints */
-    "esModuleInterop": true,
-    "moduleResolution": "Node",
-    /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true,
-    /* Ensure that casing is correct in imports. */
-    /* Type Checking */
-    "strict": true,
-    /* Enable all strict type-checking options. */
-    "noImplicitAny": true,
-    /* Enable error reporting for expressions and declarations with an implied 'any' type. */
-    /* Completeness */
-    "skipLibCheck": true
+      "cypress",
+      "node"
+    ]
   },
   "include": [
     "**/*.ts",
-    "../cypress.d.ts"
-, "cypress/support/e2e.js", "generateSpreadsheet.js" ]
+    "./support/cypress.d.ts",
+    "cypress/**/*.json",
+    "cypress/support/**/*.ts",
+    "cypress/support/**/*.d.ts", "tsconfig.json",
+  ]
 }

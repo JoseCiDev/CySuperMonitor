@@ -5,8 +5,8 @@ import {
     CapsuleAroma,
     dateFns,
     faker,
-    // BudgetClosingChannel,
-    // BudgetHasRecipe,
+    BudgetClosingChannel,
+    BudgetHasRecipe,
     PatientSearchParameter,
     PaymentMethod,
     PaymentStatus,
@@ -21,6 +21,8 @@ import {
     ShippingMethod,
     TechnicalDoubtCategory,
     TechnicalDoubtStatus,
+    ElementTypeAndValueOpcional,
+    ElementControl,
 } from '../../import';
 
 
@@ -37,9 +39,10 @@ export interface RecipeImport<S = string> {
     receivingDate: S;
     recipeType: RecipeType;
     textNoteRecipe: S;
-    urgentRecipes: boolean;
+    urgentRecipeElement: boolean;
     clientAlert: boolean;
     controlledMedication: boolean;
+    customerPhone: number;
 }
 
 export interface SearchRecipe<S = string> {
@@ -55,7 +58,7 @@ export interface SearchRecipe<S = string> {
     valueJuntocom: S;
     initialDate: S;
     finalDate: S;
-    textInternalObservation: S;
+    internalObservation: S;
     receivingDate: S;
     attendantResponsibleRecipes: S;
 }
@@ -123,21 +126,41 @@ export interface DataParameters<S = string> {
     filePath: S;
 
     Budget: {
-        timeTreatment: number;
-        timeRepetition: number;
-        textObservationCashierCounter: S;
-        textNoteShipping: S;
-        juntocomBudget: S;
-        textGeneralNote: S;
-        promisedTo: Date;
+        searchBudgetByBranch: S | number;
+        searchBudgetByNumber: S | number;
         budgetist: S;
         budgetAttendant: S;
+        recipeNumber: S | number;
+        customerContactPhoneNumber: S | number;
+        timeTreatment: S | number
+        paymentMethod: PaymentMethod,
+        chosenBudget: S;
+        timeRepetition: number;
+        budgetClosingChannel: BudgetClosingChannel,
+        sendTrackingEmail: boolean,
+        releaseBudgetForInclusion: boolean,
+        releaseBudgetCashier: boolean,
+        cashierObservation: S;
+        detailedSale: boolean,
+        paymentStatus: PaymentStatus,
+        address: S;
+        expeditionObservation: S;
+        shippingMethod: ShippingMethod;
+        juntocomBudget: S;
+        promisedTo: Date;
+        aromaSachet: AromaSachet;
+        capsuleAroma: CapsuleAroma;
+        generalObservation: S;
+        budgetHasRecipeElement: BudgetHasRecipe;
+        urgentBudget: boolean;
+        automaticMessageTriggering: boolean;
+
     }
 
     searchBudget: typeof SearchBudget;
     paymentStatus: typeof PaymentStatus;
     paymentMethod: typeof PaymentMethod;
-    // budgetClosingChannel: typeof BudgetClosingChannel;
+    budgetClosingChannel: typeof BudgetClosingChannel;
     pendingsFilter: typeof PendingsFilter;
     recipeReceiptChannel: typeof RecipeReceiptChannel;
     patientSearchParameter: typeof PatientSearchParameter;
@@ -153,6 +176,6 @@ export interface DataParameters<S = string> {
     shippingMethod: typeof ShippingMethod;
     aromaSachet: typeof AromaSachet;
     capsuleAroma: typeof CapsuleAroma;
-    // budgetHasRecipe: typeof BudgetHasRecipe;
+    budgetHasRecipe: typeof BudgetHasRecipe;
 
 }

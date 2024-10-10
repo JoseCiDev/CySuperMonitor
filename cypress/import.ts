@@ -1,7 +1,7 @@
 ///home/jose/projetos/CySuperMonitor/cypress/import.ts
 
-import * as loadash from 'lodash';
-export { loadash };
+import * as lodash from 'lodash';
+export { lodash };
 
 
 import * as dateFns from 'date-fns';
@@ -19,6 +19,8 @@ export { Given, When, Then };
 
 import 'cypress-wait-until';
 
+
+
 export {
     DataParameters,
     CheckAndThrowError,
@@ -29,9 +31,8 @@ export {
 export {
     ValidationResult,
     ElementTypeAndValueOpcional,
+    ElementControl,
 } from './DataParameters/Types/types';
-
-
 
 export {
     validateEmail,
@@ -50,7 +51,7 @@ export { RecipeReceiptChannel } from './DataParameters/Enums/recipeReceiptChanne
 export { RecipeImportCluster } from './DataParameters/Enums/recipeImportCluster';
 export { RecipeType } from './DataParameters/Enums/recipeType';
 export { PaymentMethod } from './DataParameters/Enums/paymentMethod';
-// export { BudgetClosingChannel } from './DataParameters/Enums/budgetClosingChannel';
+export { BudgetClosingChannel } from './DataParameters/Enums/budgetClosingChannel';
 export { PendingsFilter } from './DataParameters/Enums/pendingsFilter';
 export { RelationshipsPrescriberAttendantAndCluster } from './DataParameters/Enums/relationshipsPrescriberAttendantAndCluster';
 export { Pendency } from './DataParameters/Enums/pendency';
@@ -60,5 +61,11 @@ export { Profile } from './DataParameters/Enums/profile';
 export { ShippingMethod } from './DataParameters/Enums/shippingMethod';
 export { AromaSachet } from './DataParameters/Enums/aromaSachet';
 export { CapsuleAroma } from './DataParameters/Enums/capsuleAroma';
-// export { BudgetHasRecipe } from './DataParameters/Enums/budgetHasRecipe';
+export { BudgetHasRecipe } from './DataParameters/Enums/budgetHasRecipe';
 export { PriorityRecipe } from './DataParameters/Enums/priorityRecipe';
+export { ChosenBudget } from './DataParameters/Enums/chosenBudget';
+
+export {
+    dataParameters,
+    validationMessages,
+} from './DataParameters/dataParameters'

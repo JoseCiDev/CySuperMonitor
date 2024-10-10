@@ -5,14 +5,15 @@ interface Elements<S = string> {
 
     Shared: {
         suggestionAutocomplete: S;
-        suggestionsAutocomplete: S;
+        suggestionsAutocompleteElement: S;
         containerMessage: S;
         okModalMessage: S;
-        btnSuccessModal: S;
+        btnSuccessModalElement: S;
         btnModalFailure: S;
         modalMessage: S;
         btnModalMessage: S;
         btnModalChangelog: S;
+        modalElement: S;
     };
 
     Login: {
@@ -24,10 +25,9 @@ interface Elements<S = string> {
     };
 
     Recipes: {
-        menuRecipes: S;
-        menuRecipesReduced: S;
+        menuRecipesElement: S;
         prescriberRecipes: S;
-        menuImportRecipes: S;
+        menuImportRecipesElement: S;
         menuManageRecipes: S;
         openModalRegisterRecipes: S;
         importPDFRecipes: S;
@@ -39,17 +39,17 @@ interface Elements<S = string> {
         channelReceiptImport: S;
         clusterRecipes: S;
         budgetistRecipes: S;
-        responsibleForRecipe: S;
+        responsibleForRecipeElement: S;
         autocompleteResponsibleAttendant: S;
         dateReceiptRecipes: S;
         juntocomRecipes: S;
         autocompleteJuntocomRecipes: S;
         internalObservationRecipes: S;
         textInternalObservationRecipes: S;
-        controlledmedicationRecipes: S;
-        urgentRecipes: S;
-        clientAlertRecipes: S;
-        retailRecipes: S;
+        controlledmedicationRecipeElement: S;
+        urgentRecipeElement: S;
+        clientAlertRecipeElement: S;
+        retailRecipeElement: S;
         saveRecipes: S;
         closeRegisterRecipes: S;
         editRecipe: S;
@@ -116,21 +116,25 @@ interface Elements<S = string> {
         sendReplyQuestionsTechnical: S;
         barProgressSaveRecipe: S;
         noMainContact: S;
-
+        patientContactModal: S;
+        contactPhone: S;
+        applySelectedContact: S;
+        recipeTypeInput: (recipeType: S) => S;
+        deleteRecipeElement: S;
     };
 
     Services: {
         menuServices: S;
         servicesInProgress: S;
         accessWorkFlowService: S;
-        parameterSearchBudget: S;
+        parameterSearchBudgetElement: S;
         cardBudget: S;
-        buttonLinkRecipeScreenServiceProgress: S;
+        buttonLinkRecipeScreenServiceProgressElement: S;
         buttonUnlinkRecipeScreenServiceProgress: S;
-        fieldLinkRecipe: S;
-        budgetInProgress: S;
+        fieldLinkRecipeElement: S;
+        budgetInProgressElement: S;
         buttonView: S;
-        fieldSearchBudget: S;
+        fieldSearchBudgetElement: S;
         searchBranch: S;
         sendSearch: S;
         brazilian: S;
@@ -143,21 +147,21 @@ interface Elements<S = string> {
         saveNumberChatguru: S;
         budgetist: S;
         treatmentTimeModalHeader: S;
-        buttonTimeTreatment: S;
+        insertTreatmentTime: S;
         standardTreatmentTime: S;
         cancelTimeTreatment: S;
         reimportFormulas: S;
         saveTimeTreatment: S;
-        budgetMessageModal: S;
-        modalConfirmationBudget: S;
-        containerPaymentMethod: S;
-        chosenBudget: S;
+        budgetMessageModalElement: S;
+        modalConfirmationBudgetElement: S;
+        paymentMethodElement: S;
+        chosenBudgetForConfirmation: S;
         insertRepeatTime: S;
-        saveDataConfirmationBudget: S;
         monitoringService: S;
         channelConfirmationBudget: S;
         sendEmailTracking: S;
-        noShowBudgetInclusion: S;
+        releaseBudgetForInclusionElement: S;
+        releaseBudgetCashierElement: S;
         noShowBudgetCaixa: S;
         observationFromCashierToCounter: S;
         detailedNote: S;
@@ -172,8 +176,8 @@ interface Elements<S = string> {
         fieldAromasSachet: S;
         aromaCapsuleField: S;
         generalObservation: S;
-        hasRecipe: S;
-        urgentBudget: S;
+        budgetHasRecipeElement: S;
+        urgentBudgetElement: S;
         cancelBudgetConfirmation: S;
         sendChatguruMessage: S;
         PreViewBudget: S;
@@ -201,7 +205,40 @@ interface Elements<S = string> {
         budgetBudgetist: S;
         BudgetAttendant: S;
         containerBudgets: S;
-
+        homeMenuElement: S;
+        searchBudgetByBranchElement: S;
+        searchAllBudgetsElement: S;
+        searchButtonElement: S;
+        paymentSelectorInput: (index: number) => S;
+        updateSelectorStatusInput: (index: number) => S;
+        viewSelectorInput: (index: number) => S;
+        saveDataConfirmationBudget: S;
+        cashierObservationElement: S;
+        detailedSaleElement: S;
+        expeditionObservationElement: S;
+        shippingMethodElement: S;
+        promisedToElement: S;
+        aromaSachetElement: S;
+        capsuleAromaElement: S;
+        generalObservationElement: S;
+        sendAutomaticBudgetConfirmationMessageElement: S;
+        recipeElementAvailableForLinkingElement: S;
+        modalToLinkRecipeElement: S;
+        linkedRecipeProgressBarElement: S;
+        successfullyLinkedRecipesProgressBarElement: S;
+        closeModalLinkRecipeElement: S;
+        feedbackMessageElement: S;
+        accessServiceMenuThroughPrescriptionImportScreenElement: S;
+        recipeCodeColumnElement: S;
+        expandSideMenuElement: S;
+        modalLinkRecipeElement: S;
+        setUpPhoneContactElement: S;
+        telephoneContactConfigurationModalElement: S;
+        insertCustomerContactPhoneNumberElement: S;
+        savePhoneContactNumberElement: S;
+        confirmInsertionCustomerTelephoneContactElement: S;
+        serviceBudgeterElement: S;
+        customerServiceAttendantElement: S;
     };
 
     Settings: {
@@ -234,15 +271,16 @@ export const elements: Elements = {
     Shared: {
         // autocompletes
         suggestionAutocomplete: '.autocomplete-suggestion',
-        suggestionsAutocomplete: '.autocomplete-suggestions',
+        suggestionsAutocompleteElement: '.autocomplete-suggestions',
         //modal
         containerMessage: '.bootbox-body',
         okModalMessage: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
         modalMessage: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div',
-        btnSuccessModal: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
+        btnSuccessModalElement: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
         btnModalFailure: 'div.modal-dialog > div > div.modal-footer > button.btn.btn-secondary.pull-left',
         btnModalMessage: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
         btnModalChangelog: '#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn',
+        modalElement: '.modal-footer > .btn',
     },
 
     Login: {
@@ -256,18 +294,17 @@ export const elements: Elements = {
 
 
     Recipes: {
-        menuRecipes: '#side-menu > li:nth-child(6) > a',
-        menuRecipesReduced: '#side-menu > li.active',
+        menuRecipesElement: '#side-menu > li:nth-child(6) > a',
         //IMPORTAR RECEITAS
         // subMenuImportacaoReceita
-        menuImportRecipes: '#side-menu > li.active > ul > li:nth-child(1) > a',
+        menuImportRecipesElement: '.active > .nav > :nth-child(2) > a',
         // subMenuGerenciarReceita
         menuManageRecipes: '#side-menu > li.active > ul > li.active > a',
         // acessarTelaRegistroReceita
         openModalRegisterRecipes: '#receita_register',
         // inserirImagem
         importPDFRecipes: '#btnImportPdfRec',
-        importImageRecipes: 'input.tui-image-editor-load-btn[type="file"][accept="image/*"]',
+        importImageRecipes: '.tui-image-editor-header-buttons > div > .tui-image-editor-load-btn',
         removeImageRecipes: '.btn btn-danger btn-del-img m-sm',
         // informacoes da receita
         prescriberRecipes: '#modalMedicoRec',
@@ -277,17 +314,17 @@ export const elements: Elements = {
         channelReceiptImport: '#modalCanalContato',
         clusterRecipes: '#modalCluster',
         budgetistRecipes: '#modalOrcamentistaRec',
-        responsibleForRecipe: '#modalAtendenteRec',
+        responsibleForRecipeElement: '#modalAtendenteRec',
         autocompleteResponsibleAttendant: '.autocomplete-suggestion',
         dateReceiptRecipes: '#modalDataRec',
         juntocomRecipes: '#groupMainEntitiesModal > div:nth-child(2) > div:nth-child(4) > div > span',
         autocompleteJuntocomRecipes: 'ul.select2-results__options',
         internalObservationRecipes: '.panel-body > .note-editor > .note-toolbar',
         textInternalObservationRecipes: '.panel-body > .note-editor > .note-editable',
-        controlledmedicationRecipes: '#medicamentoControlado',
-        urgentRecipes: '#modalUrgente',
-        clientAlertRecipes: '#clientAlert',
-        retailRecipes: '#checkboxVarejo',
+        controlledmedicationRecipeElement: '#medicamentoControlado',
+        urgentRecipeElement: '#modalUrgente',
+        clientAlertRecipeElement: '#clienteAlerta',
+        retailRecipeElement: '#checkboxVarejo',
 
         // mensagem informando que já existe recipe com mesmo patient e prescriber
         // salvar receita
@@ -313,7 +350,7 @@ export const elements: Elements = {
         pendingFilter: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(2)',
         pendingFilterLinked: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
         buttonSearchRecipes: '#filterReceitas > div:nth-child(4) > div > button',
-        labelSearchRecipes: '[button type="submit"]' && 'Procurar',
+        labelSearchRecipes: '[button type="submit"]&& Procurar',
         numberRecipe: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
         dateReceiptGrid: '#mainTableReceitas > thead > tr > th.sorting.sorting_asc',
         //marcar uso
@@ -359,25 +396,29 @@ export const elements: Elements = {
         textResponseQuestionsTechniques: '#chatDuvTec .groupContainer .row:not(.m-b-sm) .col-sm-12 textarea.form-control',
         sendReplyQuestionsTechnical: '#chatDuvTec .groupContainer .row:not(.m-b-sm) div.col.col-sm-12 button.btn.btn-secondary.m-t-sm.m-b-sm.respDuvT',
         barProgressSaveRecipe: '#modal-receitas > div.modal-dialog > div > div.container-fluid > div > div',
-        noMainContact:'.d-flex > .text-right > input'
+        noMainContact: '.d-flex > .text-right > input',
+        patientContactModal: '#modal-paciente-form > .modal-dialog > .modal-content > .modal-body',
+        contactPhone: '#choices-from-numbers > .form-control',
+        applySelectedContact: '#apply-cel-btn',
+        recipeTypeInput: (recipeType: string): string => `input[name="receita_tipo"][value="${recipeType}"]`,
+        deleteRecipeElement: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-recipe',
     },
 
     Services: {
-
-        menuServices: '#side-menu > li:nth-child(8)',
-        servicesInProgress: '.active > .nav-second-level > :nth-child(1) > a',
+        menuServices: '#side-menu > :nth-child(8) > :nth-child(1)',
+        servicesInProgress: '.active > .nav-second-level > :nth-child(2) > a',
         accessWorkFlowService: '.nav-second-level > .active > .nav > li > a',
-        parameterSearchBudget: '#select2-tipo-filtro-container',
+        parameterSearchBudgetElement: '#select2-tipo-filtro-container',
         cardBudget: '#atendimentos-em-andamento > div.ibox-workflow > div.grid > div > div:nth-child(1) > div > div.container-coluna > ul > li:nth-child(8)',
-        buttonLinkRecipeScreenServiceProgress: '.vinc-rec',
+        buttonLinkRecipeScreenServiceProgressElement: '.vinc-rec',
         buttonUnlinkRecipeScreenServiceProgress: '.r-vinc-rec',
-        fieldLinkRecipe: '#receitaCod',
+        fieldLinkRecipeElement: '#receitaCod',
         relateRecipeBudget: '#modal-recipe-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo',
         // budget em andamento em atendimento, elemento foi alterado, lista de orçamentos em andamento movido para Recipes -> Importar Atendimentos
         containerBudgets: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div > table > tbody > tr',
-        budgetInProgress: '#side-menu > li.active > ul > li:nth-child(1) > a',
+        budgetInProgressElement: '#side-menu > li.active > ul > li:nth-child(1) > a',
         buttonView: ':nth-child(2) > :nth-child(6) > a.visualizarFvc',
-        fieldSearchBudget: '#top-search',
+        fieldSearchBudgetElement: '#top-search',
         searchBranch: '#search-form > div:nth-child(1) > input:nth-child(2)',
         sendSearch: '#search-form > div.checkbox.m-l.m-r-xs > [type="submit"][value="buscar"]',
         showAll: '#search-form > div.form-group:nth-child(2) > label input[type="radio"][value="1"]',
@@ -393,23 +434,23 @@ export const elements: Elements = {
         budgetist: '#budgetist',
         // insertTimeTreatment
         treatmentTimeModalHeader: '#customTimeModal > div.modal-dialog > div > div.modal-header',
-        buttonTimeTreatment: '#customTime',
+        insertTreatmentTime: '#customTime',
         standardTreatmentTime: '#customFormByTime > div.closestContainer > div > div:nth-child(1) > input',
         cancelTimeTreatment: '#customTimeModal > div.modal-dialog > div > div.modal-footer > button.btn.btn-white',
         reimportFormulas: '#reimporter',
         saveTimeTreatment: '#saveByCustomTimeFormula',
-        budgetMessageModal: '#toast-container > div > div.toast-message',
+        budgetMessageModalElement: '#toast-container > div > div.toast-message',
         // confirmBudget primeira etapa
-        modalConfirmationBudget: '#bt-confirma-modal',
-        containerPaymentMethod: '#confirmar-modal-body > div.form-group > div.col-sm-7 > select.small-right-space',
-        chosenBudget: '#confirmar-modal-body > div.form-group > div.col-sm-7 > label > .small-right-space',
-        insertRepeatTime: '#confirmar-modal-body > div:nth-child(4) > div > input',
-        saveDataConfirmationBudget: '#confirmacao-atendimento > div.modal-footer > input',
+        modalConfirmationBudgetElement: '#bt-confirma-modal',
+        paymentMethodElement: '#confirmar-modal-body select[name="id_registro"]',
+        chosenBudgetForConfirmation: '#confirmar-modal-body > div.form-group > div.col-sm-7 > label > .small-right-space',
+        insertRepeatTime: ':nth-child(4) > .col-sm-7 > .form-control',
         monitoringService: '#confirmar-modal-body > div:nth-child(5) > div > input[type=checkbox]',
         // confirmBudget segunda etapa
         channelConfirmationBudget: '#confirmar-modal-body > div > div:nth-child(1) > div > select',
-        sendEmailTracking: '#confirmar-modal-body > div > div:nth-child(2) > div > input.small-right-space',
-        noShowBudgetInclusion: '#confirmar-modal-body > div > div:nth-child(3) > div > input.small-right-space',
+        sendEmailTracking: ':nth-child(2) > .col-sm-7 > .small-right-space',
+        releaseBudgetForInclusionElement: ':nth-child(3) > .col-sm-7 > .small-right-space',
+        releaseBudgetCashierElement: ':nth-child(4) > .col-sm-7 > .small-right-space',
         noShowBudgetCaixa: '#confirmar-modal-body > div > div:nth-child(4) > div > input.small-right-space',
         observationFromCashierToCounter: '#confirmar-modal-body > div > div:nth-child(1) > div > textarea',
         detailedNote: '#confirmar-modal-body > div > div:nth-child(2) > div > input.small-right-space',
@@ -424,9 +465,9 @@ export const elements: Elements = {
         fieldAromasSachet: '#confirmar-modal-body > div > div:nth-child(10) > div > select',
         aromaCapsuleField: '#confirmar-modal-body > div > div:nth-child(11) > div > select',
         generalObservation: '#confirmar-modal-body > div > div:nth-child(12) > div > textarea',
-        hasRecipe: '#confirmar-modal-body > div > div:nth-child(13) > div > label:nth-child(2) > input',
+        budgetHasRecipeElement: 'input[name="possui_receita"]',
         hasSpecialFormula: '#confirmar-modal-body > div > div:nth-child(14) > div > input.small-right-space',
-        urgentBudget: '#confirmar-modal-body > div > div:nth-child(20) > div > input.small-right-space',
+        urgentBudgetElement: ':nth-child(20) > .col-sm-7 > .small-right-space',
         cancelBudgetConfirmation: '#form-amarelinha > div.modal-footer > div > div:nth-child(2) > button.btn.btn-white',
         sendChatguruMessage: '#form-amarelinha > div.modal-footer > div > div:nth-child(1) > input[type=checkbox]:nth-child(3)',
         PreViewBudget: '#preview',
@@ -454,8 +495,42 @@ export const elements: Elements = {
         //Usuarios do atendimento
         budgetBudgetist: '#budgetist',
         BudgetAttendant: '#attendant',
-        //toast toast-error
-        //toast toast-sucess
+        homeMenuElement: '#side-menu > :nth-child(5) > a',
+        searchBudgetByBranchElement: '[placeholder="Filial"]',
+        searchAllBudgetsElement: '.busca-atendimentos > :nth-child(2) > input',
+        searchButtonElement: '#search-form > .btn',
+        paymentSelectorInput: (index: number) => `:nth-child(${index}) > .td-pagamentos > .label`,
+        updateSelectorStatusInput: (index: number) => `:nth-child(${index}) > :nth-child(8) > .getLastStatusPaymentsGPE > .fa`,
+        viewSelectorInput: (index: number) => `:nth-child(${index}) > :nth-child(8) > .visualizarFvc > .fa`,
+        saveDataConfirmationBudget: '#confirmacao-atendimento > .modal-footer > .btn-primary',
+        cashierObservationElement: ':nth-child(5) > .col-sm-7 > .form-control',
+        detailedSaleElement: ':nth-child(6) > .col-sm-7 > .small-right-space',
+        expeditionObservationElement: ':nth-child(9) > .col-sm-7 > .form-control',
+        shippingMethodElement: ':nth-child(10) > .col-sm-7 > .small-right-space',
+        promisedToElement: ':nth-child(14) > .col-sm-7 > .form-control',
+        aromaSachetElement: ':nth-child(15) > .col-sm-7 > .form-control',
+        capsuleAromaElement: ':nth-child(16) > .col-sm-7 > .form-control',
+        generalObservationElement: ':nth-child(17) > .col-sm-7 > .form-control',
+        sendAutomaticBudgetConfirmationMessageElement: '#form-amarelinha > .modal-footer > .row > [style="margin-bottom:5px;"] > [type="checkbox"]',
+        recipeElementAvailableForLinkingElement: 'i.fa-sign-in.usarReceitaVincRec',
+        modalToLinkRecipeElement: '#modal-receita-add-vinculo > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
+        linkedRecipeProgressBarElement: ':nth-child(3) > .progress > .progress-bar',
+        successfullyLinkedRecipesProgressBarElement: '.progress-bar.progress-bar-info',
+        closeModalLinkRecipeElement: '.modal-footer .btn-white',
+        feedbackMessageElement: '#toast-container .toast-close-button',
+        accessServiceMenuThroughPrescriptionImportScreenElement: '#mainTableReceitas > thead > tr > th:nth-child(1)',
+        recipeCodeColumnElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.idReceitaCol',
+        expandSideMenuElement: '.navbar-header > .navbar-minimalize',
+        modalLinkRecipeElement: '#modal-receita-add-vinculo > .modal-dialog',
+        setUpPhoneContactElement: '#bt-chat-configurar-contatos-modal',
+        telephoneContactConfigurationModalElement: '.modal-dialog',
+        insertCustomerContactPhoneNumberElement: '#cli-number-cel',
+        savePhoneContactNumberElement: '#saveChatConfig',
+        confirmInsertionCustomerTelephoneContactElement: 'div.bootbox.modal.fade.bootbox-alert.in',
+        serviceBudgeterElement: '#orcamentista',
+        customerServiceAttendantElement: '#atendente',
+
+
     },
 
     Settings: {

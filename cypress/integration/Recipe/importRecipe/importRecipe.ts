@@ -11,10 +11,10 @@ const dataEnvironment = Cypress.env(environment);
 
 export const {
     suggestionAutocomplete,
-        suggestionsAutocomplete,
+        suggestionsAutocompleteElement,
         containerMessage,
         okModalMessage,
-        btnSuccessModal,
+        btnSuccessModalElement,
         btnModalFailure,
         modalMessage,
         btnModalMessage,
@@ -23,10 +23,10 @@ export const {
 } = el.Shared;
 
 export const {
-    menuRecipes,
-        menuRecipesReduced,
+    menuRecipesElement,
+        
         prescriberRecipes,
-        menuImportRecipes,
+        menuImportRecipesElement,
         menuManageRecipes,
         openModalRegisterRecipes,
         importPDFRecipes,
@@ -38,17 +38,16 @@ export const {
         channelReceiptImport,
         clusterRecipes,
         budgetistRecipes,
-        responsibleForRecipe: attendantResponsibleRecipes,
+        responsibleForRecipeElement,
         autocompleteResponsibleAttendant,
         dateReceiptRecipes,
         juntocomRecipes,
         autocompleteJuntocomRecipes,
         internalObservationRecipes,
         textInternalObservationRecipes,
-        controlledmedicationRecipes,
-        urgentRecipes,
-        clientAlertRecipes,
-        retailRecipes,
+        urgentRecipeElement,
+        clientAlertRecipeElement,
+        retailRecipeElement,
         saveRecipes,
         closeRegisterRecipes,
         editRecipe,
@@ -133,15 +132,15 @@ export const insertInternalObservation = (areaText: string, content: string, use
 };
 
 export const markUrgent = (urgent: string): void => {
-    cy.getElementAndClick([urgent]);
+    cy.getElementAndClick(urgent);
 };
 
 export const markCustomerAlert = (clientAlert: string): void => {
-    cy.getElementAndClick([clientAlert])
+    cy.getElementAndClick(clientAlert)
 };
 
 export const markMedicineControlled = (medicineControlled: string): void => {
-    cy.getElementAndClick([medicineControlled])
+    cy.getElementAndClick(medicineControlled)
 };
 
 // export const saveRecipe = (saveImport): void => {
@@ -176,7 +175,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //             .then((result) => {
 //                 assert.exists(result.success, result.error)
 //             })
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement, menuRecipesReduced)
+;
 //     });
 
 //     it('Deve acessar importar receitas logado com perfil inclusão', function () {
@@ -184,7 +184,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //         cy.login(dataEnvironment.USER_INCLUSAO, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
 //             assert.exists(result.success, result.error)
 //         });
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement, menuRecipesReduced)
+;
 //     })
 
 //     it('Deve acessar importar receitas logado com perfil conferência de entrada', function () {
@@ -192,7 +193,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //         cy.login(dataEnvironment.USER_CONFENTRADA, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
 //             assert.exists(result.success, result.error)
 //         });
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement, menuRecipesReduced)
+;
 //     })
 
 //     it('Deve acessar importar receitas logado com perfil conferência de saída', function () {
@@ -200,7 +202,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //         cy.login(dataEnvironment.USER_CONFSAIDA, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
 //             assert.exists(result.success, result.error)
 //         });
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement, menuRecipesReduced)
+;
 //     })
 
 //     it('Deve acessar importar receitas logado com perfil expedição', function () {
@@ -208,7 +211,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //         cy.login(dataEnvironment.USER_EXPEDICAO, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
 //             assert.exists(result.success, result.error)
 //         });
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes, menuRecipesReduced]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement, menuRecipesReduced)
+;
 //     })
 
 
@@ -218,7 +222,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //         cy.login(dataEnvironment.USER_ORCAMENTISTA, dataEnvironment.PASSWORD, el.Login.messageErrorLogin, dataEnvironment.BASE_URL_HOMOLOG).then((result) => {
 //             assert.exists(result.success, result.error)
 //         });
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 
 //         cy.searchRecipe({
 //             initialDate: dataParameters.Recipe.search.initialDate,
@@ -234,7 +239,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //             .then((result) => {
 //                 assert.exists(result.success, result.error)
 //             })
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 
 //         cy.searchRecipe({
 //             initialDate: dataParameters.Recipe.search.initialDate,
@@ -250,7 +256,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //             .then((result) => {
 //                 assert.exists(result.success, result.error)
 //             })
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 
 
 //         cy.searchRecipe({
@@ -265,7 +272,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //             .then((result) => {
 //                 assert.exists(result.success, result.error)
 //             })
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 //         cy.searchRecipe({
 //             initialDate: dataParameters.Recipe.search.initialDate,
 //             finalDate: dataParameters.Recipe.search.finalDate,
@@ -278,7 +286,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //             .then((result) => {
 //                 assert.exists(result.success, result.error)
 //             })
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 //         cy.searchRecipe({
 //             initialDate: dataParameters.Recipe.search.initialDate,
 //             finalDate: dataParameters.Recipe.search.finalDate,
@@ -292,7 +301,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //             .then((result) => {
 //                 assert.exists(result.success, result.error)
 //             })
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 //         cy.searchRecipe({
 //             initialDate: dataParameters.Recipe.search.initialDate,
 //             finalDate: dataParameters.Recipe.search.finalDate,
@@ -305,7 +315,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //             .then((result) => {
 //                 assert.exists(result.success, result.error)
 //             })
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 //         cy.searchRecipe({
 //             initialDate: dataParameters.Recipe.search.initialDate,
 //             finalDate: dataParameters.Recipe.search.finalDate,
@@ -318,7 +329,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 //             .then((result) => {
 //                 assert.exists(result.success, result.error)
 //             })
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 //         cy.searchRecipe({
 //             initialDate: dataParameters.Recipe.search.initialDate,
 //             finalDate: dataParameters.Recipe.search.finalDate,
@@ -332,7 +344,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
 //     it('Deve realizar marcação de uso nas receitas.', function () {
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement)
+;
 
 //         cy.markUsage(checkboxMarkUse, dataParameters.Recipe.search.markUserUsage);
 //     });
@@ -340,7 +353,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
 //     it('Deve visualizar receitas', function () {
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes, actions]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement, actions)
+;
 
 //         cy.viewRecipe(viewRecipes);
 //     });
@@ -348,8 +362,8 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
 //     it('Deve clonar receitas.', function () {
-//         cy.get(menuRecipes).click();
-//         cy.get(menuImportRecipes).click()
+//         cy.get(menuRecipesElement,).click();
+//         cy.get(menuImportRecipesElement).click()
 //         cy.get(actions).click();
 
 //         cy.cloneRecipe(cloneRecipes);
@@ -359,26 +373,28 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 //     it('Deve excluir receitas.', function () {
 
-//         cy.getElementAndClick([menuRecipes, menuImportRecipes, actions]);
+//         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement, actions)
+;
 
 //         cy.deleteRecipe(deleteRecipes);
 
-//         cy.getElementAndClick([btnModalMessage]);
+//         cy.getElementAndClick(btnModalMessage)
+;
 //     });
 
 
 
     // it('Deve inserir observação farmacêutica.', function () {
-    //     cy.getElementAndClick(menuRecipes, menuImportRecipes,actions);
+    //     cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement,actions);
     //     cy.insertPharmaceuticalObservation(accessPharmaceuticalObservations, dataParameters.Recipe.senhaObservacaoFarmaceutica, dataParameters.Recipe.textoObservacaoFarmaceutica);
     // });
 
 
 
     // it('Deve excluir observação farmacêutica', function () {
-    //     cy.acessarMenuReceitas(menuRecipes);
+    //     cy.acessarMenuReceitas(menuRecipesElement,);
 
-    //     cy.acessarImportarReceitas(menuImportRecipes);
+    //     cy.acessarImportarReceitas(menuImportRecipesElement);
     //     
 
     //     cy.getElementAndClick(actions);
@@ -389,9 +405,9 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
     // it('Deve criar dúvida técnica.', function () {
-    //     cy.acessarMenuReceitas(menuRecipes);
+    //     cy.acessarMenuReceitas(menuRecipesElement,);
 
-    //     cy.acessarImportarReceitas(menuImportRecipes);
+    //     cy.acessarImportarReceitas(menuImportRecipesElement);
     //     
 
     //     cy.getElementAndClick(actions);
@@ -402,9 +418,9 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
     // it('Deve update modal de dúvida técnica.', function () {
-    //     cy.acessarMenuReceitas(menuRecipes);
+    //     cy.acessarMenuReceitas(menuRecipesElement,);
 
-    //     cy.acessarImportarReceitas(menuImportRecipes);
+    //     cy.acessarImportarReceitas(menuImportRecipesElement);
     //     
 
     //     cy.getElementAndClick(actions);
@@ -414,9 +430,9 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
     // it('Deve alterar o responsável pela resposta da dúvida técnica ', function () {
-    //     cy.acessarMenuReceitas(menuRecipes);
+    //     cy.acessarMenuReceitas(menuRecipesElement,);
 
-    //     cy.acessarImportarReceitas(menuImportRecipes);
+    //     cy.acessarImportarReceitas(menuImportRecipesElement);
     //     
 
     //     cy.getElementAndClick(actions);
@@ -426,9 +442,9 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
     // it('Deve marcar dúvida técnica como resolved.', function () {
-    //     cy.acessarMenuReceitas(menuRecipes);
+    //     cy.acessarMenuReceitas(menuRecipesElement,);
 
-    //     cy.acessarImportarReceitas(menuImportRecipes);
+    //     cy.acessarImportarReceitas(menuImportRecipesElement);
     //     
 
     //     cy.getElementAndClick(actions);
@@ -438,9 +454,9 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
     // it('Deve excluir dúvida técnica.', function () {
-    //     cy.acessarMenuReceitas(menuRecipes);
+    //     cy.acessarMenuReceitas(menuRecipesElement,);
 
-    //     cy.acessarImportarReceitas(menuImportRecipes);
+    //     cy.acessarImportarReceitas(menuImportRecipesElement);
     //     
 
     //     cy.getElementAndClick(actions);
@@ -450,9 +466,9 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
     // it('Deve responder dúvida técnica.', function () {
-    //     cy.acessarMenuReceitas(menuRecipes);
+    //     cy.acessarMenuReceitas(menuRecipesElement,);
 
-    //     cy.acessarImportarReceitas(menuImportRecipes);
+    //     cy.acessarImportarReceitas(menuImportRecipesElement);
     //     
 
     //     cy.getElementAndClick(actions);
@@ -462,9 +478,9 @@ export const markMedicineControlled = (medicineControlled: string): void => {
 
 
     // it('Deve editar receita', function () {
-    //     cy.acessarMenuReceitas(menuRecipes);
+    //     cy.acessarMenuReceitas(menuRecipesElement,);
 
-    //     cy.acessarImportarReceitas(menuImportRecipes);
+    //     cy.acessarImportarReceitas(menuImportRecipesElement);
     //     
 
     //     cy.getElementAndClick(actions);

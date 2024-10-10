@@ -1,6 +1,16 @@
 export type ValidationResult = Cypress.Chainable<{ error?: string; success?: string; }>
 
 export type ElementTypeAndValueOpcional = {
-  element: string;   // O seletor do elemento
-  value?: string;    // O valor opcional a ser selecionado no <select>
+  element: string; 
+  value?: string; 
 }[];
+
+export type ConditionalWrite = {
+  [key: string]: [boolean, string];
+};
+
+export type ElementControl = {
+  element: string;
+  value?: boolean | string;
+}[];
+

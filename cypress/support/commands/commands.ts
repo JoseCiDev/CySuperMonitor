@@ -1,10 +1,15 @@
 /// <reference path="../cypress.d.ts" />
 
 
+import './commandsLogin';
+import './commandsRecipe';
+import './commandsService';
+import './commandsConfigurationAttendantClusterPrescriberRelationship';
+
 import {
   elements as el,
-  
   ElementTypeAndValueOpcional,
+  ElementControl,
 } from '../../import'
 
 const environment = Cypress.env('ENVIRONMENT');
@@ -14,10 +19,10 @@ const dataEnvironment = Cypress.env(environment);
 
 export const {
   suggestionAutocomplete,
-  suggestionsAutocomplete,
+  suggestionsAutocompleteElement,
   containerMessage,
   okModalMessage,
-  btnSuccessModal,
+  btnSuccessModalElement,
   btnModalFailure,
   modalMessage,
   btnModalMessage,
@@ -26,10 +31,10 @@ export const {
 } = el.Shared;
 
 export const {
-  menuRecipes,
-  menuRecipesReduced,
+  menuRecipesElement,
+
   prescriberRecipes,
-  menuImportRecipes,
+  menuImportRecipesElement,
   menuManageRecipes,
   openModalRegisterRecipes,
   importPDFRecipes,
@@ -41,17 +46,17 @@ export const {
   channelReceiptImport,
   clusterRecipes,
   budgetistRecipes,
-  responsibleForRecipe: attendantResponsibleRecipes,
+  responsibleForRecipeElement,
   autocompleteResponsibleAttendant,
   dateReceiptRecipes,
   juntocomRecipes,
   autocompleteJuntocomRecipes,
   internalObservationRecipes,
   textInternalObservationRecipes,
-  controlledmedicationRecipes,
-  urgentRecipes,
-  clientAlertRecipes,
-  retailRecipes,
+  controlledmedicationRecipeElement,
+  urgentRecipeElement,
+  clientAlertRecipeElement,
+  retailRecipeElement,
   saveRecipes,
   closeRegisterRecipes,
   editRecipe,
@@ -126,14 +131,14 @@ export const {
   menuServices,
   servicesInProgress,
   accessWorkFlowService,
-  parameterSearchBudget: parameterSearchCardBudget,
+  parameterSearchBudgetElement,
   cardBudget,
-  buttonLinkRecipeScreenServiceProgress,
+  buttonLinkRecipeScreenServiceProgressElement,
   buttonUnlinkRecipeScreenServiceProgress,
-  fieldLinkRecipe,
-  budgetInProgress: budgetInProgress,
+  fieldLinkRecipeElement,
+  budgetInProgressElement,
   buttonView,
-  fieldSearchBudget: fieldSearchBudget,
+  fieldSearchBudgetElement,
   searchBranch,
   sendSearch,
   brazilian,
@@ -146,22 +151,22 @@ export const {
   saveNumberChatguru,
   budgetist,
   treatmentTimeModalHeader,
-  buttonTimeTreatment,
+  insertTreatmentTime,
   standardTreatmentTime,
   cancelTimeTreatment,
   reimportFormulas,
   saveTimeTreatment,
-  budgetMessageModal: budgetMessageModal,
-  modalConfirmationBudget: modalConfirmationBudget,
-  containerPaymentMethod,
-  chosenBudget,
+  budgetMessageModalElement,
+  modalConfirmationBudgetElement,
+  paymentMethodElement,
+  chosenBudgetForConfirmation,
   insertRepeatTime,
-  saveDataConfirmationBudget: saveDataConfirmationBudget,
+  saveDataConfirmationBudget,
   monitoringService,
-  channelConfirmationBudget: channelConfirmationBudget,
+  channelConfirmationBudget,
   sendEmailTracking,
-  noShowBudgetInclusion: noShowBudgetInclusion,
-  noShowBudgetCaixa: noShowBudgetCaixa,
+  releaseBudgetForInclusionElement,
+  noShowBudgetCaixa,
   observationFromCashierToCounter,
   detailedNote,
   fieldStatusPayment,
@@ -169,24 +174,24 @@ export const {
   addressShippingSelected,
   shipmentObservation,
   fieldFormShipping,
-  juntocomBudgetConfirmation: juntocomBudgetConfirmation,
+  juntocomBudgetConfirmation,
   juntocomClinicaHigashi,
   promisedFieldFor,
   fieldAromasSachet,
   aromaCapsuleField,
   generalObservation,
-  hasRecipe,
-  urgentBudget: urgentBudget,
-  cancelBudgetConfirmation: cancelBudgetConfirmation,
+  budgetHasRecipeElement,
+  urgentBudgetElement,
+  cancelBudgetConfirmation,
   sendChatguruMessage,
-  PreViewBudget: PreViewBudget,
-  closePreViewBudget: closePreViewBudget,
-  sendconfirmBudget: sendconfirmBudget,
+  PreViewBudget,
+  closePreViewBudget,
+  sendconfirmBudget,
   showAll,
   hasSpecialFormula,
   generateLinkPayment,
-  relateRecipeBudget: relateRecipeBudget,
-  showBudgetsClosed: showBudgetsClosed,
+  relateRecipeBudget,
+  showBudgetsClosed,
   reopenBudget,
   confirmReopenBudget,
   userOptions,
@@ -209,21 +214,22 @@ export const {
 
 
 Cypress.Commands.add('insertFile', (element, filePath): void => {
-  cy.fixture(filePath, 'base64').then((conteudo_arquivo) => {
-    const nome = filePath.split('/').pop(); // Extract the file name from the fixture path
+  cy.fixture(filePath, 'base64').then((fileContent) => {
+    const fileName = filePath.split('/').pop(); // Extract the file name from the fixture path
     const mimeType = 'image/jpeg';
 
-    const blob = Cypress.Blob.base64StringToBlob(conteudo_arquivo, mimeType);
-    const file = new File([blob], nome, { type: mimeType });
+    const blob = Cypress.Blob.base64StringToBlob(fileContent, mimeType);
+    const file = new File([blob], fileName, { type: mimeType });
 
-    cy.get(element).then(($element) => {
-      const event = new Event('change', { bubbles: true });
-      Object.defineProperty($element[0], 'files', {
-        value: [file],
-        writable: false,
+    cy.get(element)
+      .then(($element) => {
+        const event = new Event('change', { bubbles: true });
+        Object.defineProperty($element[0], 'files', {
+          value: [file],
+          writable: false,
+        });
+        $element[0].dispatchEvent(event);
       });
-      $element[0].dispatchEvent(event);
-    });
   });
 });
 
@@ -237,14 +243,15 @@ Cypress.Commands.add('readFileFromFixture', (fileName) => {
 //   return cy.fixture(filePath);
 // });
 
-Cypress.Commands.add('getElementAndClick', (elements: string[]): void => {
+Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
   elements.forEach(element => {
-    cy.get(element, { timeout: 20000 }).then($elements => {
-      if ($elements.length > 0) {
-        cy.wrap($elements.first())
-          .click({ force: true });
-      }
-    });
+    cy.get(element, { timeout: 20000 })
+      .then($elements => {
+        if ($elements.length > 0) {
+          cy.wrap($elements.first())
+            .click({ force: true });
+        }
+      });
   });
 });
 
@@ -259,6 +266,8 @@ Cypress.Commands.add('getElementAndCheck', (elements: ElementTypeAndValueOpciona
       });
   })
 });
+
+
 
 Cypress.Commands.add('getElementAndType', (elements: { [key: string]: string }): void => {
   cy.wrap(null).then(() => {
@@ -282,90 +291,99 @@ Cypress.Commands.add('getElementAndType', (elements: { [key: string]: string }):
   });
 });
 
-Cypress.Commands.add('getRadioOptionByValue', (elements: ElementTypeAndValueOpcional): void => {
-  Object.entries(elements).forEach(([element, value]) => {
+Cypress.Commands.add('getRadioOptionByValue', (elements: ElementControl): void => {
+  elements.forEach(({ element, value }) => {
     cy.get(element, { timeout: 20000 })
       .should('be.visible')
       .find(`input[type="radio"][value="${value}"]`)
       .check({ force: true });
-  })
+  });
 });
 
 Cypress.Commands.add('getSelectOptionByValue', (elements: ElementTypeAndValueOpcional): void => {
-  Object.entries(elements).forEach(([element, value]) => {
-    cy.get(element, { timeout: 20000 }).then(($select) => {
+  elements.forEach(({ element, value }) => {
+    cy.get(element, { timeout: 20000 })
+    .then(($select) => {
       if ($select.length > 0 && $select.is(':visible')) {
-        cy.wrap($select)
-          .select(value.value, { force: true });
+        cy.wrap($select).select(value, { force: true });
+      } else {
+        throw new Error(`Elemento ${element} não encontrado ou não visível.`);
       }
-    })
+    });
   });
 });
 
-Cypress.Commands.add('getElementAutocompleteTypeAndClick', (elements: { [key: string]: string }, autocomplete: string) => {
+
+Cypress.Commands.add('getElementAutocompleteTypeAndClick', (elements: { [key: string]: string }, autocompleteSelector: string) => {
   cy.wrap(null).then(() => {
     Object.entries(elements).forEach(([element, text]) => {
       cy.get(element, { timeout: 20000 })
-        .each(($input) => {
-          cy.wrap($input)
-            .type(text)
-            .then(() => {
-              cy.get(autocomplete)
-                .as('autocompleteAlias')
+        .type(text)
+        .then(() => {
+
+          cy.get(autocompleteSelector, { timeout: 20000 })
+            .should('be.visible')
+            .each(($autocomplete) => {
+              cy.wrap($autocomplete)
                 .click({ force: true });
-            })
-        })
-    })
+            });
+        });
+    });
   });
 });
 
+
+
+
 Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
   const $aliasModal = Cypress.$(jqueryElement);
-  if (!$aliasModal.each) {
+
+  if ($aliasModal.length === 0) {
     cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.');
   } else {
     cy.get(element, { timeout: 60000 })
       .as('elementAlias')
-      .invoke('removeAttr', 'readonly' || 'hidden' || 'scroll' || 'auto', { force: true })
+      .invoke('removeAttr', 'readonly')
+      .invoke('removeAttr', 'hidden')
       .click({ force: true, multiple: true, timeout: 5000 });
   }
 });
 
 
 
-
-
 Cypress.Commands.add('markUsage', (checkboxMarkUse: string, userMarkUsage: string): void => {
-  cy.get(`${checkboxMarkUse} input[type="checkbox"]`, { timeout: 20000 }).then(($checkboxes) => {
-    const totalCheckboxes = $checkboxes.length;
+  cy.get(`${checkboxMarkUse} input[type="checkbox"]`, { timeout: 20000 })
+    .then(($checkboxes) => {
+      const totalCheckboxes = $checkboxes.length;
 
-    cy.get(`${checkboxMarkUse} input[type="checkbox"]:checked`, { timeout: 20000 }).then(($checkedCheckboxes) => {
-      const totalChecked = $checkedCheckboxes.length;
+      cy.get(`${checkboxMarkUse} input[type="checkbox"]:checked`, { timeout: 20000 })
+        .then(($checkedCheckboxes) => {
+          const totalChecked = $checkedCheckboxes.length;
 
-      if (totalChecked === totalCheckboxes) {
-        cy.get(`${checkboxMarkUse} input[type="checkbox"]:checked`, { timeout: 20000 })
-          .first()
-          .uncheck();
-        cy.getElementAndClick([containerInsertUser]);
-        cy.getElementAndType({ [select]: userMarkUsage });
-        cy.getElementAndClick([selectedUser])
-        cy.getElementAndType({ [passwordRecipe]: dataEnvironment.SENHA_RECEITA_USER });
-        cy.getElementAndClick([applyUncheckUse]);
-        cy.getElementAndClick([modalMessage]);
-        cy.get(`${checkboxMarkUse} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
-          .first()
-          .check();
-      }
-      else {
-        cy.get(`${checkboxMarkUse} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
-          .first()
-          .check();
-      };
+          if (totalChecked === totalCheckboxes) {
+            cy.get(`${checkboxMarkUse} input[type="checkbox"]:checked`, { timeout: 20000 })
+              .first()
+              .uncheck();
+            cy.getElementAndClick(containerInsertUser);
+            cy.getElementAndType({ [select]: userMarkUsage });
+            cy.getElementAndClick(selectedUser)
+            cy.getElementAndType({ [passwordRecipe]: dataEnvironment.SENHA_RECEITA_USER });
+            cy.getElementAndClick(applyUncheckUse);
+            cy.getElementAndClick(modalMessage);
+            cy.get(`${checkboxMarkUse} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
+              .first()
+              .check();
+          }
+          else {
+            cy.get(`${checkboxMarkUse} input[type="checkbox"]:not(:checked)`, { timeout: 20000 })
+              .first()
+              .check();
+          };
 
-      cy.wait(200);
-      cy.getElementAndClick([btnSuccessModal]);
-      cy.wait(200);
-      cy.getElementAndClick([modalMessage]);
+          cy.wait(200);
+          cy.getElementAndClick(btnSuccessModalElement);
+          cy.wait(200);
+          cy.getElementAndClick(modalMessage);
+        });
     });
-  });
 });

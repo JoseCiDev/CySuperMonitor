@@ -1,15 +1,13 @@
 export enum AromaSachet {
-    SelectAroma = 'Selecione o Aroma',
-    Pineapple = 'Abacaxi',
-    StandardBaseAroma = 'Aroma da base padrão',
-    Vanilla = 'Baunilha',
-    Cocoa = 'Cacau',
-    Raspberry = 'Raspberry',
-    Orange = 'Orange',
-    OrangeWithMintAndSpearmint = 'Orange com hortelã/menta',
-    Lemon = 'Limão',
-    MintSpearmint = 'Menta/hortelã',
-    Strawberry = 'Morango',
-    NoAroma = 'Sem aroma',
-    Grape = 'Uva',
-}
+    SelectAroma = 'SELECIONE O AROMA',
+    Pineapple = 'abacaxi',
+    StandardBaseAroma = 'aroma_da_base_padrao',
+    Vanilla = 'baunilha',
+    Cocoa = 'cacau',
+    Orange = 'laranja',
+    Lemon = 'limao',
+    Strawberry = 'morango',
+    NoAroma = 'sem_aroma',
+    Grape = 'uva',
+    Varejo = 'varejo'
+};

@@ -3,7 +3,7 @@
 import {
     elements as el,
     faker,
-// dataParameters,
+dataParameters,
     SearchRecipe,
 } from '../../../import';
 
@@ -21,14 +21,14 @@ export const {
     menuServices,
     servicesInProgress,
     accessWorkFlowService,
-    parameterSearchBudget: parameterSearchCardBudget,
+    parameterSearchBudgetElement: parameterSearchCardBudget,
     cardBudget,
-    buttonLinkRecipeScreenServiceProgress,
+    buttonLinkRecipeScreenServiceProgressElement,
     buttonUnlinkRecipeScreenServiceProgress,
-    fieldLinkRecipe,
-    budgetInProgress: budgetInProgress,
+    fieldLinkRecipeElement,
+    budgetInProgressElement: budgetInProgressElement,
     buttonView,
-    fieldSearchBudget: fieldSearchBudget,
+    fieldSearchBudgetElement: fieldSearchBudgetElement,
     searchBranch,
     sendSearch,
     brazilian,
@@ -41,21 +41,20 @@ export const {
     saveNumberChatguru,
     budgetist,
     treatmentTimeModalHeader,
-    buttonTimeTreatment,
     standardTreatmentTime,
     cancelTimeTreatment,
     reimportFormulas,
     saveTimeTreatment,
-    budgetMessageModal: budgetMessageModal,
-    modalConfirmationBudget: modalConfirmationBudget,
-    containerPaymentMethod,
-    chosenBudget,
+    budgetMessageModalElement: budgetMessageModalElement,
+    modalConfirmationBudgetElement: modalConfirmationBudgetElement,
+    paymentMethodElement,
+    chosenBudgetForConfirmation: chosenBudget,
     insertRepeatTime,
     saveDataConfirmationBudget: saveDataConfirmationBudget,
     monitoringService,
     channelConfirmationBudget: channelConfirmationBudget,
     sendEmailTracking,
-    noShowBudgetInclusion: noShowBudgetInclusion,
+    releaseBudgetForInclusionElement: noShowBudgetInclusion,
     noShowBudgetCaixa: noShowBudgetCaixa,
     observationFromCashierToCounter,
     detailedNote,
@@ -70,8 +69,8 @@ export const {
     fieldAromasSachet,
     aromaCapsuleField,
     generalObservation,
-    hasRecipe,
-    urgentBudget: urgentBudget,
+    budgetHasRecipeElement,
+    urgentBudgetElement: urgentBudgetElement,
     cancelBudgetConfirmation: cancelBudgetConfirmation,
     sendChatguruMessage,
     PreViewBudget: PreViewBudget,
@@ -121,9 +120,11 @@ export const {
 
 
 //     it.only('Deve confirmar budget', function () {
-//         cy.getElementAndClick([btnModalChangelog]);
+//         cy.getElementAndClick(btnModalChangelog)
+;
         
-//         cy.getElementAndClick([menuServices]);
+//         cy.getElementAndClick(menuServices)
+;
         
 //         cy.get(servicesInProgress).click({force:true});
         
@@ -134,13 +135,15 @@ export const {
 
 
 //     // it('Deve vincular recipe ao budget', function () {
-//     //     cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
+//     //     cy.getElementAndClick(menuServices,servicesInProgress)
+;(servicesInProgress);
 //     //     cy.viewBudget(buttonView);
-//     //     cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgress, parseInt(dataParameters.Recipe.import.numberRecipe as string));
+//     //     cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgressElement, parseInt(dataParameters.Recipe.import.numberRecipe as string));
 //     // });
 
 //     it('Deve desvincular recipe ao budget', function () {
-//         cy.getElementAndClick([menuServices,servicesInProgress]);(servicesInProgress);
+//         cy.getElementAndClick(menuServices,servicesInProgress)
+;(servicesInProgress);
         
 //         cy.viewBudget(buttonView);
 //         cy.unlinkBudgetRecipe(buttonUnlinkRecipeScreenServiceProgress)
