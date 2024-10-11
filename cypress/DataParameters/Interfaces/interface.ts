@@ -126,8 +126,8 @@ export interface DataParameters<S = string> {
     filePath: S;
 
     Budget: {
-        searchBudgetByBranch: S | number;
-        searchBudgetByNumber: S | number;
+        orcamentoNumberForSearch: S | number;
+        filialNumberForSearch: S | number;
         budgetist: S;
         budgetAttendant: S;
         recipeNumber: S | number;

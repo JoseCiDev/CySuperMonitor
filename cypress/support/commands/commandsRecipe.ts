@@ -239,6 +239,7 @@ export const {
 
 
 Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
+    // Função auxiliar para capturar o número da receita
     const extractRecipeNumber = ($element: JQuery<HTMLElement>): number => {
         const text = $element.text().trim();
         const numeroReceitaMatch = text.match(/\d+/);
@@ -249,8 +250,6 @@ Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
 
         return parseInt(numeroReceitaMatch[0], 10);
     };
-
-    let numberRecipe: number;
 
     cy.getElementAndClick(':nth-child(5) > .col > .btn');
     cy.wait(1000);
@@ -264,15 +263,19 @@ Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
     return cy.get(RecipeNumberElement, { timeout: 20000 })
         .should('exist')
         .then(($element) => {
-            numberRecipe = extractRecipeNumber($element);
+            const numberRecipe = extractRecipeNumber($element);
 
+            // Armazena os números da receita em dataParameters
             dataParameters.Recipe.import.numberRecipe = numberRecipe;
             dataParameters.Recipe.search.numberRecipe = numberRecipe;
 
-            cy.log(`Número da Recipe capturado: ${numberRecipe}`);
-            return numberRecipe;
+            cy.log(`Número da receita capturado: ${numberRecipe}`);
+
+            // Retorna o número da receita de forma assíncrona
+            return cy.wrap(numberRecipe);
         });
 });
+
 
 Cypress.Commands.add('searchRecipe', (
     params?: {

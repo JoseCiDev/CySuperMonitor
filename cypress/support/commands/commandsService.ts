@@ -357,7 +357,7 @@ Cypress.Commands.add('viewBudget', () => {
     //buscando por um orçamento
     function searchBudgetByBranch() {
         cy.getElementAndClick(homeMenuElement);
-        // cy.getElementAndType({ [fieldSearchBudgetElement]: dataParameters.Budget.searchBudgetByNumber });
+        cy.getElementAndType({ [fieldSearchBudgetElement]: dataParameters.Budget.searchBudgetByNumber });
         cy.getElementAndType({ [searchBudgetByBranchElement]: dataParameters.Budget.searchBudgetByBranch });
         cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
         checkPaymentStatus(2);

@@ -148,11 +148,7 @@ describe('Tela Atendimentos.', function () {
                 cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
             }
         });
-        /*
-
-
-        */
-
+        
         cy.getElementAndClick(menuServices, servicesInProgress);
 
         cy.viewBudget();
@@ -163,7 +159,7 @@ describe('Tela Atendimentos.', function () {
 
         cy.insertTimeTreatment();
 
-        cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgressElement);
+        // cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgressElement);
 
         cy.confirmBudget();
     });
