@@ -1,30 +1,4 @@
 /// <reference types="cypress" />
-
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 /// <reference path="../cypress.d.ts" />
 
 import {
@@ -235,6 +209,8 @@ export const {
     budgetBudgetist,
     BudgetAttendant,
     containerBudgets,
+    recipeCodeColumnElement,
+    accessServiceMenuThroughPrescriptionImportScreenElement,
 
 } = el.Services;
 
@@ -263,34 +239,40 @@ export const {
 
 
 Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
-    const tentativas: number = 10
-    if (tentativas === 0) {
-        throw new Error(`Número de tentativas excedido. Não foi possível capturar o número da recipe.`);
-    }
+    const extractRecipeNumber = ($element: JQuery<HTMLElement>): number => {
+        const text = $element.text().trim();
+        const numeroReceitaMatch = text.match(/\d+/);
 
-    return cy.wrap(null)
-        .then(() => {
-            const $element = Cypress.$(RecipeNumberElement);
+        if (!numeroReceitaMatch) {
+            throw new Error(`Valor capturado não contém números válidos: ${text}`);
+        }
 
-            if ($element.length > 0) {
-                const text = $element.text();
-                const numeroReceitaMatch = text.match(/\d+/);
+        return parseInt(numeroReceitaMatch[0], 10);
+    };
 
-                if (!numeroReceitaMatch) {
-                    throw new Error(`Valor capturado não contém números válidos: ${text}`);
-                }
-                const numberRecipe = parseInt(numeroReceitaMatch[0], 10);
+    let numberRecipe: number;
 
-                dataParameters.Recipe.import.numberRecipe = numberRecipe;
-                dataParameters.Recipe.search.numberRecipe = numberRecipe;
+    cy.getElementAndClick(':nth-child(5) > .col > .btn');
+    cy.wait(1000);
 
-                cy.log(`Número da Recipe Capturado para search: ${dataParameters.Recipe.search.numberRecipe}
-            Número da Recipe Capturado para importação: ${dataParameters.Recipe.import.numberRecipe}`);
-            }
+    cy.getElementAndClick(accessServiceMenuThroughPrescriptionImportScreenElement)
+
+    cy.wait(500);
+
+    cy.getElementAndClick(accessServiceMenuThroughPrescriptionImportScreenElement)
+
+    return cy.get(RecipeNumberElement, { timeout: 20000 })
+        .should('exist')
+        .then(($element) => {
+            numberRecipe = extractRecipeNumber($element);
+
+            dataParameters.Recipe.import.numberRecipe = numberRecipe;
+            dataParameters.Recipe.search.numberRecipe = numberRecipe;
+
+            cy.log(`Número da Recipe capturado: ${numberRecipe}`);
+            return numberRecipe;
         });
-
-})
-
+});
 
 Cypress.Commands.add('searchRecipe', (
     params?: {
@@ -887,7 +869,7 @@ Cypress.Commands.add('importRecipe', (options: {
 
     cy.getElementAndClick(saveRecipes);
 
-    cy.get(barProgressSaveRecipe, { timeout: 120000 })
+    return cy.get(barProgressSaveRecipe, { timeout: 120000 })
         .should('not.be.visible')
         .then(() => {
             cy.get(modalMessage, { timeout: 120000 })
@@ -896,8 +878,11 @@ Cypress.Commands.add('importRecipe', (options: {
                     const modalText = $modal.text();
                     cy.log(modalText);
                     cy.getElementAndClick(btnModalMessage);
+
+                    return cy.captureRecipeNumber(recipeCodeColumnElement);
+                })
+                .then((numberRecipe) => {
+                    return cy.wrap({ success: `O processo de importação foi concluído com êxito. Receita importada: ${numberRecipe}` });
                 });
         });
-
-    return cy.wrap({ success: 'O processo de importação foi concluído com êxito.' });
 });

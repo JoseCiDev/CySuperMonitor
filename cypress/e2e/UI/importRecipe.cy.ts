@@ -25,7 +25,7 @@ export const {
 
 export const {
     menuRecipesElement,
-    
+
     prescriberRecipes,
     menuImportRecipesElement,
     menuManageRecipes,
@@ -130,9 +130,9 @@ describe('Tela importação de receitas.', function () {
 
     it('Deve realizar importação de Receitas', function () {
         cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error);
-        });
+            .then((result) => {
+                assert.exists(result.success, result.error);
+            });
 
 
         cy.document().then((doc) => {
@@ -144,11 +144,9 @@ describe('Tela importação de receitas.', function () {
             }
         });
 
-        cy.getElementAndClick(menuRecipesElement,menuImportRecipesElement);
-        
-        cy.importRecipe({
-            
+        cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement);
 
+        cy.importRecipe({
         }).then((result) => {
             assert.exists(result.success, result.error);
         });
