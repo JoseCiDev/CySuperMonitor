@@ -1,14 +1,10 @@
 /// <reference types="cypress" />
-import {
-  mount
-} from '../import'
 /// <reference types="cypress-wait-until" />
 
 import {
+  mount,
   ElementTypeAndValueOpcional,
   ValidationResult,
-
-  mount
 } from '../import'
 
 interface DataHora {
@@ -16,11 +12,9 @@ interface DataHora {
   HORA_FORMATADA: string;
 }
 
-
 declare global {
   namespace Cypress {
     interface Chainable<Subject = any> {
-      // mount: typeof mount
 
       /**
        * Custom command to select DOM element by data-cy attribute.
@@ -319,6 +313,9 @@ declare global {
        * @example cy.confirmBudget()
        */
       confirmBudget(options?: {
+        orcamentoNumberForSearch?: S | number;
+        filialNumberForSearch?: S | number;
+        typePaymentCourtesyInjectables?: typePaymentCourtesyInjectables;
         budgetist?: string,
         budgetAttendant?: string,
         paymentMethod?: PaymentMethod,

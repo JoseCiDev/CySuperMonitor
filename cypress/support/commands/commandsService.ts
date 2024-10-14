@@ -16,6 +16,7 @@ import {
     ElementControl,
     ValidationResult,
     BudgetHasRecipe,
+    TypePaymentCourtesyInjectables,
 
 } from '../../import';
 
@@ -69,7 +70,7 @@ export const {
     recipeSearch,
     patientSearch,
     prescriberSearch,
-    budgetSearch,
+    searchBudgetScreenRecipesElement,
     lastModifierSearch,
     budgetistSearch,
     attendantResponsibleSearch,
@@ -303,11 +304,11 @@ Cypress.Commands.add('changeUsersBudget', (budgetist: string, attendant: string)
 
 Cypress.Commands.add('viewBudget', () => {
     function checkPaymentStatus(index: number) {
-        const paymentSelector = paymentSelectorInput(index);
-        const updateSelectorStatus = updateSelectorStatusInput(index);
-        const viewSelector = viewSelectorInput(index);
+        const paymentSelectorElement = paymentSelectorInput(index);
+        const updateSelectorStatusElement = updateSelectorStatusInput(index);
+        const viewSelectorElement = viewSelectorInput(index);
 
-        cy.get(paymentSelector)
+        cy.get(paymentSelectorElement)
             .invoke('text')
             .then((paymentStatus) => {
                 const trimmedStatus = paymentStatus.trim();
@@ -318,15 +319,15 @@ Cypress.Commands.add('viewBudget', () => {
 
                 } else if (trimmedStatus.includes('Sem pagamento')) {
                     cy.log(`Orçamento ${index} sem pagamento. Visualizando...`);
-                    cy.getElementAndClick(viewSelector);
+                    cy.getElementAndClick(viewSelectorElement);
 
                 } else if (trimmedStatus.includes('Aguardando')) {
-                    cy.get(updateSelectorStatus)
+                    cy.get(updateSelectorStatusElement)
                         .then(($element) => {
                             if ($element.is(':visible')) {
                                 cy.log(`Atualizando status do orçamento ${index}...`);
-                                cy.getElementAndClick(updateSelectorStatus);
-                                cy.get(paymentSelector)
+                                cy.getElementAndClick(updateSelectorStatusElement);
+                                cy.get(paymentSelectorElement)
                                     .invoke('text')
                                     .then((newStatus) => {
                                         if (newStatus.trim().includes('Pago')) {
@@ -334,12 +335,12 @@ Cypress.Commands.add('viewBudget', () => {
                                             checkPaymentStatus(index + 1);
                                         } else {
                                             cy.log(`Orçamento ${index} ainda não foi pago, visualizando...`);
-                                            cy.getElementAndClick(viewSelector);
+                                            cy.getElementAndClick(viewSelectorElement);
                                         }
                                     });
                             } else {
                                 cy.log(`Botão de atualização não visível para o orçamento ${index}, visualizando...`);
-                                cy.getElementAndClick(viewSelector);
+                                cy.getElementAndClick(viewSelectorElement);
                             }
                         });
 
@@ -354,18 +355,34 @@ Cypress.Commands.add('viewBudget', () => {
             });
     };
 
-    //buscando por um orçamento
     function searchBudgetByBranch() {
+        const orcamentoNumber = dataParameters.Budget.orcamentoNumberForSearch;
+        const filialNumber = dataParameters.Budget.filialNumberForSearch;
+
         cy.getElementAndClick(homeMenuElement);
-        cy.getElementAndType({ [fieldSearchBudgetElement]: dataParameters.Budget.searchBudgetByNumber });
-        cy.getElementAndType({ [searchBudgetByBranchElement]: dataParameters.Budget.searchBudgetByBranch });
-        cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
-        checkPaymentStatus(2);
+
+        if (orcamentoNumber || filialNumber) {
+            if (orcamentoNumber) {
+                cy.getElementAndType({ [fieldSearchBudgetElement]: orcamentoNumber });
+            }
+
+            if (filialNumber) {
+                cy.getElementAndType({ [searchBudgetByBranchElement]: filialNumber });
+            }
+
+            cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
+
+            checkPaymentStatus(2);
+        } else {
+            cy.log('Nenhum parâmetro de orçamento ou filial foi informado, visualizando diretamente.');
+            cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
+
+            cy.getElementAndClick(`:nth-child(${2}) > :nth-child(8) > .visualizarFvc > .fa`);
+        }
     }
     searchBudgetByBranch();
 });
 
-// Lógica para vincular a primeira receita disponível
 function linkFirstAvailableRecipe() {
     cy.get(recipeElementAvailableForLinkingElement)
         .first()
@@ -410,7 +427,6 @@ function linkFirstAvailableRecipe() {
         });
 };
 
-// Função auxiliar para fechar a modal e iniciar a importação de nova receita
 function closeModalAndImportNewRecipe(buttonLink: string) {
 
     cy.document().then((doc) => {
@@ -473,7 +489,6 @@ function closeModalAndImportNewRecipe(buttonLink: string) {
     });
 }
 
-// Função para reabrir o modal e vincular a receita importada
 function reopenLinkModalAndLinkRecipe(buttonLink: string, recipeNumber: number) {
     cy.getElementAndClick(expandSideMenuElement, menuServices, servicesInProgress);
 
@@ -567,7 +582,6 @@ function reopenLinkModalAndLinkRecipe(buttonLink: string, recipeNumber: number) 
     cy.log(`Receita vinculada com sucesso!`);
 }
 
-// Comando para vincular receitas no orçamento
 Cypress.Commands.add('linkBudgetRecipe', (buttonLink: string, numberRecipe?: number) => {
     cy.get(buttonLinkRecipeScreenServiceProgressElement)
         .then(($button) => {
@@ -579,13 +593,8 @@ Cypress.Commands.add('linkBudgetRecipe', (buttonLink: string, numberRecipe?: num
 
                 cy.get(modalLinkRecipeElement, { timeout: 20000 })
                     .should('be.visible')
-                //abc
                 if (dataParameters.Budget.recipeNumber !== undefined) {
 
-                    // cy.getElementAutocompleteTypeAndClick(
-                    //     { [fieldLinkRecipeElement]: dataParameters.Budget.recipeNumber.toString() },
-                    //     suggestionAutocomplete
-                    // );
 
                     cy.getElementAndType({ [fieldLinkRecipeElement]: dataParameters.Budget.recipeNumber })
                         .then(() => {
@@ -844,7 +853,265 @@ Cypress.Commands.add('selectCustomerContact', (options: {
         });
 });
 
+// Cypress.Commands.add('confirmBudget', (options: {
+//     orcamentoNumberForSearch?: string | number;
+//     filialNumberForSearch?: string | number;
+//     typePaymentCourtesyInjectables?: TypePaymentCourtesyInjectables;
+//     budgetist?: string,
+//     budgetAttendant?: string,
+//     paymentMethod?: PaymentMethod,
+//     chosenBudget?: string,
+//     timeRepetition?: number,
+//     budgetClosingChannel?: BudgetClosingChannel,
+//     sendTrackingEmail?: boolean,
+//     releaseBudgetForInclusion?: boolean,
+//     releaseBudgetCashier?: boolean,
+//     cashierObservation?: string,
+//     detailedSale?: boolean,
+//     paymentStatus?: PaymentStatus,
+//     address?: string,
+//     expeditionObservation?: string,
+//     shippingMethod?: ShippingMethod,
+//     juntocomBudget?: string,
+//     promisedTo?: Date,
+//     aromaSachet?: AromaSachet,
+//     capsuleAroma?: CapsuleAroma,
+//     generalObservation?: string,
+//     budgetHasRecipe?: BudgetHasRecipe,
+//     urgentBudget?: boolean,
+//     automaticMessageTriggering?: boolean,
+// } = {}): ValidationResult => {
+
+//     const {
+//         budgetist = dataParameters.Budget.budgetist,
+//         budgetAttendant = dataParameters.Budget.budgetAttendant,
+//         orcamentoNumberForSearch = dataParameters.Budget.orcamentoNumberForSearch,
+//         filialNumberForSearch = dataParameters.Budget.filialNumberForSearch,
+//         typePaymentCourtesyInjectables = dataParameters.Budget.typePaymentCourtesyInjectables,
+//         paymentMethod = dataParameters.Budget.paymentMethod,
+//         chosenBudget = dataParameters.Budget.chosenBudget,
+//         timeRepetition = dataParameters.Budget.timeRepetition,
+//         budgetClosingChannel = dataParameters.Budget.budgetClosingChannel,
+//         sendTrackingEmail = dataParameters.Budget.sendTrackingEmail,
+//         releaseBudgetForInclusion = dataParameters.Budget.releaseBudgetForInclusion,
+//         releaseBudgetCashier = dataParameters.Budget.releaseBudgetCashier,
+//         cashierObservation = dataParameters.Budget.cashierObservation,
+//         detailedSale = dataParameters.Budget.detailedSale,
+//         paymentStatus = dataParameters.Budget.paymentStatus,
+//         address = dataParameters.Budget.address,
+//         expeditionObservation = dataParameters.Budget.expeditionObservation,
+//         shippingMethod = dataParameters.Budget.shippingMethod,
+//         juntocomBudget = dataParameters.Budget.juntocomBudget,
+//         promisedTo = dataParameters.Budget.promisedTo,
+//         aromaSachet = dataParameters.Budget.aromaSachet,
+//         capsuleAroma = dataParameters.Budget.capsuleAroma,
+//         generalObservation = dataParameters.Budget.generalObservation,
+//         budgetHasRecipe = dataParameters.Budget.budgetHasRecipeElement,
+//         urgentBudget = dataParameters.Budget.urgentBudget,
+//         automaticMessageTriggering = dataParameters.Budget.automaticMessageTriggering,
+
+//     } = options;
+
+
+//     cy.getElementAndClick(modalConfirmationBudgetElement);
+
+//     if (paymentMethod !== undefined) {
+//         cy.wait(2000);
+//         cy.getSelectOptionByValue([{ element: paymentMethodElement, value: paymentMethod }]);
+//     };
+
+//     if (chosenBudget !== undefined) {
+//         cy.getElementAndCheck([{ element: chosenBudget }]);
+//     };
+
+//     if (timeRepetition !== undefined) {
+//         cy.getElementAndType({ [insertRepeatTime]: timeRepetition });
+//     };
+
+//     cy.getElementAndClick(saveDataConfirmationBudget);
+
+//     if (filialNumberForSearch === '2013') {
+//         cy.log('Filial 2013 detectada. Selecionando tipo de cortesia para injetáveis.');
+
+//         if (typePaymentCourtesyInjectables) {
+//             cy.get('select[name="id_tipo_pagamento"]')
+//                 .select(typePaymentCourtesyInjectables)
+//                 .should('have.value', typePaymentCourtesyInjectables)
+//                 .then(() => {
+//                     cy.log(`Cortesia selecionada: ${typePaymentCourtesyInjectables}`);
+//                 });
+//         }
+
+//         if (budgetClosingChannel !== undefined) {
+//             selectIfExists(':nth-child(4) > .col-sm-7 > .form-control', budgetClosingChannel);
+//         };
+
+//         if (sendTrackingEmail !== undefined) {
+//             checkElement(':nth-child(5) > .col-sm-7 > .small-right-space', sendTrackingEmail);
+//         };
+
+//         if (releaseBudgetForInclusion !== undefined) {
+//             checkElement(':nth-child(6) > .col-sm-7 > .small-right-space', releaseBudgetForInclusion, true);
+//         };
+
+//         if (releaseBudgetCashier !== undefined) {
+//             checkElement(':nth-child(7) > .col-sm-7 > .small-right-space', releaseBudgetCashier);
+//         };
+
+//         if (cashierObservation !== undefined) {
+//             typeIfExists(':nth-child(8) > .col-sm-7 > .form-control', cashierObservation);
+//         };
+
+//         if (detailedSale !== undefined) {
+//             checkElement(':nth-child(9) > .col-sm-7 > .small-right-space', detailedSale);
+//         };
+
+//         if (paymentStatus !== undefined) {
+//             cy.getElementAndCheck([{ element: paymentStatus }]);
+//         };
+
+//         if (address !== undefined) {
+//             cy.get(':nth-child(11) > .col-sm-7 > :nth-child(1)', { timeout: 10000 })
+//                 .then(($addressElement) => {
+//                     if ($addressElement.length > 0) {
+//                         cy.getElementAndClick(':nth-child(11) > .col-sm-7 > :nth-child(1)');
+//                     } else {
+//                         throw new Error('Não há endereço disponível para confirmação do orçamento.');
+//                     }
+//                 })
+//                 .should('exist');
+//         }
+
+//         if (expeditionObservation !== undefined) {
+//             typeIfExists(':nth-child(12) > .col-sm-7 > .form-control', expeditionObservation);
+//         };
+
+//         if (shippingMethod !== undefined) {
+//             selectIfExists(':nth-child(13) > .col-sm-7 > .small-right-space', shippingMethod);
+//         };
+
+//         if (promisedTo) {
+//             cy.getElementAndClick(':nth-child(17) > .col-sm-7 > .form-control');
+//             cy.wait(500);
+//             cy.getElementAndClick(':nth-child(17) > .col-sm-7 > .form-control');
+//         };
+
+//         if (aromaSachet) {
+//             cy.getSelectOptionByValue([{ element: ':nth-child(18) > .col-sm-7 > .form-control', value: aromaSachet }]);
+//         };
+
+//         if (capsuleAroma) {
+//             cy.getSelectOptionByValue([{ element: ':nth-child(19) > .col-sm-7 > .form-control', value: capsuleAroma }]);
+//         };
+
+//         if (generalObservation !== undefined) {
+//             typeIfExists(':nth-child(20) > .col-sm-7 > .form-control', generalObservation);
+//         };
+
+//         if (budgetHasRecipe !== undefined) {
+//             cy.getElementAndCheck([{ element: budgetHasRecipeElement, value: budgetHasRecipe }]);
+//         };
+
+//         if (urgentBudget !== undefined) {
+//             checkElement(':nth-child(23) > .col-sm-7 > .small-right-space', urgentBudget);
+//         };
+
+//         if (automaticMessageTriggering !== undefined) {
+//             cy.get(sendAutomaticBudgetConfirmationMessageElement)
+//                 .uncheck();
+//         };
+
+//     } else {
+//         if (budgetClosingChannel !== undefined) {
+//             selectIfExists(channelConfirmationBudget, budgetClosingChannel);
+//         };
+
+//         if (sendTrackingEmail !== undefined) {
+//             checkElement(sendEmailTracking, sendTrackingEmail);
+//         };
+
+//         if (releaseBudgetForInclusion !== undefined) {
+//             checkElement(releaseBudgetForInclusionElement, releaseBudgetForInclusion, true);
+//         };
+
+//         if (releaseBudgetCashier !== undefined) {
+//             checkElement(releaseBudgetCashierElement, releaseBudgetCashier);
+//         };
+
+//         if (cashierObservation !== undefined) {
+//             typeIfExists(cashierObservationElement, cashierObservation);
+//         };
+
+//         if (detailedSale !== undefined) {
+//             checkElement(detailedSaleElement, detailedSale);
+//         };
+
+//         if (paymentStatus !== undefined) {
+//             cy.getElementAndCheck([{ element: paymentStatus }]);
+//         };
+
+//         if (address !== undefined) {
+//             cy.get(address, { timeout: 10000 })
+//                 .then(($addressElement) => {
+//                     if ($addressElement.length > 0) {
+//                         cy.getElementAndClick(address);
+//                     } else {
+//                         throw new Error('Não há endereço disponível para confirmação do orçamento.');
+//                     }
+//                 })
+//                 .should('exist');
+//         }
+
+//         if (expeditionObservation !== undefined) {
+//             typeIfExists(expeditionObservationElement, expeditionObservation);
+//         };
+
+//         if (shippingMethod !== undefined) {
+//             selectIfExists(shippingMethodElement, shippingMethod);
+//         };
+
+//         if (promisedTo) {
+//             cy.getElementAndClick(promisedToElement);
+//             cy.wait(500);
+//             cy.getElementAndClick(promisedToElement);
+//         };
+
+//         if (aromaSachet) {
+//             cy.getSelectOptionByValue([{ element: aromaSachetElement, value: aromaSachet }]);
+//         };
+
+//         if (capsuleAroma) {
+//             cy.getSelectOptionByValue([{ element: capsuleAromaElement, value: capsuleAroma }]);
+//         };
+
+//         if (generalObservation !== undefined) {
+//             typeIfExists(generalObservationElement, generalObservation);
+//         };
+
+//         if (budgetHasRecipe !== undefined) {
+//             cy.getElementAndCheck([{ element: budgetHasRecipeElement, value: budgetHasRecipe }]);
+//         };
+
+//         if (urgentBudget !== undefined) {
+//             checkElement(urgentBudgetElement, urgentBudget);
+//         };
+
+//         if (automaticMessageTriggering !== undefined) {
+//             cy.get(sendAutomaticBudgetConfirmationMessageElement)
+//                 .uncheck();
+//         };
+//     }
+
+//     cy.getElementAndClick(PreViewBudget, closePreViewBudget, sendconfirmBudget);
+
+//     return cy.wrap({ success: 'Orçamento confirmado com sucesso!' });
+// });
+
+
 Cypress.Commands.add('confirmBudget', (options: {
+    orcamentoNumberForSearch?: string | number;
+    filialNumberForSearch?: string | number;
+    typePaymentCourtesyInjectables?: TypePaymentCourtesyInjectables;
     budgetist?: string,
     budgetAttendant?: string,
     paymentMethod?: PaymentMethod,
@@ -870,10 +1137,12 @@ Cypress.Commands.add('confirmBudget', (options: {
     automaticMessageTriggering?: boolean,
 } = {}): ValidationResult => {
 
-    // Desestruturação com fallback para dataParameters
     const {
         budgetist = dataParameters.Budget.budgetist,
         budgetAttendant = dataParameters.Budget.budgetAttendant,
+        orcamentoNumberForSearch = dataParameters.Budget.orcamentoNumberForSearch,
+        filialNumberForSearch = dataParameters.Budget.filialNumberForSearch,
+        typePaymentCourtesyInjectables = dataParameters.Budget.typePaymentCourtesyInjectables,
         paymentMethod = dataParameters.Budget.paymentMethod,
         chosenBudget = dataParameters.Budget.chosenBudget,
         timeRepetition = dataParameters.Budget.timeRepetition,
@@ -898,118 +1167,151 @@ Cypress.Commands.add('confirmBudget', (options: {
 
     } = options;
 
-
-    // Abrir modal de confirmação do orçamento
-    cy.getElementAndClick(modalConfirmationBudgetElement);
-
-    // Selecionar método de pagamento
-    if (paymentMethod !== undefined) {
-        cy.wait(2000);
-        cy.getSelectOptionByValue([{ element: paymentMethodElement, value: paymentMethod }]);
+    const selectors = filialNumberForSearch === '2013' ? {
+        budgetClosingChannelSelector: ':nth-child(4) > .col-sm-7 > .form-control',
+        sendTrackingEmailSelector: ':nth-child(5) > .col-sm-7 > .small-right-space',
+        releaseBudgetForInclusionSelector: ':nth-child(6) > .col-sm-7 > .small-right-space',
+        releaseBudgetCashierSelector: ':nth-child(7) > .col-sm-7 > .small-right-space',
+        cashierObservationSelector: ':nth-child(8) > .col-sm-7 > .form-control',
+        detailedSaleSelector: ':nth-child(9) > .col-sm-7 > .small-right-space',
+        addressSelector: ':nth-child(11) > .col-sm-7 > :nth-child(1)',
+        expeditionObservationSelector: ':nth-child(12) > .col-sm-7 > .form-control',
+        shippingMethodSelector: ':nth-child(13) > .col-sm-7 > .small-right-space',
+        promisedToSelector: ':nth-child(17) > .col-sm-7 > .form-control',
+        aromaSachetSelector: ':nth-child(18) > .col-sm-7 > .form-control',
+        capsuleAromaSelector: ':nth-child(19) > .col-sm-7 > .form-control',
+        generalObservationSelector: ':nth-child(20) > .col-sm-7 > .form-control',
+        urgentBudgetSelector: ':nth-child(23) > .col-sm-7 > .small-right-space'
+    } : {
+        budgetClosingChannelSelector: channelConfirmationBudget,
+        sendTrackingEmailSelector: sendEmailTracking,
+        releaseBudgetForInclusionSelector: releaseBudgetForInclusionElement,
+        releaseBudgetCashierSelector: releaseBudgetCashierElement,
+        cashierObservationSelector: cashierObservationElement,
+        detailedSaleSelector: detailedSaleElement,
+        addressSelector: address,
+        expeditionObservationSelector: expeditionObservationElement,
+        shippingMethodSelector: shippingMethodElement,
+        promisedToSelector: promisedToElement,
+        aromaSachetSelector: aromaSachetElement,
+        capsuleAromaSelector: capsuleAromaElement,
+        generalObservationSelector: generalObservationElement,
+        urgentBudgetSelector: urgentBudgetElement
     };
 
-    // Marcar checkbox para o orçamento escolhido
-    if (chosenBudget !== undefined) {
-        cy.getElementAndCheck([{ element: chosenBudget }]);
-    };
+    const performCommonActions = () => {
 
-    // Inserir tempo de repetição
-    if (timeRepetition !== undefined) {
-        cy.getElementAndType({ [insertRepeatTime]: timeRepetition });
-    };
+        cy.getElementAndClick(modalConfirmationBudgetElement);
 
-    //salvando dados informados
-    cy.getElementAndClick(saveDataConfirmationBudget);
+        if (paymentMethod !== undefined) {
+            cy.wait(2000);
+            cy.getSelectOptionByValue([{ element: paymentMethodElement, value: paymentMethod }]);
+        };
 
-    // Selecionar canal de fechamento
-    if (budgetClosingChannel !== undefined) {
-        selectIfExists(channelConfirmationBudget, budgetClosingChannel);
-    };
+        if (chosenBudget !== undefined) {
+            cy.getElementAndCheck([{ element: chosenBudget }]);
+        };
 
-    //Enviar e-mail de rastreamento
-    if (sendTrackingEmail !== undefined) {
-        checkElement(sendEmailTracking, sendTrackingEmail);
-    };
+        if (timeRepetition !== undefined) {
+            cy.getElementAndType({ [insertRepeatTime]: timeRepetition });
+        };
 
-    //Liberar orçamento para inclusao
-    if (releaseBudgetForInclusion !== undefined) {
-        checkElement(releaseBudgetForInclusionElement, releaseBudgetForInclusion, true);
-    };
+        cy.getElementAndClick(saveDataConfirmationBudget);
 
-    //Liberar orçamento para caixa
-    if (releaseBudgetCashier !== undefined) {
-        checkElement(releaseBudgetCashierElement, releaseBudgetCashier);
-    };
+        if (filialNumberForSearch === '2013') {
+            cy.log('Filial 2013 detectada. Selecionando tipo de cortesia para injetáveis.');
 
-    // Inserir observação do caixa
-    if (cashierObservation !== undefined) {
-        typeIfExists(cashierObservationElement, cashierObservation);
-    };
+            if (typePaymentCourtesyInjectables) {
+                cy.get('select[name="id_tipo_pagamento"]')
+                    .select(typePaymentCourtesyInjectables)
+                    .should('have.value', typePaymentCourtesyInjectables)
+                    .then(() => {
+                        cy.log(`Cortesia selecionada: ${typePaymentCourtesyInjectables}`);
+                    });
+            }
+        }
 
-    // Marcar se a venda é detalhada
-    if (detailedSale !== undefined) {
-        checkElement(detailedSaleElement, detailedSale);
-    };
+        if (budgetClosingChannel !== undefined) {
+            selectIfExists(selectors.budgetClosingChannelSelector, budgetClosingChannel);
+        };
 
-    // Marcar se a esta pago ou não pago
-    if (paymentStatus !== undefined) {
-        cy.getElementAndCheck([{ element: paymentStatus }]);
-    };
+        if (sendTrackingEmail !== undefined) {
+            checkElement(selectors.sendTrackingEmailSelector, sendTrackingEmail);
+        };
 
-    // Selecionar endereço
-    if (address !== undefined) {
-        cy.getElementAndClick(address);
-    };
+        if (releaseBudgetForInclusion !== undefined) {
+            checkElement(selectors.releaseBudgetForInclusionSelector, releaseBudgetForInclusion, true);
+        };
 
-    // Observação da expedição
-    if (expeditionObservation !== undefined) {
-        typeIfExists(expeditionObservationElement, expeditionObservation);
-    };
+        if (releaseBudgetCashier !== undefined) {
+            checkElement(selectors.releaseBudgetCashierSelector, releaseBudgetCashier);
+        };
 
-    // forma de envio
-    if (shippingMethod !== undefined) {
-        selectIfExists(shippingMethodElement, shippingMethod);
-    };
+        if (cashierObservation !== undefined) {
+            typeIfExists(selectors.cashierObservationSelector, cashierObservation);
+        };
 
-    // Prometido para
-    if (promisedTo) {
-        cy.getElementAndClick(promisedToElement);
-        cy.wait(500);
-        cy.getElementAndClick(promisedToElement);
-    };
+        if (detailedSale !== undefined) {
+            checkElement(selectors.detailedSaleSelector, detailedSale);
+        };
 
-    // Aroma do sache
-    if (aromaSachet) {
-        cy.getSelectOptionByValue([{ element: aromaSachetElement, value: aromaSachet }]);
-    };
+        if (paymentStatus !== undefined) {
+            cy.getElementAndCheck([{ element: paymentStatus }]);
+        };
 
-    // Aroma da cápsula
-    if (capsuleAroma) {
-        cy.getSelectOptionByValue([{ element: capsuleAromaElement, value: capsuleAroma }]);
-    };
+        if (address !== undefined) {
+            cy.get(selectors.addressSelector, { timeout: 10000 })
+                .then(($addressElement) => {
+                    if ($addressElement.length > 0) {
+                        cy.getElementAndClick(selectors.addressSelector);
+                    } else {
+                        throw new Error('Não há endereço disponível para confirmação do orçamento.');
+                    }
+                });
+        }
 
-    // Observações gerais
-    if (generalObservation !== undefined) {
-        typeIfExists(generalObservationElement, generalObservation);
-    };
+        if (expeditionObservation !== undefined) {
+            typeIfExists(selectors.expeditionObservationSelector, expeditionObservation);
+        };
 
-    // Marcar se o orçamento possui receita, não possui receita ou é uma repetição
-    if (budgetHasRecipe !== undefined) {
-        cy.getElementAndCheck([{ element: budgetHasRecipeElement, value: budgetHasRecipe }]);
-    };
+        if (shippingMethod !== undefined) {
+            selectIfExists(selectors.shippingMethodSelector, shippingMethod);
+        };
 
-    // Marcar orçamento urgente
-    if (urgentBudget !== undefined) {
-        checkElement(urgentBudgetElement, urgentBudget);
-    };
+        if (promisedTo) {
+            cy.getElementAndClick(selectors.promisedToSelector);
+            cy.wait(500);
+            cy.getElementAndClick(selectors.promisedToSelector);
+        }
 
-    // Desmarcar checkbox envio mensagem automática
-    if (automaticMessageTriggering !== undefined) {
-        cy.get(sendAutomaticBudgetConfirmationMessageElement)
-            .uncheck();
-    };
+        if (aromaSachet) {
+            cy.getSelectOptionByValue([{ element: selectors.aromaSachetSelector, value: aromaSachet }]);
+        };
 
-    // Confirmar orçamento
+        if (capsuleAroma) {
+            cy.getSelectOptionByValue([{ element: selectors.capsuleAromaSelector, value: capsuleAroma }]);
+        };
+
+        if (generalObservation !== undefined) {
+            typeIfExists(selectors.generalObservationSelector, generalObservation);
+        };
+
+        if (budgetHasRecipe !== undefined) {
+            cy.getElementAndCheck([{ element: budgetHasRecipeElement, value: budgetHasRecipe }]);
+        };
+
+        if (urgentBudget !== undefined) {
+            checkElement(selectors.urgentBudgetSelector, urgentBudget);
+        };
+
+        if (automaticMessageTriggering !== undefined) {
+            cy.get(sendAutomaticBudgetConfirmationMessageElement)
+                .uncheck();
+        };
+    }
+
+    performCommonActions();
+
     cy.getElementAndClick(PreViewBudget, closePreViewBudget, sendconfirmBudget);
 
     return cy.wrap({ success: 'Orçamento confirmado com sucesso!' });

@@ -60,7 +60,7 @@ interface Elements<S = string> {
         recipeSearch: S;
         patientSearch: S;
         prescriberSearch: S;
-        budgetSearch: S;
+        searchBudgetScreenRecipesElement: S;
         lastModifierSearch: S;
         budgetistSearch: S;
         attendantResponsibleSearch: S;
@@ -269,10 +269,8 @@ interface Elements<S = string> {
 export const elements: Elements = {
 
     Shared: {
-        // autocompletes
         suggestionAutocomplete: '.autocomplete-suggestion',
         suggestionsAutocompleteElement: '.autocomplete-suggestions',
-        //modal
         containerMessage: '.bootbox-body',
         okModalMessage: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
         modalMessage: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div',
@@ -284,7 +282,6 @@ export const elements: Elements = {
     },
 
     Login: {
-        //LOGIN
         user: ':nth-child(1) > .form-control',
         password: ':nth-child(2) > .form-control',
         acess: '.btn-primary',
@@ -295,18 +292,12 @@ export const elements: Elements = {
 
     Recipes: {
         menuRecipesElement: '#side-menu > li:nth-child(6) > a',
-        //IMPORTAR RECEITAS
-        // subMenuImportacaoReceita
         menuImportRecipesElement: '.active > .nav > :nth-child(2) > a',
-        // subMenuGerenciarReceita
         menuManageRecipes: '#side-menu > li.active > ul > li.active > a',
-        // acessarTelaRegistroReceita
         openModalRegisterRecipes: '#receita_register',
-        // inserirImagem
         importPDFRecipes: '#btnImportPdfRec',
         importImageRecipes: '.tui-image-editor-header-buttons > div > .tui-image-editor-load-btn',
         removeImageRecipes: '.btn btn-danger btn-del-img m-sm',
-        // informacoes da receita
         prescriberRecipes: '#modalMedicoRec',
         modalSuggestionRelationshipPrescriber: '.bootbox .modal-dialog .modal-content .modal-footer .btn-primary',
         parameterSearchPatient: '#t2_154c',
@@ -326,13 +317,10 @@ export const elements: Elements = {
         clientAlertRecipeElement: '#clienteAlerta',
         retailRecipeElement: '#checkboxVarejo',
 
-        // mensagem informando que já existe recipe com mesmo patient e prescriber
-        // salvar receita
         saveRecipes: '#save_receita',
         closeRegisterRecipes: '#modal-receitas > div.modal-dialog > div > div.modal-footer > button.btn.btn-white',
         editRecipe: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .edit-recipe',
 
-        // buscar receitas importadas
         recipeSearchModal: '#centerHeadFilter',
         filterDateStartSearchRecipes: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
         filterEndDateSearchRecipes: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
@@ -341,7 +329,7 @@ export const elements: Elements = {
         recipeSearch: '#filterReceitas > div:nth-child(2) > div:nth-child(1) > div > input',
         patientSearch: '#pacienteRec',
         prescriberSearch: '#medicoRec',
-        budgetSearch: '#orcamentoRec',
+        searchBudgetScreenRecipesElement: '#orcamentoRec',
         lastModifierSearch: '#modifyRec',
         budgetistSearch: '#orcamentistaRec',
         attendantResponsibleSearch: '#atendenteResponRec',
@@ -353,7 +341,6 @@ export const elements: Elements = {
         labelSearchRecipes: '[button type="submit"]&& Procurar',
         numberRecipe: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
         dateReceiptGrid: '#mainTableReceitas > thead > tr > th.sorting.sorting_asc',
-        //marcar uso
         checkboxMarkUse: '#mainTableReceitas > tbody > tr > td.usedTrativa',
         containerInsertUser: '#select2-farma-to-auth-container',
         select: '.select2-dropdown > .select2-search > .select2-search__field',
@@ -414,7 +401,6 @@ export const elements: Elements = {
         buttonUnlinkRecipeScreenServiceProgress: '.r-vinc-rec',
         fieldLinkRecipeElement: '#receitaCod',
         relateRecipeBudget: '#modal-recipe-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo',
-        // budget em andamento em atendimento, elemento foi alterado, lista de orçamentos em andamento movido para Recipes -> Importar Atendimentos
         containerBudgets: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div > table > tbody > tr',
         budgetInProgressElement: '#side-menu > li.active > ul > li:nth-child(1) > a',
         buttonView: ':nth-child(2) > :nth-child(6) > a.visualizarFvc',
@@ -422,7 +408,6 @@ export const elements: Elements = {
         searchBranch: '#search-form > div:nth-child(1) > input:nth-child(2)',
         sendSearch: '#search-form > div.checkbox.m-l.m-r-xs > [type="submit"][value="buscar"]',
         showAll: '#search-form > div.form-group:nth-child(2) > label input[type="radio"][value="1"]',
-        // integracaoChatguru
         brazilian: '#isBr',
         stranger: '#isNotBr',
         useFcertaOriginatingTelephoneNumber: '#use_this',
@@ -432,7 +417,6 @@ export const elements: Elements = {
         cancelChatguruIntegration: '.btn btn-white',
         saveNumberChatguru: '#saveChatGuruNumber',
         budgetist: '#budgetist',
-        // insertTimeTreatment
         treatmentTimeModalHeader: '#customTimeModal > div.modal-dialog > div > div.modal-header',
         insertTreatmentTime: '#customTime',
         standardTreatmentTime: '#customFormByTime > div.closestContainer > div > div:nth-child(1) > input',
@@ -440,13 +424,11 @@ export const elements: Elements = {
         reimportFormulas: '#reimporter',
         saveTimeTreatment: '#saveByCustomTimeFormula',
         budgetMessageModalElement: '#toast-container > div > div.toast-message',
-        // confirmBudget primeira etapa
         modalConfirmationBudgetElement: '#bt-confirma-modal',
         paymentMethodElement: '#confirmar-modal-body select[name="id_registro"]',
         chosenBudgetForConfirmation: '#confirmar-modal-body > div.form-group > div.col-sm-7 > label > .small-right-space',
         insertRepeatTime: ':nth-child(4) > .col-sm-7 > .form-control',
         monitoringService: '#confirmar-modal-body > div:nth-child(5) > div > input[type=checkbox]',
-        // confirmBudget segunda etapa
         channelConfirmationBudget: '#confirmar-modal-body > div > div:nth-child(1) > div > select',
         sendEmailTracking: ':nth-child(2) > .col-sm-7 > .small-right-space',
         releaseBudgetForInclusionElement: ':nth-child(3) > .col-sm-7 > .small-right-space',
@@ -474,25 +456,21 @@ export const elements: Elements = {
         closePreViewBudget: '#modal-preview-lg-content > div.modal-footer > button',
         sendconfirmBudget: '#submit',
         generateLinkPayment: '#bt-pagamento-modal',
-        //budget encerrado
         showBudgetsClosed: '#search-form > div.checkbox.m-l.m-r-xs > input[type=checkbox]:nth-child(1)',
         reopenBudget: '#reabrir',
         confirmReopenBudget: 'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-footer > button.btn.btn-danger.pull-right',
-        //importar orcamento manualmente
         userOptions: '#username-link',
         openModalImportBudget: '#page-wrapper > div.row.bbudget-bottom > nav > ul > li:nth-child(1) > div > ul > li:nth-child(3) > a',
         importBudget: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(1) > div > input',
         importBranch: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(3) > div > input',
         importHowNewService: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div:nth-child(5) > div > span > input',
         syncBudget: '#page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.ibox-content > div > form > div.row > div:nth-child(2) > div > button',
-        //quadro de informacoes da amarelinha confirmada
         hopscotchConfirmedInformationBoard: '.infosInclusao',
         budgetHopscotchInformationBoardConfirmed: '#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(1)',
         budgetistFrameInformationAmarelinhaConfirmed: '#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(2)',
         inclusionFrameInformationAmarelinhaConfirmed: '#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(3)',
         attendantHopscotchInformationBoardConfirmed: '#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao > span:nth-child(4)',
         textFrameInformationHopscotchConfirmed: '#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao',
-        //Usuarios do atendimento
         budgetBudgetist: '#budgetist',
         BudgetAttendant: '#attendant',
         homeMenuElement: '#side-menu > :nth-child(5) > a',
@@ -529,15 +507,13 @@ export const elements: Elements = {
         confirmInsertionCustomerTelephoneContactElement: 'div.bootbox.modal.fade.bootbox-alert.in',
         serviceBudgeterElement: '#orcamentista',
         customerServiceAttendantElement: '#atendente',
-
+        
 
     },
 
     Settings: {
         settingsMenu: ':nth-child(19) > [href="javascript:void(0);"]',
-        //Clusters(grupos)
         subMenuClustersGroups: '#side-menu > li.active > ul > li:nth-child(6) > a',
-        //Relações
         relations: '#side-menu > li.active > ul > li.active > ul > li:nth-child(2) > a',
         containerFilters: ':nth-child(5) > .ibox > .ibox-title',
         containerProfile: 'select[name="profile"]',

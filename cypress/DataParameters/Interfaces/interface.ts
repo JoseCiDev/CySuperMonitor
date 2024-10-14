@@ -23,6 +23,7 @@ import {
     TechnicalDoubtStatus,
     ElementTypeAndValueOpcional,
     ElementControl,
+    TypePaymentCourtesyInjectables,
 } from '../../import';
 
 
@@ -128,6 +129,7 @@ export interface DataParameters<S = string> {
     Budget: {
         orcamentoNumberForSearch: S | number;
         filialNumberForSearch: S | number;
+        typePaymentCourtesyInjectables: TypePaymentCourtesyInjectables;
         budgetist: S;
         budgetAttendant: S;
         recipeNumber: S | number;
@@ -169,7 +171,6 @@ export interface DataParameters<S = string> {
     recipeImportCluster: typeof RecipeImportCluster;
     relationshipsPrescriberAttendantAndCluster: typeof RelationshipsPrescriberAttendantAndCluster;
     pendency: typeof Pendency;
-    // OpcaoParametroBuscaPaciente: typeof OpcaoParametroBuscaPaciente;
     technicalDoubtCategory: typeof TechnicalDoubtCategory;
     technicalDoubtStatus: typeof TechnicalDoubtStatus;
     profile: typeof Profile;

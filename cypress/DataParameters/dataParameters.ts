@@ -22,9 +22,10 @@ import {
     TechnicalDoubtStatus,
     fakerBr,
     ChosenBudget,
+    TypePaymentCourtesyInjectables,
 
 } from '../import';
-import { budgetHasRecipeElement } from '../support/commands/commandsLogin';
+
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
@@ -114,20 +115,21 @@ export const dataParameters: DataParameters = {
     },
 
     Budget: {
-        orcamentoNumberForSearch:[faker.helpers.arrayElement([''])].toString(),
-        filialNumberForSearch:[faker.helpers.arrayElement([''])].toString(),
+        orcamentoNumberForSearch: [faker.helpers.arrayElement(['137771'])].toString(),
+        filialNumberForSearch: [faker.helpers.arrayElement(['5'])].toString(),
+        typePaymentCourtesyInjectables: TypePaymentCourtesyInjectables.CourtesyComplaintHandling,
         budgetist: 'orcam',
         budgetAttendant: 'adm',
-        recipeNumber:'425558',
-        customerContactPhoneNumber:5548991888641,
+        recipeNumber: '425558',
+        customerContactPhoneNumber: 5548991888641,
         paymentMethod: PaymentMethod.CreditCards,
         chosenBudget: ChosenBudget.chosenBudget,
         timeTreatment: 30,
         timeRepetition: 0,
         budgetClosingChannel: BudgetClosingChannel.Whatsapp,
-        sendTrackingEmail: true,
-        releaseBudgetForInclusion: true,
-        releaseBudgetCashier: true,
+        sendTrackingEmail: false,
+        releaseBudgetForInclusion: false,
+        releaseBudgetCashier: false,
         cashierObservation: faker.lorem.paragraph(),
         detailedSale: true,
         paymentStatus: PaymentStatus.NotPayed,

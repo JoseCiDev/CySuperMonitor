@@ -27,8 +27,7 @@ const dataEnvironment = Cypress.env(environment);
 describe('Tela importação de receitas.', function () {
 
     beforeEach(function () {
-        // Você pode adicionar algo aqui se necessário
-    });
+            });
 
     it('Deve realizar importação de Receitas e pagamento para registros pendentes', function () {
 
@@ -60,8 +59,7 @@ describe('Tela importação de receitas.', function () {
             let encontrouDataForaIntervalo = false;
 
             cy.get('tbody tr').filter(':has(td)').each(($row, index) => {
-                if (encontrouDataForaIntervalo) return false; // Para a busca de mais datas se encontrou uma fora do intervalo
-
+                if (encontrouDataForaIntervalo) return false; 
                 cy.wrap($row)
                     .find('td:nth-child(2)')
                     .should('exist')
@@ -72,16 +70,13 @@ describe('Tela importação de receitas.', function () {
                                 if (verificarAtendimentoRecente(dataAtendimento.trim())) {
                                     cy.log(`Atendimento dentro de 5 dias: ${dataAtendimento}`);
                                     clicarParaAtualizarStatus($row);
-                                    atendimentosAtualizados.push($row); // Adicionar à lista de atualizados
-                                } else {
-                                    encontrouDataForaIntervalo = true; // Encontrou uma data fora do intervalo de 5 dias
-                                }
+                                    atendimentosAtualizados.push($row);                                 } else {
+                                    encontrouDataForaIntervalo = true;                                 }
                             });
                     });
             }).then(() => {
                 if (atendimentosAtualizados.length > 0) {
-                    // Chamar diretamente o loop de verificação
-                    verificarStatusPagamentos(atendimentosAtualizados);
+                                        verificarStatusPagamentos(atendimentosAtualizados);
                 } else {
                     cy.log('Nenhum atendimento dentro dos últimos 5 dias para atualização.');
                 }
@@ -90,12 +85,10 @@ describe('Tela importação de receitas.', function () {
 
         const verificarStatusPagamentos = (atendimentosAtualizados: JQuery<HTMLElement>[]) => {
             let todosPagos = true;
-            let encontrouNaoPago = false; // Para controlar quando encontrar o primeiro "não pago"
-
+            let encontrouNaoPago = false; 
             Cypress._.each(atendimentosAtualizados, ($row) => {
                 if (encontrouNaoPago) {
-                    return false; // Interrompe o loop após encontrar o primeiro "não pago"
-                }
+                    return false;                 }
 
                 cy.wrap($row)
                     .find('.td-pagamentos')
@@ -111,8 +104,7 @@ describe('Tela importação de receitas.', function () {
                     });
             });
 
-            // Depois que o loop terminar, verifique se todos estão pagos
-            if (todosPagos) {
+                        if (todosPagos) {
                 cy.log('Todos os atendimentos atualizados estão pagos.');
             }
         };
@@ -169,8 +161,7 @@ describe('Tela importação de receitas.', function () {
             verificarPagamentosPendentes();
         };
 
-        // Iniciar o fluxo com login e verificar os pagamentos pendentes
-        fazerLogin();
+                fazerLogin();
         verificarPagamentosPendentes();
     });
 });

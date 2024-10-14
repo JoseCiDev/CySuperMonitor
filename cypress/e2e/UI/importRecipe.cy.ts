@@ -60,7 +60,7 @@ export const {
     recipeSearch,
     patientSearch,
     prescriberSearch,
-    budgetSearch,
+    searchBudgetScreenRecipesElement,
     lastModifierSearch,
     budgetistSearch,
     attendantResponsibleSearch,

@@ -67,7 +67,7 @@ export const {
   recipeSearch,
   patientSearch,
   prescriberSearch,
-  budgetSearch,
+  searchBudgetScreenRecipesElement,
   lastModifierSearch,
   budgetistSearch,
   attendantResponsibleSearch,
@@ -215,8 +215,7 @@ export const {
 
 Cypress.Commands.add('insertFile', (element, filePath): void => {
   cy.fixture(filePath, 'base64').then((fileContent) => {
-    const fileName = filePath.split('/').pop(); // Extract the file name from the fixture path
-    const mimeType = 'image/jpeg';
+    const fileName = filePath.split('/').pop();     const mimeType = 'image/jpeg';
 
     const blob = Cypress.Blob.base64StringToBlob(fileContent, mimeType);
     const file = new File([blob], fileName, { type: mimeType });

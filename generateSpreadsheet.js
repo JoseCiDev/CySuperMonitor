@@ -1,6 +1,6 @@
 const xlsx = require('xlsx');
 
-// Dados fornecidos
+
 const data = [
   { "nome": "ANA VALERIA ", "nrcrm": 90463, "ufcrm": "SP", "pfcrm": "1", "email": "anaramirez@terra.com.br" },
   { "nome": "ANNA VIRGINIA PALMELA PINTO", "nrcrm": 927520, "ufcrm": "RJ", "pfcrm": "1", "email": "draannavirginia@gmail.com" },
@@ -32,14 +32,11 @@ const data = [
   { "nome": "WEBERT TEOTONIO DA SILVA", "nrcrm": 6902, "ufcrm": "RN", "pfcrm": "1", "email": "Theo@theowebert.com.br" }
 ];
 
-// Criar uma nova planilha
 const worksheet = xlsx.utils.json_to_sheet(data);
 
-// Criar um novo workbook e adicionar a planilha
 const workbook = xlsx.utils.book_new();
 xlsx.utils.book_append_sheet(workbook, worksheet, 'Médicos');
 
-// Escrever o arquivo xlsx
 xlsx.writeFile(workbook, 'medicos.xlsx');
 
 console.log('Planilha gerada com sucesso!');

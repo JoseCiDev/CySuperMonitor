@@ -64,6 +64,7 @@ export { CapsuleAroma } from './DataParameters/Enums/capsuleAroma';
 export { BudgetHasRecipe } from './DataParameters/Enums/budgetHasRecipe';
 export { PriorityRecipe } from './DataParameters/Enums/priorityRecipe';
 export { ChosenBudget } from './DataParameters/Enums/chosenBudget';
+export { TypePaymentCourtesyInjectables } from './DataParameters/Enums/typePaymentCourtesyInjectables';
 
 export {
     dataParameters,

@@ -65,7 +65,7 @@ export const {
     recipeSearch,
     patientSearch,
     prescriberSearch,
-    budgetSearch,
+    searchBudgetScreenRecipesElement,
     lastModifierSearch,
     budgetistSearch,
     attendantResponsibleSearch,
@@ -239,7 +239,6 @@ export const {
 
 
 Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
-    // Função auxiliar para capturar o número da receita
     const extractRecipeNumber = ($element: JQuery<HTMLElement>): number => {
         const text = $element.text().trim();
         const numeroReceitaMatch = text.match(/\d+/);
@@ -265,13 +264,11 @@ Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
         .then(($element) => {
             const numberRecipe = extractRecipeNumber($element);
 
-            // Armazena os números da receita em dataParameters
             dataParameters.Recipe.import.numberRecipe = numberRecipe;
             dataParameters.Recipe.search.numberRecipe = numberRecipe;
 
             cy.log(`Número da receita capturado: ${numberRecipe}`);
 
-            // Retorna o número da receita de forma assíncrona
             return cy.wrap(numberRecipe);
         });
 });
@@ -356,7 +353,7 @@ Cypress.Commands.add('searchRecipe', (
     }
 
     if (params.budget) {
-        cy.getElementAndType({ [budgetSearch]: params.budget.toString() })
+        cy.getElementAndType({ [searchBudgetScreenRecipesElement]: params.budget.toString() })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');

@@ -59,7 +59,7 @@ export const {
     recipeSearch,
     patientSearch,
     prescriberSearch,
-    budgetSearch,
+    searchBudgetScreenRecipesElement,
     lastModifierSearch,
     budgetistSearch,
     attendantResponsibleSearch,
@@ -150,7 +150,7 @@ describe('Tela Atendimentos.', function () {
         });
         
         cy.getElementAndClick(menuServices, servicesInProgress);
-
+        
         cy.viewBudget();
 
         cy.fillOrcamentistaAndAtendente();
@@ -159,8 +159,7 @@ describe('Tela Atendimentos.', function () {
 
         cy.insertTimeTreatment();
 
-        // cy.linkBudgetRecipe(buttonLinkRecipeScreenServiceProgressElement);
-
+        
         cy.confirmBudget();
     });
 });
