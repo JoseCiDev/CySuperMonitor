@@ -7,12 +7,14 @@ import {
     dataParameters,
     SearchRecipe,
     mount,
-    RecipeImport,
+    ImportRecipe,
     CheckAndThrowError,
-    PriorityRecipe,
+    RecipePendingFilter,
     Messages,
     ValidationResult,
     validationMessages,
+    RecipeCluster,
+    RecipeReceiptChannel,
 } from '../../import';
 
 
@@ -252,11 +254,8 @@ Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
 
     cy.getElementAndClick(':nth-child(5) > .col > .btn');
     cy.wait(1000);
-
     cy.getElementAndClick(accessServiceMenuThroughPrescriptionImportScreenElement)
-
     cy.wait(500);
-
     cy.getElementAndClick(accessServiceMenuThroughPrescriptionImportScreenElement)
 
     return cy.get(RecipeNumberElement, { timeout: 20000 })
@@ -274,116 +273,114 @@ Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
 });
 
 
-Cypress.Commands.add('searchRecipe', (
-    params?: {
-        initialDate?: string,
-        finalDate?: string,
-        pendency?: string,
-        cluster?: string,
-        channelReceipt?: string,
-        recipe?: number,
-        patient?: string,
-        prescriber?: string,
-        budget?: number,
-        lastModifier?: string,
-        budgetist?: string,
-        attendantResponsibleRecipes?: string
-    }): void => {
+Cypress.Commands.add('searchRecipe', (options: {
+    initialDate?: string,
+    finalDate?: string,
+    cluster?: RecipeCluster,
+    channelReceipt?: RecipeReceiptChannel,
+    numberRecipe?: number,
+    patient?: string,
+    prescriber?: string,
+    budget?: number,
+    lastModifier?: string,
+    budgetist?: string,
+    attendantResponsibleRecipes?: string,
+    pendency?: string,
+} = {}): ValidationResult => {
 
-    cy.captureRecipeNumber(numberRecipe);
+    const {
+        initialDate = dataParameters.Recipe.search.initialDate,
+        finalDate = dataParameters.Recipe.search.finalDate,
+        cluster = dataParameters.Recipe.search.cluster,
+        channelReceipt = dataParameters.Recipe.search.channelReceipt,
+        numberRecipe = dataParameters.Recipe.search.numberRecipe,
+        patient = dataParameters.Recipe.search.patient,
+        prescriber = dataParameters.Recipe.search.prescriber,
+        budget = dataParameters.Recipe.search.budget,
+        lastModifier = dataParameters.Recipe.search.lastModifier,
+        budgetist = dataParameters.Recipe.search.budgetist,
+        attendantResponsibleRecipes = dataParameters.Recipe.search.attendantResponsibleRecipes,
+        pendency = dataParameters.Recipe.search.pendency,
+    } = options;
 
-    const searchRecipeWithParameters = (params?: {
-        initialDate?: string,
-        finalDate?: string,
-        pendency?: string,
-        cluster?: string,
-        channelReceipt?: string,
-        recipe?: number,
-        patient?: string,
-        prescriber?: string,
-        budget?: number,
-        lastModifier?: string,
-        budgetist?: string,
-        attendantResponsibleRecipes?: string
-    }) => {
-        cy.getElementAndClick(buttonSearchRecipes);
+    cy.get(recipeSearchModal, { timeout: 20000 }).as('recipeSearchModal');
+    cy.getElementAndClick('@recipeSearchModal');
 
-        cy.captureRecipeNumber(numberRecipe);
-    };
+    if (initialDate) {
+        cy.getElementAndType({ [filterDateStartSearchRecipes]: initialDate });
+    }
 
-    cy.get(recipeSearchModal, { timeout: 20000 })
-        .as('recipeSearchModal')
-    cy.getElementAndClick('@recipeSearchModal')
-    cy.getElementAndType({ [filterDateStartSearchRecipes]: params.initialDate });
-    cy.getElementAndType({ [filterEndDateSearchRecipes]: params.finalDate });
+    if (finalDate) {
+        cy.getElementAndType({ [filterEndDateSearchRecipes]: finalDate });
+    }
 
-    if (params.cluster) {
+    if (cluster) {
         cy.get(clusterSearch)
-            .type(params.cluster)
+            .type(cluster)
             .type('{downarrow}')
             .type('{enter}');
     }
 
-    if (params.pendency) {
-        cy.getSelectOptionByValue([{ element: filterPendenciasSearch, value: params.pendency }]);
+    if (pendency) {
+        cy.getSelectOptionByValue([{ element: filterPendenciasSearch, value: pendency }]);
     }
 
-
-    if (params.channelReceipt) {
-        cy.getSelectOptionByValue([{ element: channelReceiptSearch, value: params.channelReceipt }]);
+    if (channelReceipt) {
+        cy.getSelectOptionByValue([{ element: channelReceiptSearch, value: channelReceipt }]);
     }
 
-    if (params.recipe) {
-        cy.getElementAndType({ [recipeSearch]: params.recipe });
+    if (numberRecipe) {
+        cy.getElementAndType({ [recipeSearch]: numberRecipe });
     }
 
-    if (params.patient) {
+    if (patient) {
         cy.get(patientSearch, { timeout: 20000 })
-            .type(params.patient, { timeout: 20000 })
+            .type(patient)
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
-    if (params.prescriber) {
-        cy.getElementAndType({ [prescriberSearch]: params.prescriber })
+    if (prescriber) {
+        cy.getElementAndType({ [prescriberSearch]: prescriber })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
-    if (params.budget) {
-        cy.getElementAndType({ [searchBudgetScreenRecipesElement]: params.budget })
-            .wait(3000)
+    if (budget) {
+        cy.getElementAutocompleteTypeAndClick(
+            { [searchBudgetScreenRecipesElement]: String(budget) },
+            '[data-index="0"]'
+        );
+    }
+
+    if (lastModifier) {
+        cy.getElementAndType({ [lastModifierSearch]: lastModifier })
             .type('{downarrow}')
             .type('{enter}');
     }
 
-    if (params.lastModifier) {
-        cy.getElementAndType({ [lastModifierSearch]: params.lastModifier })
+    if (budgetist) {
+        cy.getElementAndType({ [budgetistSearch]: budgetist })
             .type('{downarrow}')
             .type('{enter}');
     }
 
-    if (params.budgetist) {
-        cy.getElementAndType({ [budgetistSearch]: params.budgetist})
-            .type('{downarrow}')
-            .type('{enter}');
-    }
-
-    if (params.attendantResponsibleRecipes) {
-        cy.getElementAndType({ [attendantResponsibleSearch]: params.attendantResponsibleRecipes})
+    if (attendantResponsibleRecipes) {
+        cy.getElementAndType({ [attendantResponsibleSearch]: attendantResponsibleRecipes })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
     cy.getElementAndClick(buttonSearchRecipes);
+    // cy.pause();
+    // cy.captureRecipeNumber(String(numberRecipe));
 
-    cy.captureRecipeNumber(numberRecipe);
-
-    searchRecipeWithParameters(params)
+    return cy.wrap({ success: `Busca de receita realizada com sucesso.` });
 });
+
 
 Cypress.Commands.add('viewRecipe', (openModalviewRecipe: string,): void => {
     cy.getElementAndClick(
@@ -398,8 +395,14 @@ Cypress.Commands.add('viewRecipe', (openModalviewRecipe: string,): void => {
     )
 });
 
-Cypress.Commands.add('cloneRecipe', (cloneRecipe: string): void => {
-    cy.getElementAndClick(cloneRecipe)
+Cypress.Commands.add('cloneRecipe', (cloneRecipeElement: string, options: {
+    cloneRecipeWithPharmaceuticalObservation?: boolean,
+} = {}): ValidationResult => {
+    const {
+        cloneRecipeWithPharmaceuticalObservation = dataParameters.Recipe.clone.cloneRecipeWithPharmaceuticalObservation,
+    } = options;
+
+    cy.getElementAndClick(cloneRecipeElement)
     cy.wait(1000);
     cy.then(() => {
         cy.get(modalObservationsClone, { timeout: 20000 })
@@ -409,10 +412,10 @@ Cypress.Commands.add('cloneRecipe', (cloneRecipe: string): void => {
                     cy.getElementAndClick(btnModalMessage);
                 }
                 else {
-                    if (dataParameters.Recipe.search.clonePharmaceuticalObservation) {
+                    if (cloneRecipeWithPharmaceuticalObservation) {
                         cy.getElementAndClick(btnModalMessage);
                     }
-                    if (!dataParameters.Recipe.search.clonePharmaceuticalObservation) {
+                    if (!cloneRecipeWithPharmaceuticalObservation) {
                         cy.get(clonePharmaceuticalNotes, { timeout: 20000 })
                             .uncheck();
                         cy.getElementAndClick(btnModalMessage);
@@ -421,7 +424,9 @@ Cypress.Commands.add('cloneRecipe', (cloneRecipe: string): void => {
                 cy.getElementAndClick(btnModalMessage);
             });
     });
+    return cy.wrap({ success: `Receita clonada com sucesso.` });
 });
+
 
 
 
@@ -476,55 +481,55 @@ Cypress.Commands.add('updateModalTechnicalQuestion', (update: string): void => {
 });
 
 
-Cypress.Commands.add('changeResponsibleDoubtTechinical', (accessingDoubtsTechnical: string, responsibleResponseDoubtTechnical: string): void => {
-    cy.getElementAndClick(accessingDoubtsTechnical);
+// Cypress.Commands.add('changeResponsibleDoubtTechinical', (accessingDoubtsTechnical: string, responsibleResponseDoubtTechnical: string): void => {
+//     cy.getElementAndClick(accessingDoubtsTechnical);
 
-    let allSolved = true;
+//     let allSolved = true;
 
-    cy.get('#chatDuvTec .groupContainer')
-        .each(($doubt) => {
-            const resolved = $doubt.find('i.fa.fa-check').length > 0;
+//     cy.get('#chatDuvTec .groupContainer')
+//         .each(($doubt) => {
+//             const resolved = $doubt.find('i.fa.fa-check').length > 0;
 
-            if (!resolved) {
-                allSolved = false;
-                return false;
-            }
-        });
+//             if (!resolved) {
+//                 allSolved = false;
+//                 return false;
+//             }
+//         });
 
-    if (allSolved) {
-        cy.log('Excelente! Todas as questões técnicas foram solucionadas. Não há necessidade de alterar o responsável pela resposta.');
-        return;
-    }
+//     if (allSolved) {
+//         cy.log('Excelente! Todas as questões técnicas foram solucionadas. Não há necessidade de alterar o responsável pela resposta.');
+//         return;
+//     }
 
-    let name;
-    cy.get(responsibleCurrentResponseQuestionsTechnical, { timeout: 20000 })
-        .should('exist')
-        .invoke('attr', 'title')
-        .then((title) => {
-            const matches = title.match(/\d+ - (.+?) \(.+?\)/);
+//     let name;
+//     cy.get(responsibleCurrentResponseQuestionsTechnical, { timeout: 20000 })
+//         .should('exist')
+//         .invoke('attr', 'title')
+//         .then((title) => {
+//             const matches = title.match(/\d+ - (.+?) \(.+?\)/);
 
-            if (matches && matches.length > 1) {
-                name = matches[1];
-                cy.log(name);
-                if (name !== dataParameters.Recipe.search.responsibleCurrentAnswerTechnicalQuestion) {
-                    dataParameters.Recipe.search.responsibleCurrentAnswerTechnicalQuestion = name;
-                } else {
-                    cy.log('O novo responsável é o mesmo que o atual');
-                }
-            } else {
-                cy.log('Nome não encontrado');
-            }
-        });
+//             if (matches && matches.length > 1) {
+//                 name = matches[1];
+//                 cy.log(name);
+//                 if (name !== dataParameters.Recipe.responsibleCurrentAnswerTechnicalQuestion) {
+//                     dataParameters.Recipe.search.responsibleCurrentAnswerTechnicalQuestion = name;
+//                 } else {
+//                     cy.log('O novo responsável é o mesmo que o atual');
+//                 }
+//             } else {
+//                 cy.log('Nome não encontrado');
+//             }
+//         });
 
-    if (responsibleResponseDoubtTechnical === dataParameters.Recipe.search.responsibleCurrentAnswerTechnicalQuestion) {
-        cy.log('O novo responsável é o mesmo que o atual');
+//     if (responsibleResponseDoubtTechnical === dataParameters.Recipe.search.responsibleCurrentAnswerTechnicalQuestion) {
+//         cy.log('O novo responsável é o mesmo que o atual');
 
-    }
-    cy.getElementAndClick(containerResponsibleResponseQuestionsTechnical)
-    cy.get(responsibleAnswers, { timeout: 20000 })
-        .type(`${responsibleResponseDoubtTechnical}{enter}`);
-    cy.getElementAndClick(modalMessage, closeModalDoubtsTechnical);
-});
+//     }
+//     cy.getElementAndClick(containerResponsibleResponseQuestionsTechnical)
+//     cy.get(responsibleAnswers, { timeout: 20000 })
+//         .type(`${responsibleResponseDoubtTechnical}{enter}`);
+//     cy.getElementAndClick(modalMessage, closeModalDoubtsTechnical);
+// });
 
 
 

@@ -10,30 +10,29 @@ import {
     BudgetConfirmationPatientSearchParameter,
     BudgetConfirmationPaymentMethod,
     BudgetConfirmationPaymentStatus,
-    Pendency,
-    PendingsFilter,
+    RecipePendingFilter,
     Profile,
-    RecipeImportCluster,
+    RecipeCluster,
     RecipeReceiptChannel,
     RecipeType,
     RelationshipsPrescriberAttendantAndCluster,
     SearchBudget,
     BudgetConfirmationShippingMethod,
     TechnicalDoubtCategory,
-    TechnicalDoubtStatus,
+    TechnicalDoubtResponseStatus,
     ElementTypeAndValueOpcional,
     ElementControl,
     BudgetConfirmationTypePaymentCourtesyInjectables,
     PayBudgetSelectAroma,
+    BudgetInstallments,
+    PayBudgetPaymentMethod,
+    PayBudgetCreditCardExpirationMonth,
+    PayBudgetCreditCardExpirationYear,
+    PayBudgetState,
 } from '../../import';
-import { BudgetInstallments } from '../Enums/budgetInstallments';
-import { PayBudgetPaymentMethod } from '../Enums/payBudgetPaymentMethod';
-import { PayBudgetCreditCardExpirationMonth } from '../Enums/payBudgetCreditCardExpirationMonth';
-import { PayBudgetCreditCardExpirationYear } from '../Enums/payBudgetCreditCardExpirationYear';
-import { PayBudgetState } from '../Enums/payBudgetState';
 
 
-export interface RecipeImport<S = string> {
+export interface ImportRecipe<S = string> {
     numberRecipe: S | number;
     file: S;
     prescriber: S;
@@ -42,7 +41,7 @@ export interface RecipeImport<S = string> {
     patient: S;
     channelReceiptRecipe: RecipeReceiptChannel;
     attendantResponsibleRecipes?: boolean | S;
-    cluster?: boolean | RecipeImportCluster | S;
+    cluster?: boolean | RecipeCluster | S;
     receivingDate: S;
     recipeType: RecipeType;
     textNoteRecipe: S;
@@ -50,25 +49,54 @@ export interface RecipeImport<S = string> {
     clientAlert: boolean;
     controlledMedication: boolean;
     customerPhone: number;
-}
+};
 
 export interface SearchRecipe<S = string> {
-    numberRecipe: S | number;
-    cluster: any;
-    clonePharmaceuticalObservation: boolean;
-    passwordPharmaceuticalObservation: S;
-    textPharmaceuticalObservation: S;
-    textTechnicalQuestion: S;
-    markUserUsage: S;
-    responsibleCurrentAnswerTechnicalQuestion: S;
-    textResponseDoubtTechnical: S;
-    valueJuntocom: S;
     initialDate: S;
     finalDate: S;
-    internalObservation: S;
-    receivingDate: S;
+    cluster: any;
+    channelReceipt: RecipeReceiptChannel;
+    numberRecipe: number | undefined;
+    patient: S;
+    prescriber: S;
+    budget: number | undefined;
+    branch: S | number | undefined;
+    lastModifier: S;
+    budgetist: S;
     attendantResponsibleRecipes: S;
-}
+    pendency: RecipePendingFilter;
+};
+
+export interface CloneRecipe<S = string> {
+    cloneRecipeWithPharmaceuticalObservation: boolean;
+};
+export interface PharmaceuticalObservationRecipe<S = string> {
+    passwordPharmaceuticalObservation: S;
+    textPharmaceuticalObservation: S;
+};
+
+export interface TechnicalDoubtRecipe<S = string> {
+    technicalDoubtCategory: TechnicalDoubtCategory;
+    technicalQuestionText: S;
+    recipientTechnicalDoubt: S;
+    technicalDoubtResponseStatus: TechnicalDoubtCategory;
+    textAnsweringTechnicalDoubt: S;
+    deleteTechnicalDoubt: boolean;
+    markAsResolvedTechnicalDoubt: boolean;
+};
+
+
+
+
+
+// markUserUsage: S;
+// responsibleCurrentAnswerTechnicalQuestion: S;
+// textResponseDoubtTechnical: S;
+// valueJuntocom: S;
+// internalObservation: S;
+// receivingDate: S;
+
+
 
 export interface CheckAndThrowError {
     condition: boolean;
@@ -108,8 +136,11 @@ export interface DataParameters<S = string> {
     }
 
     Recipe: {
-        import: RecipeImport;
+        import: ImportRecipe;
         search: SearchRecipe;
+        clone: CloneRecipe
+        pharmaceuticalObservation: PharmaceuticalObservationRecipe,
+        technicalDoubt: TechnicalDoubtRecipe,
     };
 
     Prescriber: {
@@ -191,16 +222,16 @@ export interface DataParameters<S = string> {
     paymentStatus: typeof BudgetConfirmationPaymentStatus;
     paymentMethod: typeof BudgetConfirmationPaymentMethod;
     budgetClosingChannel: typeof BudgetClosingChannel;
-    pendingsFilter: typeof PendingsFilter;
+    pendingsFilter: typeof RecipePendingFilter;
     recipeReceiptChannel: typeof RecipeReceiptChannel;
     patientSearchParameter: typeof BudgetConfirmationPatientSearchParameter;
     recipeType: typeof RecipeType;
 
-    recipeImportCluster: typeof RecipeImportCluster;
+    recipeImportCluster: typeof RecipeCluster;
     relationshipsPrescriberAttendantAndCluster: typeof RelationshipsPrescriberAttendantAndCluster;
-    pendency: typeof Pendency;
+    recipePendingFilter: typeof RecipePendingFilter;
     technicalDoubtCategory: typeof TechnicalDoubtCategory;
-    technicalDoubtStatus: typeof TechnicalDoubtStatus;
+    technicalDoubtStatus: typeof TechnicalDoubtResponseStatus;
     profile: typeof Profile;
     shippingMethod: typeof BudgetConfirmationShippingMethod;
     aromaSachet: typeof BudgetConfirmationAromaSachet;

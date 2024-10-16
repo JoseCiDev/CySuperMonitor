@@ -1,4 +1,4 @@
-export enum TechnicalDoubtStatus {
+export enum TechnicalDoubtResponseStatus {
     Select = '',
     WaitingPrescriber = '1',
     WaitingPeD = '2',

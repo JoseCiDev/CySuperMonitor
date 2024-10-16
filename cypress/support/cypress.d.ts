@@ -51,20 +51,20 @@ declare global {
       * comando customizado para buscar receitas.
       * @example cy.searchRecipe()
       */
-      searchRecipe(params?: {
+      searchRecipe(options?: {
         initialDate?: string;
         finalDate?: string;
-        pendency?: string;
         cluster?: string;
         channelReceipt?: string;
-        recipe?: number;
+        numberRecipe?: number;
         patient?: string;
         prescriber?: string;
         budget?: number;
         lastModifier?: string;
         budgetist?: string;
         attendantResponsibleRecipes?: string;
-      }): Cypress.Chainable<Element>;
+        pendency?: string;
+      }): ValidationResult;
 
       /**
       * comando customizado para selecionar o elemento e clicar.
@@ -112,7 +112,9 @@ declare global {
       * comando customizado para clonar receitas.
       * @example cy.cloneRecipe(cloneRecipe)
       */
-      cloneRecipe(openModalCloneRecipe: string): Chainable<Element>
+      cloneRecipe(cloneRecipeElement: string, options?: {
+        cloneRecipeWithPharmaceuticalObservation?: boolean,
+      }): ValidationResult;
 
       /**
       * comando customizado para excluir receitas.
@@ -223,6 +225,7 @@ declare global {
       insertTimeTreatment(options?: {
         timeTreatment?: string | number,
       }): ValidationResult;
+
 
       /**
        * * comando customizado para vincular recipe ao budget.
