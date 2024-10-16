@@ -334,45 +334,45 @@ Cypress.Commands.add('searchRecipe', (
     }
 
     if (params.recipe) {
-        cy.getElementAndType({ [recipeSearch]: params.recipe.toString() });
+        cy.getElementAndType({ [recipeSearch]: params.recipe });
     }
 
     if (params.patient) {
         cy.get(patientSearch, { timeout: 20000 })
-            .type(params.patient.toString(), { timeout: 20000 })
+            .type(params.patient, { timeout: 20000 })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.prescriber) {
-        cy.getElementAndType({ [prescriberSearch]: params.prescriber.toString() })
+        cy.getElementAndType({ [prescriberSearch]: params.prescriber })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.budget) {
-        cy.getElementAndType({ [searchBudgetScreenRecipesElement]: params.budget.toString() })
+        cy.getElementAndType({ [searchBudgetScreenRecipesElement]: params.budget })
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.lastModifier) {
-        cy.getElementAndType({ [lastModifierSearch]: params.lastModifier.toString() })
+        cy.getElementAndType({ [lastModifierSearch]: params.lastModifier })
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.budgetist) {
-        cy.getElementAndType({ [budgetistSearch]: params.budgetist.toString() })
+        cy.getElementAndType({ [budgetistSearch]: params.budgetist})
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (params.attendantResponsibleRecipes) {
-        cy.getElementAndType({ [attendantResponsibleSearch]: params.attendantResponsibleRecipes.toString() })
+        cy.getElementAndType({ [attendantResponsibleSearch]: params.attendantResponsibleRecipes})
             .wait(3000)
             .type('{downarrow}')
             .type('{enter}');
@@ -602,12 +602,12 @@ Cypress.Commands.add('searchBudget', (budget: number, branch: number) => {
 
     cy.get(fieldSearchBudgetElement, { timeout: 20000 })
         .clear()
-        .type(budget.toString())
+        .type(String(budget))
         .should('have.value', budget);
 
     cy.get(searchBranch, { timeout: 5000 })
         .clear()
-        .type(branch.toString())
+        .type(String(branch))
         .should('have.value', branch);
 
     cy.getElementAndClick(showAll);

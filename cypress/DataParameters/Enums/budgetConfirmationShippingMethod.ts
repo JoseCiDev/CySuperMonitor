@@ -1,4 +1,4 @@
-export enum ShippingMethod {
+export enum BudgetConfirmationShippingMethod {
     SedexSC = '1',
     SedexOtherStates = '2',
     Sedex10 = '3',

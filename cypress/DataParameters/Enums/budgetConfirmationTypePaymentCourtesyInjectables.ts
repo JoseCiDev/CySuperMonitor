@@ -1,4 +1,4 @@
-export enum TypePaymentCourtesyInjectables {
+export enum BudgetConfirmationTypePaymentCourtesyInjectables {
     Select = '',
     CourtesyBonus = '1',
     CourtesyFriendlyShippingOfProducts = '2',

@@ -5,6 +5,7 @@ import {
   mount,
   ElementTypeAndValueOpcional,
   ValidationResult,
+  PayBudgetSelectAroma,
 } from '../import'
 
 interface DataHora {
@@ -318,7 +319,7 @@ declare global {
         typePaymentCourtesyInjectables?: typePaymentCourtesyInjectables;
         budgetist?: string,
         budgetAttendant?: string,
-        paymentMethod?: PaymentMethod,
+        paymentMethod?: BudgetConfirmationPaymentMethod,
         chosenBudget?: string,
         timeRepetition?: number,
         budgetClosingChannel?: BudgetClosingChannel,
@@ -330,14 +331,46 @@ declare global {
         paymentStatus?: PaymentStatus,
         address?: string,
         expeditionObservation?: string,
-        shippingMethod?: ShippingMethod,
+        shippingMethod?: BudgetConfirmationShippingMethod,
         juntocomBudget?: string,
         promisedTo?: Date,
-        aromaSachet?: AromaSachet,
-        capsuleAroma?: CapsuleAroma,
+        aromaSachet?: BudgetConfirmationAromaSachet,
+        capsuleAroma?: BudgetConfirmationCapsuleAroma,
         generalObservation?: string,
         urgentBudget?: boolean,
         automaticMessageTriggering?: boolean,
+      }): ValidationResult;
+
+
+
+      /**
+       * * comando customizado para confirmar orçamentos.
+       * @example cy.confirmBudget()
+       */
+      payBudget(options?: {
+        paymentMethod?: PayBudgetPaymentMethod,
+        telephone?: number;
+        email?: S;
+        fullName?: S;
+        birthDate?: S;
+        cpf?: number;
+        rg?: number;
+        useRegisteredAddress?: boolean;
+        zipCode?: number;
+        state?: PayBudgetState,
+        city?: S;
+        district?: S;
+        street?: S;
+        houseNumber?: number;
+        addressComplement?: S;
+        isMyDeliveryAddress?: boolean;
+        cardholderName?: S;
+        cpfCnpj?: number;
+        cardNumber?: number;
+        expirationMonth?: PayBudgetCreditCardExpirationMonth;
+        expirationYear?: PayBudgetCreditCardExpirationYear;
+        securityCode?: number;
+        installments?: BudgetInstallments;
       }): ValidationResult;
 
     }

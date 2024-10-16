@@ -129,7 +129,7 @@ describe('Tela importação de receitas.', function () {
     })
 
     it('Deve realizar importação de Receitas', function () {
-        cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+        cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });

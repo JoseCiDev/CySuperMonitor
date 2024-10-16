@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "importRecipe": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/importRecipe.cy.ts\"",
-    "confirmBudget": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/confirmBudget.cy.ts\""
+    "recipeImport": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/recipeImport.cy.ts\"",
+    "budgetConfirm": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/budgetConfirm.cy.ts\"",
+    "budgetPayment": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/budgetPayment.cy.ts\""
   },
   "keywords": [],
   "author": "",

@@ -1,15 +1,15 @@
 /// <reference path="../../support/cypress.d.ts" />
 
 import {
-    AromaSachet,
-    CapsuleAroma,
+    BudgetConfirmationAromaSachet,
+    BudgetConfirmationCapsuleAroma,
     dateFns,
     faker,
     BudgetClosingChannel,
-    BudgetHasRecipe,
-    PatientSearchParameter,
-    PaymentMethod,
-    PaymentStatus,
+    BudgetConfirmationBudgetHasRecipe,
+    BudgetConfirmationPatientSearchParameter,
+    BudgetConfirmationPaymentMethod,
+    BudgetConfirmationPaymentStatus,
     Pendency,
     PendingsFilter,
     Profile,
@@ -18,13 +18,19 @@ import {
     RecipeType,
     RelationshipsPrescriberAttendantAndCluster,
     SearchBudget,
-    ShippingMethod,
+    BudgetConfirmationShippingMethod,
     TechnicalDoubtCategory,
     TechnicalDoubtStatus,
     ElementTypeAndValueOpcional,
     ElementControl,
-    TypePaymentCourtesyInjectables,
+    BudgetConfirmationTypePaymentCourtesyInjectables,
+    PayBudgetSelectAroma,
 } from '../../import';
+import { BudgetInstallments } from '../Enums/budgetInstallments';
+import { PayBudgetPaymentMethod } from '../Enums/payBudgetPaymentMethod';
+import { PayBudgetCreditCardExpirationMonth } from '../Enums/payBudgetCreditCardExpirationMonth';
+import { PayBudgetCreditCardExpirationYear } from '../Enums/payBudgetCreditCardExpirationYear';
+import { PayBudgetState } from '../Enums/payBudgetState';
 
 
 export interface RecipeImport<S = string> {
@@ -32,7 +38,7 @@ export interface RecipeImport<S = string> {
     file: S;
     prescriber: S;
     suggestionRelationshipPrescriber: boolean;
-    parameterSearchPatient: PatientSearchParameter;
+    parameterSearchPatient: BudgetConfirmationPatientSearchParameter;
     patient: S;
     channelReceiptRecipe: RecipeReceiptChannel;
     attendantResponsibleRecipes?: boolean | S;
@@ -76,20 +82,15 @@ export interface DataParameters<S = string> {
         USER_ADMIN: S;
         USER_ATENDENTE1: S;
         USER_ATENDENTE2: S;
-        USER_INCLUSAO: S;
-        USER_CONFENTRADA: S;
-        USER_CONFSAIDA: S;
-        USER_EXPEDICAO: S;
         PASSWORD: S;
-        BASE_URL_PRODUCTION: S;
-        BASE_URL_HOMOLOG: S;
+        BASE_URL_SM: S;
+        BASE_URL_SC: S;
         DB_NAME: S;
         DB_USER: S;
         DB_HOST: S;
         DB_PORT: S;
         DB_PASSWORD: S;
         RECIPE_PASSWORD_USER: S;
-        AUTH_TOKEN: S;
         USER_ID: S;
         USER_PASSWORD: S;
     }
@@ -127,45 +128,72 @@ export interface DataParameters<S = string> {
     filePath: S;
 
     Budget: {
-        orcamentoNumberForSearch: S | number;
-        filialNumberForSearch: S | number;
-        typePaymentCourtesyInjectables: TypePaymentCourtesyInjectables;
-        budgetist: S;
-        budgetAttendant: S;
-        recipeNumber: S | number;
-        customerContactPhoneNumber: S | number;
-        timeTreatment: S | number
-        paymentMethod: PaymentMethod,
-        chosenBudget: S;
-        timeRepetition: number;
-        budgetClosingChannel: BudgetClosingChannel,
-        sendTrackingEmail: boolean,
-        releaseBudgetForInclusion: boolean,
-        releaseBudgetCashier: boolean,
-        cashierObservation: S;
-        detailedSale: boolean,
-        paymentStatus: PaymentStatus,
-        address: S;
-        expeditionObservation: S;
-        shippingMethod: ShippingMethod;
-        juntocomBudget: S;
-        promisedTo: Date;
-        aromaSachet: AromaSachet;
-        capsuleAroma: CapsuleAroma;
-        generalObservation: S;
-        budgetHasRecipeElement: BudgetHasRecipe;
-        urgentBudget: boolean;
-        automaticMessageTriggering: boolean;
+        confirmation: {
+            orcamentoNumberForSearch: S | number;
+            filialNumberForSearch: S | number;
+            typePaymentCourtesyInjectables: BudgetConfirmationTypePaymentCourtesyInjectables;
+            budgetist: S;
+            budgetAttendant: S;
+            recipeNumber: S | number;
+            customerContactPhoneNumber: S | number;
+            timeTreatment: S | number
+            paymentMethod: BudgetConfirmationPaymentMethod,
+            chosenBudget: S;
+            timeRepetition: number;
+            budgetClosingChannel: BudgetClosingChannel,
+            sendTrackingEmail: boolean,
+            releaseBudgetForInclusion: boolean,
+            releaseBudgetCashier: boolean,
+            cashierObservation: S;
+            detailedSale: boolean,
+            paymentStatus: BudgetConfirmationPaymentStatus,
+            address: S;
+            expeditionObservation: S;
+            shippingMethod: BudgetConfirmationShippingMethod;
+            juntocomBudget: S;
+            promisedTo: Date;
+            aromaSachet: BudgetConfirmationAromaSachet;
+            capsuleAroma: BudgetConfirmationCapsuleAroma;
+            generalObservation: S;
+            budgetHasRecipeElement: BudgetConfirmationBudgetHasRecipe;
+            urgentBudget: boolean;
+            automaticMessageTriggering: boolean;
+        },
+        payment: {
+            paymentMethod: PayBudgetPaymentMethod;
+            telephone: number;
+            email: S;
+            fullName: S;
+            birthDate: S;
+            cpf: number;
+            rg: number;
+            useRegisteredAddress: boolean;
+            zipCode: number;
+            state: PayBudgetState;
+            city: S;
+            district: S;
+            street: S;
+            houseNumber: number;
+            addressComplement: S;
+            isMyDeliveryAddress: boolean;
+            cardholderName: S;
+            cpfCnpj: number;
+            cardNumber: number;
+            expirationMonth: PayBudgetCreditCardExpirationMonth;
+            expirationYear: PayBudgetCreditCardExpirationYear;
+            securityCode: number;
+            installments: BudgetInstallments;
+        },
 
     }
 
     searchBudget: typeof SearchBudget;
-    paymentStatus: typeof PaymentStatus;
-    paymentMethod: typeof PaymentMethod;
+    paymentStatus: typeof BudgetConfirmationPaymentStatus;
+    paymentMethod: typeof BudgetConfirmationPaymentMethod;
     budgetClosingChannel: typeof BudgetClosingChannel;
     pendingsFilter: typeof PendingsFilter;
     recipeReceiptChannel: typeof RecipeReceiptChannel;
-    patientSearchParameter: typeof PatientSearchParameter;
+    patientSearchParameter: typeof BudgetConfirmationPatientSearchParameter;
     recipeType: typeof RecipeType;
 
     recipeImportCluster: typeof RecipeImportCluster;
@@ -174,9 +202,9 @@ export interface DataParameters<S = string> {
     technicalDoubtCategory: typeof TechnicalDoubtCategory;
     technicalDoubtStatus: typeof TechnicalDoubtStatus;
     profile: typeof Profile;
-    shippingMethod: typeof ShippingMethod;
-    aromaSachet: typeof AromaSachet;
-    capsuleAroma: typeof CapsuleAroma;
-    budgetHasRecipe: typeof BudgetHasRecipe;
+    shippingMethod: typeof BudgetConfirmationShippingMethod;
+    aromaSachet: typeof BudgetConfirmationAromaSachet;
+    capsuleAroma: typeof BudgetConfirmationCapsuleAroma;
+    budgetHasRecipe: typeof BudgetConfirmationBudgetHasRecipe;
 
 }

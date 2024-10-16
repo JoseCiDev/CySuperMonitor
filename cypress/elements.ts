@@ -239,6 +239,34 @@ interface Elements<S = string> {
         confirmInsertionCustomerTelephoneContactElement: S;
         serviceBudgeterElement: S;
         customerServiceAttendantElement: S;
+
+        accessSelfcheckoutElement: S;
+        selectAromaOfPharmaceuticalFormulaElement: S;
+        goToPaymentElement: S;
+        makePaymentUsingTheSelectedPaymentMethodElement: S;
+        telephoneElement: S;
+        emailElement: S;
+        fullNameElement: S;
+        birthDateElement: S;
+        cpfElement: S;
+        rgElement: S;
+        useRegisteredAddressElement: S;
+        zipCodeElement: S;
+        stateElement: S;
+        cityElement: S;
+        districtElement: S;
+        streetElement: S;
+        houseNumberElement: S;
+        addressComplementElement: S;
+        isMyDeliveryAddressElement: S;
+        cardholderNameElement: S;
+        cpfCnpjElement: S;
+        cardNumberElement: S;
+        expirationMonthElement: S;
+        expirationYearElement: S;
+        securityCodeElement: S;
+        installmentsElement: S;
+        makePaymentElement: S;
     };
 
     Settings: {
@@ -507,8 +535,34 @@ export const elements: Elements = {
         confirmInsertionCustomerTelephoneContactElement: 'div.bootbox.modal.fade.bootbox-alert.in',
         serviceBudgeterElement: '#orcamentista',
         customerServiceAttendantElement: '#atendente',
-        
 
+        accessSelfcheckoutElement: '#editAtendimento > div:nth-child(2) > div.ibox-content.self-checkout > fieldset > div > div > div > a',
+        selectAromaOfPharmaceuticalFormulaElement: 'body > div > main > form > div:nth-child(1) > div > div.container-itens > div > div.row.bloco-conteudo-atendimento > div > div > div > div.content-formula > select',
+        goToPaymentElement: '.efetuar-pagamento-btn',
+        makePaymentUsingTheSelectedPaymentMethodElement: '.btn-submit',
+        telephoneElement: '#telefone',
+        emailElement: '#email_cliente',
+        fullNameElement: '#nome_paciente',
+        birthDateElement: '#data_nascimento_paciente',
+        cpfElement: '#cpf_paciente',
+        rgElement: '#rg_paciente',
+        useRegisteredAddressElement: '#set-campos-endereco',
+        zipCodeElement: '#cep',
+        stateElement: '#estado',
+        cityElement: '#cidade',
+        districtElement: '#bairro',
+        streetElement: '#rua',
+        houseNumberElement: '#numero',
+        addressComplementElement: '#complemento',
+        isMyDeliveryAddressElement: '#address-confirm',
+        cardholderNameElement: '#nome_cartao',
+        cpfCnpjElement: '#cpf_cnpj',
+        cardNumberElement: '#numero_cartao',
+        expirationMonthElement: '#validade_mes',
+        expirationYearElement: '#validade_ano',
+        securityCodeElement: '#cvc',
+        installmentsElement: '#qtdeParcelas',
+        makePaymentElement: '#btnProcessarPgto',
     },
 
     Settings: {

@@ -1,13 +1,14 @@
-export enum AromaSachet {
+export enum BudgetConfirmationCapsuleAroma {
     SelectAroma = 'SELECIONE O AROMA',
-    Pineapple = 'abacaxi',
     StandardBaseAroma = 'aroma_da_base_padrao',
     Vanilla = 'baunilha',
     Cocoa = 'cacau',
+    Raspberry = 'framboesa',
     Orange = 'laranja',
+    OrangeWithMintAndSpearmint = 'laranja_com_menta',
     Lemon = 'limao',
+    Mint = 'menta',
     Strawberry = 'morango',
     NoAroma = 'sem_aroma',
-    Grape = 'uva',
-    Varejo = 'varejo'
+    Varejo = 'varejo',
 };

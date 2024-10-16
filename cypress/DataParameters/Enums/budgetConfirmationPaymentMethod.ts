@@ -1,4 +1,4 @@
-export enum PaymentMethod {
+export enum BudgetConfirmationPaymentMethod {
     VisitArrangement = '11',
     ArrangementVisitSpreadsheet = '14',
     BankSlip = '2',
