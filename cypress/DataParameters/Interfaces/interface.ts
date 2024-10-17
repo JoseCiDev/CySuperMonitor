@@ -60,7 +60,7 @@ export interface SearchRecipe<S = string> {
     patient: S;
     prescriber: S;
     budget: number | undefined;
-    branch: S | number | undefined;
+    branch: S ;
     lastModifier: S;
     budgetist: S;
     attendantResponsibleRecipes: S;

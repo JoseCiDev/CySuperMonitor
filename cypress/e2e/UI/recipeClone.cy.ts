@@ -54,22 +54,22 @@ export const {
     closeRegisterRecipes,
     editRecipe,
     recipeSearchModal,
-    filterDateStartSearchRecipes,
-    filterEndDateSearchRecipes,
-    clusterSearch,
-    recipeSearch,
-    patientSearch,
-    prescriberSearch,
+    filterDateStartSearchRecipesElement,
+    filterEndDateSearchRecipesElement,
+    clusterSearchElement,
+    recipeSearchElement,
+    patientSearchElement,
+    prescriberSearchElement,
     searchBudgetScreenRecipesElement,
-    lastModifierSearch,
-    budgetistSearch,
-    attendantResponsibleSearch,
-    channelReceiptSearch,
-    filterPendenciasSearch,
+    lastModifierSearchElement,
+    budgetistSearchElement,
+    attendantResponsibleSearchElement,
+    channelReceiptSearchElement,
+    filterPendenciasSearchElement,
     filterPendenciasAll,
     pendingFilter,
     pendingFilterLinked,
-    buttonSearchRecipes,
+    buttonSearchRecipesElement,
     labelSearchRecipes,
     numberRecipe,
     dateReceiptGrid,
@@ -148,7 +148,7 @@ describe('Clonagem de receitas.', function () {
 
         cy.searchRecipe();
         
-        // cy.cloneRecipe();
+        cy.cloneRecipe(':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita');
     });
 })
 

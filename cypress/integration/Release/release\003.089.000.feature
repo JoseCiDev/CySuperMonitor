@@ -409,7 +409,7 @@ Feature: Vincular e Desvincular Receitas
 
 
 
-@recipeSearch
+@recipeSearchElement
 Feature: Busca Avançada de Receitas
     Como um usuário do sistema
     Quero utilizar múltiplos parâmetros de busca para encontrar receitas
@@ -419,7 +419,7 @@ Feature: Busca Avançada de Receitas
         Given que o usuário está logado no sistema
         And está na página de "Busca de Receitas"
 
-    @recipeSearch @AdvancedSearch
+    @recipeSearchElement @AdvancedSearch
     Scenario: Buscar receitas por data, cluster e status
         Given o usuário define a "Data inicial" como "01/01/2023"
         And o usuário define a "Data final" como "31/01/2023"
@@ -428,7 +428,7 @@ Feature: Busca Avançada de Receitas
         When o usuário clica em "Buscar"
         Then as receitas correspondentes aos critérios de busca são exibidas
 
-    @recipeSearch @CombinedSearch
+    @recipeSearchElement @CombinedSearch
     Scenario: Buscar receitas combinando todos os parâmetros disponíveis
         Given o usuário define a "Data inicial" como "01/01/2023"
         And o usuário define a "Data final" como "31/01/2023"

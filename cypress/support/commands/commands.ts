@@ -61,22 +61,22 @@ export const {
   closeRegisterRecipes,
   editRecipe,
   recipeSearchModal,
-  filterDateStartSearchRecipes,
-  filterEndDateSearchRecipes,
-  clusterSearch,
-  recipeSearch,
-  patientSearch,
-  prescriberSearch,
+  filterDateStartSearchRecipesElement,
+  filterEndDateSearchRecipesElement,
+  clusterSearchElement,
+  recipeSearchElement,
+  patientSearchElement,
+  prescriberSearchElement,
   searchBudgetScreenRecipesElement,
-  lastModifierSearch,
-  budgetistSearch,
-  attendantResponsibleSearch,
-  channelReceiptSearch,
-  filterPendenciasSearch,
+  lastModifierSearchElement,
+  budgetistSearchElement,
+  attendantResponsibleSearchElement,
+  channelReceiptSearchElement,
+  filterPendenciasSearchElement,
   filterPendenciasAll,
   pendingFilter,
   pendingFilterLinked,
-  buttonSearchRecipes,
+  buttonSearchRecipesElement,
   labelSearchRecipes,
   numberRecipe,
   dateReceiptGrid,
@@ -314,22 +314,18 @@ Cypress.Commands.add('getSelectOptionByValue', (elements: ElementTypeAndValueOpc
 
 
 Cypress.Commands.add('getElementAutocompleteTypeAndClick', (elements: { [key: string]: string }, autocompleteSelector: string) => {
-  cy.wrap(null).then(() => {
-    Object.entries(elements).forEach(([element, text]) => {
-      cy.get(element, { timeout: 20000 })
-        .type(text)
-        .then(() => {
-
-          cy.get(autocompleteSelector, { timeout: 20000 })
-            .should('be.visible')
-            .each(($autocomplete) => {
-              cy.wrap($autocomplete)
-                .click({ force: true });
-            });
-        });
-    });
+  Object.entries(elements).forEach(([element, text]) => {
+    cy.get(element, { timeout: 20000 })
+      .type(text)
+      .then(() => {
+        cy.get(autocompleteSelector, { timeout: 20000 })
+          .should('be.visible')
+          .first()
+          .click({ force: true });
+      });
   });
 });
+
 
 
 

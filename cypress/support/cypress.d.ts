@@ -60,6 +60,7 @@ declare global {
         patient?: string;
         prescriber?: string;
         budget?: number;
+        branch?: S ;
         lastModifier?: string;
         budgetist?: string;
         attendantResponsibleRecipes?: string;

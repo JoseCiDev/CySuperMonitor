@@ -30,6 +30,7 @@ import { PayBudgetPaymentMethod } from './Enums/payBudgetPaymentMethod';
 import { PayBudgetCreditCardExpirationMonth } from './Enums/payBudgetCreditCardExpirationMonth';
 import { PayBudgetCreditCardExpirationYear } from './Enums/payBudgetCreditCardExpirationYear';
 import { PayBudgetState } from './Enums/payBudgetState';
+import { clusterSearchElement } from '../support/commands/commands';
 
 
 const environment = Cypress.env('ENVIRONMENT');
@@ -101,22 +102,22 @@ export const dataParameters: DataParameters = {
             customerPhone: 48991888641,
         },
         search: {
-            numberRecipe: undefined,
-            initialDate: '',
-            finalDate: '',
-            cluster: undefined,
-            channelReceipt: undefined,
-            patient: String([faker.helpers.arrayElement([''])]),
-            prescriber: String([faker.helpers.arrayElement([''])]),
-            budget: 332114,
-            branch:String( (1000)),
-            lastModifier: String([faker.helpers.arrayElement([''])]),
-            budgetist: String([faker.helpers.arrayElement([''])]),
-            attendantResponsibleRecipes: faker.helpers.arrayElement(['']),
-            pendency: RecipePendingFilter.Pending,
+            numberRecipe: undefined,//digitar o numero da receita ou undefined
+            initialDate: '',//formato da data YYYY-MM-DDThh:mm:ss | Ex:2024-10-01T00:00 ou  ''
+            finalDate: '',//formato da data YYYY-MM-DDThh:mm:ss | Ex:2024-10-17T23:59 ou ''
+            cluster: undefined,//RecipeCluster.Cluster1 ou undefined
+            channelReceipt: undefined,//RecipeReceiptChannel.Whatsapp ou undefined
+            patient: String([faker.helpers.arrayElement([''])]),//digitar o paciente entre as aspas ou  ''
+            prescriber: String([faker.helpers.arrayElement([''])]),//digitar o prescritor entre as aspas ou ''
+            budget: undefined,//digitar o numero de orçamento ou undefined
+            branch:'',//digitar o numero de filial entre as aspas ou ''
+            lastModifier: String([faker.helpers.arrayElement([''])]),//digitar o nome do usuário entre as aspas ou ''
+            budgetist: String([faker.helpers.arrayElement([''])]),//digitar o nome do usuário entre as aspas ou ''
+            attendantResponsibleRecipes: faker.helpers.arrayElement(['']),//digitar o nome do usuário entre as aspas ou ''
+            pendency: RecipePendingFilter.Pending,//RecipePendingFilter.Pending ou undefined
         },
         clone: {
-            cloneRecipeWithPharmaceuticalObservation: false,
+            cloneRecipeWithPharmaceuticalObservation: false,//true clona com observacao, false clona sem observacao
         },
         pharmaceuticalObservation: {
             passwordPharmaceuticalObservation: String([faker.helpers.arrayElement(['789123'])]),

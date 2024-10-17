@@ -54,22 +54,22 @@ interface Elements<S = string> {
         closeRegisterRecipes: S;
         editRecipe: S;
         recipeSearchModal: S;
-        filterDateStartSearchRecipes: S;
-        filterEndDateSearchRecipes: S;
-        clusterSearch: S;
-        recipeSearch: S;
-        patientSearch: S;
-        prescriberSearch: S;
+        filterDateStartSearchRecipesElement: S;
+        filterEndDateSearchRecipesElement: S;
+        clusterSearchElement: S;
+        recipeSearchElement: S;
+        patientSearchElement: S;
+        prescriberSearchElement: S;
         searchBudgetScreenRecipesElement: S;
-        lastModifierSearch: S;
-        budgetistSearch: S;
-        attendantResponsibleSearch: S;
-        channelReceiptSearch: S;
-        filterPendenciasSearch: S;
+        lastModifierSearchElement: S;
+        budgetistSearchElement: S;
+        attendantResponsibleSearchElement: S;
+        channelReceiptSearchElement: S;
+        filterPendenciasSearchElement: S;
         filterPendenciasAll: S;
         pendingFilter: S;
         pendingFilterLinked: S;
-        buttonSearchRecipes: S;
+        buttonSearchRecipesElement: S;
         labelSearchRecipes: S;
         numberRecipe: S;
         dateReceiptGrid: S;
@@ -121,6 +121,8 @@ interface Elements<S = string> {
         applySelectedContact: S;
         recipeTypeInput: (recipeType: S) => S;
         deleteRecipeElement: S;
+        reloadPageButtonElement: S;
+        modalCloneRecipesElement: S;
     };
 
     Services: {
@@ -350,22 +352,22 @@ export const elements: Elements = {
         editRecipe: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .edit-recipe',
 
         recipeSearchModal: '#centerHeadFilter',
-        filterDateStartSearchRecipes: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
-        filterEndDateSearchRecipes: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
-        clusterSearch: '#filterReceitas > div:nth-child(1) > div:nth-child(3) > div > span > span.selection > span',
-        channelReceiptSearch: '#filterReceitas > div:nth-child(1) > div:nth-child(4) > div > select',
-        recipeSearch: '#filterReceitas > div:nth-child(2) > div:nth-child(1) > div > input',
-        patientSearch: '#pacienteRec',
-        prescriberSearch: '#medicoRec',
+        filterDateStartSearchRecipesElement: '#filterReceitas > div:nth-child(1) > div:nth-child(1) > div > input',
+        filterEndDateSearchRecipesElement: '#filterReceitas > div:nth-child(1) > div:nth-child(2) > div > input',
+        clusterSearchElement: '#filterReceitas > div:nth-child(1) > div:nth-child(3) > div > span > span.selection > span',
+        channelReceiptSearchElement: '#filterReceitas > div:nth-child(1) > div:nth-child(4) > div > select',
+        recipeSearchElement: '#filterReceitas > div:nth-child(2) > div:nth-child(1) > div > input',
+        patientSearchElement: '#pacienteRec',
+        prescriberSearchElement: '#medicoRec',
         searchBudgetScreenRecipesElement: '#orcamentoRec',
-        lastModifierSearch: '#modifyRec',
-        budgetistSearch: '#orcamentistaRec',
-        attendantResponsibleSearch: '#atendenteResponRec',
-        filterPendenciasSearch: 'select[name="pendentes"]',
+        lastModifierSearchElement: '#modifyRec',
+        budgetistSearchElement: '#orcamentistaRec',
+        attendantResponsibleSearchElement: '#atendenteResponRec',
+        filterPendenciasSearchElement: 'select[name="pendentes"]',
         filterPendenciasAll: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(1)',
         pendingFilter: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(2)',
         pendingFilterLinked: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
-        buttonSearchRecipes: '#filterReceitas > div:nth-child(4) > div > button',
+        buttonSearchRecipesElement: '#filterReceitas > div:nth-child(4) > div > button',
         labelSearchRecipes: '[button type="submit"]&& Procurar',
         numberRecipe: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
         dateReceiptGrid: '#mainTableReceitas > thead > tr > th.sorting.sorting_asc',
@@ -417,6 +419,9 @@ export const elements: Elements = {
         applySelectedContact: '#apply-cel-btn',
         recipeTypeInput: (recipeType: string): string => `input[name="receita_tipo"][value="${recipeType}"]`,
         deleteRecipeElement: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-recipe',
+        reloadPageButtonElement: ':nth-child(5) > .col > .btn',
+        modalCloneRecipesElement: '.bootbox > .modal-dialog > .modal-content > .modal-body',
+
     },
 
     Services: {

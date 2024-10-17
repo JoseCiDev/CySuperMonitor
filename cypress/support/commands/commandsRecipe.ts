@@ -61,22 +61,22 @@ export const {
     closeRegisterRecipes,
     editRecipe,
     recipeSearchModal,
-    filterDateStartSearchRecipes,
-    filterEndDateSearchRecipes,
-    clusterSearch,
-    recipeSearch,
-    patientSearch,
-    prescriberSearch,
+    filterDateStartSearchRecipesElement,
+    filterEndDateSearchRecipesElement,
+    clusterSearchElement,
+    recipeSearchElement,
+    patientSearchElement,
+    prescriberSearchElement,
     searchBudgetScreenRecipesElement,
-    lastModifierSearch,
-    budgetistSearch,
-    attendantResponsibleSearch,
-    channelReceiptSearch,
-    filterPendenciasSearch,
+    lastModifierSearchElement,
+    budgetistSearchElement,
+    attendantResponsibleSearchElement,
+    channelReceiptSearchElement,
+    filterPendenciasSearchElement,
     filterPendenciasAll,
     pendingFilter,
     pendingFilterLinked,
-    buttonSearchRecipes,
+    buttonSearchRecipesElement,
     labelSearchRecipes,
     numberRecipe,
     dateReceiptGrid,
@@ -128,6 +128,9 @@ export const {
     applySelectedContact,
     recipeTypeInput,
     deleteRecipeElement,
+    reloadPageButtonElement,
+    modalCloneRecipesElement,
+
 } = el.Recipes;
 
 export const {
@@ -252,10 +255,10 @@ Cypress.Commands.add('captureRecipeNumber', (RecipeNumberElement: string) => {
         return parseInt(numeroReceitaMatch[0], 10);
     };
 
-    cy.getElementAndClick(':nth-child(5) > .col > .btn');
+    cy.getElementAndClick(reloadPageButtonElement);
     cy.wait(1000);
     cy.getElementAndClick(accessServiceMenuThroughPrescriptionImportScreenElement)
-    cy.wait(500);
+    cy.wait(1000);
     cy.getElementAndClick(accessServiceMenuThroughPrescriptionImportScreenElement)
 
     return cy.get(RecipeNumberElement, { timeout: 20000 })
@@ -282,6 +285,7 @@ Cypress.Commands.add('searchRecipe', (options: {
     patient?: string,
     prescriber?: string,
     budget?: number,
+    branch?: string,
     lastModifier?: string,
     budgetist?: string,
     attendantResponsibleRecipes?: string,
@@ -297,86 +301,88 @@ Cypress.Commands.add('searchRecipe', (options: {
         patient = dataParameters.Recipe.search.patient,
         prescriber = dataParameters.Recipe.search.prescriber,
         budget = dataParameters.Recipe.search.budget,
+        branch = dataParameters.Recipe.search.branch,
         lastModifier = dataParameters.Recipe.search.lastModifier,
         budgetist = dataParameters.Recipe.search.budgetist,
         attendantResponsibleRecipes = dataParameters.Recipe.search.attendantResponsibleRecipes,
         pendency = dataParameters.Recipe.search.pendency,
     } = options;
 
-    cy.get(recipeSearchModal, { timeout: 20000 }).as('recipeSearchModal');
-    cy.getElementAndClick('@recipeSearchModal');
+    cy.getElementAndClick(recipeSearchModal);
+    cy.wait(2000);
 
     if (initialDate) {
-        cy.getElementAndType({ [filterDateStartSearchRecipes]: initialDate });
+        cy.getElementAndType({ [filterDateStartSearchRecipesElement]: initialDate });
     }
 
     if (finalDate) {
-        cy.getElementAndType({ [filterEndDateSearchRecipes]: finalDate });
+        cy.getElementAndType({ [filterEndDateSearchRecipesElement]: finalDate });
     }
 
     if (cluster) {
-        cy.get(clusterSearch)
+        cy.get(clusterSearchElement)
             .type(cluster)
             .type('{downarrow}')
             .type('{enter}');
     }
 
     if (pendency) {
-        cy.getSelectOptionByValue([{ element: filterPendenciasSearch, value: pendency }]);
+        cy.getSelectOptionByValue([{ element: filterPendenciasSearchElement, value: pendency }]);
     }
 
     if (channelReceipt) {
-        cy.getSelectOptionByValue([{ element: channelReceiptSearch, value: channelReceipt }]);
+        cy.getSelectOptionByValue([{ element: channelReceiptSearchElement, value: channelReceipt }]);
     }
 
     if (numberRecipe) {
-        cy.getElementAndType({ [recipeSearch]: numberRecipe });
+        cy.getElementAndType({ [recipeSearchElement]: numberRecipe });
     }
 
     if (patient) {
-        cy.get(patientSearch, { timeout: 20000 })
-            .type(patient)
-            .wait(3000)
-            .type('{downarrow}')
-            .type('{enter}');
+        cy.getElementAutocompleteTypeAndClick(
+            { [patientSearchElement]: patient },
+            suggestionAutocomplete
+        )
     }
 
     if (prescriber) {
-        cy.getElementAndType({ [prescriberSearch]: prescriber })
-            .wait(3000)
-            .type('{downarrow}')
-            .type('{enter}');
+        cy.getElementAutocompleteTypeAndClick(
+            { [prescriberSearchElement]: prescriber },
+            suggestionAutocomplete
+        )
     }
 
     if (budget) {
-        cy.getElementAutocompleteTypeAndClick(
-            { [searchBudgetScreenRecipesElement]: String(budget) },
-            '[data-index="0"]'
-        );
-    }
-
-    if (lastModifier) {
-        cy.getElementAndType({ [lastModifierSearch]: lastModifier })
+        cy.getElementAndType({ [searchBudgetScreenRecipesElement]: `${budget} ${branch}` })
             .type('{downarrow}')
             .type('{enter}');
+    }
+
+
+    if (lastModifier) {
+        cy.getElementAutocompleteTypeAndClick(
+            { [lastModifierSearchElement]: lastModifier },
+            suggestionAutocomplete
+        )
     }
 
     if (budgetist) {
-        cy.getElementAndType({ [budgetistSearch]: budgetist })
-            .type('{downarrow}')
-            .type('{enter}');
+        cy.getElementAutocompleteTypeAndClick(
+            { [budgetistSearchElement]: budgetist },
+            suggestionAutocomplete
+        )
     }
 
     if (attendantResponsibleRecipes) {
-        cy.getElementAndType({ [attendantResponsibleSearch]: attendantResponsibleRecipes })
-            .wait(3000)
-            .type('{downarrow}')
-            .type('{enter}');
+        cy.getElementAutocompleteTypeAndClick(
+            { [attendantResponsibleSearchElement]: attendantResponsibleRecipes },
+            suggestionAutocomplete
+        )
     }
 
-    cy.getElementAndClick(buttonSearchRecipes);
-    // cy.pause();
-    // cy.captureRecipeNumber(String(numberRecipe));
+    cy.getElementAndClick(buttonSearchRecipesElement);
+
+    cy.captureRecipeNumber(recipeCodeColumnElement);
 
     return cy.wrap({ success: `Busca de receita realizada com sucesso.` });
 });
@@ -402,30 +408,35 @@ Cypress.Commands.add('cloneRecipe', (cloneRecipeElement: string, options: {
         cloneRecipeWithPharmaceuticalObservation = dataParameters.Recipe.clone.cloneRecipeWithPharmaceuticalObservation,
     } = options;
 
-    cy.getElementAndClick(cloneRecipeElement)
-    cy.wait(1000);
-    cy.then(() => {
-        cy.get(modalObservationsClone, { timeout: 20000 })
-            .then(($element) => {
+    cy.getElementAndClick(cloneRecipeElement);
 
-                if (!$element.is(':visible')) {
-                    cy.getElementAndClick(btnModalMessage);
-                }
-                else {
-                    if (cloneRecipeWithPharmaceuticalObservation) {
-                        cy.getElementAndClick(btnModalMessage);
+    cy.get(modalCloneRecipesElement, { timeout: 20000 })
+        .should('be.visible')
+        .then(() => {
+            cy.get(clonePharmaceuticalNotes, { timeout: 20000 }).then(($checkbox) => {
+                if (cloneRecipeWithPharmaceuticalObservation) {
+                    
+                    if (!$checkbox.is(':checked')) {
+                        cy.wrap($checkbox).check({ force: true });
                     }
-                    if (!cloneRecipeWithPharmaceuticalObservation) {
-                        cy.get(clonePharmaceuticalNotes, { timeout: 20000 })
-                            .uncheck();
-                        cy.getElementAndClick(btnModalMessage);
-                    }
+                } else {
+                    cy.wrap($checkbox).uncheck({ force: true });
                 }
-                cy.getElementAndClick(btnModalMessage);
             });
+
+            cy.getElementAndClick(btnSuccessModalElement);
+        });
+
+    cy.wait(1000);
+    cy.getElementAndClick(btnModalMessage);
+
+    cy.captureRecipeNumber(recipeCodeColumnElement).then((clonedRecipeNumber) => {
+        cy.searchRecipe({ numberRecipe: clonedRecipeNumber });
     });
+
     return cy.wrap({ success: `Receita clonada com sucesso.` });
 });
+
 
 
 
