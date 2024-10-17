@@ -116,7 +116,8 @@ export const {
     sendReplyQuestionsTechnical,
     barProgressSaveRecipe,
     noMainContact,
-
+    cloneRecipeElement,
+    
 } = el.Recipes;
 
 
@@ -148,7 +149,7 @@ describe('Clonagem de receitas.', function () {
 
         cy.searchRecipe();
         
-        cy.cloneRecipe(':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .clone-receita');
+        cy.cloneRecipe(cloneRecipeElement);
     });
 })
 

@@ -129,7 +129,7 @@ export const {
     recipeTypeInput,
     deleteRecipeElement,
     reloadPageButtonElement,
-    modalCloneRecipesElement,
+    modalCloneRecipeElement,
 
 } = el.Recipes;
 
@@ -410,7 +410,7 @@ Cypress.Commands.add('cloneRecipe', (cloneRecipeElement: string, options: {
 
     cy.getElementAndClick(cloneRecipeElement);
 
-    cy.get(modalCloneRecipesElement, { timeout: 20000 })
+    cy.get(modalCloneRecipeElement, { timeout: 20000 })
         .should('be.visible')
         .then(() => {
             cy.get(clonePharmaceuticalNotes, { timeout: 20000 }).then(($checkbox) => {

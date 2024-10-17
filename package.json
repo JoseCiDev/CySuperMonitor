@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "recipeImport": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/recipeImport.cy.ts\"",
+    "recipeClone": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/recipeClone.cy.ts\"",
     "budgetConfirm": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/budgetConfirm.cy.ts\"",
     "budgetPayment": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/budgetPayment.cy.ts\""
   },

@@ -122,8 +122,10 @@ interface Elements<S = string> {
         recipeTypeInput: (recipeType: S) => S;
         deleteRecipeElement: S;
         reloadPageButtonElement: S;
-        modalCloneRecipesElement: S;
-    };
+        cloneRecipeElement:S;
+        modalCloneRecipeElement: S;
+        
+        };
 
     Services: {
         menuServices: S;
@@ -420,7 +422,8 @@ export const elements: Elements = {
         recipeTypeInput: (recipeType: string): string => `input[name="receita_tipo"][value="${recipeType}"]`,
         deleteRecipeElement: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-recipe',
         reloadPageButtonElement: ':nth-child(5) > .col > .btn',
-        modalCloneRecipesElement: '.bootbox > .modal-dialog > .modal-content > .modal-body',
+        cloneRecipeElement:'#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > div > ul > li.list-group-item.clone-receita',
+        modalCloneRecipeElement: '.bootbox > .modal-dialog > .modal-content > .modal-body',
 
     },
 
