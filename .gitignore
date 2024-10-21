@@ -25,6 +25,9 @@ cypress.env.json
 # Visual Studio Code configuration files
 .vscode/
 
+# PhpStorm configuration files
+.idea/
+
 # Yarn dependency files
 .yarn
 .yarnrc
@@ -38,8 +41,3 @@ npm-debug.log
 /cypress/videos/
 /cypress/screenshots/
 /cypress/reports/
-
-# Cypress environment variables file
-cypress.env.json
-
-

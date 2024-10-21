@@ -99,7 +99,7 @@ export const dataParameters: DataParameters = {
             urgentRecipeElement: false,
             clientAlert: false,
             controlledMedication: false,
-            customerPhone: 48991888641,
+            customerPhone: 48992076381,
         },
         search: {
             numberRecipe: undefined,//digitar o numero da receita ou undefined
@@ -147,13 +147,13 @@ export const dataParameters: DataParameters = {
 
     Budget: {
         confirmation: {
-            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['34959'])]),
-            filialNumberForSearch: String([faker.helpers.arrayElement(['1313'])]),
+            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['999999'])]),
+            filialNumberForSearch: String([faker.helpers.arrayElement(['5000'])]),
             typePaymentCourtesyInjectables: BudgetConfirmationTypePaymentCourtesyInjectables.CourtesyComplaintHandling,
             budgetist: 'orcam',
             budgetAttendant: 'adm',
             recipeNumber: String([faker.helpers.arrayElement(['425558'])]),
-            customerContactPhoneNumber: 5548991888641,
+            customerContactPhoneNumber: 5548992076381,
             paymentMethod: BudgetConfirmationPaymentMethod.CreditCards,
             chosenBudget: ChosenBudget.chosenBudget,
             timeTreatment: 30,

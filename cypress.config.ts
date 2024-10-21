@@ -67,7 +67,7 @@ export default defineConfig({
         return launchOptions;
       });
     },
-    baseUrl: 'http://192.168.0.66:9202/',
+    baseUrl: 'http://sm-hkm.docker.local:8080/',
     supportFile: 'cypress/support/e2e.{js,jsx,ts,tsx}',
     specPattern: 'cypress/**/*.{js,jsx,ts,tsx,feature}',
     redirectionLimit: 5000,
