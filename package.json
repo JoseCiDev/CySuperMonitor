@@ -6,7 +6,8 @@
     "recipeImport": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/recipeImport.cy.ts\"",
     "recipeClone": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/recipeClone.cy.ts\"",
     "budgetConfirm": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/budgetConfirm.cy.ts\"",
-    "budgetPayment": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/budgetPayment.cy.ts\""
+    "budgetPayment": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/UI/budgetPayment.cy.ts\"",
+    "budgetPayUpdatePaymentStatusConsultDataProvided": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/integration/Hotfix/budgetPayUpdatePaymentStatusConsultDataProvided.cy.ts\""
   },
   "keywords": [],
   "author": "",
@@ -18,11 +19,11 @@
     "@faker-js/faker": "^8.4.1",
     "@types/cypress": "^0.1.6",
     "@types/node": "^22.7.4",
-    "cypress": "^13.13.3",
+    "cypress": "^13.15.0",
     "cypress-cucumber-preprocessor": "^4.3.1",
     "cypress-wait-until": "^3.0.2",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "@js-brasil/fakerbr": "^0.0.2",

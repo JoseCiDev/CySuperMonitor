@@ -334,8 +334,90 @@ Cypress.Commands.add('changeUsersBudget', (budgetist: string, attendant: string)
 
 });
 
+// Cypress.Commands.add('viewBudget', () => {
+//     const checkPaymentStatus = (index: number) => {
+//         const paymentSelectorElement = paymentSelectorInput(index);
+//         const updateSelectorStatusElement = updateSelectorStatusInput(index);
+//         const viewSelectorElement = viewSelectorInput(index);
+
+//         cy.get(paymentSelectorElement)
+//             .invoke('text')
+//             .then((paymentStatus) => {
+//                 const trimmedStatus = paymentStatus.trim();
+
+//                 if (trimmedStatus.includes('Inativo')) {
+//                     cy.log(`Orçamento ${index} está inativo, verificando o próximo...`);
+//                     checkPaymentStatus(index + 1);
+
+//                 } else if (trimmedStatus.includes('Sem pagamento')) {
+//                     cy.log(`Orçamento ${index} sem pagamento. Visualizando...`);
+//                     cy.getElementAndClick(viewSelectorElement);
+
+
+
+//                 } else if (trimmedStatus.includes('Aguardando')) {
+//                     cy.get(updateSelectorStatusElement)
+//                         .then(($element) => {
+//                             if ($element.is(':visible')) {
+//                                 cy.log(`Atualizando status do orçamento ${index}...`);
+//                                 cy.getElementAndClick(updateSelectorStatusElement);
+//                                 cy.get(paymentSelectorElement)
+//                                     .invoke('text')
+//                                     .then((newStatus) => {
+//                                         if (newStatus.trim().includes('Pago')) {
+//                                             cy.log(`Orçamento ${index} foi pago com sucesso, verificando o próximo...`);
+//                                             checkPaymentStatus(index + 1);
+//                                         } else {
+//                                             cy.log(`Orçamento ${index} ainda não foi pago, visualizando...`);
+//                                             cy.getElementAndClick(viewSelectorElement);
+
+//                                         }
+//                                     });
+//                             } else {
+//                                 cy.log(`Botão de atualização não visível para o orçamento ${index}, visualizando...`);
+//                                 cy.getElementAndClick(viewSelectorElement);
+
+//                             }
+//                         });
+
+//                 } else if (trimmedStatus.includes('Pago')) {
+//                     cy.log(`Orçamento ${index} já está pago, verificando o próximo...`);
+//                     checkPaymentStatus(index + 1);
+
+//                 } else {
+//                     cy.log(`Status desconhecido para o orçamento ${index}, verificando o próximo...`);
+//                     checkPaymentStatus(index + 1);
+//                 }
+//             });
+//     };
+//     const searchBudgetByBranch = () => {
+//         const orcamentoNumber = dataParameters.Budget.confirmation.orcamentoNumberForSearch;
+//         const filialNumber = dataParameters.Budget.confirmation.filialNumberForSearch;
+
+//         cy.getElementAndClick(homeMenuElement);
+
+//         // Se um número de orçamento específico foi fornecido, apenas visualize diretamente
+//         if (orcamentoNumber) {
+//             cy.getElementAndType({ [fieldSearchBudgetElement]: orcamentoNumber });
+//             cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
+//             // Visualiza diretamente o orçamento específico sem verificar o status
+//             cy.getElementAndClick(`:nth-child(2) > :nth-child(8) > .visualizarFvc > .fa`);
+//         } else {
+//             if (filialNumber) {
+//                 cy.getElementAndType({ [searchBudgetByBranchElement]: filialNumber });
+//             }
+
+//             cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
+
+//             checkPaymentStatus(2);
+//         }
+//     };
+//     searchBudgetByBranch();
+// });
 Cypress.Commands.add('viewBudget', () => {
-    const checkPaymentStatus = (index: number) => {
+    let selectedBudgetNumber = null; // Para armazenar o número do orçamento visualizado
+
+    const checkPaymentStatus = (index) => {
         const paymentSelectorElement = paymentSelectorInput(index);
         const updateSelectorStatusElement = updateSelectorStatusInput(index);
         const viewSelectorElement = viewSelectorInput(index);
@@ -351,15 +433,8 @@ Cypress.Commands.add('viewBudget', () => {
 
                 } else if (trimmedStatus.includes('Sem pagamento')) {
                     cy.log(`Orçamento ${index} sem pagamento. Visualizando...`);
+                    selectedBudgetNumber = index; // Armazenar o índice/número do orçamento selecionado
                     cy.getElementAndClick(viewSelectorElement);
-
-                    //clicar na modal que informa cliente nao cadastrado ao acessar atendimentos em andamento
-                    cy.wait(3000);//essa espera é necessária porque o backend dispara o evento quando nao tem cliente cadastrado, fiz alguns testes tentando um tempo maior ou menor e quebra. Analisamos o codigo da aplicação e existe uma validação que verifica se o cliente do orçamento está no SM, se não esta ele sincroniza, nessa parte do código tem um timeout de 2 segundos.
-                    cy.get('body').then(($body) => {
-                        if ($body.find('.bootbox .modal-footer .btn').length > 0) {
-                            cy.getElementAndClick('.bootbox .modal-footer .btn');
-                        }
-                    })
 
                 } else if (trimmedStatus.includes('Aguardando')) {
                     cy.get(updateSelectorStatusElement)
@@ -375,11 +450,13 @@ Cypress.Commands.add('viewBudget', () => {
                                             checkPaymentStatus(index + 1);
                                         } else {
                                             cy.log(`Orçamento ${index} ainda não foi pago, visualizando...`);
+                                            selectedBudgetNumber = index;
                                             cy.getElementAndClick(viewSelectorElement);
                                         }
                                     });
                             } else {
                                 cy.log(`Botão de atualização não visível para o orçamento ${index}, visualizando...`);
+                                selectedBudgetNumber = index;
                                 cy.getElementAndClick(viewSelectorElement);
                             }
                         });
@@ -394,18 +471,19 @@ Cypress.Commands.add('viewBudget', () => {
                 }
             });
     };
+
     const searchBudgetByBranch = () => {
         const orcamentoNumber = dataParameters.Budget.confirmation.orcamentoNumberForSearch;
         const filialNumber = dataParameters.Budget.confirmation.filialNumberForSearch;
 
         cy.getElementAndClick(homeMenuElement);
 
-        // Se um número de orçamento específico foi fornecido, apenas visualize diretamente
         if (orcamentoNumber) {
             cy.getElementAndType({ [fieldSearchBudgetElement]: orcamentoNumber });
             cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
-            // Visualiza diretamente o orçamento específico sem verificar o status
             cy.getElementAndClick(`:nth-child(2) > :nth-child(8) > .visualizarFvc > .fa`);
+            selectedBudgetNumber = orcamentoNumber; // Definir o orçamento selecionado
+
         } else {
             if (filialNumber) {
                 cy.getElementAndType({ [searchBudgetByBranchElement]: filialNumber });
@@ -416,7 +494,11 @@ Cypress.Commands.add('viewBudget', () => {
             checkPaymentStatus(2);
         }
     };
+
     searchBudgetByBranch();
+
+    // Retornar o número/índice do orçamento que será usado nos próximos passos
+    return cy.wrap(selectedBudgetNumber);
 });
 
 
@@ -787,12 +869,22 @@ Cypress.Commands.add('selectCustomerContact', (options: {
         customerContactPhoneNumber = dataParameters.Budget.confirmation.customerContactPhoneNumber,
     } = options;
 
+    cy.log('Essa espera é necessária porque o backend dispara o evento quando nao tem cliente cadastrado, fiz alguns testes tentando um tempo maior ou menor e quebra. Analisamos o codigo da aplicação e existe uma validação que verifica se o cliente do orçamento está no SM, se não esta ele sincroniza, nessa parte do código tem um timeout de 2 segundos.');
+    cy.wait(5000);//essa espera é necessária porque o backend dispara o evento quando nao tem cliente cadastrado, fiz alguns testes tentando um tempo maior ou menor e quebra. Analisamos o codigo da aplicação e existe uma validação que verifica se o cliente do orçamento está no SM, se não esta ele sincroniza, nessa parte do código tem um timeout de 2 segundos.
+    cy.get('body').then(($body) => {
+        if ($body.find('.bootbox .modal-footer .btn').length > 0) {
+            cy.getElementAndClick('.bootbox .modal-footer .btn');
+        }
+    })
+
     cy.getElementAndClick(setUpPhoneContactElement);
 
     return cy.get('body')
         .then($body => {
             if ($body.find(telephoneContactConfigurationModalElement).length > 0) {
                 cy.log('Modal de configuração de contatos foi apresentada.');
+
+                cy.wait(1000);
 
                 cy.getElementAndType({ [insertCustomerContactPhoneNumberElement]: customerContactPhoneNumber });
 
@@ -1097,57 +1189,274 @@ Cypress.Commands.add('confirmBudget', (options: {
     return cy.wrap({ success: 'Orçamento confirmado com sucesso!' });
 });
 
+const toArray = <T>(value: T | T[]): T[] => {
+    return Array.isArray(value) ? value : [value];
+};
+// Cypress.Commands.add('payBudget', (options: {
+//     paymentMethod?: PayBudgetPaymentMethod,
+//     telephone?: number[];
+//     email?: string[];
+//     fullName?: string[];
+//     birthDate?: string[];
+//     cpf?: number[];
+//     rg?: number[];
+//     useRegisteredAddress?: boolean;
+//     zipCode?: number[];
+//     state?: PayBudgetState[];
+//     city?: string[];
+//     district?: string[];
+//     street?: string[];
+//     houseNumber?: number[];
+//     addressComplement?: string[];
+//     isMyDeliveryAddress?: boolean;
+//     cardholderName?: string[];
+//     cpfCnpj?: number[];
+//     cardNumber?: number[];
+//     expirationMonth?: PayBudgetCreditCardExpirationMonth[];
+//     expirationYear?: PayBudgetCreditCardExpirationYear[];
+//     securityCode?: number[];
+//     installments?: BudgetInstallments[];
+// } = {}): ValidationResult => {
 
+//     const {
+//         paymentMethod = dataParameters.Budget.payment.paymentMethod,
+//         telephone = toArray(dataParameters.Budget.payment.telephone),
+//         email = toArray(dataParameters.Budget.payment.email),
+//         fullName = toArray(dataParameters.Budget.payment.fullName),
+//         birthDate = toArray(dataParameters.Budget.payment.birthDate),
+//         cpf = toArray(dataParameters.Budget.payment.cpf),
+//         rg = toArray(dataParameters.Budget.payment.rg),
+//         useRegisteredAddress = dataParameters.Budget.payment.useRegisteredAddress,
+//         zipCode = toArray(dataParameters.Budget.payment.zipCode),
+//         state = toArray(dataParameters.Budget.payment.state),
+//         city = toArray(dataParameters.Budget.payment.city),
+//         district = toArray(dataParameters.Budget.payment.district),
+//         street = toArray(dataParameters.Budget.payment.street),
+//         houseNumber = toArray(dataParameters.Budget.payment.houseNumber),
+//         addressComplement = toArray(dataParameters.Budget.payment.addressComplement),
+//         isMyDeliveryAddress = dataParameters.Budget.payment.isMyDeliveryAddress,
+//         cardholderName = toArray(dataParameters.Budget.payment.cardholderName),
+//         cpfCnpj = toArray(dataParameters.Budget.payment.cpfCnpj),
+//         cardNumber = toArray(dataParameters.Budget.payment.cardNumber),
+//         expirationMonth = toArray(dataParameters.Budget.payment.expirationMonth),
+//         expirationYear = toArray(dataParameters.Budget.payment.expirationYear),
+//         securityCode = toArray(dataParameters.Budget.payment.securityCode),
+//         installments = toArray(dataParameters.Budget.payment.installments),
+//     } = options;
+
+//     const selectOption = (element: string, value: string | number) => {
+//         if (value) {
+//             cy.get(element).select(value.toString());
+//         }
+//     };
+
+//     const getRandomValue = <T>(values: T[]): T => {
+//         return faker.helpers.arrayElement(values);
+//     };
+
+//     const handleAromaSelection = () => {
+//         cy.get('body').then(($body) => {
+//             if ($body.find('select.aroma').length > 0) {
+//                 cy.get('select.aroma').each(($aromaSelect, index) => {
+//                     cy.wrap($aromaSelect).find('option').then(($options) => {
+//                         const availableOptions = $options
+//                             .map((i, el) => Cypress.$(el).val())
+//                             .get()
+//                             .filter(option => option);
+
+//                         if (availableOptions.length === 0) {
+//                             cy.log('Nenhuma opção de aroma disponível no select.');
+//                             return;
+//                         }
+
+//                         const aromaSelecionado = faker.helpers.arrayElement(availableOptions) as string;
+
+//                         cy.wrap($aromaSelect)
+//                             .select(aromaSelecionado, { force: true })
+//                             .then(() => {
+//                                 cy.wrap($aromaSelect).invoke('val').then((selectedValue) => {
+//                                     if (selectedValue === aromaSelecionado) {
+//                                         cy.log(`Aroma selecionado para o select ${index + 1}: ${aromaSelecionado}`);
+//                                     } else {
+//                                         cy.log(`Aroma "${aromaSelecionado}" não pôde ser selecionado corretamente.`);
+//                                     }
+//                                 });
+//                             });
+//                     });
+//                 });
+//             } else {
+//                 cy.log('Nenhum campo de seleção de aroma encontrado.');
+//             }
+//         });
+//     };
+
+//     const handleCreditCardPayment = () => {
+//         cy.getElementAndType({ [cardholderNameElement]: getRandomValue(cardholderName) });
+//         cy.getElementAndType({ [cpfCnpjElement]: getRandomValue(cpfCnpj) });
+//         cy.getElementAndType({ [cardNumberElement]: getRandomValue(cardNumber) });
+//         selectOption(expirationMonthElement, getRandomValue(expirationMonth));
+//         selectOption(expirationYearElement, getRandomValue(expirationYear));
+//         cy.getElementAndType({ [securityCodeElement]: getRandomValue(securityCode) });
+//         selectOption(installmentsElement, getRandomValue(installments));
+//     };
+
+//     const attemptPayment = () => {
+//         const currentTelephone = getRandomValue(telephone);
+//         const currentEmail = getRandomValue(email);
+//         const currentFullName = getRandomValue(fullName);
+//         const currentBirthDate = getRandomValue(birthDate);
+//         const currentCpf = getRandomValue(cpf);
+//         const currentRg = getRandomValue(rg);
+//         const currentZipCode = getRandomValue(zipCode);
+//         const currentState = getRandomValue(state);
+//         const currentCity = getRandomValue(city);
+//         const currentDistrict = getRandomValue(district);
+//         const currentStreet = getRandomValue(street);
+//         const currentHouseNumber = getRandomValue(houseNumber);
+//         const currentAddressComplement = getRandomValue(addressComplement);
+
+//         cy.get(goToPaymentElement).should('be.visible').click();
+
+//         cy.getElementAndClick(paymentMethod);
+//         cy.getElementAndClick(makePaymentUsingTheSelectedPaymentMethodElement);
+
+//         cy.getElementAndType({ [telephoneElement]: currentTelephone });
+//         cy.getElementAndType({ [emailElement]: currentEmail });
+//         cy.getElementAndType({ [fullNameElement]: currentFullName });
+//         cy.getElementAndType({ [birthDateElement]: currentBirthDate });
+//         cy.getElementAndType({ [cpfElement]: currentCpf });
+//         cy.getElementAndType({ [rgElement]: currentRg });
+//         cy.getElementAndClick(useRegisteredAddressElement);
+
+//         cy.getElementAndType({ [zipCodeElement]: currentZipCode });
+//         cy.wait(2000);
+//         cy.getSelectOptionByValue([{ element: stateElement, value: currentState }]);
+//         cy.getElementAndType({ [cityElement]: currentCity });
+//         cy.getElementAndType({ [districtElement]: currentDistrict });
+//         cy.getElementAndType({ [streetElement]: currentStreet });
+//         cy.getElementAndType({ [houseNumberElement]: currentHouseNumber });
+//         cy.getElementAndType({ [addressComplementElement]: currentAddressComplement });
+
+//         if (isMyDeliveryAddress) {
+//             cy.getElementAndClick(isMyDeliveryAddressElement);
+//         }
+
+//         if (paymentMethod !== PayBudgetPaymentMethod.Pix) {
+//             handleCreditCardPayment();
+//         }
+
+//         cy.getElementAndClick(makePaymentElement);
+//     };
+
+//     const checkSuccessMessage = () => {
+//         return cy.get('.success-container-info .text-title')
+//             .then($element => {
+//                 const successText = $element.text().trim();
+//                 return successText.includes('PAGAMENTO CONFIRMADO');
+//             });
+//     };
+
+//     return cy.wrap(null).then(() => {
+//         cy.get(accessSelfcheckoutElement)
+//             .invoke('removeAttr', 'target')
+//             .then(($el) => {
+//                 const href = $el.prop('href');
+//                 cy.visit(href);
+//             });
+
+//         cy.url().should('include', dataParameters.env.BASE_URL_SC);
+
+//         handleAromaSelection();
+
+//         cy.wait(1000);
+
+//         let attempts = 0;
+//         const maxAttempts = fullName.length > 1 ? 3 : 1;
+
+//         const tryPayment = () => {
+//             attempts++;
+//             attemptPayment();
+
+//             return checkSuccessMessage().then((isSuccess) => {
+//                 if (isSuccess) {
+//                     cy.log('Pagamento confirmado.');
+//                     return cy.wrap({
+//                         telephone: getRandomValue(telephone),
+//                         email: getRandomValue(email),
+//                         fullName: getRandomValue(fullName),
+//                         birthDate: getRandomValue(birthDate),
+//                         cpf: getRandomValue(cpf),
+//                         rg: getRandomValue(rg),
+//                         zipCode: getRandomValue(zipCode),
+//                         state: getRandomValue(state),
+//                         city: getRandomValue(city),
+//                         district: getRandomValue(district),
+//                         street: getRandomValue(street),
+//                         houseNumber: getRandomValue(houseNumber),
+//                         addressComplement: getRandomValue(addressComplement)
+//                     });
+//                 } else if (attempts < maxAttempts) {
+//                     cy.log(`Tentativa de pagamento falhou. Tentando novamente (${attempts}/${maxAttempts})...`);
+//                     return tryPayment();
+//                 } else {
+//                     throw new Error('Falha no pagamento após múltiplas tentativas.');
+//                 }
+//             });
+//         };
+
+//         return tryPayment();
+//     });
+// });
 Cypress.Commands.add('payBudget', (options: {
     paymentMethod?: PayBudgetPaymentMethod,
-    telephone?: number;
-    email?: string;
-    fullName?: string;
-    birthDate?: string;
-    cpf?: number;
-    rg?: number;
+    telephone?: number[];
+    email?: string[];
+    fullName?: string[];
+    birthDate?: string[];
+    cpf?: number[];
+    rg?: number[];
     useRegisteredAddress?: boolean;
-    zipCode?: number;
-    state?: PayBudgetState,
-    city?: string;
-    district?: string;
-    street?: string;
-    houseNumber?: number;
-    addressComplement?: string;
+    zipCode?: number[];
+    state?: PayBudgetState[];
+    city?: string[];
+    district?: string[];
+    street?: string[];
+    houseNumber?: number[];
+    addressComplement?: string[];
     isMyDeliveryAddress?: boolean;
-    cardholderName?: string;
-    cpfCnpj?: number;
-    cardNumber?: number;
-    expirationMonth?: PayBudgetCreditCardExpirationMonth;
-    expirationYear?: PayBudgetCreditCardExpirationYear;
-    securityCode?: number;
-    installments?: BudgetInstallments;
+    cardholderName?: string[];
+    cpfCnpj?: number[];
+    cardNumber?: number[];
+    expirationMonth?: PayBudgetCreditCardExpirationMonth[];
+    expirationYear?: PayBudgetCreditCardExpirationYear[];
+    securityCode?: number[];
+    installments?: BudgetInstallments[];
 } = {}): ValidationResult => {
 
     const {
         paymentMethod = dataParameters.Budget.payment.paymentMethod,
-        telephone = dataParameters.Budget.payment.telephone,
-        email = dataParameters.Budget.payment.email,
-        fullName = dataParameters.Budget.payment.fullName,
-        birthDate = dataParameters.Budget.payment.birthDate,
-        cpf = dataParameters.Budget.payment.cpf,
-        rg = dataParameters.Budget.payment.rg,
+        telephone = toArray(dataParameters.Budget.payment.telephone),
+        email = toArray(dataParameters.Budget.payment.email),
+        fullName = toArray(dataParameters.Budget.payment.fullName),
+        birthDate = toArray(dataParameters.Budget.payment.birthDate),
+        cpf = toArray(dataParameters.Budget.payment.cpf),
+        rg = toArray(dataParameters.Budget.payment.rg),
         useRegisteredAddress = dataParameters.Budget.payment.useRegisteredAddress,
-        zipCode = dataParameters.Budget.payment.zipCode,
-        state = dataParameters.Budget.payment.state,
-        city = dataParameters.Budget.payment.city,
-        district = dataParameters.Budget.payment.district,
-        street = dataParameters.Budget.payment.street,
-        houseNumber = dataParameters.Budget.payment.houseNumber,
-        addressComplement = dataParameters.Budget.payment.addressComplement,
+        zipCode = toArray(dataParameters.Budget.payment.zipCode),
+        state = toArray(dataParameters.Budget.payment.state),
+        city = toArray(dataParameters.Budget.payment.city),
+        district = toArray(dataParameters.Budget.payment.district),
+        street = toArray(dataParameters.Budget.payment.street),
+        houseNumber = toArray(dataParameters.Budget.payment.houseNumber),
+        addressComplement = toArray(dataParameters.Budget.payment.addressComplement),
         isMyDeliveryAddress = dataParameters.Budget.payment.isMyDeliveryAddress,
-        cardholderName = dataParameters.Budget.payment.cardholderName,
-        cpfCnpj = dataParameters.Budget.payment.cpfCnpj,
-        cardNumber = dataParameters.Budget.payment.cardNumber,
-        expirationMonth = dataParameters.Budget.payment.expirationMonth,
-        expirationYear = dataParameters.Budget.payment.expirationYear,
-        securityCode = dataParameters.Budget.payment.securityCode,
-        installments = dataParameters.Budget.payment.installments,
+        cardholderName = toArray(dataParameters.Budget.payment.cardholderName),
+        cpfCnpj = toArray(dataParameters.Budget.payment.cpfCnpj),
+        cardNumber = toArray(dataParameters.Budget.payment.cardNumber),
+        expirationMonth = toArray(dataParameters.Budget.payment.expirationMonth),
+        expirationYear = toArray(dataParameters.Budget.payment.expirationYear),
+        securityCode = toArray(dataParameters.Budget.payment.securityCode),
+        installments = toArray(dataParameters.Budget.payment.installments),
     } = options;
 
     const selectOption = (element: string, value: string | number) => {
@@ -1155,82 +1464,310 @@ Cypress.Commands.add('payBudget', (options: {
             cy.get(element).select(value.toString());
         }
     };
+
+    const getRandomValue = <T>(values: T[]): T => {
+        return faker.helpers.arrayElement(values);
+    };
+
     const handleAromaSelection = () => {
         cy.get('body').then(($body) => {
             if ($body.find('select.aroma').length > 0) {
                 cy.get('select.aroma').each(($aromaSelect, index) => {
-                    const aromasDisponiveis = [
-                        PayBudgetSelectAroma.Abacaxi,
-                        PayBudgetSelectAroma.Cacau,
-                        PayBudgetSelectAroma.Laranja,
-                        PayBudgetSelectAroma.Limao,
-                        PayBudgetSelectAroma.Morango,
-                        PayBudgetSelectAroma.SemAroma,
-                        PayBudgetSelectAroma.Uva
-                    ];
-                    const aromaSelecionado = faker.helpers.arrayElement(aromasDisponiveis);
-                    cy.wrap($aromaSelect).select(aromaSelecionado);
-                    cy.log(`Aroma selecionado para o select ${index + 1}: ${aromaSelecionado}`);
+                    cy.wrap($aromaSelect).find('option').then(($options) => {
+                        const availableOptions = $options
+                            .map((i, el) => Cypress.$(el).val())
+                            .get()
+                            .filter(option => option);
+
+                        if (availableOptions.length === 0) {
+                            cy.log('Nenhuma opção de aroma disponível no select.');
+                            return;
+                        }
+
+                        const aromaSelecionado = faker.helpers.arrayElement(availableOptions) as string;
+
+                        cy.wrap($aromaSelect)
+                            .select(aromaSelecionado, { force: true })
+                            .then(() => {
+                                cy.wrap($aromaSelect).invoke('val').then((selectedValue) => {
+                                    if (selectedValue === aromaSelecionado) {
+                                        cy.log(`Aroma selecionado para o select ${index + 1}: ${aromaSelecionado}`);
+                                    } else {
+                                        cy.log(`Aroma "${aromaSelecionado}" não pôde ser selecionado corretamente.`);
+                                    }
+                                });
+                            });
+                    });
                 });
             } else {
                 cy.log('Nenhum campo de seleção de aroma encontrado.');
             }
         });
     };
+
     const handleCreditCardPayment = () => {
-        cy.getElementAndType({ [cardholderNameElement]: cardholderName });
-        cy.getElementAndType({ [cpfCnpjElement]: cpfCnpj });
-        cy.getElementAndType({ [cardNumberElement]: cardNumber });
-        selectOption(expirationMonthElement, expirationMonth);
-        selectOption(expirationYearElement, expirationYear);
-        cy.getElementAndType({ [securityCodeElement]: securityCode });
-        selectOption(installmentsElement, installments);
+        cy.getElementAndType({ [cardholderNameElement]: getRandomValue(cardholderName) });
+        cy.getElementAndType({ [cpfCnpjElement]: getRandomValue(cpfCnpj) });
+        cy.getElementAndType({ [cardNumberElement]: getRandomValue(cardNumber) });
+        selectOption(expirationMonthElement, getRandomValue(expirationMonth));
+        selectOption(expirationYearElement, getRandomValue(expirationYear));
+        cy.getElementAndType({ [securityCodeElement]: getRandomValue(securityCode) });
+        selectOption(installmentsElement, getRandomValue(installments));
     };
 
-    cy.get(accessSelfcheckoutElement)
-        .invoke('removeAttr', 'target')
-        .then(($el) => {
-            const href = $el.prop('href');
-            cy.visit(href);
+    const attemptPayment = (currentBudget) => {
+        const currentTelephone = getRandomValue(telephone);
+        const currentEmail = getRandomValue(email);
+        const currentFullName = getRandomValue(fullName);
+        const currentBirthDate = getRandomValue(birthDate);
+        const currentCpf = getRandomValue(cpf);
+        const currentRg = getRandomValue(rg);
+        const currentZipCode = getRandomValue(zipCode);
+        const currentState = getRandomValue(state);
+        const currentCity = getRandomValue(city);
+        const currentDistrict = getRandomValue(district);
+        const currentStreet = getRandomValue(street);
+        const currentHouseNumber = getRandomValue(houseNumber);
+        const currentAddressComplement = getRandomValue(addressComplement);
+
+        cy.log(`Tentando pagamento para o orçamento ${currentBudget}`);
+
+        cy.get(goToPaymentElement).should('be.visible').click();
+
+        cy.getElementAndClick(paymentMethod);
+        cy.getElementAndClick(makePaymentUsingTheSelectedPaymentMethodElement);
+
+        cy.getElementAndType({ [telephoneElement]: currentTelephone });
+        cy.getElementAndType({ [emailElement]: currentEmail });
+        cy.getElementAndType({ [fullNameElement]: currentFullName });
+        cy.getElementAndType({ [birthDateElement]: currentBirthDate });
+        cy.getElementAndType({ [cpfElement]: currentCpf });
+        cy.getElementAndType({ [rgElement]: currentRg });
+        cy.getElementAndClick(useRegisteredAddressElement);
+
+        cy.getElementAndType({ [zipCodeElement]: currentZipCode });
+        cy.wait(2000);
+        cy.getSelectOptionByValue([{ element: stateElement, value: currentState }]);
+        cy.getElementAndType({ [cityElement]: currentCity });
+        cy.getElementAndType({ [districtElement]: currentDistrict });
+        cy.getElementAndType({ [streetElement]: currentStreet });
+        cy.getElementAndType({ [houseNumberElement]: currentHouseNumber });
+        cy.getElementAndType({ [addressComplementElement]: currentAddressComplement });
+
+        if (isMyDeliveryAddress) {
+            cy.getElementAndClick(isMyDeliveryAddressElement);
+        }
+
+        if (paymentMethod !== PayBudgetPaymentMethod.Pix) {
+            handleCreditCardPayment();
+        }
+
+        cy.getElementAndClick(makePaymentElement);
+    };
+
+    const checkSuccessMessage = () => {
+        return cy.get('.success-container-info .text-title')
+            .then($element => {
+                const successText = $element.text().trim();
+                return successText.includes('PAGAMENTO CONFIRMADO');
+            });
+    };
+
+    return cy.wrap(null).then(() => {
+        cy.get(accessSelfcheckoutElement)
+            .invoke('removeAttr', 'target')
+            .then(($el) => {
+                const href = $el.prop('href');
+                cy.visit(href);
+            });
+
+        cy.url().should('include', dataParameters.env.BASE_URL_SC);
+
+        handleAromaSelection();
+
+        cy.wait(1000);
+
+        let attempts = 0;
+        const maxAttempts = fullName.length > 1 ? 3 : 1;
+
+        const tryPayment = () => {
+            return cy.viewBudget().then((currentBudget) => {
+                attempts++;
+                attemptPayment(currentBudget);
+
+                return checkSuccessMessage().then((isSuccess) => {
+                    if (isSuccess) {
+                        cy.log('Pagamento confirmado.');
+                        return cy.wrap(currentBudget); // Retornar o orçamento pago para confirmação
+                    } else if (attempts < maxAttempts) {
+                        cy.log(`Tentativa de pagamento falhou. Tentando novamente (${attempts}/${maxAttempts})...`);
+                        return tryPayment(); // Tentar novamente
+                    } else {
+                        throw new Error('Falha no pagamento após múltiplas tentativas.');
+                    }
+                });
+            });
+        };
+
+        return tryPayment();
+    });
+});
+
+
+// Cypress.Commands.add('validatePaymentData', (expectedData) => {
+
+//     const formatCPF = (cpf) => {
+//         const cpfStr = cpf.toString().padStart(11, '0');
+//         return cpfStr.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+//     };
+
+//     const formatZipCode = (zipCode) => {
+//         const zipStr = zipCode.toString().padStart(8, '0');
+//         return zipStr.replace(/(\d{5})(\d{3})/, '$1-$2');
+//     };
+
+//     const formattedZipCode = formatZipCode(expectedData.zipCode);
+//     const formattedCpf = formatCPF(expectedData.cpf);
+
+//     const checkValue = (label, actualValue) => {
+//         if (actualValue === undefined) {
+//             console.error(`${label} está undefined`);
+//         } else {
+//             console.log(`${label}: ${actualValue}`);
+//         }
+//     };
+
+//     checkValue('Nome Completo', expectedData.fullName);
+//     checkValue('CPF', formattedCpf);
+//     checkValue('RG', expectedData.rg);
+//     checkValue('Data de Nascimento', expectedData.birthDate);
+//     checkValue('Email', expectedData.email);
+//     checkValue('Rua', expectedData.street);
+//     checkValue('Número da Casa', expectedData.houseNumber);
+//     checkValue('Bairro', expectedData.district);
+//     checkValue('Complemento', expectedData.addressComplement);
+//     checkValue('Cidade', expectedData.city);
+//     checkValue('Estado', expectedData.state);
+//     checkValue('CEP', formattedZipCode);
+
+//     cy.viewBudget();
+
+//     let updatedDateBefore;
+//     cy.get('.payment-row-item:contains("Atualizado em") strong').invoke('text').then((text) => {
+//         updatedDateBefore = text.trim();
+//         cy.log(`Data de "Atualizado em" antes: ${updatedDateBefore}`);
+//     }).then(() => {
+//         cy.getElementAndClick('.getLastStatusPaymentsGPE')
+
+//         cy.wait(2000);
+
+//         cy.get('.payment-row-item:contains("Atualizado em") strong').invoke('text').then((updatedDateAfter) => {
+//             cy.log(`Data de "Atualizado em" depois: ${updatedDateAfter.trim()}`);
+
+//             expect(updatedDateAfter.trim()).to.equal(updatedDateBefore, 'A data de "Atualizado em" não deve mudar após atualizar o status de pagamento.');
+//         });
+//     });
+
+//     cy.get('.ibox-content .payment-row', { timeout: 20000 }).should('be.visible').within(() => {
+//         cy.contains('strong', expectedData.fullName).should('exist');
+//         cy.contains('strong', formattedCpf).should('exist');
+//         cy.contains('strong', expectedData.rg.toString()).should('exist');
+//         cy.contains('strong', expectedData.birthDate).should('exist');
+//         cy.contains('strong', expectedData.email).should('exist');
+
+//         cy.get('strong').each(($el) => {
+//             const text = $el.text().trim();
+
+//             if (text.includes(expectedData.street)) {
+//                 expect(text).to.include(expectedData.street);
+//             }
+//             if (text.includes(expectedData.houseNumber.toString())) {
+//                 expect(text).to.include(expectedData.houseNumber.toString());
+//             }
+//             if (text.includes(expectedData.district)) {
+//                 expect(text).to.include(expectedData.district);
+//             }
+//             if (expectedData.addressComplement && text.includes(expectedData.addressComplement)) {
+//                 expect(text).to.include(expectedData.addressComplement);
+//             }
+//             if (text.includes(expectedData.city)) {
+//                 expect(text).to.include(expectedData.city);
+//             }
+//             if (text.includes(expectedData.state)) {
+//                 expect(text).to.include(expectedData.state);
+//             }
+//             if (text.includes(formattedZipCode)) {
+//                 expect(text).to.include(formattedZipCode);
+//             }
+//         });
+//     });
+// });
+Cypress.Commands.add('validatePaymentData', (expectedData) => {
+    const formatCPF = (cpf) => {
+        const cpfStr = cpf.toString().padStart(11, '0');
+        return cpfStr.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    };
+    const formatZipCode = (zipCode) => {
+        const zipStr = zipCode.toString().padStart(8, '0');
+        return zipStr.replace(/(\d{5})(\d{3})/, '$1-$2');
+    };
+
+    const formattedCpf = formatCPF(expectedData.cpf);
+    const formattedZipCode = formatZipCode(expectedData.zipCode);
+
+    let updatedDateBefore;
+
+    cy.viewBudget().then((selectedBudgetNumber) => {
+        cy.log(`Validando dados para orçamento ${selectedBudgetNumber}`);
+
+        // Obter data antes da atualização
+        cy.get('.payment-row-item:contains("Atualizado em") strong').invoke('text').then((text) => {
+            updatedDateBefore = text.trim();
+            cy.log(`Data de "Atualizado em" antes: ${updatedDateBefore}`);
+        }).then(() => {
+            // Tentar atualizar status
+            cy.getElementAndClick('.getLastStatusPaymentsGPE')
+            cy.wait(2000);
+
+            // Verificar se a data permanece inalterada
+            cy.get('.payment-row-item:contains("Atualizado em") strong').invoke('text').then((updatedDateAfter) => {
+                cy.log(`Data de "Atualizado em" depois: ${updatedDateAfter.trim()}`);
+                expect(updatedDateAfter.trim()).to.equal(updatedDateBefore, 'A data de "Atualizado em" não deve mudar após atualizar o status.');
+            });
         });
-    cy.url().should('include', dataParameters.env.BASE_URL_SC);
-    
-    handleAromaSelection();
 
-    cy.getElementAndClick(goToPaymentElement);
-    
+        // Validação de dados da pessoa
+        cy.get('.ibox-content .payment-row').within(() => {
+            cy.contains('strong', expectedData.fullName).should('exist');
+            cy.contains('strong', formattedCpf).should('exist');
+            cy.contains('strong', expectedData.rg.toString()).should('exist');
+            cy.contains('strong', expectedData.birthDate).should('exist');
+            cy.contains('strong', expectedData.email).should('exist');
 
-    cy.getElementAndClick(paymentMethod);
-    cy.getElementAndClick(makePaymentUsingTheSelectedPaymentMethodElement);
-
-    cy.getElementAndType({ [telephoneElement]: telephone });
-    cy.getElementAndType({ [emailElement]: email });
-    cy.getElementAndType({ [fullNameElement]: fullName });
-    cy.getElementAndType({ [birthDateElement]: birthDate });
-    cy.getElementAndType({ [cpfElement]: cpf });
-    cy.getElementAndType({ [rgElement]: rg });
-    cy.getElementAndClick(useRegisteredAddressElement);
-
-    cy.getElementAndType({ [zipCodeElement]: zipCode });
-    selectOption(stateElement, state);
-    cy.getElementAndType({ [cityElement]: city });
-    cy.getElementAndType({ [districtElement]: district });
-    cy.getElementAndType({ [streetElement]: street });
-    cy.getElementAndType({ [houseNumberElement]: houseNumber });
-    cy.getElementAndType({ [addressComplementElement]: addressComplement });
-    if (isMyDeliveryAddress) {
-        cy.getElementAndClick(isMyDeliveryAddressElement);
-    }
-
-    if (paymentMethod !== PayBudgetPaymentMethod.Pix) {
-        handleCreditCardPayment();
-    }
-
-    cy.getElementAndClick(makePaymentElement);
-
-    if (paymentMethod === PayBudgetPaymentMethod.CreditCard) {
-        cy.getElementAndClick('.success-container-info');
-    }
-
-    return cy.wrap({ success: 'Para cartão de crédito o pedido é pago. Para pix é gerado qrcode.' });
+            cy.get('strong').each(($el) => {
+                const text = $el.text().trim();
+                if (text.includes(expectedData.street)) {
+                    expect(text).to.include(expectedData.street);
+                }
+                if (text.includes(expectedData.houseNumber.toString())) {
+                    expect(text).to.include(expectedData.houseNumber.toString());
+                }
+                if (text.includes(expectedData.district)) {
+                    expect(text).to.include(expectedData.district);
+                }
+                if (expectedData.addressComplement && text.includes(expectedData.addressComplement)) {
+                    expect(text).to.include(expectedData.addressComplement);
+                }
+                if (text.includes(expectedData.city)) {
+                    expect(text).to.include(expectedData.city);
+                }
+                if (text.includes(expectedData.state)) {
+                    expect(text).to.include(expectedData.state);
+                }
+                if (text.includes(formattedZipCode)) {
+                    expect(text).to.include(formattedZipCode);
+                }
+            });
+        });
+    });
 });

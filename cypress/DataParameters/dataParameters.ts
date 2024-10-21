@@ -147,8 +147,8 @@ export const dataParameters: DataParameters = {
 
     Budget: {
         confirmation: {
-            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['34959'])]),
-            filialNumberForSearch: String([faker.helpers.arrayElement(['1313'])]),
+            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['143780'])]),
+            filialNumberForSearch: String([faker.helpers.arrayElement(['5'])]),
             typePaymentCourtesyInjectables: BudgetConfirmationTypePaymentCourtesyInjectables.CourtesyComplaintHandling,
             budgetist: 'orcam',
             budgetAttendant: 'adm',
@@ -178,7 +178,7 @@ export const dataParameters: DataParameters = {
             automaticMessageTriggering: true,
         },
         payment: {
-            paymentMethod: PayBudgetPaymentMethod.Pix,
+            paymentMethod: PayBudgetPaymentMethod.CreditCard,
             telephone: faker.helpers.arrayElement([48991888641]),
             email: faker.helpers.arrayElement(['jose.djalma@essentia.com.br']),
             fullName: faker.helpers.arrayElement(['Jose Djalma Ferreira Mendes']),
@@ -187,7 +187,7 @@ export const dataParameters: DataParameters = {
             rg: faker.helpers.arrayElement([6207538]),
             useRegisteredAddress: true,
             zipCode: faker.helpers.arrayElement([89213320]),
-            state: PayBudgetState.BA,
+            state: PayBudgetState.RS,
             city: String([faker.helpers.arrayElement(['Joinville'])]),
             district: String([faker.helpers.arrayElement(['Nova Brasilia'])]),
             street: String([faker.helpers.arrayElement(['Rua Paranagua'])]),

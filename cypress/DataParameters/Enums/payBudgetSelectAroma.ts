@@ -5,5 +5,6 @@ export enum PayBudgetSelectAroma {
     Cacau = 'cacau',
     Limao = 'limao',
     Morango = 'morango',
+    Menta = 'menta',
     SemAroma = 'sem_aroma'
 };

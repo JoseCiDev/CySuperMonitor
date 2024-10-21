@@ -60,7 +60,7 @@ declare global {
         patient?: string;
         prescriber?: string;
         budget?: number;
-        branch?: S ;
+        branch?: S;
         lastModifier?: string;
         budgetist?: string;
         attendantResponsibleRecipes?: string;
@@ -211,7 +211,7 @@ declare global {
        * * comando customizado para visulizar orçamentos.
        * @example cy.viewBudget(buttonView)
        */
-      viewBudget(): Chainable<Element>;
+      viewBudget();
 
       /**
        * * comando customizado para reabrir orçamentos.
@@ -349,34 +349,50 @@ declare global {
 
       /**
        * * comando customizado para confirmar orçamentos.
-       * @example cy.confirmBudget()
+       * @example cy.payBudget()
        */
       payBudget(options?: {
-        paymentMethod?: PayBudgetPaymentMethod,
-        telephone?: number;
-        email?: S;
-        fullName?: S;
-        birthDate?: S;
-        cpf?: number;
-        rg?: number;
+        paymentMethod?: PayBudgetPaymentMethod;
+        telephone?: number[]; // Aceitar múltiplos números
+        email?: string[];     // Aceitar múltiplos emails
+        fullName?: string[];  // Aceitar múltiplos nomes completos
+        birthDate?: string[]; // Aceitar múltiplas datas de nascimento
+        cpf?: number[];       // Aceitar múltiplos CPFs
+        rg?: number[];        // Aceitar múltiplos RGs
         useRegisteredAddress?: boolean;
-        zipCode?: number;
-        state?: PayBudgetState,
-        city?: S;
-        district?: S;
-        street?: S;
-        houseNumber?: number;
-        addressComplement?: S;
+        zipCode?: number[];   // Aceitar múltiplos CEPs
+        state?: PayBudgetState[]; // Aceitar múltiplos estados
+        city?: string[];      // Aceitar múltiplas cidades
+        district?: string[];  // Aceitar múltiplos distritos
+        street?: string[];    // Aceitar múltiplas ruas
+        houseNumber?: number[];   // Aceitar múltiplos números de casa
+        addressComplement?: string[]; // Aceitar múltiplos complementos de endereço
         isMyDeliveryAddress?: boolean;
-        cardholderName?: S;
-        cpfCnpj?: number;
-        cardNumber?: number;
-        expirationMonth?: PayBudgetCreditCardExpirationMonth;
-        expirationYear?: PayBudgetCreditCardExpirationYear;
-        securityCode?: number;
-        installments?: BudgetInstallments;
+        cardholderName?: string[];    // Aceitar múltiplos nomes de titular do cartão
+        cpfCnpj?: number[];           // Aceitar múltiplos CPF/CNPJ
+        cardNumber?: number[];        // Aceitar múltiplos números de cartão
+        expirationMonth?: PayBudgetCreditCardExpirationMonth[];
+        expirationYear?: PayBudgetCreditCardExpirationYear[];
+        securityCode?: number[];      // Aceitar múltiplos códigos de segurança
+        installments?: BudgetInstallments[];
       }): ValidationResult;
 
+
+      validatePaymentData(expectedData: {
+        telephone: number;
+        email: string;
+        fullName: string;
+        birthDate: string;
+        cpf: number;
+        rg: number;
+        zipCode: number;
+        state: PayBudgetState;
+        city: string;
+        district: string;
+        street: string;
+        houseNumber: number;
+        addressComplement: string;
+      })
     }
   }
 }
