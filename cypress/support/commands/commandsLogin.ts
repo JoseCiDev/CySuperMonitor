@@ -1,10 +1,8 @@
 /// <reference path="../cypress.d.ts" />
 
-
 import {
   elements as el,
   faker,
-
   SearchRecipe,
   mount,
   validateEmail,
@@ -14,7 +12,6 @@ import {
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
-
 
 export const {
   suggestionAutocomplete,
@@ -31,7 +28,6 @@ export const {
 
 export const {
   menuRecipesElement,
-
   prescriberRecipes,
   menuImportRecipesElement,
   menuManageRecipes,
@@ -156,14 +152,14 @@ export const {
   saveTimeTreatment,
   budgetMessageModalElement,
   modalConfirmationBudgetElement,
-  chosenBudgetForConfirmation: chosenBudget,
+  chosenBudgetForConfirmation,
   insertRepeatTime,
-  saveDataConfirmationBudget: saveDataConfirmationBudget,
+  saveDataConfirmationBudget,
   monitoringService,
-  channelConfirmationBudget: channelConfirmationBudget,
+  channelConfirmationBudget,
   sendEmailTracking,
-  releaseBudgetForInclusionElement: noShowBudgetInclusion,
-  noShowBudgetCaixa: noShowBudgetCaixa,
+  releaseBudgetForInclusionElement,
+  noShowBudgetCaixa,
   observationFromCashierToCounter,
   detailedNote,
   fieldStatusPayment,
@@ -171,24 +167,24 @@ export const {
   addressShippingSelected,
   shipmentObservation,
   fieldFormShipping,
-  juntocomBudgetConfirmation: juntocomBudgetConfirmation,
+  juntocomBudgetConfirmation,
   juntocomClinicaHigashi,
   promisedFieldFor,
   fieldAromasSachet,
   aromaCapsuleField,
   generalObservation,
   budgetHasRecipeElement,
-  urgentBudgetElement: urgentBudgetElement,
-  cancelBudgetConfirmation: cancelBudgetConfirmation,
+  urgentBudgetElement,
+  cancelBudgetConfirmation,
   sendChatguruMessage,
-  PreViewBudget: PreViewBudget,
-  closePreViewBudget: closePreViewBudget,
-  sendconfirmBudget: sendconfirmBudget,
+  PreViewBudget,
+  closePreViewBudget,
+  sendconfirmBudget,
   showAll,
   hasSpecialFormula,
   generateLinkPayment,
-  relateRecipeBudget: relateRecipeBudget,
-  showBudgetsClosed: showBudgetsClosed,
+  relateRecipeBudget,
+  showBudgetsClosed,
   reopenBudget,
   confirmReopenBudget,
   userOptions,
@@ -233,7 +229,12 @@ export const {
 } = el.Settings;
 
 
-Cypress.Commands.add('login', (baseUrl: string, user: string, password: string, elementError?: string) => {
+Cypress.Commands.add('login', (
+  baseUrl: string,
+  user: string,
+  password: string,
+  elementError?: string
+) => {
   cy.log('Iniciando login...');
   cy.visit(baseUrl);
 

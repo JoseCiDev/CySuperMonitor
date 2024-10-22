@@ -150,6 +150,7 @@ interface Elements<S = string> {
         cancelChatguruIntegration: S;
         saveNumberChatguru: S;
         budgetist: S;
+        modalTreatmentTime:S;
         treatmentTimeModalHeader: S;
         insertTreatmentTime: S;
         standardTreatmentTime: S;
@@ -192,6 +193,7 @@ interface Elements<S = string> {
         generateLinkPayment: S;
         relateRecipeBudget: S;
         showBudgetsClosed: S;
+        viewBudgetElement:S;
         reopenBudget: S;
         confirmReopenBudget: S;
         userOptions: S;
@@ -215,6 +217,7 @@ interface Elements<S = string> {
         searchButtonElement: S;
         paymentSelectorInput: (index: number) => S;
         updateSelectorStatusInput: (index: number) => S;
+        UpdatePaymentStatusOnServiceScreenElement:S;
         viewSelectorInput: (index: number) => S;
         saveDataConfirmationBudget: S;
         cashierObservationElement: S;
@@ -236,6 +239,7 @@ interface Elements<S = string> {
         recipeCodeColumnElement: S;
         expandSideMenuElement: S;
         modalLinkRecipeElement: S;
+        modalClientNotFoundElement:S;
         setUpPhoneContactElement: S;
         telephoneContactConfigurationModalElement: S;
         insertCustomerContactPhoneNumberElement: S;
@@ -271,6 +275,9 @@ interface Elements<S = string> {
         securityCodeElement: S;
         installmentsElement: S;
         makePaymentElement: S;
+        paymentScreenSuccessElement:S;
+        paymentDateServiceScreenElement:S;
+        paymentDataOnServiceScreenElement:S;
     };
 
     Settings: {
@@ -453,6 +460,7 @@ export const elements: Elements = {
         cancelChatguruIntegration: '.btn btn-white',
         saveNumberChatguru: '#saveChatGuruNumber',
         budgetist: '#budgetist',
+        modalTreatmentTime:'#customTimeModal',
         treatmentTimeModalHeader: '#customTimeModal > div.modal-dialog > div > div.modal-header',
         insertTreatmentTime: '#customTime',
         standardTreatmentTime: '#customFormByTime > div.closestContainer > div > div:nth-child(1) > input',
@@ -493,6 +501,7 @@ export const elements: Elements = {
         sendconfirmBudget: '#submit',
         generateLinkPayment: '#bt-pagamento-modal',
         showBudgetsClosed: '#search-form > div.checkbox.m-l.m-r-xs > input[type=checkbox]:nth-child(1)',
+        viewBudgetElement:`:nth-child(2) > :nth-child(8) > .visualizarFvc > .fa`,
         reopenBudget: '#reabrir',
         confirmReopenBudget: 'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-footer > button.btn.btn-danger.pull-right',
         userOptions: '#username-link',
@@ -515,6 +524,7 @@ export const elements: Elements = {
         searchButtonElement: '#search-form > .btn',
         paymentSelectorInput: (index: number) => `:nth-child(${index}) > .td-pagamentos > .label`,
         updateSelectorStatusInput: (index: number) => `:nth-child(${index}) > :nth-child(8) > .getLastStatusPaymentsGPE > .fa`,
+        UpdatePaymentStatusOnServiceScreenElement:'.getLastStatusPaymentsGPE',
         viewSelectorInput: (index: number) => `:nth-child(${index}) > :nth-child(8) > .visualizarFvc > .fa`,
         saveDataConfirmationBudget: '#confirmacao-atendimento > .modal-footer > .btn-primary',
         cashierObservationElement: ':nth-child(5) > .col-sm-7 > .form-control',
@@ -536,6 +546,7 @@ export const elements: Elements = {
         recipeCodeColumnElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.idReceitaCol',
         expandSideMenuElement: '.navbar-header > .navbar-minimalize',
         modalLinkRecipeElement: '#modal-receita-add-vinculo > .modal-dialog',
+        modalClientNotFoundElement:'.bootbox .modal-footer .btn',
         setUpPhoneContactElement: '#bt-chat-configurar-contatos-modal',
         telephoneContactConfigurationModalElement: '.modal-dialog',
         insertCustomerContactPhoneNumberElement: '#cli-number-cel',
@@ -571,6 +582,10 @@ export const elements: Elements = {
         securityCodeElement: '#cvc',
         installmentsElement: '#qtdeParcelas',
         makePaymentElement: '#btnProcessarPgto',
+        paymentScreenSuccessElement:'.success-container-info .text-title',
+        paymentDateServiceScreenElement:'.payment-row-item:contains("Atualizado em") strong',
+        paymentDataOnServiceScreenElement:'.ibox-content .payment-row',
+
     },
 
     Settings: {

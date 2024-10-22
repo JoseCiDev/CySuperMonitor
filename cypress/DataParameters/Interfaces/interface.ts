@@ -136,6 +136,7 @@ export interface DataParameters<S = string> {
     }
 
     Recipe: {
+        injectablesBranch:S[];
         import: ImportRecipe;
         search: SearchRecipe;
         clone: CloneRecipe

@@ -83,6 +83,7 @@ export const dataParameters: DataParameters = {
     filePath: '/',
 
     Recipe: {
+        injectablesBranch:['13','1313','2013'],
         import: {
             numberRecipe: 0,
             file: 'img/recipeJpeg.jpg',
@@ -147,7 +148,7 @@ export const dataParameters: DataParameters = {
 
     Budget: {
         confirmation: {
-            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['143780'])]),
+            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['143452'])]),
             filialNumberForSearch: String([faker.helpers.arrayElement(['5'])]),
             typePaymentCourtesyInjectables: BudgetConfirmationTypePaymentCourtesyInjectables.CourtesyComplaintHandling,
             budgetist: 'orcam',
@@ -180,26 +181,26 @@ export const dataParameters: DataParameters = {
         payment: {
             paymentMethod: PayBudgetPaymentMethod.CreditCard,
             telephone: faker.helpers.arrayElement([48991888641]),
-            email: faker.helpers.arrayElement(['jose.djalma@essentia.com.br']),
-            fullName: faker.helpers.arrayElement(['Jose Djalma Ferreira Mendes']),
-            birthDate: faker.helpers.arrayElement(['01/02/1988']),
-            cpf: faker.helpers.arrayElement([96518369035]),
-            rg: faker.helpers.arrayElement([6207538]),
+            email: faker.helpers.arrayElement(['djalmapsico@gmail.com']),
+            fullName: faker.helpers.arrayElement(['Tamires Silva Luis']),
+            birthDate: faker.helpers.arrayElement(['10/01/1990']),
+            cpf: faker.helpers.arrayElement([70557958008]),
+            rg: faker.helpers.arrayElement([6207538]),//faker.helpers.arrayElement([6207538])
             useRegisteredAddress: true,
             zipCode: faker.helpers.arrayElement([89213320]),
-            state: PayBudgetState.RS,
-            city: String([faker.helpers.arrayElement(['Joinville'])]),
-            district: String([faker.helpers.arrayElement(['Nova Brasilia'])]),
-            street: String([faker.helpers.arrayElement(['Rua Paranagua'])]),
-            houseNumber: faker.helpers.arrayElement([106]),
-            addressComplement: String([faker.helpers.arrayElement(['casa de esquina'])]),
+            state: PayBudgetState.PA,
+            city: String([faker.helpers.arrayElement(['Patos de Minas'])]),
+            district: String([faker.helpers.arrayElement(['Alvorada'])]),
+            street: String([faker.helpers.arrayElement(['Rua Pedro Firmino da Rocha'])]),
+            houseNumber: faker.helpers.arrayElement([128]),
+            addressComplement: String([faker.helpers.arrayElement(['esquina'])]),//String([faker.helpers.arrayElement(['esquina'])])
             isMyDeliveryAddress: true,
-            cardholderName: String([faker.helpers.arrayElement(['JOSE D F MENDES'])]),
-            cpfCnpj: faker.helpers.arrayElement([52596499070]),
+            cardholderName: String([faker.helpers.arrayElement(['TAMIRES S L'])]),
+            cpfCnpj: faker.helpers.arrayElement([28729993024]),
             cardNumber: faker.helpers.arrayElement([5555555555554444]),
-            expirationMonth: PayBudgetCreditCardExpirationMonth.Fevereiro,
-            expirationYear: PayBudgetCreditCardExpirationYear.Ano2032,
-            securityCode: faker.helpers.arrayElement([123]),
+            expirationMonth: PayBudgetCreditCardExpirationMonth.Marco,
+            expirationYear: PayBudgetCreditCardExpirationYear.Ano2030,
+            securityCode: faker.helpers.arrayElement([737]),
             installments: BudgetInstallments.Parcela1,
         },
 

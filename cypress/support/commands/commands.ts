@@ -15,8 +15,6 @@ import {
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
 
-
-
 export const {
   suggestionAutocomplete,
   suggestionsAutocompleteElement,
@@ -32,7 +30,6 @@ export const {
 
 export const {
   menuRecipesElement,
-
   prescriberRecipes,
   menuImportRecipesElement,
   menuManageRecipes,
@@ -215,8 +212,8 @@ export const {
 
 Cypress.Commands.add('insertFile', (element, filePath): void => {
   cy.fixture(filePath, 'base64').then((fileContent) => {
-    const fileName = filePath.split('/').pop();     const mimeType = 'image/jpeg';
-
+    const fileName = filePath.split('/').pop();
+    const mimeType = 'image/jpeg';
     const blob = Cypress.Blob.base64StringToBlob(fileContent, mimeType);
     const file = new File([blob], fileName, { type: mimeType });
 
@@ -266,8 +263,6 @@ Cypress.Commands.add('getElementAndCheck', (elements: ElementTypeAndValueOpciona
   })
 });
 
-
-
 Cypress.Commands.add('getElementAndType', (elements: { [key: string]: string }): void => {
   cy.wrap(null).then(() => {
     Object.entries(elements).forEach(([element, text]) => {
@@ -302,16 +297,15 @@ Cypress.Commands.add('getRadioOptionByValue', (elements: ElementControl): void =
 Cypress.Commands.add('getSelectOptionByValue', (elements: ElementTypeAndValueOpcional): void => {
   elements.forEach(({ element, value }) => {
     cy.get(element, { timeout: 20000 })
-    .then(($select) => {
-      if ($select.length > 0 && $select.is(':visible')) {
-        cy.wrap($select).select(value, { force: true });
-      } else {
-        throw new Error(`Elemento ${element} não encontrado ou não visível.`);
-      }
-    });
+      .then(($select) => {
+        if ($select.length > 0 && $select.is(':visible')) {
+          cy.wrap($select).select(value, { force: true });
+        } else {
+          throw new Error(`Elemento ${element} não encontrado ou não visível.`);
+        }
+      });
   });
 });
-
 
 Cypress.Commands.add('getElementAutocompleteTypeAndClick', (elements: { [key: string]: string }, autocompleteSelector: string) => {
   Object.entries(elements).forEach(([element, text]) => {
@@ -326,10 +320,6 @@ Cypress.Commands.add('getElementAutocompleteTypeAndClick', (elements: { [key: st
   });
 });
 
-
-
-
-
 Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: string) => {
   const $aliasModal = Cypress.$(jqueryElement);
 
@@ -343,8 +333,6 @@ Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: strin
       .click({ force: true, multiple: true, timeout: 5000 });
   }
 });
-
-
 
 Cypress.Commands.add('markUsage', (checkboxMarkUse: string, userMarkUsage: string): void => {
   cy.get(`${checkboxMarkUse} input[type="checkbox"]`, { timeout: 20000 })
