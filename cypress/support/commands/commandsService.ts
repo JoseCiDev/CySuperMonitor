@@ -1123,244 +1123,6 @@ Cypress.Commands.add('confirmBudget', (options: {
     return cy.wrap({ success: 'Orçamento confirmado com sucesso!' });
 });
 
-
-
-
-// const toArray = <T>(value: T | T[]): T[] => {
-//     return Array.isArray(value) ? value : [value];
-// };
-// Cypress.Commands.add('payBudget', (options: {
-//     paymentMethod?: PayBudgetPaymentMethod,
-//     telephone?: number[];
-//     email?: string[];
-//     fullName?: string[];
-//     birthDate?: string[];
-//     cpf?: number[];
-//     rg?: number[];
-//     useRegisteredAddress?: boolean;
-//     zipCode?: number[];
-//     state?: PayBudgetState[];
-//     city?: string[];
-//     district?: string[];
-//     street?: string[];
-//     houseNumber?: number[];
-//     addressComplement?: string[];
-//     isMyDeliveryAddress?: boolean;
-//     cardholderName?: string[];
-//     cpfCnpj?: number[];
-//     cardNumber?: number[];
-//     expirationMonth?: PayBudgetCreditCardExpirationMonth[];
-//     expirationYear?: PayBudgetCreditCardExpirationYear[];
-//     securityCode?: number[];
-//     installments?: BudgetInstallments[];
-// } = {}): ValidationResult => {
-
-//     const {
-//         paymentMethod = dataParameters.Budget.payment.paymentMethod,
-//         telephone = toArray(dataParameters.Budget.payment.telephone),
-//         email = toArray(dataParameters.Budget.payment.email),
-//         fullName = toArray(dataParameters.Budget.payment.fullName),
-//         birthDate = toArray(dataParameters.Budget.payment.birthDate),
-//         cpf = toArray(dataParameters.Budget.payment.cpf),
-//         rg = toArray(dataParameters.Budget.payment.rg),
-//         useRegisteredAddress = dataParameters.Budget.payment.useRegisteredAddress,
-//         zipCode = toArray(dataParameters.Budget.payment.zipCode),
-//         state = toArray(dataParameters.Budget.payment.state),
-//         city = toArray(dataParameters.Budget.payment.city),
-//         district = toArray(dataParameters.Budget.payment.district),
-//         street = toArray(dataParameters.Budget.payment.street),
-//         houseNumber = toArray(dataParameters.Budget.payment.houseNumber),
-//         addressComplement = toArray(dataParameters.Budget.payment.addressComplement),
-//         isMyDeliveryAddress = dataParameters.Budget.payment.isMyDeliveryAddress,
-//         cardholderName = toArray(dataParameters.Budget.payment.cardholderName),
-//         cpfCnpj = toArray(dataParameters.Budget.payment.cpfCnpj),
-//         cardNumber = toArray(dataParameters.Budget.payment.cardNumber),
-//         expirationMonth = toArray(dataParameters.Budget.payment.expirationMonth),
-//         expirationYear = toArray(dataParameters.Budget.payment.expirationYear),
-//         securityCode = toArray(dataParameters.Budget.payment.securityCode),
-//         installments = toArray(dataParameters.Budget.payment.installments),
-//     } = options;
-
-//     const selectOption = (element: string, value: string | number) => {
-//         if (value) {
-//             cy.get(element).select(value.toString());
-//         }
-//     };
-
-//     const getRandomValue = <T>(values: T[]): T => {
-//         return faker.helpers.arrayElement(values);
-//     };
-
-//     const handleCreditCardPayment = () => {
-//         cy.getElementAndType({ [cardholderNameElement]: getRandomValue(cardholderName) });
-//         cy.getElementAndType({ [cpfCnpjElement]: getRandomValue(cpfCnpj) });
-//         cy.getElementAndType({ [cardNumberElement]: getRandomValue(cardNumber) });
-//         selectOption(expirationMonthElement, getRandomValue(expirationMonth));
-//         selectOption(expirationYearElement, getRandomValue(expirationYear));
-//         cy.getElementAndType({ [securityCodeElement]: getRandomValue(securityCode) });
-//         selectOption(installmentsElement, getRandomValue(installments));
-//     };
-
-//     const attemptPayment = (currentBudgetIndex) => {
-//         const currentTelephone = getRandomValue(telephone);
-//         const currentEmail = getRandomValue(email);
-//         const currentFullName = getRandomValue(fullName);
-//         const currentBirthDate = getRandomValue(birthDate);
-//         const currentCpf = getRandomValue(cpf);
-//         const currentRg = getRandomValue(rg);
-//         const currentZipCode = getRandomValue(zipCode);
-//         const currentState = getRandomValue(state);
-//         const currentCity = getRandomValue(city);
-//         const currentDistrict = getRandomValue(district);
-//         const currentStreet = getRandomValue(street);
-//         const currentHouseNumber = getRandomValue(houseNumber);
-//         const currentAddressComplement = getRandomValue(addressComplement);
-
-//         cy.log(`Tentando pagamento para o orçamento ${currentBudgetIndex}`);
-//         cy.wrap(currentBudgetIndex).as('paidBudgetIndex');
-
-//         cy.get(goToPaymentElement).should('be.visible').click();
-
-
-//         cy.get('body').then(($body) => {
-//             if ($body.find('#metodoCartao').length > 0) {
-//                 cy.getElementAndClick(paymentMethod);
-//             }
-//         })
-
-//         cy.getElementAndClick(makePaymentUsingTheSelectedPaymentMethodElement);
-
-//         cy.getElementAndType({ [telephoneElement]: currentTelephone });
-//         cy.getElementAndType({ [emailElement]: currentEmail });
-
-//         const injectablesBranch = dataParameters.Recipe.injectablesBranch;
-//         if (!injectablesBranch.includes(String(dataParameters.Budget.confirmation.filialNumberForSearch))) {
-//             cy.getElementAndType({ [fullNameElement]: currentFullName });
-//             cy.getElementAndType({ [birthDateElement]: currentBirthDate });
-//             cy.getElementAndType({ [cpfElement]: currentCpf });
-//             cy.getElementAndType({ [rgElement]: currentRg });
-//             cy.getElementAndClick(useRegisteredAddressElement);
-
-//             cy.getElementAndType({ [zipCodeElement]: currentZipCode });
-
-//             cy.wait(2000);
-//             cy.getSelectOptionByValue([{ element: stateElement, value: currentState }]);
-//             cy.getElementAndType({ [cityElement]: currentCity });
-//             cy.getElementAndType({ [districtElement]: currentDistrict });
-//             cy.getElementAndType({ [streetElement]: currentStreet });
-//             cy.getElementAndType({ [houseNumberElement]: currentHouseNumber });
-//             cy.getElementAndType({ [addressComplementElement]: currentAddressComplement });
-
-//             if (isMyDeliveryAddress) {
-//                 cy.getElementAndClick(isMyDeliveryAddressElement);
-//             }
-//         }
-
-//         if (paymentMethod !== PayBudgetPaymentMethod.Pix) {
-//             handleCreditCardPayment();
-//         }
-
-//         cy.getElementAndClick(makePaymentElement);
-//     };
-
-//     const checkSuccessMessage = () => {
-//         return cy.get(paymentScreenSuccessElement)
-//             .then($element => {
-//                 const successText = $element.text().trim();
-//                 return successText.includes('PAGAMENTO CONFIRMADO');
-//             });
-//     };
-
-//     return cy.wrap(null).then(() => {
-//         cy.get(accessSelfcheckoutElement)
-//             .invoke('removeAttr', 'target')
-//             .then(($el) => {
-//                 const href = $el.prop('href');
-//                 cy.visit(href);
-//             });
-
-//         cy.url().should('include', dataParameters.env.BASE_URL_SC);
-
-//         const handleAromaSelection = () => {
-//             cy.get('body')
-//                 .then(($body) => {
-//                     if ($body.find('select.aroma').length > 0) {
-//                         cy.get('select.aroma')
-//                             .each(($aromaSelect, index) => {
-//                                 cy.wrap($aromaSelect).find('option').then(($options) => {
-//                                     const availableOptions = $options
-//                                         .map((i, el) => Cypress.$(el).val())
-//                                         .get()
-//                                         .filter(option => option);
-
-//                                     if (availableOptions.length === 0) {
-//                                         cy.log('Nenhuma opção de aroma disponível no select.');
-//                                         return;
-//                                     }
-
-//                                     const selectedAroma = faker.helpers.arrayElement(availableOptions) as string;
-
-//                                     cy.wrap($aromaSelect)
-//                                         .select(selectedAroma, { force: true })
-//                                         .then(() => {
-//                                             cy.wrap($aromaSelect).invoke('val').then((selectedValue) => {
-//                                                 if (selectedValue === selectedAroma) {
-//                                                     cy.log(`Aroma selecionado para o select ${index + 1}: ${selectedAroma}`);
-//                                                 } else {
-//                                                     cy.log(`Aroma "${selectedAroma}" não pôde ser selecionado corretamente.`);
-//                                                 }
-//                                             });
-//                                         });
-//                                 });
-//                             });
-//                     } else {
-//                         cy.log('Nenhum campo de seleção de aroma encontrado.');
-//                     }
-//                 });
-//         };
-//         handleAromaSelection();
-
-//         cy.wait(1000);
-
-//         let attempts = 0;
-//         const maxAttempts = fullName.length > 1 ? 3 : 1;
-
-//         const tryPayment = () => {
-//             attempts++;
-//             cy.get('@currentBudgetIndex').then((budgetIndex) => {
-//                 attemptPayment(budgetIndex);
-//             });
-
-//             return checkSuccessMessage().then((isSuccess) => {
-//                 if (isSuccess) {
-//                     cy.log('Pagamento confirmado.');
-//                     return cy.wrap({
-//                         telephone: getRandomValue(telephone),
-//                         email: getRandomValue(email),
-//                         fullName: getRandomValue(fullName),
-//                         birthDate: getRandomValue(birthDate),
-//                         cpf: getRandomValue(cpf),
-//                         rg: getRandomValue(rg),
-//                         zipCode: getRandomValue(zipCode),
-//                         state: getRandomValue(state),
-//                         city: getRandomValue(city),
-//                         district: getRandomValue(district),
-//                         street: getRandomValue(street),
-//                         houseNumber: getRandomValue(houseNumber),
-//                         addressComplement: getRandomValue(addressComplement)
-//                     });
-//                 } else if (attempts < maxAttempts) {
-//                     cy.log(`Tentativa de pagamento falhou. Tentando novamente (${attempts}/${maxAttempts})...`);
-//                     return tryPayment();
-//                 } else {
-//                     throw new Error('Falha no pagamento após múltiplas tentativas.');
-//                 }
-//             });
-//         };
-
-//         return tryPayment();
-//     });
-// });
 const toArray = <T>(value: T | T[]): T[] => {
     return Array.isArray(value) ? value : [value];
 };
@@ -1454,23 +1216,37 @@ Cypress.Commands.add('payBudget', (options: {
         cy.log(`Tentando pagamento para o orçamento ${currentBudgetIndex}`);
         cy.wrap(currentBudgetIndex).as('paidBudgetIndex');
 
-        cy.get(goToPaymentElement).should('be.visible').click();
+        cy.getElementAndClick(goToPaymentElement);
 
-        // Verifica se o elemento para selecionar a forma de pagamento está presente
-        cy.get('body').then(($body) => {
-            if ($body.find('#metodoCartao').length > 0) {
-                cy.getElementAndClick(paymentMethod);
-            }
+        cy.document().then((doc) => {
+            const checkIfLoadingFinished = () => {
+                const $loadingElement = Cypress.$('.efetuar-pagamento-btn.loading', doc);
+
+                if ($loadingElement.length === 0 || !$loadingElement.is(':visible')) {
+                    cy.log('Carregamento concluído, continuando...');
+                    cy.getElementAndClick(paymentMethod);
+                    cy.getElementAndClick(makePaymentUsingTheSelectedPaymentMethodElement);
+                } else {
+                    cy.log('Carregando... aguardando...');
+                    cy.wait(500).then(checkIfLoadingFinished);
+                }
+            };
+
+            checkIfLoadingFinished();
         });
 
-        // Detectar qual é a forma de pagamento selecionada anteriormente
-        cy.get(makePaymentUsingTheSelectedPaymentMethodElement).invoke('text').then((selectedPaymentMethod) => {
+        cy.get('#main-title').invoke('text').then((selectedPaymentMethod) => {
             cy.log(`Método de pagamento selecionado: ${selectedPaymentMethod.trim()}`);
-
-            // Se o método de pagamento for Pix, não tentar preencher dados de cartão
             const isPixSelected = selectedPaymentMethod.trim().toLowerCase().includes('pix');
 
-            cy.getElementAndClick(makePaymentUsingTheSelectedPaymentMethodElement);
+            if (!isPixSelected) {
+                cy.log('Método de pagamento é Cartão de Crédito.');
+                handleCreditCardPayment();
+            } else {
+                cy.log('Método de pagamento é PIX.');
+            }
+
+            cy.getElementAndClick(makePaymentElement);
 
             cy.getElementAndType({ [telephoneElement]: currentTelephone });
             cy.getElementAndType({ [emailElement]: currentEmail });
@@ -1484,7 +1260,6 @@ Cypress.Commands.add('payBudget', (options: {
                 cy.getElementAndClick(useRegisteredAddressElement);
 
                 cy.getElementAndType({ [zipCodeElement]: currentZipCode });
-
                 cy.wait(2000);
                 cy.getSelectOptionByValue([{ element: stateElement, value: currentState }]);
                 cy.getElementAndType({ [cityElement]: currentCity });
@@ -1496,11 +1271,6 @@ Cypress.Commands.add('payBudget', (options: {
                 if (isMyDeliveryAddress) {
                     cy.getElementAndClick(isMyDeliveryAddressElement);
                 }
-            }
-
-            // Apenas processar dados de cartão de crédito se a forma de pagamento não for Pix
-            if (!isPixSelected) {
-                handleCreditCardPayment();
             }
 
             cy.getElementAndClick(makePaymentElement);
@@ -1533,12 +1303,16 @@ Cypress.Commands.add('payBudget', (options: {
                             .each(($aromaSelect, index) => {
                                 cy.wrap($aromaSelect).find('option').then(($options) => {
                                     const availableOptions = $options
-                                        .map((i, el) => Cypress.$(el).val())
+                                        .map((i, el) => {
+                                            const optionValue = Cypress.$(el).val();
+                                            const isDisabled = Cypress.$(el).is(':disabled');
+                                            return isDisabled ? null : optionValue;
+                                        })
                                         .get()
                                         .filter(option => option);
 
                                     if (availableOptions.length === 0) {
-                                        cy.log('Nenhuma opção de aroma disponível no select.');
+                                        cy.log('Nenhuma opção de aroma disponível e habilitada no select.');
                                         return;
                                     }
 
@@ -1563,6 +1337,7 @@ Cypress.Commands.add('payBudget', (options: {
                 });
         };
         handleAromaSelection();
+
 
         cy.wait(1000);
 
@@ -1616,7 +1391,6 @@ Cypress.Commands.add('validatePaymentData', (expectedData) => {
 
         cy.viewBudget();
 
-        // Encontra e define o bloco de pagamento bem-sucedido (fundo verde)
         findSuccessfulPaymentRow().as('successfulPaymentRow').then(($successfulPaymentRow) => {
             if ($successfulPaymentRow.length === 0) {
                 throw new Error("Nenhum bloco de pagamento bem-sucedido (verde) encontrado.");
@@ -1643,10 +1417,9 @@ function findSuccessfulPaymentRow() {
             const bgStyle = $element.css('background');
             const bgColor = $element.find('span').css('background-color');
 
-            // Verificar se a imagem de fundo é um gradiente verde (#DCF8CA) ou se o indicador de cor é verde (#5dc460)
             if ((bgStyle.includes('linear-gradient') && bgStyle.includes('#DCF8CA')) || bgColor === 'rgb(93, 196, 96)') {
                 successfulRow = $element;
-                return false; // Para sair do loop early
+                return false;
             }
         });
 
