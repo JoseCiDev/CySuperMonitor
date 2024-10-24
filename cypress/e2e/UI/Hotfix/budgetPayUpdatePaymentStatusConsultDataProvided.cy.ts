@@ -1,4 +1,4 @@
-/// <reference types="cypress" />
+import { Given, When, Then } from '../../../import';
 
 import {
     BudgetConfirmationPatientSearchParameter,
@@ -19,7 +19,7 @@ import {
     elements as el,
     dataParameters,
 
-} from '../../import';
+} from '../../../import';
 
 export const {
     suggestionAutocomplete,
@@ -46,12 +46,11 @@ export const {
     removeImageRecipes,
     modalSuggestionRelationshipPrescriber,
     parameterSearchPatient,
-    patientRecipes,
+    patientRecipeElement,
     channelReceiptImport,
     clusterRecipes,
     budgetistRecipes,
     responsibleForRecipeElement,
-    autocompleteResponsibleAttendant,
     dateReceiptRecipes,
     juntocomRecipes,
     autocompleteJuntocomRecipes,
@@ -276,46 +275,99 @@ export const {
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
 
-describe('Clientes realizam pagamentos de pedidos.', function () {
+// describe('Clientes realizam pagamentos de pedidos e informam dados.', function () {
 
-    beforeEach(function () {
+//     beforeEach(function () {
+//     });
+
+//     it('Validar pagamento de pedido, atualização do status e consistência dos dados fornecidos', function () {
+//         cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+//             .then((result) => {
+//                 assert.exists(result.success, result.error);
+//             });
+
+//         cy.document().then((doc) => {
+//             const $btn = doc.querySelector(modalElement) as HTMLElement
+//             if ($btn) {
+//                 cy.getElementAndClick(btnModalChangelog);
+//             } else {
+//                 cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
+//             }
+//         });
+
+//         cy.getElementAndClick(menuServices, servicesInProgress);
+
+//         cy.viewBudget();
+
+//         cy.selectCustomerContact();
+
+//         cy.fillOrcamentistaAndAtendente();
+
+//         cy.insertTimeTreatment();
+
+//         cy.log('Iniciando pagamento...');
+//         cy.payBudget().then((paymentData) => {
+//             cy.log('Pagamento concluído, iniciando login...');
+
+//             cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+//                 .then((result) => {
+//                     assert.exists(result.success, result.error);
+//                 });
+
+//             cy.validatePaymentData(paymentData);
+//         });
+//     });
+// });
+
+Given('que o usuário está logado no sistema', () => {
+    cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error);
+        });
+});
+
+When('visualizar o orçamento', () => {
+    cy.document().then((doc) => {
+        const $btn = doc.querySelector(modalElement);
+        if ($btn) {
+            cy.getElementAndClick(btnModalChangelog);
+        } else {
+            cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
+        }
     });
 
-    it('Validar pagamento de pedido, atualização do status e consistência dos dados fornecidos', function () {
+    cy.getElementAndClick(menuServices, servicesInProgress);
+
+    cy.viewBudget();
+});
+
+When('selecionar o contato do cliente', () => {
+    cy.selectCustomerContact();
+});
+
+When('preencher os dados do orçamentista e atendente', () => {
+    cy.fillOrcamentistaAndAtendente();
+});
+
+When('inserir o tempo de tratamento', () => {
+    cy.insertTimeTreatment();
+});
+
+Then('é realizado o pagamento do orçamento', () => {
+    cy.log('Iniciando pagamento...');
+    cy.payBudget().then((paymentData) => {
+        cy.wrap(paymentData).as('paymentData');
+    });
+});
+
+Then('o sistema valida os dados do pagamento', () => {
+    cy.get('@paymentData').then((paymentData) => {
+        cy.log('Pagamento concluído, iniciando validação...');
         cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });
 
-        cy.document().then((doc) => {
-            const $btn = doc.querySelector(modalElement) as HTMLElement
-            if ($btn) {
-                cy.getElementAndClick(btnModalChangelog);
-            } else {
-                cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
-            }
-        });
-
-        cy.getElementAndClick(menuServices, servicesInProgress);
-
-        cy.viewBudget();
-
-        cy.selectCustomerContact();
-
-        cy.fillOrcamentistaAndAtendente();
-
-        cy.insertTimeTreatment();
-
-        cy.log('Iniciando pagamento...');
-        cy.payBudget().then((paymentData) => {
-            cy.log('Pagamento concluído, iniciando login...');
-            
-            cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
-                .then((result) => {
-                    assert.exists(result.success, result.error);
-                });
-
-            cy.validatePaymentData(paymentData);
-        });
+        cy.validatePaymentData(paymentData);
     });
 });

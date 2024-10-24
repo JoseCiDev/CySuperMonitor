@@ -3,6 +3,9 @@
 import {
     elements as el,
     faker,
+    RecipeCluster,
+    RecipeReceiptChannel,
+    RecipeType,
 
 } from '../../import';
 
@@ -35,12 +38,11 @@ export const {
     removeImageRecipes,
     modalSuggestionRelationshipPrescriber,
     parameterSearchPatient,
-    patientRecipes,
+    patientRecipeElement,
     channelReceiptImport,
     clusterRecipes,
     budgetistRecipes,
     responsibleForRecipeElement,
-    autocompleteResponsibleAttendant,
     dateReceiptRecipes,
     juntocomRecipes,
     autocompleteJuntocomRecipes,
@@ -147,6 +149,17 @@ describe('Tela importação de receitas.', function () {
         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement);
 
         cy.importRecipe({
+            prescriber: '999990-SC',
+            patient: 'teste pre',
+            channelReceiptRecipe: RecipeReceiptChannel.Whatsapp,
+            attendantResponsibleRecipes: 'Atendente Tamires Silva Luiz',
+            cluster: RecipeCluster.Cluster3,
+            recipeType: RecipeType.HasRecipe,
+            textNoteRecipe: faker.lorem.paragraph(),
+            urgentRecipe: false,
+            clientAlert: false,
+            controlledMedication: false,
+            customerPhone: 48991888641,
         }).then((result) => {
             assert.exists(result.success, result.error);
         });

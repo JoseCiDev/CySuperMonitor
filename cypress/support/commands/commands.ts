@@ -39,12 +39,10 @@ export const {
   removeImageRecipes,
   modalSuggestionRelationshipPrescriber,
   parameterSearchPatient,
-  patientRecipes,
   channelReceiptImport,
   clusterRecipes,
   budgetistRecipes,
   responsibleForRecipeElement,
-  autocompleteResponsibleAttendant,
   dateReceiptRecipes,
   juntocomRecipes,
   autocompleteJuntocomRecipes,
@@ -229,16 +227,6 @@ Cypress.Commands.add('insertFile', (element, filePath): void => {
   });
 });
 
-Cypress.Commands.add('readFileFromFixture', (fileName) => {
-  // const filePath = `${dataParameters.filePath}${fileName}`;
-  // return cy.fixture(filePath);
-});
-
-// Cypress.Commands.add('readFile', (fileName) => {
-//   const filePath = `${dataParameters.filePath}${fileName}`;
-//   return cy.fixture(filePath);
-// });
-
 Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
   elements.forEach(element => {
     cy.get(element, { timeout: 20000 })
@@ -310,6 +298,7 @@ Cypress.Commands.add('getSelectOptionByValue', (elements: ElementTypeAndValueOpc
 Cypress.Commands.add('getElementAutocompleteTypeAndClick', (elements: { [key: string]: string }, autocompleteSelector: string) => {
   Object.entries(elements).forEach(([element, text]) => {
     cy.get(element, { timeout: 20000 })
+      .clear()
       .type(text)
       .then(() => {
         cy.get(autocompleteSelector, { timeout: 20000 })

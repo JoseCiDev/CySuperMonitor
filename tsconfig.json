@@ -21,6 +21,10 @@
     "./support/cypress.d.ts",
     "cypress/**/*.json",
     "cypress/support/**/*.ts",
-    "cypress/support/**/*.d.ts", "tsconfig.json",
+    "cypress/support/**/*.d.ts",
+    "tsconfig.json",
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

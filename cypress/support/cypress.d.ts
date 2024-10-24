@@ -35,17 +35,6 @@ declare global {
        */
       insertFile(filePath, element, mimeType?): Chainable<unknown>;
 
-      /**
-       * comando customizado para ler arquivos
-       * @example cy.readFile('budgetAndBranch.json')
-       */
-      readFile(fileName: string)
-
-      /**
-            * comando customizado para ler arquivos
-      * @example cy.lerArquivo('orcamentoFilial.json')
-        */
-      readFileFromFixture(fileName: string): ValidationResult;
 
       /**
       * comando customizado para buscar receitas.
@@ -279,14 +268,15 @@ declare global {
         prescriber?: string | number;
         parameterSearchPatient?: string;
         patient?: string | number;
-        channelReceipt?: string;
+        channelReceiptRecipe?: string;
         attendantResponsibleRecipes?: string;
+        cluster?: boolean | RecipeCluster | string;
         receivingDate?: string;
         recipeType?: string;
-        textInternalObservation?: string;
         urgentRecipe?: boolean;
+        textNoteRecipe?: string;
         clientAlert?: boolean;
-        medicineControlled?: boolean;
+        controlledMedication?: boolean;
         customerPhone?: string | number
       }): Chainable<ValidationResult>;
 

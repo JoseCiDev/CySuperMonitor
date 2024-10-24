@@ -55,31 +55,6 @@ export const validationMessages = {
 export const dataParameters: DataParameters = {
     env: dataEnvironment,
 
-    Url: {
-        start: 'http://192.168.0.66:9202/lembretes',
-        importRecipes: 'http://192.168.0.66:9202/recipe/importar',
-        manageRecipes: 'http://192.168.0.66:9202/recipe/gerenciar',
-        services: 'http://192.168.0.66:9202/atendimentos/page/1/',
-        servicesInProgress: 'http://192.168.0.66:9202/atendimentos/page/1/',
-    },
-
-    User: {
-        userAssigned: String([faker.helpers.arrayElement(['Tamires', 'Andressa', 'Bruna', 'Mariana', 'Jessica', 'Amanda', 'Maria', 'Daian', 'Ana'])]),
-    },
-
-    Prescriber: {
-        crmPrescriber: faker.helpers.arrayElement(['123456-SC']),
-    },
-
-    Patient: {
-        codePatient: faker.helpers.arrayElement(['618484']),
-    },
-
-    BudgetAndBranch: {
-        budget: faker.helpers.arrayElement(['896662', '896663', '899551', '905771']),
-        branch: faker.helpers.arrayElement(['4']),
-    },
-
     filePath: '/',
 
     Recipe: {
@@ -92,12 +67,12 @@ export const dataParameters: DataParameters = {
             parameterSearchPatient: BudgetConfirmationPatientSearchParameter.Cdcli,
             patient: faker.helpers.arrayElement(['618484']),
             channelReceiptRecipe: RecipeReceiptChannel.Whatsapp,
-            attendantResponsibleRecipes: false ? faker.helpers.arrayElement(['Atendente Tamires Silva Luiz']) : '',
+            attendantResponsibleRecipes: false ? faker.helpers.arrayElement(['rafaela moro']) : '',
             cluster: false ? RecipeCluster.Cluster3 : '',
             receivingDate: currentdateLessTwoMinutes.toISOString().slice(0, 16),
             recipeType: RecipeType.HasRecipe,
             textNoteRecipe: faker.lorem.paragraph(),
-            urgentRecipeElement: false,
+            urgentRecipe: false,
             clientAlert: false,
             controlledMedication: false,
             customerPhone: 48991888641,
@@ -148,8 +123,8 @@ export const dataParameters: DataParameters = {
 
     Budget: {
         confirmation: {
-            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['7191'])]),
-            filialNumberForSearch: String([faker.helpers.arrayElement(['2013'])]),
+            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['143417'])]),
+            filialNumberForSearch: String([faker.helpers.arrayElement(['5'])]),
             typePaymentCourtesyInjectables: BudgetConfirmationTypePaymentCourtesyInjectables.CourtesyComplaintHandling,
             budgetist: 'orcam',
             budgetAttendant: 'adm',

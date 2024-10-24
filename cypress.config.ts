@@ -1,51 +1,51 @@
 ///home/jose/projetos/CySuperMonitor/cypress.config.ts
 import { defineConfig } from "cypress";
-// import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-preprocessor';
-// import webpack from "@cypress/webpack-preprocessor";
+import webpack from "@cypress/webpack-preprocessor";
+import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-preprocessor';
 
 
+async function setupNodeEvents(
+  on: Cypress.PluginEvents,
+  config: Cypress.PluginConfigOptions
+): Promise<Cypress.PluginConfigOptions> {
+  await addCucumberPreprocessorPlugin(on, config);
 
-// async function setupNodeEvents(
-//   on: Cypress.PluginEvents,
-//   config: Cypress.PluginConfigOptions
-// ): Promise<Cypress.PluginConfigOptions> {
-//   await addCucumberPreprocessorPlugin(on, config);
+  on(
+    "file:preprocessor",
+    webpack({
+      webpackOptions: {
+        resolve: {
+          extensions: [".ts", ".js"],
+        },
+        module: {
+          rules: [
+            {
+              test: /\.ts$/,
+              exclude: [/node_modules/],
+              use: [
+                {
+                  loader: "ts-loader",
+                },
+              ],
+            },
+            {
+              test: /\.feature$/,
+              use: [
+                {
+                  loader: "@badeball/cypress-cucumber-preprocessor/webpack",
+                  options: config,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    })
+  );
 
-//   on(
-//     "file:preprocessor",
-//     webpack({
-//       webpackOptions: {
-//         resolve: {
-//           extensions: [".ts", ".js"],
-//         },
-//         module: {
-//           rules: [
-//             {
-//               test: /\.ts$/,
-//               exclude: [/node_modules/],
-//               use: [
-//                 {
-//                   loader: "ts-loader",
-//                 },
-//               ],
-//             },
-//             {
-//               test: /\.feature$/,
-//               use: [
-//                 {
-//                   loader: "@badeball/cypress-cucumber-preprocessor/webpack",
-//                   options: config,
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       },
-//     })
-//   );
+  return config;
+}
 
-//   return config;
-// }
 
 export default defineConfig({
   projectId: "iwkf6s",
@@ -55,21 +55,13 @@ export default defineConfig({
   responseTimeout: 30000,
   waitForAnimations: false,
   numTestsKeptInMemory: 5,
-
   experimentalMemoryManagement: true,
   e2e: {
     watchForFileChanges: true,
-    setupNodeEvents(on, config) {
-      on('before:browser:launch', (browser: Cypress.Browser, launchOptions) => {
-        if (browser.name === 'chrome' || browser.name === 'edge') {
-          launchOptions.args.push('--disable-save-password-bubble');
-        }
-        return launchOptions;
-      });
-    },
+    setupNodeEvents,
     baseUrl: 'http://192.168.0.66:9202/',
-    supportFile: 'cypress/support/e2e.{js,jsx,ts,tsx}',
-    specPattern: 'cypress/**/*.{js,jsx,ts,tsx,feature}',
+    specPattern: "cypress/*/**/*.{js,ts,feature}",
+    supportFile: "cypress/support/e2e.{js,ts}",
     redirectionLimit: 5000,
     viewportHeight: 1280,
     viewportWidth: 1024,

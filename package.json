@@ -14,7 +14,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^20.1.1",
+    "@badeball/cypress-cucumber-preprocessor": "^20.1.2",
     "@cypress/webpack-preprocessor": "^6.0.2",
     "@faker-js/faker": "^8.4.1",
     "@types/cypress": "^0.1.6",

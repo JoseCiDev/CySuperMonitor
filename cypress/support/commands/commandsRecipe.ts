@@ -41,12 +41,11 @@ export const {
     removeImageRecipes,
     modalSuggestionRelationshipPrescriber,
     parameterSearchPatient,
-    patientRecipes,
+    patientRecipeElement,
     channelReceiptImport,
     clusterRecipes,
     budgetistRecipes,
     responsibleForRecipeElement,
-    autocompleteResponsibleAttendant,
     dateReceiptRecipes,
     juntocomRecipes,
     autocompleteJuntocomRecipes,
@@ -675,15 +674,16 @@ Cypress.Commands.add('importRecipe', (options: {
     file?: string;
     prescriber?: string | number;
     parameterSearchPatient?: string;
-    patient?: string | number;
-    channelReceipt?: string;
+    patient?: string;
+    channelReceiptRecipe?: string;
     attendantResponsibleRecipes?: string;
+    cluster?: boolean | RecipeCluster | string;
     receivingDate?: string;
     recipeType?: string;
-    internalObservation?: string;
     urgentRecipe?: boolean;
+    textNoteRecipe?: string;
     clientAlert?: boolean;
-    medicineControlled?: boolean;
+    controlledMedication?: boolean;
     customerPhone?: string | number
 } = {}): Cypress.Chainable<ValidationResult> => {
 
@@ -692,16 +692,18 @@ Cypress.Commands.add('importRecipe', (options: {
         prescriber = dataParameters.Recipe.import.prescriber,
         parameterSearchPatient = dataParameters.Recipe.import.parameterSearchPatient,
         patient = dataParameters.Recipe.import.patient,
-        channelReceipt = dataParameters.Recipe.import.channelReceiptRecipe,
+        channelReceiptRecipe = dataParameters.Recipe.import.channelReceiptRecipe,
         attendantResponsibleRecipes = typeof dataParameters.Recipe.import.attendantResponsibleRecipes === 'boolean'
             ? undefined
             : dataParameters.Recipe.import.attendantResponsibleRecipes,
+        cluster = dataParameters.Recipe.import.cluster,
         receivingDate = dataParameters.Recipe.import.receivingDate,
         recipeType = dataParameters.Recipe.import.recipeType,
-        internalObservation = dataParameters.Recipe.import.textNoteRecipe,
-        urgentRecipe = false,
-        clientAlert = false,
-        medicineControlled = false
+        textNoteRecipe = dataParameters.Recipe.import.textNoteRecipe,
+        urgentRecipe = dataParameters.Recipe.import.urgentRecipe,
+        clientAlert = dataParameters.Recipe.import.clientAlert,
+        controlledMedication = dataParameters.Recipe.import.controlledMedication,
+        customerPhone = dataParameters.Recipe.import.customerPhone,
     } = options;
 
     function processRecipeAttributes() {
@@ -710,11 +712,23 @@ Cypress.Commands.add('importRecipe', (options: {
         }
 
         if (prescriber) {
-            cy.getElementAutocompleteTypeAndClick(
-                { [prescriberRecipes]: String(prescriber) },
-                suggestionAutocomplete
-            );
-            cy.waitModalAndClick(btnSuccessModalElement, btnSuccessModalElement, 'each');
+            cy.waitUntil(() =>
+                cy.getElementAutocompleteTypeAndClick(
+                    { [prescriberRecipes]: String(prescriber) },
+                    suggestionAutocomplete
+                ), {
+                timeout: 10000,
+                interval: 500,
+                errorMsg: 'O elemento não ficou visível a tempo.',
+            });
+            cy.waitUntil(() =>
+                cy.waitModalAndClick(btnSuccessModalElement, btnSuccessModalElement, 'each')
+            ), {
+                timeout: 10000,
+                interval: 500,
+                errorMsg: 'O elemento não ficou visível a tempo.',
+            };
+
         }
 
         if (parameterSearchPatient) {
@@ -722,18 +736,34 @@ Cypress.Commands.add('importRecipe', (options: {
         }
 
         if (patient) {
-            cy.getElementAutocompleteTypeAndClick(
-                { [patientRecipes]: String(patient) },
-                suggestionAutocomplete
-            );
+            cy.get(patientRecipeElement)
+                .type(patient, { delay: 50 })
+                .then(() => {
 
-            cy.getElementAndClick(btnSuccessModalElement, patientContactModal);
-
-            selectPatientPhone(dataParameters.Recipe.import.customerPhone);
+                    cy.waitUntil(() => Cypress.$('.autocomplete-suggestion[data-index="0"]').is(':visible'), {
+                        timeout: 10000,
+                        interval: 500,
+                        errorMsg: 'O autocomplete não apareceu a tempo.',
+                    }).then(() => {
+                        cy.get('.autocomplete-suggestion[data-index="0"]')
+                            .eq(1)
+                            .click({ force: true })
+                    });
+                });
         }
 
-        if (channelReceipt) {
-            cy.getSelectOptionByValue([{ element: channelReceiptImport, value: channelReceipt }]);
+        cy.waitUntil(() =>
+            cy.getElementAndClick(btnSuccessModalElement, patientContactModal)
+        ), {
+            timeout: 10000,
+            interval: 500,
+            errorMsg: 'O elemento não ficou visível a tempo.',
+        };
+
+        selectPatientPhone(customerPhone);
+
+        if (channelReceiptRecipe) {
+            cy.getSelectOptionByValue([{ element: channelReceiptImport, value: channelReceiptRecipe }]);
         }
 
         if (attendantResponsibleRecipes) {
@@ -744,9 +774,10 @@ Cypress.Commands.add('importRecipe', (options: {
                     if (!attendantResponsibleRecipes) {
                         cy.log('O teste será prosseguido, pois um atendente responsável já foi designado.');
                     } else {
+
                         cy.getElementAutocompleteTypeAndClick(
-                            { [attendantTrimmed]: attendantResponsibleRecipes },
-                            el.Recipes.autocompleteResponsibleAttendant
+                            { ['#modalAtendenteRec']: 'rafaela moro' },
+                            suggestionAutocomplete
                         );
                     }
                 });
@@ -758,8 +789,8 @@ Cypress.Commands.add('importRecipe', (options: {
                 .invoke('val')
                 .then((cluster) => {
                     const clusterTrimmed = String(cluster).trim();
-                    if (!clusterTrimmed && dataParameters.Recipe.import.cluster) {
-                        cy.getSelectOptionByValue([{ element: clusterRecipes, value: String(dataParameters.Recipe.import.cluster) }]);
+                    if (!clusterTrimmed && cluster) {
+                        cy.getSelectOptionByValue([{ element: clusterRecipes, value: cluster }]);
                     } else {
                         cy.log('Cluster já designado.');
                     }
@@ -781,13 +812,27 @@ Cypress.Commands.add('importRecipe', (options: {
                 }
             });
 
-            clickModalButton(btnModalMessage);
+            cy.waitUntil(() =>
+                cy.getElementAndClick(btnModalMessage)
+            ), {
+                timeout: 10000,
+                interval: 500,
+                errorMsg: 'O elemento não ficou visível a tempo.',
+            };
+
             cy.wait(1000);
-            clickModalButton(btnModalMessage);
+
+            cy.waitUntil(() =>
+                cy.getElementAndClick(btnModalMessage)
+            ), {
+                timeout: 10000,
+                interval: 500,
+                errorMsg: 'O elemento não ficou visível a tempo.',
+            };
         }
 
-        if (internalObservation) {
-            cy.getElementAndType({ [textInternalObservationRecipes]: internalObservation });
+        if (textNoteRecipe) {
+            cy.getElementAndType({ [textInternalObservationRecipes]: textNoteRecipe });
         }
     };
     function checkOptionalField(selector: string, condition?: boolean): void {
@@ -801,17 +846,7 @@ Cypress.Commands.add('importRecipe', (options: {
     function setOptionalFields() {
         checkOptionalField(urgentRecipeElement, urgentRecipe);
         checkOptionalField(clientAlertRecipeElement, clientAlert);
-        checkOptionalField(controlledmedicationRecipeElement, medicineControlled);
-    };
-    function clickModalButton(btnSelector: string): void {
-        cy.document().then((doc) => {
-            const $btn = doc.querySelector(btnSelector) as HTMLElement;
-            if ($btn) {
-                cy.getElementAndClick(btnSelector);
-            } else {
-                cy.log('Modal não foi apresentada e, portanto, o teste prosseguirá.');
-            }
-        });
+        checkOptionalField(controlledmedicationRecipeElement, controlledMedication);
     };
     function selectPatientPhone(expectedNumber: string | number) {
         const possibleNumbers = [
@@ -820,9 +855,6 @@ Cypress.Commands.add('importRecipe', (options: {
                 ? expectedNumber.replace(/(\d{2})(9)(\d+)/, '$1$3')
                 : String(expectedNumber).replace(/(\d{2})(9)(\d+)/, '$1$3')
         ];
-
-        cy.wait(1000);
-        cy.getElementAndClick(btnSuccessModalElement);
 
         cy.get(contactPhone, { timeout: 20000 })
             .should('be.visible')
@@ -860,9 +892,23 @@ Cypress.Commands.add('importRecipe', (options: {
 
     processRecipeAttributes();
 
-    clickModalButton(btnModalMessage);
-    cy.wait(1000);
-    clickModalButton(btnModalMessage);
+    // cy.waitUntil(() =>
+    //     cy.getElementAndClick(btnModalMessage)
+    // ), {
+    //     timeout: 10000,
+    //     interval: 500,
+    //     errorMsg: 'O elemento não ficou visível a tempo.',
+    // };
+
+    // cy.wait(1000);
+
+    // cy.waitUntil(() =>
+    //     cy.getElementAndClick(btnModalMessage)
+    // ), {
+    //     timeout: 10000,
+    //     interval: 500,
+    //     errorMsg: 'O elemento não ficou visível a tempo.',
+    // };
 
     setOptionalFields();
 

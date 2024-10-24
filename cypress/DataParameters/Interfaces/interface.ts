@@ -45,7 +45,7 @@ export interface ImportRecipe<S = string> {
     receivingDate: S;
     recipeType: RecipeType;
     textNoteRecipe: S;
-    urgentRecipeElement: boolean;
+    urgentRecipe: boolean;
     clientAlert: boolean;
     controlledMedication: boolean;
     customerPhone: number;
@@ -123,18 +123,6 @@ export interface DataParameters<S = string> {
         USER_PASSWORD: S;
     }
 
-    Url: {
-        start: S;
-        importRecipes: S;
-        manageRecipes: S;
-        services: S;
-        servicesInProgress: S;
-    };
-
-    User: {
-        userAssigned: S;
-    }
-
     Recipe: {
         injectablesBranch:S[];
         import: ImportRecipe;
@@ -142,19 +130,6 @@ export interface DataParameters<S = string> {
         clone: CloneRecipe
         pharmaceuticalObservation: PharmaceuticalObservationRecipe,
         technicalDoubt: TechnicalDoubtRecipe,
-    };
-
-    Prescriber: {
-        crmPrescriber: S;
-    };
-
-    Patient: {
-        codePatient: S;
-    }
-
-    BudgetAndBranch: {
-        budget: any;
-        branch: any;
     };
 
     filePath: S;

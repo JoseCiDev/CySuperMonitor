@@ -35,12 +35,11 @@ interface Elements<S = string> {
         removeImageRecipes: S;
         modalSuggestionRelationshipPrescriber: S;
         parameterSearchPatient: S;
-        patientRecipes: S;
+        patientRecipeElement: S;
         channelReceiptImport: S;
         clusterRecipes: S;
         budgetistRecipes: S;
         responsibleForRecipeElement: S;
-        autocompleteResponsibleAttendant: S;
         dateReceiptRecipes: S;
         juntocomRecipes: S;
         autocompleteJuntocomRecipes: S;
@@ -303,8 +302,6 @@ interface Elements<S = string> {
     };
 }
 
-
-
 export const elements: Elements = {
 
     Shared: {
@@ -340,12 +337,11 @@ export const elements: Elements = {
         prescriberRecipes: '#modalMedicoRec',
         modalSuggestionRelationshipPrescriber: '.bootbox .modal-dialog .modal-content .modal-footer .btn-primary',
         parameterSearchPatient: '#t2_154c',
-        patientRecipes: '#modalPacienteRec',
+        patientRecipeElement: '#modalPacienteRec',
         channelReceiptImport: '#modalCanalContato',
         clusterRecipes: '#modalCluster',
         budgetistRecipes: '#modalOrcamentistaRec',
         responsibleForRecipeElement: '#modalAtendenteRec',
-        autocompleteResponsibleAttendant: '.autocomplete-suggestion',
         dateReceiptRecipes: '#modalDataRec',
         juntocomRecipes: '#groupMainEntitiesModal > div:nth-child(2) > div:nth-child(4) > div > span',
         autocompleteJuntocomRecipes: 'ul.select2-results__options',
