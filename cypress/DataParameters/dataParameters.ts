@@ -148,8 +148,8 @@ export const dataParameters: DataParameters = {
 
     Budget: {
         confirmation: {
-            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['145519'])]),
-            filialNumberForSearch: String([faker.helpers.arrayElement(['5'])]),
+            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['7191'])]),
+            filialNumberForSearch: String([faker.helpers.arrayElement(['2013'])]),
             typePaymentCourtesyInjectables: BudgetConfirmationTypePaymentCourtesyInjectables.CourtesyComplaintHandling,
             budgetist: 'orcam',
             budgetAttendant: 'adm',
@@ -168,14 +168,14 @@ export const dataParameters: DataParameters = {
             paymentStatus: BudgetConfirmationPaymentStatus.NotPayed,
             address: '.enderecosCli',
             expeditionObservation: faker.lorem.paragraph(),
-            shippingMethod: BudgetConfirmationShippingMethod.Delivery,
+            shippingMethod: BudgetConfirmationShippingMethod.SedexSC,
             juntocomBudget: String(faker.helpers.arrayElements([107456, 107246])),
             promisedTo: new Date(),
             aromaSachet: BudgetConfirmationAromaSachet.Strawberry,
             capsuleAroma: BudgetConfirmationCapsuleAroma.OrangeWithMintAndSpearmint,
             generalObservation: faker.lorem.lines(),
             budgetHasRecipeElement: BudgetConfirmationBudgetHasRecipe.Yes,
-            urgentBudget: false,
+            urgentBudget: true,
             automaticMessageTriggering: true,
         },
         payment: {

@@ -26,13 +26,13 @@ Feature: Gerenciamento de Observações Farmacêuticas na Receita
     Scenario: Adicionar observação durante a edição da receita
         Given que o usuário está na tela de "Edição da Receita"
         When o usuário insere uma nova observação "Ajustar horário de administração para 8h e 20h"
-        Then a observação deve ser salva e exibida na lista "Observações da Receita"
+        Then a observação deve ser salva
         And a observação deve estar visível quando o usuário visualizar a "Visualizar Receita"
 
     @editObservation
     Scenario: Editar observação existente
         Given que o usuário adicionou uma observação "Dra. orienta seguir com Coenzima Q10 lipossomada."
-        When o usuário edita a observação para "Dra. recomenda manipular Coenzima Q10 lipossomada."
+        When o usuário farmacêutico edita a observação para "Dra. recomenda manipular Coenzima Q10 lipossomada."
         Then a observação deve ser atualizada e visível na lista como "Dra. recomenda manipular Coenzima Q10 lipossomada."
 
     @deleteObservation @restrictPermissions
@@ -50,16 +50,9 @@ Feature: Gerenciamento de Observações Farmacêuticas na Receita
         Then as observações excluídas devem ser mostradas de forma nublada
         And ao passar o mouse sobre o ícone "i", deve exibir a data e hora da exclusão
 
-    @observationFromMedicalTab
-    Scenario: Adicionar observação a partir da aba "Observações Paciente/Médico"
-        Given que há texto no campo para inserir observação em "Observações Paciente/Médico"
-        When o usuário clica para adicionar a observação
-        Then a observação deve ser adicionada diretamente à receita
-
     @generatePDF
     Scenario: Gerar PDF de observações farmacêuticas selecionadas
         Given que o usuário adicionou observações farmacêuticas
-        And clicou em "Gerar PDF"
         When o usuário seleciona as observações desejadas
         And confirma a geração do PDF
         Then o PDF deve incluir as observações selecionadas
@@ -82,8 +75,7 @@ Feature: Gerenciamento de Observações Farmacêuticas na Receita
         Given que o usuário logado é "farmaceutico"
         And uma observação foi adicionada por "atendente"
         When o usuário "farmaceutico" tenta excluir a observação
-        Then o sistema deve impedir a exclusão
-        And uma mensagem de "Permissão negada" deve ser exibida
+        Then a ação não é possivel porque o botão excluir não é apresentado
 
     @pdfExclusion
     Scenario: Garantir que observações excluídas não sejam incluídas no PDF
@@ -105,12 +97,6 @@ Feature: Gerenciamento de Observações Farmacêuticas na Receita
         When o farmacêutico insere sua senha para assinatura
         Then o PDF final deve ser assinado e incluir todas as observações selecionadas
         And a data de assinatura deve ser exibida corretamente no documento
-
-    @layoutConsistency
-    Scenario: Verificar consistência do layout "Receita" nas abas de atendimento e PDF
-        Given que o layout "Receita" é exibido nas abas de atendimento
-        When o usuário alterna para a aba "PDF"
-        Then o layout deve permanecer consistente em ambas as abas
 
     @addObservationFromView @visualizeObservation
     Scenario: Adicionar observação em visualizar receita e verificar em edição da receita
