@@ -1,19 +1,3 @@
-# Explicação dos Cenários:
-# Disparo de E-mail para Pedidos Urgentes Fechados:
-
-# Cobre: Garante que quando um pedido de uma filial relevante for fechado como urgente, um e-mail será disparado para "caixa3@essentia.com.br" com o assunto e corpo corretos.
-# Excluir Pedidos de Filiais Injetáveis da Regra:
-
-# Cobre: Filiais injetáveis (13, 1313, 2013) devem ser excluídas da regra, garantindo que, mesmo que sejam fechadas como urgentes, não disparem o e-mail.
-# Validação do Conteúdo do E-mail de Pedidos Urgentes:
-
-# Cobre: Verifica que o e-mail enviado tem o conteúdo correto, incluindo o assunto "Pedido urgente" e o corpo com o número do pedido e a filial.
-# Pedido Não Urgente Não Deve Enviar E-mail:
-
-# Cobre: Assegura que pedidos que não foram marcados como urgentes não disparem nenhum e-mail, mesmo que a amarelinha seja fechada.
-# Verificar que E-mail é Enviado Apenas para "caixa3@essentia.com.br":
-
-# Cobre: Garante que o e-mail só será enviado para o destinatário correto e não para outros endereços de e-mail.
 
 Feature: Sinalização e tratativa de faturamento para pedidos urgentes
     Para garantir que pedidos urgentes sejam tratados de forma eficiente,
