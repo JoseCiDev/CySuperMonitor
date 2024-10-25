@@ -320,7 +320,7 @@ const dataEnvironment = Cypress.env(environment);
 // });
 
 Given('que o usuário está logado no sistema', () => {
-    cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+    cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
         .then((result) => {
             assert.exists(result.success, result.error);
         });
@@ -363,7 +363,7 @@ Then('é realizado o pagamento do orçamento', () => {
 Then('o sistema valida os dados do pagamento', () => {
     cy.get('@paymentData').then((paymentData) => {
         cy.log('Pagamento concluído, iniciando validação...');
-        cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+        cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });

@@ -131,7 +131,7 @@ describe('Tela importação de receitas.', function () {
     })
 
     it('Deve realizar importação de Receitas', function () {
-        cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ADMIN, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+        cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });
@@ -152,11 +152,11 @@ describe('Tela importação de receitas.', function () {
             prescriber: '999990-SC',
             patient: 'teste pre',
             channelReceiptRecipe: RecipeReceiptChannel.Whatsapp,
-            attendantResponsibleRecipes: 'Atendente Tamires Silva Luiz',
-            cluster: RecipeCluster.Cluster3,
+            attendantResponsibleRecipes: 'Graziele Fabiane Martins Wahl',
+            cluster: RecipeCluster.Cluster1,
             recipeType: RecipeType.HasRecipe,
             textNoteRecipe: faker.lorem.paragraph(),
-            urgentRecipe: false,
+            urgentRecipe: true,
             clientAlert: false,
             controlledMedication: false,
             customerPhone: 48991888641,

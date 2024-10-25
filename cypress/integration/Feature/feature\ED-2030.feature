@@ -53,7 +53,7 @@ Feature: Gerenciamento de Observações Farmacêuticas na Receita
     @generatePDF
     Scenario: Gerar PDF de observações farmacêuticas selecionadas
         Given que o usuário adicionou observações farmacêuticas
-        When o usuário seleciona as observações desejadas
+        When o usuário farmacêutico seleciona as observações desejadas
         And confirma a geração do PDF
         Then o PDF deve incluir as observações selecionadas
         And a data de assinatura do farmacêutico deve ser registrada no PDF
