@@ -18,7 +18,7 @@ import {
     RecipePendingFilter,
     elements as el,
 
-} from '../../import';
+} from '../import';
 
 export const {
     suggestionAutocomplete,

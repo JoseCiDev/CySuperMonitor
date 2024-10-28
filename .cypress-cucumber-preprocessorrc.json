@@ -1,5 +1,6 @@
 {
     "stepDefinitions": [
-        "cypress/e2e/UI/[filepath].cy.ts"
+      "cypress/e2e/**/*.cy.ts"
     ]
-}
+  }
+  

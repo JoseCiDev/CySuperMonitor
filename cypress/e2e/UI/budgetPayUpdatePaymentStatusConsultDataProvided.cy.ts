@@ -1,4 +1,3 @@
-import { Given, When, Then } from '../../../import';
 
 import {
     BudgetConfirmationPatientSearchParameter,
@@ -18,8 +17,9 @@ import {
     RecipePendingFilter,
     elements as el,
     dataParameters,
+    Given, When, Then
 
-} from '../../../import';
+} from '../../import';
 
 export const {
     suggestionAutocomplete,
@@ -319,55 +319,55 @@ const dataEnvironment = Cypress.env(environment);
 //     });
 // });
 
-Given('que o usuário está logado no sistema', () => {
-    cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
-        .then((result) => {
-            assert.exists(result.success, result.error);
-        });
-});
-
-When('visualizar o orçamento', () => {
-    cy.document().then((doc) => {
-        const $btn = doc.querySelector(modalElement);
-        if ($btn) {
-            cy.getElementAndClick(btnModalChangelog);
-        } else {
-            cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
-        }
-    });
-
-    cy.getElementAndClick(menuServices, servicesInProgress);
-
-    cy.viewBudget();
-});
-
-When('selecionar o contato do cliente', () => {
-    cy.selectCustomerContact();
-});
-
-When('preencher os dados do orçamentista e atendente', () => {
-    cy.fillOrcamentistaAndAtendente();
-});
-
-When('inserir o tempo de tratamento', () => {
-    cy.insertTimeTreatment();
-});
-
-Then('é realizado o pagamento do orçamento', () => {
-    cy.log('Iniciando pagamento...');
-    cy.payBudget().then((paymentData) => {
-        cy.wrap(paymentData).as('paymentData');
-    });
-});
-
-Then('o sistema valida os dados do pagamento', () => {
-    cy.get('@paymentData').then((paymentData) => {
-        cy.log('Pagamento concluído, iniciando validação...');
+    Given('que o usuário está logado no sistema', () => {
         cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });
-
-        cy.validatePaymentData(paymentData);
     });
-});
+
+    When('visualizar o orçamento', () => {
+        cy.document().then((doc) => {
+            const $btn = doc.querySelector(modalElement);
+            if ($btn) {
+                cy.getElementAndClick(btnModalChangelog);
+            } else {
+                cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
+            }
+        });
+
+        cy.getElementAndClick(menuServices, servicesInProgress);
+
+        cy.viewBudget();
+    });
+
+    When('selecionar o contato do cliente', () => {
+        cy.selectCustomerContact();
+    });
+
+    When('preencher os dados do orçamentista e atendente', () => {
+        cy.fillOrcamentistaAndAtendente();
+    });
+
+    When('inserir o tempo de tratamento', () => {
+        cy.insertTimeTreatment();
+    });
+
+    Then('é realizado o pagamento do orçamento', () => {
+        cy.log('Iniciando pagamento...');
+        cy.payBudget().then((paymentData) => {
+            cy.wrap(paymentData).as('paymentData');
+        });
+    });
+
+    Then('o sistema valida os dados do pagamento', () => {
+        cy.get('@paymentData').then((paymentData) => {
+            cy.log('Pagamento concluído, iniciando validação...');
+            cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+                .then((result) => {
+                    assert.exists(result.success, result.error);
+                });
+
+            cy.validatePaymentData(paymentData);
+        });
+    });

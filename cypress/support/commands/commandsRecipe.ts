@@ -628,48 +628,6 @@ Cypress.Commands.add('reopenBudget', (budget: number, branch: number) => {
     );
 })
 
-Cypress.Commands.add('viewBudget', (): void => {
-
-    cy.readFile('budgetAndBranch.json')
-        .then((budgetAndBranch) => {
-
-            let allBudgetsUsed = true;
-            let budgetViewed = false;
-
-            for (const budgetItem of budgetAndBranch) {
-                const budget = budgetItem.budgetNumber;
-                const branch = budgetItem.branchNumber;
-
-                cy.searchBudget(budget, branch);
-                cy.getElementAndClick(sendSearch);
-
-                cy.get(containerBudgets)
-                    .then($element => {
-                        if ($element.length < 2) {
-                            cy.reopenBudget(budget, branch)
-                        }
-                        else {
-                            allBudgetsUsed = false;
-                            cy.getElementAndClick(buttonView);
-                            budgetViewed;
-                        }
-
-                        if (budgetViewed = true) {
-                            return false;
-                        };
-                    });
-
-                if (budgetViewed = true) {
-                    break;
-                };
-            }
-
-            if (allBudgetsUsed) {
-                throw new Error('Todos os números de orçamentos já foram usados.')
-            };
-        });
-});
-
 Cypress.Commands.add('importRecipe', (options: {
     file?: string;
     prescriber?: string | number;
@@ -707,9 +665,32 @@ Cypress.Commands.add('importRecipe', (options: {
     } = options;
 
     function processRecipeAttributes() {
-        if (file) {
-            cy.insertFile(importImageRecipes, file);
+        if (file.endsWith('.jpg')) {
+            cy.log('jpg');
+            cy.log(file);
+            cy.waitUntil(() =>
+                cy.insertFile(importImageRecipes, file)
+            ), {
+                timeout: 10000,
+                interval: 500,
+                errorMsg: 'O elemento não ficou visível a tempo.',
+            };
+        } else if (file.endsWith('.pdf')) {
+            cy.log('pdf');
+            cy.log(file);
+            cy.waitUntil(() =>
+                cy.insertFile(importPDFRecipes, file)
+            ), {
+                timeout: 10000,
+                interval: 500,
+                errorMsg: 'O elemento não ficou visível a tempo.',
+            };
+        } else {
+            cy.log('Formato de arquivo não suportado');
+            cy.log(file);
+            throw new Error('Formato de arquivo não suportado');
         }
+
 
         if (prescriber) {
             cy.waitUntil(() =>
@@ -892,26 +873,8 @@ Cypress.Commands.add('importRecipe', (options: {
 
     processRecipeAttributes();
 
-    // cy.waitUntil(() =>
-    //     cy.getElementAndClick(btnModalMessage)
-    // ), {
-    //     timeout: 10000,
-    //     interval: 500,
-    //     errorMsg: 'O elemento não ficou visível a tempo.',
-    // };
-
-    // cy.wait(1000);
-
-    // cy.waitUntil(() =>
-    //     cy.getElementAndClick(btnModalMessage)
-    // ), {
-    //     timeout: 10000,
-    //     interval: 500,
-    //     errorMsg: 'O elemento não ficou visível a tempo.',
-    // };
-
     setOptionalFields();
-
+cy.pause();
     cy.getElementAndClick(saveRecipes);
 
     return cy.get(barProgressSaveRecipe, { timeout: 120000 })

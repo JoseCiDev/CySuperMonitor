@@ -4,7 +4,7 @@ import {
     elements as el,
     faker,
 
-} from '../../import';
+} from '../import';
 
 
 const environment = Cypress.env('ENVIRONMENT');

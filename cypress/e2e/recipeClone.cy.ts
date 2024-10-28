@@ -3,11 +3,8 @@
 import {
     elements as el,
     faker,
-    RecipeCluster,
-    RecipeReceiptChannel,
-    RecipeType,
 
-} from '../../import';
+} from '../import';
 
 
 const environment = Cypress.env('ENVIRONMENT');
@@ -118,19 +115,20 @@ export const {
     sendReplyQuestionsTechnical,
     barProgressSaveRecipe,
     noMainContact,
-
+    cloneRecipeElement,
+    
 } = el.Recipes;
 
 
 
 
-describe('Tela importação de receitas.', function () {
+describe('Clonagem de receitas.', function () {
 
     beforeEach(function () {
 
     })
 
-    it('Deve realizar importação de Receitas', function () {
+    it('Deve clonar receitas a partir da tela de importação de receitas', function () {
         cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
@@ -148,21 +146,9 @@ describe('Tela importação de receitas.', function () {
 
         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement);
 
-        cy.importRecipe({
-            prescriber: '999990-SC',
-            patient: 'teste pre',
-            channelReceiptRecipe: RecipeReceiptChannel.Whatsapp,
-            attendantResponsibleRecipes: 'Graziele Fabiane Martins Wahl',
-            cluster: RecipeCluster.Cluster1,
-            recipeType: RecipeType.HasRecipe,
-            textNoteRecipe: faker.lorem.paragraph(),
-            urgentRecipe: true,
-            clientAlert: false,
-            controlledMedication: false,
-            customerPhone: 48991888641,
-        }).then((result) => {
-            assert.exists(result.success, result.error);
-        });
+        cy.searchRecipe();
+        
+        cy.cloneRecipe(cloneRecipeElement);
     });
 })
 

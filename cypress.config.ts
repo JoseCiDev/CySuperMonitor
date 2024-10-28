@@ -40,7 +40,7 @@ async function setupNodeEvents(
           ],
         },
       },
-    })
+    }),
   );
 
   return config;
@@ -60,8 +60,8 @@ export default defineConfig({
     watchForFileChanges: true,
     setupNodeEvents,
     baseUrl: 'http://192.168.0.66:9202/',
-    specPattern: "cypress/*/**/*.{js,ts,feature}",
-    supportFile: "cypress/support/e2e.{js,ts}",
+    supportFile: 'cypress/support/e2e.ts',
+    specPattern: 'cypress/**/*.{js,jsx,ts,tsx,feature}',
     redirectionLimit: 5000,
     viewportHeight: 1280,
     viewportWidth: 1024,

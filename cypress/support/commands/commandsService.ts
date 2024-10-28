@@ -436,7 +436,6 @@ Cypress.Commands.add('viewBudget', () => {
 });
 
 
-
 Cypress.Commands.add('linkBudgetRecipe', (buttonLink: string, numberRecipe?: number) => {
 
     const linkFirstAvailableRecipe = () => {

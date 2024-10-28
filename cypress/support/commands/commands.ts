@@ -211,21 +211,33 @@ export const {
 Cypress.Commands.add('insertFile', (element, filePath): void => {
   cy.fixture(filePath, 'base64').then((fileContent) => {
     const fileName = filePath.split('/').pop();
-    const mimeType = 'image/jpeg';
+    const mimeType = fileName.endsWith('.jpg') ? 'image/jpeg' : 'application/pdf';
     const blob = Cypress.Blob.base64StringToBlob(fileContent, mimeType);
     const file = new File([blob], fileName, { type: mimeType });
 
-    cy.get(element)
-      .then(($element) => {
-        const event = new Event('change', { bubbles: true });
-        Object.defineProperty($element[0], 'files', {
-          value: [file],
-          writable: false,
-        });
-        $element[0].dispatchEvent(event);
+    cy.get(element).then(($element) => {
+      const event = new Event('change', { bubbles: true });
+      Object.defineProperty($element[0], 'files', {
+        value: [file],
+        writable: false,
       });
+      $element[0].dispatchEvent(event);
+    });
+
+    // Espera que o arquivo esteja atribuído ao elemento e carregado corretamente
+    cy.get(element)
+      .should('have.prop', 'files')
+      .its('0')
+      .should('have.property', 'name', fileName);
+
+    // Também pode-se garantir que o valor do arquivo não está vazio
+    cy.get(element)
+      .should('have.prop', 'files')
+      .its('0')
+      .should('not.have.property', 'size', 0);
   });
 });
+
 
 Cypress.Commands.add('getElementAndClick', (...elements: string[]): void => {
   elements.forEach(element => {
