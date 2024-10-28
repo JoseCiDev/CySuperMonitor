@@ -1,25 +1,3 @@
-# Explicação dos Cenários:
-# Registrar entrada e saída sem DT ou equívoco:
-
-# Este cenário verifica que a operação é permitida uma vez, e que tentar registrar novamente deve ser bloqueado.
-# Registrar entrada e saída após apontamento de equívoco:
-
-# Demonstra que, quando um equívoco é registrado, o sistema permite uma nova operação de entrada e saída, mas bloqueia após esta correção.
-# Registrar entrada e saída após apontamento de DT:
-
-# Similar ao cenário de equívoco, mas trata de DTs, permitindo apenas uma nova operação de entrada e saída para cada DT registrada.
-# Registrar múltiplas entradas e saídas com DT sem bloqueio:
-
-# Verifica que enquanto o técnico está usando DT, o sistema continua permitindo operações, mas uma vez que tenta uma operação normal, o sistema bloqueia.
-# Bloqueio de operação por setor e técnico:
-
-# Usa Scenario Outline para testar que o bloqueio de operação é condicionado por setor e técnico. Se outro técnico tentar no mesmo setor, será bloqueado, mas quando a ficha se move para outro setor, é permitido.
-# Realizar entrada e saída por outro técnico após mudança de setor:
-
-# Garante que, após a ficha ser movida para outro setor, qualquer técnico pode interagir com a ficha, independente de operações anteriores.
-# Registro final após resolver todas as DTs:
-
-# Valida que o sistema permite resolver múltiplas DTs, mas após resolver todas, qualquer operação adicional será bloqueada, marcando a finalização.
 Feature: Registro de entrada e saída de fichas com tratamento de DTs e equívocos
 
     Background:
