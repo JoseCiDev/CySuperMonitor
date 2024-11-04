@@ -21,7 +21,7 @@ export const {
   containerMessage,
   okModalMessage,
   btnSuccessModalElement,
-  btnModalFailure,
+  btnModalFailureElement,
   modalMessage,
   btnModalMessage,
   btnModalChangelog,
@@ -39,7 +39,7 @@ export const {
   removeImageRecipes,
   modalSuggestionRelationshipPrescriber,
   parameterSearchPatient,
-  channelReceiptImport,
+  channelReceiptImportElement,
   clusterRecipes,
   budgetistRecipes,
   responsibleForRecipeElement,
@@ -73,7 +73,7 @@ export const {
   pendingFilterLinked,
   buttonSearchRecipesElement,
   labelSearchRecipes,
-  numberRecipe,
+  numberRecipeElement,
   dateReceiptGrid,
   checkboxMarkUse,
   containerInsertUser,
@@ -325,7 +325,7 @@ Cypress.Commands.add('waitModalAndClick', (jqueryElement: string, element: strin
   const $aliasModal = Cypress.$(jqueryElement);
 
   if ($aliasModal.length === 0) {
-    cy.log('O teste será prosseguido, uma vez que o elemento esperado não foi exibido na tela.');
+    cy.log('Aguardando o elemento ser exibido em tela. Se o elemento não for exibido em tela o teste irá continuar.');
   } else {
     cy.get(element, { timeout: 60000 })
       .as('elementAlias')

@@ -45,7 +45,7 @@ declare global {
         finalDate?: string;
         cluster?: string;
         channelReceipt?: string;
-        numberRecipe?: number;
+        recipeNumber?: number;
         patient?: string;
         prescriber?: string;
         budget?: number;
@@ -191,12 +191,6 @@ declare global {
       optionMyAndAllSearchBudget(optionsSearch: string): Chainable<Element>;
 
       /**
-       * * comando customizado para buscar orçamentos inserindo orcamento e branch.
-       * @example cy.searchBudget(budget,branch)
-       */
-      searchBudget(budget: number, branch: number);
-
-      /**
        * * comando customizado para visulizar orçamentos.
        * @example cy.viewBudget(buttonView)
        */
@@ -219,9 +213,9 @@ declare global {
 
       /**
        * * comando customizado para vincular recipe ao budget.
-       * @example cy.vincularReceitaOrçamento(buttonLinkRecipeScreenServiceProgress,dataParameters.Recipe.numberRecipe)
+       * @example cy.vincularReceitaOrçamento(buttonLinkRecipeScreenServiceProgress,dataParameters.Recipe.recipeNumber)
        */
-      linkBudgetRecipe(buttonLink: string, numberRecipe?: number): ValidationResult;
+      linkBudgetRecipe(buttonLink: string, recipeNumber?: number): ValidationResult;
 
       /**
        * * comando customizado para desvincular recipe ao budget.
@@ -261,30 +255,46 @@ declare global {
 
       /**
      * * comando customizado para importar receitas.
-     * @example cy.importRecipe( file: 'path/to/file.jpg')
+     * @example cy.importRecipe({
+                file: 'img/recipeExample.pdf',
+                prescriber: '999990-SC',
+                patient: '618484',
+                channelReceiptRecipe: 'Whatsapp',
+                attendantResponsibleRecipes: 'Graziele Fabiane Martins Wahl',
+                cluster: 'Cluster1',
+                recipeStatus: 'HasRecipe',
+                textNoteRecipe: 'Nota de teste para importação',
+                urgentRecipe: true,
+                clientAlert: true,
+                controlledMedication: true,
+                customerPhone: 48991888641,
+                })
      */
       importRecipe(options?: {
         file?: string;
-        prescriber?: string | number;
+        prescriber?: string;
         parameterSearchPatient?: string;
         patient?: string | number;
         channelReceiptRecipe?: string;
         attendantResponsibleRecipes?: string;
         cluster?: boolean | RecipeCluster | string;
         receivingDate?: string;
-        recipeType?: string;
+        recipeStatus?: string;
         urgentRecipe?: boolean;
         textNoteRecipe?: string;
         clientAlert?: boolean;
         controlledMedication?: boolean;
-        customerPhone?: string | number
+        noMainContact?: boolean;
+        isTheMainContact?: boolean;
+        mainContactRecipe?: string;
+        customerPhone?: number
       }): Chainable<ValidationResult>;
 
       /**
      * * comando customizado para capturar o número da recipe .
      * @example cy.captureRecipeNumber(budgetist,attendant)
      */
-      captureRecipeNumber(RecipeNumberElement: string)
+      captureRecipeDetails(tableSelector: string)
 
       /**
        * * comando customizado para confirmar orçamentos.

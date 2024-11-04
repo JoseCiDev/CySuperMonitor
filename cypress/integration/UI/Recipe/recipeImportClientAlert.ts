@@ -3,9 +3,12 @@
 import {
     elements as el,
     faker,
+    RecipeCluster,
+    RecipeReceiptChannel,
+    RecipeStatus,
+    Given, When, Then,
 
-} from '../import';
-
+} from '../../../import';
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
@@ -16,15 +19,16 @@ export const {
     containerMessage,
     okModalMessage,
     btnSuccessModalElement,
-    btnModalFailure,
+    btnModalFailureElement,
     modalMessage,
     btnModalMessage,
     btnModalChangelog,
-    modalElement,
+
 } = el.Shared;
 
 export const {
     menuRecipesElement,
+
     prescriberRecipes,
     menuImportRecipesElement,
     menuManageRecipes,
@@ -35,11 +39,10 @@ export const {
     modalSuggestionRelationshipPrescriber,
     parameterSearchPatient,
     patientRecipeElement,
-    channelReceiptImport,
+    channelReceiptImportElement,
     clusterRecipes,
     budgetistRecipes,
     responsibleForRecipeElement,
-
     dateReceiptRecipes,
     juntocomRecipes,
     autocompleteJuntocomRecipes,
@@ -70,7 +73,7 @@ export const {
     pendingFilterLinked,
     buttonSearchRecipesElement,
     labelSearchRecipes,
-    numberRecipe,
+    numberRecipeElement,
     dateReceiptGrid,
     checkboxMarkUse,
     containerInsertUser,
@@ -115,50 +118,57 @@ export const {
     sendReplyQuestionsTechnical,
     barProgressSaveRecipe,
     noMainContact,
+    recipeCodeColumnElement,
+    viewRecipeScreenImportRecipesElement,
+    customerPhoneToViewRecipesElement,
+    recipeReceiptChannelViewRecipesElement,
+    clusterScreenViewRecipesElement,
 
 } = el.Recipes;
 
-export const {
-    menuServices,
-    servicesInProgress,
-    buttonLinkRecipeScreenServiceProgressElement,
+afterEach(() => {
+    cy.clearCookies();
+    cy.clearLocalStorage();
+});
 
-} = el.Services;
-
-
-
-
-describe('Tela Atendimentos.', function () {
-
-    beforeEach(function () {
-
-    })
-
-    it('Deve realizar a confirmação do orçamento', function () {
-        cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
-            .then((result) => {
-                assert.exists(result.success, result.error);
-            });
-
-        cy.document().then((doc) => {
-            const $btn = doc.querySelector(modalElement) as HTMLElement
-            if ($btn) {
-                cy.getElementAndClick(btnModalChangelog);
-            } else {
-                cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
-            }
+Given('que estou logado no sistema  para importar receitas com cliente alerta', () => {
+    cy.login(
+        dataEnvironment.BASE_URL_SM,
+        dataEnvironment.USER_ATENDENTE1,
+        dataEnvironment.PASSWORD,
+        el.Login.messageErrorLogin
+    )
+        .then((result) => {
+            assert.exists(result.success, result.error);
         });
-        
-        cy.getElementAndClick(menuServices, servicesInProgress);
-        
-        cy.viewBudget();
 
-        cy.selectCustomerContact();
-
-        cy.fillOrcamentistaAndAtendente();
-
-        cy.insertTimeTreatment();
-        
-        cy.confirmBudget();
+    cy.document().then((doc) => {
+        const $btn = doc.querySelector(btnModalChangelog) as HTMLElement
+        if ($btn) {
+            cy.getElementAndClick(btnModalChangelog);
+        } else {
+            cy.log('Modal não foi apresentada e, portanto, o teste prosseguirá.');
+        }
     });
+
+    cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement);
+
+});
+
+When('eu realizo a importação de uma receita sinalizada como cliente alerta', () => {
+    cy.importRecipe({
+        clientAlert: true,
+    }).then((result) => {
+        assert.exists(result.success, result.error);
+        cy.wrap(result.clientAlert).as('clientAlert');
+    });
+});
+
+Then('os dados das receitas importadas com cliente alerta, devem ser capturados e exibidos corretamente', () => {
+
+    cy.get('@clientAlert').then((clientAlert) => {
+        expect(clientAlert).to.exist;
+        cy.log(`Receita urgente importada: ${clientAlert ? 'Marcado' : 'Desmarcado'}`);
+    });
+
 });

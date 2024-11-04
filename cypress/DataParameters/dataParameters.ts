@@ -4,7 +4,7 @@ import {
     BudgetConfirmationPatientSearchParameter,
     RecipeReceiptChannel,
     RecipeCluster,
-    RecipeType,
+    RecipeStatus,
     BudgetConfirmationAromaSachet,
     BudgetClosingChannel,
     BudgetConfirmationBudgetHasRecipe,
@@ -60,25 +60,28 @@ export const dataParameters: DataParameters = {
     Recipe: {
         injectablesBranch:['13','1313','2013'],
         import: {
-            numberRecipe: 0,
-            file: undefined,
-            prescriber: faker.helpers.arrayElement(['999990-SC']),
+            recipeNumber: 0,
+            file: 'img/recipeExample.jpg',//'img/recipeExample.pdf' 'img/recipeExample.jpg' undefined
+            prescriber: faker.helpers.arrayElement(['fabio juca','leonardo higashi','nina sobral','victor sorrentino','elisa urban von damm']),
             suggestionRelationshipPrescriber: true,
             parameterSearchPatient: BudgetConfirmationPatientSearchParameter.Cdcli,
-            patient: faker.helpers.arrayElement(['618484']),
+            patient: faker.helpers.arrayElement(['jose djalma ferreira mendes','neymar da silva santos jr','bruna marquezine','juliana paes de lima','isabela sens de souza']),
             channelReceiptRecipe: RecipeReceiptChannel.Whatsapp,
             attendantResponsibleRecipes: false ? faker.helpers.arrayElement(['Graziele Fabiane Martins Wahl']) : '',
-            cluster: false ? RecipeCluster.Cluster3 : '',
+            cluster: RecipeCluster.Cluster3,
             receivingDate: currentdateLessTwoMinutes.toISOString().slice(0, 16),
-            recipeType: RecipeType.HasRecipe,
+            recipeStatus: RecipeStatus.HasRecipe,
             textNoteRecipe: faker.lorem.paragraph(),
             urgentRecipe: false,
             clientAlert: false,
             controlledMedication: false,
+            noMainContact:true, // true false,
+            isTheMainContact:true, // true false,
+            mainContactRecipe: faker.helpers.arrayElement(['618484']), //true false
             customerPhone: 48991888641,
         },
         search: {
-            numberRecipe: undefined,//digitar o numero da receita ou undefined
+            recipeNumber: undefined,//digitar o numero da receita ou undefined
             initialDate: '',//formato da data YYYY-MM-DDThh:mm:ss | Ex:2024-10-01T00:00 ou  ''
             finalDate: '',//formato da data YYYY-MM-DDThh:mm:ss | Ex:2024-10-17T23:59 ou ''
             cluster: undefined,//RecipeCluster.Cluster1 ou undefined
@@ -123,8 +126,8 @@ export const dataParameters: DataParameters = {
 
     Budget: {
         confirmation: {
-            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['143417'])]),
-            filialNumberForSearch: String([faker.helpers.arrayElement(['5'])]),
+            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['338365'])]),
+            filialNumberForSearch: String([faker.helpers.arrayElement(['1000'])]),
             typePaymentCourtesyInjectables: BudgetConfirmationTypePaymentCourtesyInjectables.CourtesyComplaintHandling,
             budgetist: 'orcam',
             budgetAttendant: 'adm',
@@ -188,7 +191,7 @@ export const dataParameters: DataParameters = {
     pendingsFilter: RecipePendingFilter,
     recipeReceiptChannel: RecipeReceiptChannel,
     patientSearchParameter: BudgetConfirmationPatientSearchParameter,
-    recipeType: RecipeType,
+    recipeStatus: RecipeStatus,
     recipeImportCluster: RecipeCluster,
     relationshipsPrescriberAttendantAndCluster: RelationshipsPrescriberAttendantAndCluster,
     recipePendingFilter: RecipePendingFilter,

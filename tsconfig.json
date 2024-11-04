@@ -24,7 +24,4 @@
     "cypress/support/**/*.d.ts",
     "tsconfig.json",
   ],
-  "exclude": [
-    "node_modules"
-  ]
 }

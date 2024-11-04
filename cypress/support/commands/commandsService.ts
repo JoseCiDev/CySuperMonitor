@@ -31,7 +31,7 @@ export const {
     containerMessage,
     okModalMessage,
     btnSuccessModalElement,
-    btnModalFailure,
+    btnModalFailureElement,
     modalMessage,
     btnModalMessage,
     btnModalChangelog,
@@ -50,7 +50,7 @@ export const {
     modalSuggestionRelationshipPrescriber,
     parameterSearchPatient,
     patientRecipeElement,
-    channelReceiptImport,
+    channelReceiptImportElement,
     clusterRecipes,
     budgetistRecipes,
     responsibleForRecipeElement,
@@ -84,7 +84,7 @@ export const {
     pendingFilterLinked,
     buttonSearchRecipesElement,
     labelSearchRecipes,
-    numberRecipe,
+    numberRecipeElement,
     dateReceiptGrid,
     checkboxMarkUse,
     containerInsertUser,
@@ -129,6 +129,8 @@ export const {
     sendReplyQuestionsTechnical,
     barProgressSaveRecipe,
     noMainContact,
+    recipeCodeColumnElement,
+    lastModifiedColumn,
 
 } = el.Recipes;
 
@@ -239,8 +241,6 @@ export const {
     linkedRecipeProgressBarElement,
     closeModalLinkRecipeElement,
     feedbackMessageElement,
-    accessServiceMenuThroughPrescriptionImportScreenElement,
-    recipeCodeColumnElement,
     expandSideMenuElement,
     successfullyLinkedRecipesProgressBarElement,
     modalLinkRecipeElement,
@@ -436,7 +436,7 @@ Cypress.Commands.add('viewBudget', () => {
 });
 
 
-Cypress.Commands.add('linkBudgetRecipe', (buttonLink: string, numberRecipe?: number) => {
+Cypress.Commands.add('linkBudgetRecipe', (buttonLink: string, recipeNumber?: number) => {
 
     const linkFirstAvailableRecipe = () => {
         cy.get(recipeElementAvailableForLinkingElement)
@@ -528,10 +528,10 @@ Cypress.Commands.add('linkBudgetRecipe', (buttonLink: string, numberRecipe?: num
         cy.wait(1000);
 
         cy.importRecipe().then(() => {
-            cy.getElementAndClick(accessServiceMenuThroughPrescriptionImportScreenElement);
+            cy.getElementAndClick(lastModifiedColumn);
 
             cy.wait(500)
-            cy.getElementAndClick(accessServiceMenuThroughPrescriptionImportScreenElement);
+            cy.getElementAndClick(lastModifiedColumn);
 
             cy.get(recipeCodeColumnElement, { timeout: 10000 })
                 .should('be.visible')
@@ -1190,8 +1190,11 @@ Cypress.Commands.add('payBudget', (options: {
         cy.getElementAndType({ [cardholderNameElement]: getRandomValue(cardholderName) });
         cy.getElementAndType({ [cpfCnpjElement]: getRandomValue(cpfCnpj) });
         cy.getElementAndType({ [cardNumberElement]: getRandomValue(cardNumber) });
-        selectOption(expirationMonthElement, getRandomValue(expirationMonth));
-        selectOption(expirationYearElement, getRandomValue(expirationYear));
+        // selectOption(expirationMonthElement, getRandomValue(expirationMonth));
+        cy.getSelectOptionByValue([{ element: expirationMonthElement, value: getRandomValue(expirationMonth) }]);
+        // selectOption(expirationYearElement, getRandomValue(expirationYear));
+        cy.getSelectOptionByValue([{ element: expirationYearElement, value: getRandomValue(expirationYear) }]);
+        
         cy.getElementAndType({ [securityCodeElement]: getRandomValue(securityCode) });
         selectOption(installmentsElement, getRandomValue(installments));
     };
@@ -1219,7 +1222,7 @@ Cypress.Commands.add('payBudget', (options: {
         cy.document().then((doc) => {
             const checkIfLoadingFinished = () => {
                 const $loadingElement = Cypress.$('.efetuar-pagamento-btn.loading', doc);
-
+                
                 if ($loadingElement.length === 0 || !$loadingElement.is(':visible')) {
                     cy.log('Carregamento concluído, continuando...');
                     cy.getElementAndClick(paymentMethod);

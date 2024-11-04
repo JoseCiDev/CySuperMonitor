@@ -114,3 +114,10 @@ Feature: Gerenciamento de Observações Farmacêuticas na Receita
         When o usuário adiciona uma nova observação "Ajustar dosagem conforme orientação médica"
         Then a observação deve ser salva e visível na tela de "Visualizar Receita" na seção de "Observações da Receita"
         And a observação deve ser destacada e identificável como uma nova adição na lista de observações
+
+    @addObservationFromAtendimento
+    Scenario: Adicionar observações pela tela de atendimento no botão observações paciente/médico
+        Given que o usuário está na tela de "Atendimento"
+        When o usuário adiciona uma nova observação "Ajustar dosagem conforme orientação médica"
+        Then a observação deve ser salva e visível na tela de "Visualizar Receita" na seção de "Observações da Receita"
+        And a observação deve ser destacada e identificável como uma nova adição na lista de observações

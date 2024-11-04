@@ -6,7 +6,7 @@ import {
     faker,
     
     SearchRecipe,
-} from '../../../../import';
+} from '../cypress/import';
 
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);

@@ -57,6 +57,7 @@ export default defineConfig({
   numTestsKeptInMemory: 5,
   experimentalMemoryManagement: true,
   e2e: {
+    chromeWebSecurity: false,
     watchForFileChanges: true,
     setupNodeEvents,
     baseUrl: 'http://192.168.0.66:9202/',

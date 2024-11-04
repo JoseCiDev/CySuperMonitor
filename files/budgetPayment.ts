@@ -6,7 +6,7 @@ import {
     BudgetConfirmationPaymentStatus,
     RecipeReceiptChannel,
     RecipeCluster,
-    RecipeType,
+    RecipeStatus,
     BudgetConfirmationPaymentMethod,
     RelationshipsPrescriberAttendantAndCluster,
     TechnicalDoubtCategory,
@@ -18,7 +18,7 @@ import {
     RecipePendingFilter,
     elements as el,
 
-} from '../import';
+} from '../cypress/import';
 
 export const {
     suggestionAutocomplete,
@@ -26,7 +26,7 @@ export const {
     containerMessage,
     okModalMessage,
     btnSuccessModalElement,
-    btnModalFailure,
+    btnModalFailureElement,
     modalMessage,
     btnModalMessage,
     btnModalChangelog,
@@ -46,7 +46,7 @@ export const {
     modalSuggestionRelationshipPrescriber,
     parameterSearchPatient,
     patientRecipeElement,
-    channelReceiptImport,
+    channelReceiptImportElement,
     clusterRecipes,
     budgetistRecipes,
     responsibleForRecipeElement,
@@ -80,7 +80,7 @@ export const {
     pendingFilterLinked,
     buttonSearchRecipesElement,
     labelSearchRecipes,
-    numberRecipe,
+    numberRecipeElement,
     dateReceiptGrid,
     checkboxMarkUse,
     containerInsertUser,
@@ -125,7 +125,8 @@ export const {
     sendReplyQuestionsTechnical,
     barProgressSaveRecipe,
     noMainContact,
-
+    recipeCodeColumnElement,
+    lastModifiedColumn,
 
 } = el.Recipes;
 
@@ -233,8 +234,6 @@ export const {
     linkedRecipeProgressBarElement,
     closeModalLinkRecipeElement,
     feedbackMessageElement,
-    accessServiceMenuThroughPrescriptionImportScreenElement,
-    recipeCodeColumnElement,
     expandSideMenuElement,
     successfullyLinkedRecipesProgressBarElement,
     modalLinkRecipeElement,

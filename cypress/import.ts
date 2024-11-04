@@ -49,7 +49,7 @@ export { SearchBudget } from './DataParameters/Enums/searchBudget';
 export { BudgetConfirmationPaymentStatus } from './DataParameters/Enums/budgetConfirmationPaymentStatus';
 export { RecipeReceiptChannel } from './DataParameters/Enums/recipeReceiptChannel';
 export { RecipeCluster } from './DataParameters/Enums/recipeCluster';
-export { RecipeType } from './DataParameters/Enums/recipeType';
+export { RecipeStatus } from './DataParameters/Enums/recipeStatus';
 export { BudgetConfirmationPaymentMethod } from './DataParameters/Enums/budgetConfirmationPaymentMethod';
 export { BudgetClosingChannel } from './DataParameters/Enums/budgetClosingChannel';
 export { RecipePendingFilter } from './DataParameters/Enums/recipePendingFilter';

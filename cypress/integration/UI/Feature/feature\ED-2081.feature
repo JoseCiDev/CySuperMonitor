@@ -26,13 +26,13 @@ Feature: Pedido com Código do Produto na Confirmação
 
     @changeBudget @changeProduct
     Scenario Outline: Alterar pedido trocando produtos
-        Given que eu tenho um pedido criado com o produto <produto_atual>
-        When eu troco o produto <produto_atual> pelo <produto_novo>
+        Given que eu tenho um pedido criado com o produto <produtoAtual>
+        When eu troco o produto <produtoAtual> pelo <produtoNovo>
         Then o pedido deve ser alterado com sucesso
-        And o código do produto <produto_novo> deve estar presente no pedido impresso
+        And o código do produto <produtoNovo> deve estar presente no pedido impresso
 
         Examples:
-            | produto_atual | produto_novo |
+            | produtoAtual | produtoNovo |
             | 34801         | 53070        |
 
     @rejectProduct @updateBudget
@@ -41,13 +41,13 @@ Feature: Pedido com Código do Produto na Confirmação
             | produto |
             | 53070   |
             | 46374   |
-        When eu rejeito a fórmula do produto <produto_removido>
-        Then o pedido deve ser atualizado e apresentar os produtos <produto_removido> riscados
+        When eu rejeito a fórmula do produto <produtoRemovido>
+        Then o pedido deve ser atualizado e apresentar os produtos <produtoRemovido> riscados
         And o pedido deve ainda conter todos os produtos produtos
         And todos os produtos restantes devem apresentar o código no pedido impresso
 
         Examples:
-            | produto_removido |
+            | produtoRemovido |
             | 53070            |
             | 46374            |
 
@@ -67,6 +67,6 @@ Feature: Pedido com Código do Produto na Confirmação
 
     @reopenBudget @reconfirm
     Scenario Outline: Reabrir e reconfirmar pedido já confirmado com alterações
-        Given que eu tenho um pedido confirmado com o produto <produto_atual>
+        Given que eu tenho um pedido confirmado com o produto <produtoAtual>
         When eu reabro o pedido
         Then o pedido impresso deve apresentar o código do produto atualizado

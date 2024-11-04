@@ -1,15 +1,10 @@
 /// <reference types="cypress" />
 
-import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
-
 import {
     elements as el,
     faker,
-    RecipeCluster,
-    RecipeReceiptChannel,
-    RecipeType,
-
-} from '../import';
+    Given, When, Then
+} from '../../../../import';
 
 
 const environment = Cypress.env('ENVIRONMENT');
@@ -21,7 +16,7 @@ export const {
     containerMessage,
     okModalMessage,
     btnSuccessModalElement,
-    btnModalFailure,
+    btnModalFailureElement,
     modalMessage,
     btnModalMessage,
     btnModalChangelog,
@@ -41,7 +36,7 @@ export const {
     modalSuggestionRelationshipPrescriber,
     parameterSearchPatient,
     patientRecipeElement,
-    channelReceiptImport,
+    channelReceiptImportElement,
     clusterRecipes,
     budgetistRecipes,
     responsibleForRecipeElement,
@@ -75,7 +70,7 @@ export const {
     pendingFilterLinked,
     buttonSearchRecipesElement,
     labelSearchRecipes,
-    numberRecipe,
+    numberRecipeElement,
     dateReceiptGrid,
     checkboxMarkUse,
     containerInsertUser,
@@ -120,19 +115,20 @@ export const {
     sendReplyQuestionsTechnical,
     barProgressSaveRecipe,
     noMainContact,
+    cloneRecipeElement,
 
 } = el.Recipes;
 
 
 
 
-// describe('Tela importação de receitas.', function () {
+// describe('Clonagem de receitas.', function () {
 
 //     beforeEach(function () {
 
 //     })
 
-//     it('Deve realizar importação de Receitas com imagens em pdf', function () {
+//     it('Deve clonar receitas a partir da tela de importação de receitas', function () {
 //         cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
 //             .then((result) => {
 //                 assert.exists(result.success, result.error);
@@ -150,51 +146,23 @@ export const {
 
 //         cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement);
 
-//         cy.importRecipe({
-//             file: 'img/recipeExample.pdf',
-//             prescriber: '999990-SC',
-//             patient: '618484',
-//             channelReceiptRecipe: RecipeReceiptChannel.Whatsapp,
-//             attendantResponsibleRecipes: 'Graziele Fabiane Martins Wahl',
-//             cluster: RecipeCluster.Cluster1,
-//             recipeType: RecipeType.HasRecipe,
-//             textNoteRecipe: faker.lorem.paragraph(),
-//             urgentRecipe: true,
-//             clientAlert: true,
-//             controlledMedication: true,
-//             customerPhone: 48991888641,
-//         }).then((result) => {
-//             assert.exists(result.success, result.error);
-//         });
+//         cy.searchRecipe();
+
+//         cy.cloneRecipe(cloneRecipeElement);
 //     });
 // });
 
 
 
 
-
-/*
-
-importar receita pdf => finalizar com sucesso
-importar receita jpg => finalizar com sucesso
-importar receita prescritor => definir prescritor aleatorio e conferir depois de importar
-importar receita paciente => definir paciente aleatorio e conferir depois de importar
-importar receita nao é o contato principal => informar o contato principal e conferir depois de importar
-importar receita sem contato principal => informar sem contato principal e conferir depois de importar
-importar receita canal de recebimento => informar canal de recebimento e conferir depois de importar
-importar receita cluster => informar cluster e conferir depois de importar
-importar receita medicamento controlado => informar medicamento controlado e conferir depois de importar
-importar receita urgente => informar urgente e conferir depois de importar
-importar receita cliente alerta => informar cliente alerta e conferir depois de importar
-
-*/
-
-Given('que estou logado no sistema', () => {
+Given('que o usuário está logado no sistema de receitas', () => {
     cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
         .then((result) => {
             assert.exists(result.success, result.error);
         });
+});
 
+Given('que estou na tela de importação de receitas', () => {
     cy.document().then((doc) => {
         const $btn = doc.querySelector(btnModalChangelog) as HTMLElement;
         if ($btn) {
@@ -207,27 +175,21 @@ Given('que estou logado no sistema', () => {
     cy.getElementAndClick(menuRecipesElement, menuImportRecipesElement);
 });
 
-When('eu realizo a importacao de uma receita', () => {
-    cy.importRecipe({
-        file: 'img/recipeExample.pdf',
-        prescriber: '999990-SC',
-        patient: '618484',
-        channelReceiptRecipe: RecipeReceiptChannel.Whatsapp,
-        attendantResponsibleRecipes: 'Graziele Fabiane Martins Wahl',
-        cluster: RecipeCluster.Cluster1,
-        recipeType: RecipeType.HasRecipe,
-        textNoteRecipe: faker.lorem.paragraph(),
-        urgentRecipe: true,
-        clientAlert: true,
-        controlledMedication: true,
-        customerPhone: 48991888641,
-    }).then((result) => {
-        assert.exists(result.success, result.error);
-    });
+When('eu busco uma receita específica', () => {
+    cy.searchRecipe();
 });
 
-Then('a receita deve ser importada com sucesso', () => {
+When('seleciono a opção de clonar a receita', () => {
+    cy.cloneRecipe(cloneRecipeElement);
+});
+
+Then('a receita deve ser clonada com sucesso', () => {
     cy.get('.alert-success')
         .should('be.visible')
-        .and('contain', 'Importação realizada com sucesso');
+        .and('contain', 'Receita clonada com sucesso');
+});
+
+Then('a receita clonada deve aparecer na lista de receitas importadas', () => {
+    cy.get('.recipe-list')
+        .should('contain', 'Receita Clonada');
 });

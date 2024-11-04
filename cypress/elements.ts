@@ -9,7 +9,7 @@ interface Elements<S = string> {
         containerMessage: S;
         okModalMessage: S;
         btnSuccessModalElement: S;
-        btnModalFailure: S;
+        btnModalFailureElement: S;
         modalMessage: S;
         btnModalMessage: S;
         btnModalChangelog: S;
@@ -36,7 +36,7 @@ interface Elements<S = string> {
         modalSuggestionRelationshipPrescriber: S;
         parameterSearchPatient: S;
         patientRecipeElement: S;
-        channelReceiptImport: S;
+        channelReceiptImportElement: S;
         clusterRecipes: S;
         budgetistRecipes: S;
         responsibleForRecipeElement: S;
@@ -70,7 +70,7 @@ interface Elements<S = string> {
         pendingFilterLinked: S;
         buttonSearchRecipesElement: S;
         labelSearchRecipes: S;
-        numberRecipe: S;
+        numberRecipeElement: S;
         dateReceiptGrid: S;
         checkboxMarkUse: S;
         containerInsertUser: S;
@@ -118,13 +118,18 @@ interface Elements<S = string> {
         patientContactModal: S;
         contactPhone: S;
         applySelectedContact: S;
-        recipeTypeInput: (recipeType: S) => S;
+        recipeStatusInput: (recipeStatus: S) => S;
         deleteRecipeElement: S;
         reloadPageButtonElement: S;
-        cloneRecipeElement:S;
+        cloneRecipeElement: S;
         modalCloneRecipeElement: S;
-        
-        };
+        recipeCodeColumnElement: S;
+        lastModifiedColumn: S;
+        viewRecipeScreenImportRecipesElement: S;
+        customerPhoneToViewRecipesElement: S;
+        recipeReceiptChannelViewRecipesElement: S;
+        clusterScreenViewRecipesElement:S;
+    };
 
     Services: {
         menuServices: S;
@@ -149,7 +154,7 @@ interface Elements<S = string> {
         cancelChatguruIntegration: S;
         saveNumberChatguru: S;
         budgetist: S;
-        modalTreatmentTime:S;
+        modalTreatmentTime: S;
         treatmentTimeModalHeader: S;
         insertTreatmentTime: S;
         standardTreatmentTime: S;
@@ -192,7 +197,7 @@ interface Elements<S = string> {
         generateLinkPayment: S;
         relateRecipeBudget: S;
         showBudgetsClosed: S;
-        viewBudgetElement:S;
+        viewBudgetElement: S;
         reopenBudget: S;
         confirmReopenBudget: S;
         userOptions: S;
@@ -216,7 +221,7 @@ interface Elements<S = string> {
         searchButtonElement: S;
         paymentSelectorInput: (index: number) => S;
         updateSelectorStatusInput: (index: number) => S;
-        UpdatePaymentStatusOnServiceScreenElement:S;
+        UpdatePaymentStatusOnServiceScreenElement: S;
         viewSelectorInput: (index: number) => S;
         saveDataConfirmationBudget: S;
         cashierObservationElement: S;
@@ -234,11 +239,9 @@ interface Elements<S = string> {
         successfullyLinkedRecipesProgressBarElement: S;
         closeModalLinkRecipeElement: S;
         feedbackMessageElement: S;
-        accessServiceMenuThroughPrescriptionImportScreenElement: S;
-        recipeCodeColumnElement: S;
         expandSideMenuElement: S;
         modalLinkRecipeElement: S;
-        modalClientNotFoundElement:S;
+        modalClientNotFoundElement: S;
         setUpPhoneContactElement: S;
         telephoneContactConfigurationModalElement: S;
         insertCustomerContactPhoneNumberElement: S;
@@ -274,9 +277,9 @@ interface Elements<S = string> {
         securityCodeElement: S;
         installmentsElement: S;
         makePaymentElement: S;
-        paymentScreenSuccessElement:S;
-        paymentDateServiceScreenElement:S;
-        paymentDataOnServiceScreenElement:S;
+        paymentScreenSuccessElement: S;
+        paymentDateServiceScreenElement: S;
+        paymentDataOnServiceScreenElement: S;
     };
 
     Settings: {
@@ -311,7 +314,7 @@ export const elements: Elements = {
         okModalMessage: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-footer > button',
         modalMessage: 'body > div.bootbox.modal.fade.bootbox-alert.in > div.modal-dialog > div > div.modal-body > div',
         btnSuccessModalElement: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn-primary',
-        btnModalFailure: 'div.modal-dialog > div > div.modal-footer > button.btn.btn-secondary.pull-left',
+        btnModalFailureElement: 'div.modal-dialog > div > div.modal-footer > button.btn.btn-secondary.pull-left',
         btnModalMessage: '.bootbox > .modal-dialog > .modal-content > .modal-footer > .btn',
         btnModalChangelog: '#changelogs > .modal-dialog > .modal-content > .modal-footer > .btn',
         modalElement: '.modal-footer > .btn',
@@ -338,7 +341,7 @@ export const elements: Elements = {
         modalSuggestionRelationshipPrescriber: '.bootbox .modal-dialog .modal-content .modal-footer .btn-primary',
         parameterSearchPatient: '#t2_154c',
         patientRecipeElement: '#modalPacienteRec',
-        channelReceiptImport: '#modalCanalContato',
+        channelReceiptImportElement: '#modalCanalContato',
         clusterRecipes: '#modalCluster',
         budgetistRecipes: '#modalOrcamentistaRec',
         responsibleForRecipeElement: '#modalAtendenteRec',
@@ -374,7 +377,7 @@ export const elements: Elements = {
         pendingFilterLinked: '#filterReceitas > div:nth-child(3) > div:nth-child(4) > div > select > option:nth-child(3)',
         buttonSearchRecipesElement: '#filterReceitas > div:nth-child(4) > div > button',
         labelSearchRecipes: '[button type="submit"]&& Procurar',
-        numberRecipe: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
+        numberRecipeElement: '#mainTableReceitas > tbody > tr > td.idReceitaCol',
         dateReceiptGrid: '#mainTableReceitas > thead > tr > th.sorting.sorting_asc',
         checkboxMarkUse: '#mainTableReceitas > tbody > tr > td.usedTrativa',
         containerInsertUser: '#select2-farma-to-auth-container',
@@ -422,11 +425,17 @@ export const elements: Elements = {
         patientContactModal: '#modal-paciente-form > .modal-dialog > .modal-content > .modal-body',
         contactPhone: '#choices-from-numbers > .form-control',
         applySelectedContact: '#apply-cel-btn',
-        recipeTypeInput: (recipeType: string): string => `input[name="receita_tipo"][value="${recipeType}"]`,
+        recipeStatusInput: (recipeStatus: string): string => `input[name="receita_tipo"][value="${recipeStatus}"]`,
         deleteRecipeElement: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-recipe',
         reloadPageButtonElement: ':nth-child(5) > .col > .btn',
-        cloneRecipeElement:'#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > div > ul > li.list-group-item.clone-receita',
+        cloneRecipeElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > div > ul > li.list-group-item.clone-receita',
         modalCloneRecipeElement: '.bootbox > .modal-dialog > .modal-content > .modal-body',
+        recipeCodeColumnElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.idReceitaCol',
+        lastModifiedColumn: '#mainTableReceitas > thead > tr > th:nth-child(9)',
+        viewRecipeScreenImportRecipesElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > div > ul > li.list-group-item.show-receita',
+        customerPhoneToViewRecipesElement: '#despejoDetails > :nth-child(6) > :nth-child(3) > .form-group > div',
+        recipeReceiptChannelViewRecipesElement: '#despejoDetails > :nth-child(6) > :nth-child(2) > .form-group > div',
+        clusterScreenViewRecipesElement:'#despejoDetails > div:nth-child(5) > div:nth-child(1) > div > div'
 
     },
 
@@ -456,7 +465,7 @@ export const elements: Elements = {
         cancelChatguruIntegration: '.btn btn-white',
         saveNumberChatguru: '#saveChatGuruNumber',
         budgetist: '#budgetist',
-        modalTreatmentTime:'#customTimeModal',
+        modalTreatmentTime: '#customTimeModal',
         treatmentTimeModalHeader: '#customTimeModal > div.modal-dialog > div > div.modal-header',
         insertTreatmentTime: '#customTime',
         standardTreatmentTime: '#customFormByTime > div.closestContainer > div > div:nth-child(1) > input',
@@ -497,7 +506,7 @@ export const elements: Elements = {
         sendconfirmBudget: '#submit',
         generateLinkPayment: '#bt-pagamento-modal',
         showBudgetsClosed: '#search-form > div.checkbox.m-l.m-r-xs > input[type=checkbox]:nth-child(1)',
-        viewBudgetElement:`:nth-child(2) > :nth-child(8) > .visualizarFvc > .fa`,
+        viewBudgetElement: `:nth-child(2) > :nth-child(8) > .visualizarFvc > .fa`,
         reopenBudget: '#reabrir',
         confirmReopenBudget: 'body > div.bootbox.modal.fade.bootbox-confirm.in > div.modal-dialog > div > div.modal-footer > button.btn.btn-danger.pull-right',
         userOptions: '#username-link',
@@ -520,7 +529,7 @@ export const elements: Elements = {
         searchButtonElement: '#search-form > .btn',
         paymentSelectorInput: (index: number) => `:nth-child(${index}) > .td-pagamentos > .label`,
         updateSelectorStatusInput: (index: number) => `:nth-child(${index}) > :nth-child(8) > .getLastStatusPaymentsGPE > .fa`,
-        UpdatePaymentStatusOnServiceScreenElement:'.getLastStatusPaymentsGPE',
+        UpdatePaymentStatusOnServiceScreenElement: '.getLastStatusPaymentsGPE',
         viewSelectorInput: (index: number) => `:nth-child(${index}) > :nth-child(8) > .visualizarFvc > .fa`,
         saveDataConfirmationBudget: '#confirmacao-atendimento > .modal-footer > .btn-primary',
         cashierObservationElement: ':nth-child(5) > .col-sm-7 > .form-control',
@@ -538,11 +547,9 @@ export const elements: Elements = {
         successfullyLinkedRecipesProgressBarElement: '.progress-bar.progress-bar-info',
         closeModalLinkRecipeElement: '.modal-footer .btn-white',
         feedbackMessageElement: '#toast-container .toast-close-button',
-        accessServiceMenuThroughPrescriptionImportScreenElement: '#mainTableReceitas > thead > tr > th:nth-child(1)',
-        recipeCodeColumnElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.idReceitaCol',
         expandSideMenuElement: '.navbar-header > .navbar-minimalize',
         modalLinkRecipeElement: '#modal-receita-add-vinculo > .modal-dialog',
-        modalClientNotFoundElement:'.bootbox .modal-footer .btn',
+        modalClientNotFoundElement: '.bootbox .modal-footer .btn',
         setUpPhoneContactElement: '#bt-chat-configurar-contatos-modal',
         telephoneContactConfigurationModalElement: '.modal-dialog',
         insertCustomerContactPhoneNumberElement: '#cli-number-cel',
@@ -578,9 +585,9 @@ export const elements: Elements = {
         securityCodeElement: '#cvc',
         installmentsElement: '#qtdeParcelas',
         makePaymentElement: '#btnProcessarPgto',
-        paymentScreenSuccessElement:'.success-container-info .text-title',
-        paymentDateServiceScreenElement:'.payment-row-item:contains("Atualizado em") strong',
-        paymentDataOnServiceScreenElement:'.ibox-content .payment-row',
+        paymentScreenSuccessElement: '.success-container-info .text-title',
+        paymentDateServiceScreenElement: '.payment-row-item:contains("Atualizado em") strong',
+        paymentDataOnServiceScreenElement: '.ibox-content .payment-row',
 
     },
 

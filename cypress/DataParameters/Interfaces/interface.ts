@@ -14,7 +14,7 @@ import {
     Profile,
     RecipeCluster,
     RecipeReceiptChannel,
-    RecipeType,
+    RecipeStatus,
     RelationshipsPrescriberAttendantAndCluster,
     SearchBudget,
     BudgetConfirmationShippingMethod,
@@ -33,7 +33,7 @@ import {
 
 
 export interface ImportRecipe<S = string> {
-    numberRecipe: S | number;
+    recipeNumber: S | number;
     file: S;
     prescriber: S;
     suggestionRelationshipPrescriber: boolean;
@@ -43,11 +43,14 @@ export interface ImportRecipe<S = string> {
     attendantResponsibleRecipes?: boolean | S;
     cluster?: boolean | RecipeCluster | S;
     receivingDate: S;
-    recipeType: RecipeType;
+    recipeStatus: RecipeStatus;
     textNoteRecipe: S;
     urgentRecipe: boolean;
     clientAlert: boolean;
     controlledMedication: boolean;
+    noMainContact: boolean;
+    isTheMainContact: boolean;
+    mainContactRecipe: S;
     customerPhone: number;
 };
 
@@ -56,11 +59,11 @@ export interface SearchRecipe<S = string> {
     finalDate: S;
     cluster: any;
     channelReceipt: RecipeReceiptChannel;
-    numberRecipe: number | undefined;
+    recipeNumber: number | undefined;
     patient: S;
     prescriber: S;
     budget: number | undefined;
-    branch: S ;
+    branch: S;
     lastModifier: S;
     budgetist: S;
     attendantResponsibleRecipes: S;
@@ -124,7 +127,7 @@ export interface DataParameters<S = string> {
     }
 
     Recipe: {
-        injectablesBranch:S[];
+        injectablesBranch: S[];
         import: ImportRecipe;
         search: SearchRecipe;
         clone: CloneRecipe
@@ -201,7 +204,7 @@ export interface DataParameters<S = string> {
     pendingsFilter: typeof RecipePendingFilter;
     recipeReceiptChannel: typeof RecipeReceiptChannel;
     patientSearchParameter: typeof BudgetConfirmationPatientSearchParameter;
-    recipeType: typeof RecipeType;
+    recipeStatus: typeof RecipeStatus;
 
     recipeImportCluster: typeof RecipeCluster;
     relationshipsPrescriberAttendantAndCluster: typeof RelationshipsPrescriberAttendantAndCluster;

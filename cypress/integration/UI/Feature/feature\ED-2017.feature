@@ -103,5 +103,34 @@ Feature: Testar pagamento de orçamentos com nova adquirente Adyen
             | Crédito        | Telefone       | +55 (11) 99999-9999            |
             | Crédito        | Nome no Cartão | João André D'Ávila             |
 
-#recusa credito
+    @invalidCard
+    Scenario Outline: Rejeição de pagamento por dados incorretos no cartão de crédito
+        When o cliente insere os dados do cartão
+            | numeroCartao   | mesExpiracao/anoExpiracao     | codigoSeguranca   |
+            | <numeroCartao> | <mesExpiracao>/<anoExpiracao> | <codigoSeguranca> |
+        And insere o telefone "<telefone>" e email "<email>"
+        And confirma o pagamento
+        Then o pagamento deve ser rejeitado
+        And uma mensagem de erro é exibida com o texto "Ocorreu um erro. Por favor, tente novamente ou entre em contato com a atendente."
+        And o botão "Tentar novamente" é exibido
 
+        Examples:
+            | numeroCartao     | mesExpiracao | anoExpiracao | codigoSeguranca | telefone    | email               |
+            | 4111111111111111 | 12           | 25           | 123             | 48999999999 | cliente@exemplo.com |
+            | 4111111111111111 | 00           | 25           | 123             | 48999999999 | cliente@exemplo.com |
+
+    @incorrectData
+    Scenario Outline: Rejeição de pagamento por ausência de telefone ou email
+        When o cliente insere os dados do cartão válidos
+            | numeroCartao        | mesExpiracao | anoExpiracao | codigoSeguranca |
+            | 5555 3412 4444 1115 | 03           | 30           | 737             |
+        And insere o telefone "<telefone>" e email "<email>"
+        And confirma o pagamento
+        Then o pagamento deve ser rejeitado
+        And uma mensagem de erro de preenchimento é exibida com o texto "Preencha este campo."
+
+        Examples:
+            | telefone    | email               |
+            |             | cliente@exemplo.com |
+            | 48999999999 |                     |
+            |             |                     |
