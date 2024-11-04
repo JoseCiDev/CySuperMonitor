@@ -18,7 +18,7 @@ import {
     RecipePendingFilter,
     elements as el,
 
-} from '../cypress/import';
+} from '../../../../../cypress/import';
 
 export const {
     suggestionAutocomplete,
