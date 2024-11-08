@@ -273,7 +273,7 @@ export const {
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
 
-describe('Clientes realizam pagamentos de pedidos.', function () {
+describe('TEST.', function () {
 
     beforeEach(function () {
 
@@ -283,9 +283,9 @@ describe('Clientes realizam pagamentos de pedidos.', function () {
 
         cy.log('cy.login(http://sm-hkm.docker.local:8080/, jose.djalma, !@, el.Login.messageErrorLogin).then((result) => {assert.exists(result.success, result.error);});')
 
-        //cy.login('http://sm-hkm.docker.local:8080/', 'jose.djalma', '!@', el.Login.messageErrorLogin)
-          //  .then((result) => {
-            //    assert.exists(result.success, result.error);
-            //});
+        cy.login('http://sm-hkm.docker.local:8080/', 'jose.djalma', '!@', el.Login.messageErrorLogin)
+           .then((result) => {
+               assert.exists(result.success, result.error);
+            });
     });
 });
