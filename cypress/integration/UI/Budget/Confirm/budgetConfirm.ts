@@ -135,7 +135,7 @@ describe('Tela Atendimentos.', function () {
     })
 
     it('Deve realizar a confirmação do orçamento', function () {
-        cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+        cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });

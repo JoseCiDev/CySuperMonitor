@@ -114,7 +114,7 @@ export interface DataParameters<S = string> {
         USER_ATENDENTE1: S;
         USER_ATENDENTE2: S;
         PASSWORD: S;
-        BASE_URL_SM: S;
+        BASE_URL: S;
         BASE_URL_SC: S;
         DB_NAME: S;
         DB_USER: S;

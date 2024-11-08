@@ -129,7 +129,7 @@ export const {
 //     })
 
 //     it('Deve clonar receitas a partir da tela de importação de receitas', function () {
-//         cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+//         cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
 //             .then((result) => {
 //                 assert.exists(result.success, result.error);
 //             });
@@ -156,7 +156,7 @@ export const {
 
 
 Given('que o usuário está logado no sistema de receitas', () => {
-    cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+    cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
         .then((result) => {
             assert.exists(result.success, result.error);
         });

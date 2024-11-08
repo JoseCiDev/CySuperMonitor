@@ -280,7 +280,7 @@ describe('Clientes realizam pagamentos de pedidos.', function () {
     });
 
     it('Deve realizar o pagamento de um pedido', function () {
-        cy.login(dataEnvironment.BASE_URL_SM, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+        cy.login(dataEnvironment.BASE_URL_CI, 'jose.djalma', '!@', el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });

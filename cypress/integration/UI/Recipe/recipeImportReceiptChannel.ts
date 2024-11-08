@@ -152,7 +152,7 @@ function mapChannelReceiptToText(channelValue: RecipeReceiptChannel | number): s
 
 Given('que estou logado no sistema  para importar receitas com canal de recebimento', () => {
   cy.login(
-    dataEnvironment.BASE_URL_SM,
+    dataEnvironment.BASE_URL,
     dataEnvironment.USER_ATENDENTE1,
     dataEnvironment.PASSWORD,
     el.Login.messageErrorLogin

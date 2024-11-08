@@ -156,7 +156,7 @@ function mapClusterToText(cluster: string | RecipeCluster): string {
 
 Given('que estou logado no sistema  para importar receitas com cluster', () => {
     cy.login(
-        dataEnvironment.BASE_URL_SM,
+        dataEnvironment.BASE_URL,
         dataEnvironment.USER_ATENDENTE1,
         dataEnvironment.PASSWORD,
         el.Login.messageErrorLogin
