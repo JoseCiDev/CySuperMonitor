@@ -60,7 +60,7 @@ export default defineConfig({
     chromeWebSecurity: false,
     watchForFileChanges: true,
     setupNodeEvents,
-    baseUrl: 'http://192.168.0.66:9202/',
+    // baseUrl: 'http://192.168.0.66:9202/',
     supportFile: 'cypress/support/e2e.ts',
     specPattern: 'cypress/**/*.{js,jsx,ts,tsx,feature}',
     redirectionLimit: 5000,
