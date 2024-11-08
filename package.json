@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "e2e": "cypress run --browser electron --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/integration/Hotfix/budgetPayUpdatePaymentStatusConsultDataProvided.cy.ts\"",
+    "e2e": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/test.ts\"",
     "recipeImportImage": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/Recipe/Import/recipeImportImage.feature\"",
     "recipeImportMainContact": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/Recipe/Import/recipeImportMainContact.feature\"",
     "recipeImportPrescriberPatient": "cypress run --browser chrome --record --key 3dbb9ffe-2bca-43e6-8b64-3b43b10691ed --headless --spec \"cypress/e2e/Recipe/Import/recipeImportPrescriberPatient.feature\"",

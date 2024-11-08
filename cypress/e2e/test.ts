@@ -279,13 +279,48 @@ describe('TEST.', function () {
 
     });
 
-    it('Just a test', function () {
+    
+it('Just a test', function () {
+    cy.login('http://sm-hkm.docker.local:8080/', 'jose.djalma', '!@', el.Login.messageErrorLogin)
+        .then((result) => {
+            assert.exists(result.success, result.error);
+        });
 
-        cy.log('cy.login(http://sm-hkm.docker.local:8080/, jose.djalma, !@, el.Login.messageErrorLogin).then((result) => {assert.exists(result.success, result.error);});')
+    cy.document().then((doc) => {
+        const $btn = doc.querySelector(modalElement);
+        if ($btn) {
+            cy.getElementAndClick(btnModalChangelog);
+        } else {
+            cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
+        }
+    });
 
-        cy.login('http://sm-hkm.docker.local:8080/', 'jose.djalma', '!@', el.Login.messageErrorLogin)
-           .then((result) => {
-               assert.exists(result.success, result.error);
+    cy.getElementAndClick(menuServices, servicesInProgress);
+
+    cy.viewBudget();
+
+    cy.selectCustomerContact();
+
+    cy.fillOrcamentistaAndAtendente();
+
+    cy.insertTimeTreatment();
+
+    cy.log('Iniciando pagamento...');
+    cy.payBudget().then((paymentData) => {
+        cy.wrap(paymentData).as('paymentData');
+    });
+
+    cy.get('@paymentData').then((paymentData) => {
+        cy.log('Pagamento concluído, iniciando validação...');
+        cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
+            .then((result) => {
+                assert.exists(result.success, result.error);
             });
+
+        cy.validatePaymentData(paymentData);
     });
 });
+
+});
+
+
