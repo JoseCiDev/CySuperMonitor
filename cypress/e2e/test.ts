@@ -280,7 +280,10 @@ describe('Clientes realizam pagamentos de pedidos.', function () {
     });
 
     it('Deve realizar o pagamento de um pedido', function () {
-        cy.login(dataEnvironment.BASE_URL_CI, 'jose.djalma', '!@', el.Login.messageErrorLogin)
+
+        cy.log('cy.login(http://sm-hkm.docker.local:8080/, jose.djalma, !@, el.Login.messageErrorLogin).then((result) => {assert.exists(result.success, result.error);});')
+
+        cy.login('http://sm-hkm.docker.local:8080/', 'jose.djalma', '!@', el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });
