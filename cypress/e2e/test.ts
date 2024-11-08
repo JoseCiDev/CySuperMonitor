@@ -273,7 +273,7 @@ export const {
 const environment = Cypress.env('ENVIRONMENT');
 const dataEnvironment = Cypress.env(environment);
 
-describe('Clientes realizam pagamentos de pedidos.', function () {
+describe('TEST.', function () {
 
     beforeEach(function () {
 
