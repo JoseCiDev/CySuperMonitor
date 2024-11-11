@@ -281,7 +281,7 @@ describe('TEST.', function () {
 
 
     it('Just a test', function () {
-        cy.login('http://192.168.0.66:9202/', 'jose.djalma', '!@', el.Login.messageErrorLogin)
+        cy.login('http://sm-hkm.docker.local:8080/', 'jose.djalma', '!@', el.Login.messageErrorLogin)
             .then((result) => {
                 assert.exists(result.success, result.error);
             });
