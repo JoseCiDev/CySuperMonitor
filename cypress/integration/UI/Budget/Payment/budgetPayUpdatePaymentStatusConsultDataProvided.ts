@@ -354,7 +354,9 @@ When('inserir o tempo de tratamento', () => {
 
 Then('é realizado o pagamento do orçamento', () => {
     cy.log('Iniciando pagamento...');
-    cy.payBudget().then((paymentData) => {
+    cy.payBudget(
+        
+    ).then((paymentData) => {
         cy.wrap(paymentData).as('paymentData');
     });
 

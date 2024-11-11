@@ -332,11 +332,14 @@ Cypress.Commands.add('unlinkBudgetRecipe', (buttonUnlink: string) => {
     cy.getElementAndClick(modalMessage);;
 });
 
-Cypress.Commands.add('changeUsersBudget', (budgetist: string, attendant: string) => {
 
-});
 
-Cypress.Commands.add('viewBudget', () => {
+Cypress.Commands.add('viewBudget', (options: { orcamentoNumberForSearch?: string; filialNumberForSearch?: string } = {}): void => {
+    const {
+        orcamentoNumberForSearch = dataParameters.Budget.confirmation.orcamentoNumberForSearch,
+        filialNumberForSearch = dataParameters.Budget.confirmation.filialNumberForSearch,
+    } = options;
+
     const checkPaymentStatus = (index: number) => {
         const paymentSelectorElement = paymentSelectorInput(index);
         const updateSelectorStatusElement = updateSelectorStatusInput(index);
@@ -405,25 +408,18 @@ Cypress.Commands.add('viewBudget', () => {
             });
     };
     const searchBudgetByBranch = () => {
-        const orcamentoNumber = dataParameters.Budget.confirmation.orcamentoNumberForSearch;
-        const filialNumber = dataParameters.Budget.confirmation.filialNumberForSearch;
-
         cy.getElementAndClick(homeMenuElement);
 
-        if (orcamentoNumber) {
-            cy.getElementAndType({ [fieldSearchBudgetElement]: orcamentoNumber });
+        if (orcamentoNumberForSearch) {
+            cy.getElementAndType({ [fieldSearchBudgetElement]: orcamentoNumberForSearch });
             cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
 
-            cy.getElementAndClick(viewBudgetElement)
-                .then(() => {
-                    cy.wrap(2)
-                        .as('currentBudgetIndex');
-                });
-
+            cy.getElementAndClick(viewBudgetElement).then(() => {
+                cy.wrap(2).as('currentBudgetIndex');
+            });
         } else {
-
-            if (filialNumber) {
-                cy.getElementAndType({ [searchBudgetByBranchElement]: filialNumber });
+            if (filialNumberForSearch) {
+                cy.getElementAndType({ [searchBudgetByBranchElement]: filialNumberForSearch });
             }
 
             cy.getElementAndClick(searchAllBudgetsElement, searchButtonElement);
@@ -431,10 +427,9 @@ Cypress.Commands.add('viewBudget', () => {
             checkPaymentStatus(2);
         }
     };
-
+    
     searchBudgetByBranch();
 });
-
 
 Cypress.Commands.add('linkBudgetRecipe', (buttonLink: string, recipeNumber?: number) => {
 

@@ -194,7 +194,7 @@ declare global {
        * * comando customizado para visulizar orçamentos.
        * @example cy.viewBudget(buttonView)
        */
-      viewBudget();
+      viewBudget(options?: { orcamentoNumberForSearch?: string; filialNumberForSearch?: string }): void;
 
       /**
        * * comando customizado para reabrir orçamentos.
@@ -206,9 +206,7 @@ declare global {
        * * comando customizado para inserir tempo de tratamento.
        * @example cy.insertTimeTreatment(timeTreatment)
        */
-      insertTimeTreatment(options?: {
-        timeTreatment?: string | number,
-      }): ValidationResult;
+      insertTimeTreatment(options?: {timeTreatment?: string | number,}): ValidationResult;
 
 
       /**
@@ -228,12 +226,6 @@ declare global {
       * @example cy.budgetImport(modalImportacao,numerOrcamento,branchNumber,budgetImport)
       */
       budgetImport(): Chainable<Element>
-
-      /**
-      * * comando customizado para alterar usuário do budget .
-      * @example cy.changeUsersBudget(budgetist,attendant)
-      */
-      changeUsersBudget(budgetist: string, attendant: string): Chainable<Element>
 
       /**
      * * comando customizado para configurar relação entre Atendente, cluster e Prescriber .
