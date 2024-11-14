@@ -15,6 +15,8 @@
         Then o sistema deve exibir os campos obrigatórios de dados pessoais e endereço
         And o cliente deve preencher telefone, email, nome completo, data de nascimento, CPF
         And o campo RG deve ser opcional
+        And o cliente deve preencher cep, estado, cidade, bairro, rua e número
+        And o campo complemento deve ser opcional
         And o cliente deve marcar o checkbox "Confirma o endereço informado para entrega"
         And o cliente deve preencher os dados do cartão: nome, CPF/CNPJ, número do cartão, validade, código de segurança e número de parcelas
         Then ele deve ver a tela de pagamento efetuado com sucesso após o pagamento
@@ -27,13 +29,21 @@
         Then ele deve ver o valor, forma de pagamento, dados do paciente e endereço fornecidos pelo cliente
         And o atendente pode clicar em "Atualizar informações de pagamento"
         Then a data e hora de "Atualizado em" devem permanecer a data do pagamento inicial, sem alterações
+        And a data de "Criado em" deve permanecer como a data da criação do link de pagamento
 
-    #Exibição dos Dados do Pagamento na Tela de Atendimento para Medicamentos Manipulados
-    @paymentDetails @controlledMedication
-    Scenario: Exibir dados de pagamento na tela de atendimento para filial de medicamentos manipulados
-        Given o cliente completou o pagamento com sucesso para um pedido de medicamentos manipulados
-        When o atendente acessa a tela de atendimento para o pedido
-        Then ele deve ver valor, forma de pagamento, nome do paciente, CPF, RG, data de nascimento, email e endereço fornecidos pelo cliente
+    # #Seleção de forma de pagamento - Cartão de Crédito
+    # @creditCard @injectableMedication
+    # Scenario: Cliente seleciona forma de pagamento Cartão de Crédito para filial de medicamentos manipulados
+    #     Given o cliente está na tela de pagamento para filial de medicamentos injetáveis
+    #     When o cliente seleciona a opção "Cartão de Crédito"
+    #     Then o sistema deve exibir os campos obrigatórios de dados pessoais e endereço
+    #     And o cliente deve preencher telefone, email, nome completo, data de nascimento, CPF
+    #     And o campo RG deve ser opcional
+    #     And o cliente deve preencher cep, estado, cidade, bairro, rua e número
+    #     And o campo complemento deve ser opcional
+    #     And o cliente deve marcar o checkbox "Confirma o endereço informado para entrega"
+    #     And o cliente deve preencher os dados do cartão: nome, CPF/CNPJ, número do cartão, validade, código de segurança e número de parcelas
+    #     Then ele deve ver a tela de pagamento efetuado com sucesso após o pagamento
 
     #Atualização das Informações de Pagamento na Tela de Atendimento para Medicamentos injetáveis
     @paymentDetails @injectableMedication
@@ -90,7 +100,7 @@
         And o cliente deve ser redirecionado para a tela inicial de pagamento ao acessar o link novamente dentro de 7 dias
 
 
-    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
     #PIX
@@ -116,7 +126,7 @@
         And o cliente deve gerar o código QR para pagamento PIX
         Then ele deve ver a tela de pagamento efetuado com sucesso após o pagamento
 
-    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     #REJEICAO
 
     #Falha na Autenticação dos Dados do Cartão
@@ -309,4 +319,4 @@
         When o cliente clica em "Tentar novamente"
         Then o cliente deve ser redirecionado para a tela de pagamento para corrigir as informações do cartão
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------
