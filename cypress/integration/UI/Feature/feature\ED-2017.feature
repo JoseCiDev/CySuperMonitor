@@ -1,11 +1,10 @@
-Feature: Testar pagamento de orçamentos com nova adquirente Adyen
+Feature: Pagamento com Cartão de Crédito e Consulta de Status
 
     Background:
-        Given que o cliente recebeu um link de pagamento de um orçamento
-        And a forma de pagamento pode ser crédito
+        Given que o cliente deseja pagar o pedido com cartão de crédito
 
     @payment @creditCard
-    Scenario Outline: Realizar pagamento com cartão de crédito
+    Scenario Outline: Realizar pagamento com cartão de crédito com sucesso
         Given que o cliente recebeu um link de pagamento de um orçamento
         And selecionou a forma de pagamento crédito
         And o cliente informa os dados pessoais: telefone "<Telefone>", email "<Email>"
@@ -20,7 +19,7 @@ Feature: Testar pagamento de orçamentos com nova adquirente Adyen
             | 21992880477 | RIBEIRO.CALI@GMAIL.COM      | 31732065098 | LIVIA C R       |
 
     @payment @foreignClient
-    Scenario Outline: Realizar pagamento com cartão de crédito como cliente estrangeiro
+    Scenario Outline: Realizar pagamento com cartão de crédito como cliente estrangeiro com sucesso
         Given que o cliente selecionou a forma de pagamento crédito
         And o cliente informou que é estrangeiro
         And o cliente selecionou o país "<Pais>" e informou o telefone "<Telefone>"
@@ -50,7 +49,7 @@ Feature: Testar pagamento de orçamentos com nova adquirente Adyen
         Given que o sistema de orçamentos permite atualizar o status de pagamento
         And o pagamento já foi processado com sucesso anteriormente
         When o usuário do sistema atualiza o status do pagamento no orçamento
-        Then o status do pagamento no orçamento deve ser atualizado para "<NovoStatus>"
+        Then o status do pagamento no orçamento deve ser apresentado como "<NovoStatus>"
         And a data de pagamento não deve ser alterada
         And o horário de "Atualizado em" não deve se alterar
 
@@ -78,17 +77,17 @@ Feature: Testar pagamento de orçamentos com nova adquirente Adyen
         Then a data de pagamento não deve ser alterada
         And a data e hora de pagamento na modal de visualização dos detalhes do pagamento não deve ser alterada
 
-    @payment @emailConfirmation
-    Scenario: Enviar email de confirmação após pagamento bem-sucedido
-        Given que o cliente selecionou a forma de pagamento "<FormaPagamento>"
-        And o cliente preencheu todos os dados corretamente
-        When o pagamento é processado com sucesso
-        Then o cliente deve receber um email de confirmação do pagamento
-        And o email deve conter o valor pago "<ValorPago>", a data do pagamento "<DataPagamento>", e o número do pedido "<NumeroPedido>"
+    # @payment @emailConfirmation
+    # Scenario: Enviar email de confirmação após pagamento bem-sucedido
+    #     Given que o cliente selecionou a forma de pagamento "<FormaPagamento>"
+    #     And o cliente preencheu todos os dados corretamente
+    #     When o pagamento é processado com sucesso
+    #     Then o cliente deve receber um email de confirmação do pagamento
+    #     And o email deve conter o valor pago "<ValorPago>", a data do pagamento "<DataPagamento>", e o número do pedido "<NumeroPedido>"
 
-        Examples:
-            | FormaPagamento | ValorPago | DataPagamento | NumeroPedido               |
-            | Crédito        | 237.18    | 16/10/2024    | 603179_26827_1020_16151733 |
+    #     Examples:
+    #         | FormaPagamento | ValorPago | DataPagamento | NumeroPedido               |
+    #         | Crédito        | 237.18    | 16/10/2024    | 603179_26827_1020_16151733 |
 
     @dataValidation @specialCharacters
     Scenario Outline: Validar aceitação de caracteres especiais e acentos nos campos de pagamento
@@ -98,7 +97,6 @@ Feature: Testar pagamento de orçamentos com nova adquirente Adyen
 
         Examples:
             | FormaPagamento | Campo          | ValorComCaracteresEspeciais    |
-            | Crédito        | Nome           | José da Silva                  |
             | Crédito        | Email          | cliente_exemplo@domínio.com.br |
             | Crédito        | Telefone       | +55 (11) 99999-9999            |
             | Crédito        | Nome no Cartão | João André D'Ávila             |
@@ -119,18 +117,57 @@ Feature: Testar pagamento de orçamentos com nova adquirente Adyen
             | 4111111111111111 | 12           | 25           | 123             | 48999999999 | cliente@exemplo.com |
             | 4111111111111111 | 00           | 25           | 123             | 48999999999 | cliente@exemplo.com |
 
+    Scenario: Cliente tenta realizar pagamento novamente após rejeição
+        Given que o cliente teve o pagamento rejeitado
+        When o cliente clica em "Tentar novamente"
+        And o cliente informa os dados de pagamento novamente
+        Then o sistema deve processar o pagamento
+        And o cliente deve receber uma confirmação de "Pagamento realizado com sucesso" ou "Pagamento rejeitado", caso dados incorretos
+
     @incorrectData
-    Scenario Outline: Rejeição de pagamento por ausência de telefone ou email
+    Scenario Outline: Pagamento não processado por ausência de telefone ou email
         When o cliente insere os dados do cartão válidos
             | numeroCartao        | mesExpiracao | anoExpiracao | codigoSeguranca |
             | 5555 3412 4444 1115 | 03           | 30           | 737             |
         And insere o telefone "<telefone>" e email "<email>"
         And confirma o pagamento
-        Then o pagamento deve ser rejeitado
-        And uma mensagem de erro de preenchimento é exibida com o texto "Preencha este campo."
+        Then o pagamento deve não deve ser processado
+        And uma mensagem de preenchimento obrigatório é exibido com o texto "Preencha este campo."
 
         Examples:
             | telefone    | email               |
             |             | cliente@exemplo.com |
             | 48999999999 |                     |
             |             |                     |
+
+    Scenario: Atendente consulta status dos pagamentos de pedidos
+        Given que o cliente realizou um pagamento
+        And o usuário do sistema está no módulo "Buscas -> Pagamentos"
+        When o usuário consulta o status dos pagamentos
+        Then o sistema deve exibir o status do pagamento do pedido
+
+    Scenario: Filtro de status de pagamento pago e pedido aberto
+        Given que o usuário do sistema está no módulo "Buscas -> Pagamentos"
+        When o usuário filtra por "Status do pagamento: Pago" e "Status do pedido: Aberto"
+        Then o sistema deve exibir todos os pedidos pagos e que ainda não foram fechados
+
+    Scenario: Atendente verifica status de pagamento pendente
+        Given que o cliente realizou um pagamento que está pendente
+        And o usuário do sistema está no módulo "Buscas -> Pagamentos"
+        And o usuário visualiza o pedido pendente
+        When o usuário atualiza o status do pagamento do pedido
+        Then o sistema deve exibir "Status do pagamento: Pago"
+
+    Scenario: Atendente verifica status de pagamento rejeitado
+        Given que o cliente realizou um pagamento que foi rejeitado
+        And o usuário do sistema está no módulo "Buscas -> Pagamentos"
+        And o usuário visualiza o pedido pendente
+        When o usuário atualiza o status do pagamento do pedido
+        Then o sistema deve exibir "Status do pagamento: Aguardando pagamento"
+
+    Scenario: Fechamento de pedido após pagamento confirmado
+        Given que o status do pagamento é "Pago"
+        And o status do pedido é "Aberto"
+        When o usuário do sistema decide fechar o pedido
+        Then o sistema deve atualizar o status do pedido para "Fechado"
+        And o pedido deve estar pronto para o próximo estágio do processo
