@@ -158,7 +158,7 @@
         And se a atendente do cluster 4 atingir o limite
         Then a atendente do cluster 3 deve ser sugerida
     #DANIEL COSTA BUCHWEITZ 1 SC 15125 C
-    #JULIANO LEAL BURCKHARDT 1 PR 18298 C
+    ##DANIEL COSTA BUCHWEITZ 1 SC 15125 C 1 PR 18298 C
     #DANILLO RAMALHO LEITE 1 PB 9367 D
     #PRISCILA SILVA SARKIS MOOR SANTOS 9 MT 6021 D
 
