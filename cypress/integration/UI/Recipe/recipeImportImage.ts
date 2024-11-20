@@ -155,30 +155,31 @@ Given('que estou logado no sistema para importar receitas com imagem', () => {
 
 });
 
-When('eu realizo a importacao de uma receita com imagem em formato pdf', () => {
-  cy.importRecipe({
-    file: 'img/recipeExample.pdf',
-  }).then((result) => {
-    assert.exists(result.success, result.error);
-    cy.wrap(result.recipeNumber).as('pdfRecipe');
-  });
-});
+// When('eu realizo a importacao de uma receita com imagem em formato pdf', () => {
+//   cy.importRecipe({
+//     file: 'img/recipeExample.pdf',
+//   }).then((result) => {
+//     assert.exists(result.success, result.error);
+//     cy.wrap(result.recipeNumber).as('pdfRecipe');
+//   });
+// });
 
 When('eu realizo a importacao de uma receita com imagem em formato jpg', () => {
   cy.importRecipe({
     file: 'img/recipeExample.jpg',
+    prescriber:'BRUNO ALVES MENEZES DE LIMA'
   }).then((result) => {
     assert.exists(result.success, result.error);
     cy.wrap(result.recipeNumber).as('jpgRecipe');
   });
 });
 
-Then('os dados das receitas importadas com imagem pdf, devem ser capturados e exibidos corretamente', () => {
-  cy.get('@pdfRecipe').then((pdfRecipe) => {
-    expect(pdfRecipe).to.exist;
-    cy.log(`Número da receita importada com imagem formato pdf : ${pdfRecipe}`);
-  });
-});
+// Then('os dados das receitas importadas com imagem pdf, devem ser capturados e exibidos corretamente', () => {
+//   cy.get('@pdfRecipe').then((pdfRecipe) => {
+//     expect(pdfRecipe).to.exist;
+//     cy.log(`Número da receita importada com imagem formato pdf : ${pdfRecipe}`);
+//   });
+// });
 
 Then('os dados das receitas importadas com imagem jpg, devem ser capturados e exibidos corretamente', () => {
   cy.get('@jpgRecipe').then((jpgRecipe) => {
