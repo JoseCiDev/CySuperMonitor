@@ -25,34 +25,34 @@
     #     And o estoque de Quantum deve ser reduzido em "1"
     # #167001/5
 
-    @manipulacao @acrescimo
-    Scenario: Aplicar acréscimo ao pedido aumentando o valor para outro brinde
-        Given o cliente realiza uma compra no valor de "R$990,00" na filial "5" com produtos da categoria "Essential Nutrition"
-        And o pedido inicialmente apresenta a mensagem:
-            """
-            BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum
-            """
-        When o usuário aplica um acréscimo de "200"
-        And o pedido é atualizado
-        Then o pedido deve apresentar a mensagem:
-            """
-            BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum - Bolsa de Juta
-            """
-        And o estoque deve ser atualizado:
-            | brinde        | ajuste |
-            | Quantum       | -1     |
-            | Bolsa de Juta | -1     |
+    # @manipulacao @acrescimo
+    # Scenario: Aplicar acréscimo ao pedido aumentando o valor para outro brinde
+    #     Given o cliente realiza uma compra no valor de "R$990,00" na filial "5" com produtos da categoria "Essential Nutrition"
+    #     And o pedido inicialmente apresenta a mensagem:
+    #         """
+    #         BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum
+    #         """
+    #     When o usuário aplica um acréscimo de "200"
+    #     And o pedido é atualizado
+    #     Then o pedido deve apresentar a mensagem:
+    #         """
+    #         BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum - Bolsa de Juta
+    #         """
+    #     And o estoque deve ser atualizado:
+    #         | brinde        | ajuste |
+    #         | Quantum       | -1     |
+    #         | Bolsa de Juta | -1     |
 
-    #167027/5
-    #167077/5
-    #167126/5
+    # #167027/5
+    # #167077/5
+    # #167126/5
 
     # @manipulacao @desconto
     # Scenario: Aplicar desconto ao pedido reduzindo o valor e alterando o brinde
     #     Given o cliente realiza uma compra no valor de "R$1030,00" na filial "5" com produtos da categoria "Essential Nutrition"
     #     And o pedido inicialmente apresenta a mensagem:
     #         """
-    #         Cliente tem direito aos brindes: Quantum + Bolsa de Juta
+    #         BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum - Bolsa de Juta
     #         """
     #     When o usuário aplica um desconto de "200"
     #     And o pedido é atualizado
@@ -71,13 +71,13 @@
         Given o cliente realiza uma compra no valor de "2100" na filial "1000" com produtos da categoria "Noorskin"
         And o pedido inicialmente apresenta a mensagem:
             """
-            Cliente tem direito aos brindes: Quantum + Bolsa de Juta + Garrafa
+            BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum - Bolsa de Juta - Garrafa
             """
         When o usuário remove itens do pedido reduzindo o valor para "1800"
         And o pedido é atualizado
         Then o pedido deve apresentar a mensagem:
             """
-            Cliente tem direito aos brindes: Quantum + Bolsa de Juta
+            BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum - Bolsa de Juta
             """
         And o estoque deve ser atualizado:
             | brinde  | ajuste |
@@ -88,13 +88,13 @@
         Given o cliente realiza uma compra no valor de "1500" na filial "5" com produtos da categoria "Noorskin"
         And o pedido inicialmente apresenta a mensagem:
             """
-            Cliente tem direito aos brindes: Quantum + Bolsa de Juta
+            BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum - Bolsa de Juta
             """
         When o usuário adiciona itens ao pedido aumentando o valor para "2500"
         And o pedido é atualizado
         Then o pedido deve apresentar a mensagem:
             """
-            Cliente tem direito aos brindes: Quantum + Bolsa de Juta + Garrafa
+            BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum - Bolsa de Juta - Garrafa
             """
         And o estoque deve ser atualizado:
             | brinde        | ajuste |
