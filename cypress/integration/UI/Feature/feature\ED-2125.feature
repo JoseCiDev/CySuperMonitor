@@ -32,11 +32,11 @@
             """
             BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum
             """
-        When o usuário aplica um acréscimo de "100"
+        When o usuário aplica um acréscimo de "200"
         And o pedido é atualizado
         Then o pedido deve apresentar a mensagem:
             """
-            Cliente tem direito aos brindes: Quantum + Bolsa de Juta
+            BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum - Bolsa de Juta
             """
         And o estoque deve ser atualizado:
             | brinde        | ajuste |
@@ -46,6 +46,7 @@
     #167027/5
     #167077/5
     #167126/5
+
     # @manipulacao @desconto
     # Scenario: Aplicar desconto ao pedido reduzindo o valor e alterando o brinde
     #     Given o cliente realiza uma compra no valor de "R$1030,00" na filial "5" com produtos da categoria "Essential Nutrition"
