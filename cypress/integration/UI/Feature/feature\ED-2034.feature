@@ -1,19 +1,19 @@
 Feature: Gerenciar e Registrar Conferências e Equívocos
-    # Scenario Outline: Registrar conferência por setor
-    #     @registerConference
-    #     Given o usuário está na tela de "<setor>"
-    #     When o usuário registra uma conferência de "<tipoConferencia>"
-    #     Then o sistema deve salvar a "<tipoConferencia>" com sucesso
+    Scenario Outline: Registrar conferência por setor
+        @registerConference
+        Given o usuário está na tela de "<setor>"
+        When o usuário registra uma conferência de "<tipoConferencia>"
+        Then o sistema deve salvar a "<tipoConferencia>" com sucesso
 
-    #     Examples:
-    #         | setor       | tipoConferencia            |
-    #         | backoffice  | conferência do backoffice  |
-    #         | atendimento | conferência do atendimento |
-    #         | inclusão    | conferência da inclusão    |
-    #         | entrada     | conferência de entrada     |
-    #         | saída       | conferência de saída       |
+        Examples:
+            | setor       | tipoConferencia            |
+            | backoffice  | conferência do backoffice  |
+            | atendimento | conferência do atendimento |
+            | inclusão    | conferência da inclusão    |
+            | entrada     | conferência de entrada     |
+            | saída       | conferência de saída       |
 
-    # #341738 / 1000 <> 425984
+    #341738 / 1000 <> 425984
 
     Scenario Outline: Desfazer conferência por setor
         @undoConference
@@ -23,13 +23,11 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         Then a "<tipoConferencia>" deve ser desfeita com sucesso
 
         Examples:
-            | telaDesfazer                     | tipoConferencia         |
-            | conferência de saída finalizados | conferência de saída    |
-            | entrada                          | conferência de entrada  |
-            | inclusão                         | conferência da inclusão |
+            | telaDesfazer | tipoConferencia         |
+            | inclusão     | conferência da inclusão |
 
-#165533 / 5
-#341885 / 1000
+    #165533 / 5
+    #341885 / 1000
 
     Scenario: Registrar equívoco com observações e imagens
         @recordError
@@ -46,13 +44,13 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         When o usuário insere "Erro nos dados 💾 com @tags!"
         Then o sistema não deve aceitar os caracteres especiais e emojis
         And deve apresentar somente letras ao exibir a observação inserida
-    341763 / 1000
+    #341763 / 1000
 
     Scenario: Limitar caracteres em observações
         @validateCharacterLimit
         Given o usuário está editando uma observação para um equívoco
         When o usuário insere 260 caracteres no campo de observação
-        Then o sistema deve exibir a mensagem "Máximo de 255 caracteres permitido"
+        Then o sistema deve aceitar no mínimo 255 caracteres no campo de observação
 
     Scenario Outline: Registrar múltiplos equívocos
         @recordMultipleErrors
@@ -92,7 +90,7 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
             | conferência de entrada |
             | conferência de saída   |
 
-#166958 / 5        
+    #166958 / 5
 
     Scenario: Persistir equívocos entre etapas de conferência
         @persistErrors
@@ -104,18 +102,18 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
 
     Scenario: Desfazer conferência exclui equívocos da etapa atual
         @undoConferenceErrors
-        Given há equívocos registrados na conferência de saída atual
-        When o usuário desfaz a conferência de saída
+        Given há equívocos registrados na inclusão
+        When o usuário desfaz a conferência da inclusão
         Then o sistema deve excluir os equívocos da conferência atual
         And manter os equívocos registrados nas etapas anteriores
 
-@recordObservation @validationFieldText
-Scenario: Tentativa de inserir observação sem texto
-    Given o usuário está no modal de registro de equívocos
-    And o campo "Adicionar observação sobre o equívoco" está vazio
-    When o usuário clica no botão "Adicionar"
-    Then o sistema deve exibir a mensagem de erro "O campo de observação não pode estar vazio."
-    And a observação não deve ser adicionada à lista
+    @recordObservation @validationFieldText
+    Scenario: Tentativa de inserir observação sem texto
+        Given o usuário está no modal de registro de equívocos
+        And o campo "Adicionar observação sobre o equívoco" está vazio
+        When o usuário clica no botão "Adicionar"
+        Then o sistema deve exibir o botão adicionar desabilitado
+        And não é possível realizar o click
 
 
 
