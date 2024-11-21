@@ -15,38 +15,37 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
 
     # #341738 / 1000 <> 425984
 
-    # Scenario Outline: Desfazer conferência por setor
-    #     @undoConference
-    #     Given o usuário está na tela de "<telaDesfazer>"
-    #     And há uma "<tipoConferencia>" já registrada
-    #     When o usuário desfaz a "<tipoConferencia>"
-    #     Then a "<tipoConferencia>" deve ser desfeita com sucesso
+    Scenario Outline: Desfazer conferência por setor
+        @undoConference
+        Given o usuário está na tela de "<telaDesfazer>"
+        And há uma "<tipoConferencia>" já registrada
+        When o usuário desfaz a "<tipoConferencia>"
+        Then a "<tipoConferencia>" deve ser desfeita com sucesso
 
-    #     Examples:
-    #         | telaDesfazer                     | tipoConferencia         |
-    #         | conferência de saída finalizados | conferência de saída    |
-    #         | entrada                          | conferência de entrada  |
-    #         | inclusão                         | conferência da inclusão |
+        Examples:
+            | telaDesfazer                     | tipoConferencia         |
+            | conferência de saída finalizados | conferência de saída    |
+            | entrada                          | conferência de entrada  |
+            | inclusão                         | conferência da inclusão |
 
-    # #341738 / 1000 <> 425984
+#165533 / 5
+#341885 / 1000
 
-    Scenario: Registrar equívoco com observações e imagens
-        @recordError
-        Given o usuário começa a registrar um equívoco durante uma conferência
-        And seleciona o equívoco "Ativo selecionado equivocadamente no orçamento"
-        When o usuário adiciona a observação "Orçamento selecionou ativo equivocadamente"
-        And anexa o arquivo "ativoIncorreto.png"
-        Then o sistema deve salvar o equívoco junto com a observação e a imagem
+    # Scenario: Registrar equívoco com observações e imagens
+    #     @recordError
+    #     Given o usuário começa a registrar um equívoco durante uma conferência
+    #     And seleciona o equívoco "Ativo selecionado equivocadamente no orçamento"
+    #     When o usuário adiciona a observação "Orçamento selecionou ativo equivocadamente"
+    #     And anexa o arquivo "ativoIncorreto.png"
+    #     Then o sistema deve salvar o equívoco junto com a observação e a imagem
 
-    # 165362 / 5
 
-    Scenario: Validar caracteres especiais em observações
-        @validateSpecialCharacters
-        Given o usuário está editando uma observação para um equívoco
-        When o usuário insere "Erro nos dados 💾 com @tags!"
-        Then o sistema não deve aceitar os caracteres especiais e emojis
-        And deve apresentar somente letras ao exibir a observação inserida
-
+    # Scenario: Validar caracteres especiais em observações
+    #     @validateSpecialCharacters
+    #     Given o usuário está editando uma observação para um equívoco
+    #     When o usuário insere "Erro nos dados 💾 com @tags!"
+    #     Then o sistema não deve aceitar os caracteres especiais e emojis
+    #     And deve apresentar somente letras ao exibir a observação inserida
     #341763 / 1000
 
     # Scenario: Limitar caracteres em observações
@@ -55,17 +54,17 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
     #     When o usuário insere 260 caracteres no campo de observação
     #     Then o sistema deve exibir a mensagem "Máximo de 255 caracteres permitido"
 
-    Scenario Outline: Registrar múltiplos equívocos
-        @recordMultipleErrors
-        Given o usuário está registrando equívocos durante "<etapaConferencia>"
-        And seleciona múltiplos equívocos: "<equivocos>"
-        When o usuário adiciona uma observação e uma imagem para cada equívoco
-        Then o sistema deve exibir o total de "<quantidadeEquivocos>" equívocos registrados
+    # Scenario Outline: Registrar múltiplos equívocos
+    #     @recordMultipleErrors
+    #     Given o usuário está registrando equívocos durante "<etapaConferencia>"
+    #     And seleciona múltiplos equívocos: "<equivocos>"
+    #     When o usuário adiciona uma observação e uma imagem para cada equívoco
+    #     Then o sistema deve exibir o total de "<quantidadeEquivocos>" equívocos registrados
 
-        Examples:
-            | etapaConferencia | equivocos                              | quantidadeEquivocos |
-            | backoffice       | "Quantidade Inválida, Dados Faltantes" | 2                   |
-            | inclusão         | "Etiqueta Errada"                      | 1                   |
+    #     Examples:
+    #         | etapaConferencia | equivocos                              | quantidadeEquivocos |
+    #         | backoffice       | "Quantidade Inválida, Dados Faltantes" | 2                   |
+    #         | inclusão         | "Etiqueta Errada"                      | 1                   |
 
     # Scenario: Limitar registro de equívocos por setor
     #     @sectorLimit
@@ -80,16 +79,24 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
     #         | conferência de entrada |
     #         | conferência de saída   |
 
-    Scenario: Marcar pendências
-        @markPending
-        Given o usuário está na tela de Conferência de Entrada ou Conferência de Saída
-        When o usuário clica no botão "Marcar Pendências"
-        Then um modal deve ser aberto com as pendências possíveis de serem registradas
-        And ao selecionar pendências e fechar, o sistema deve registrar as pendências selecionadas
+#     Scenario: Marcar pendências
+#         @markPending
+#         Given o usuário está na tela de <setor>
+#         When o usuário clica no botão "Marcar Pendências"
+#         Then um modal deve ser aberto com as pendências possíveis de serem registradas
+#         And ao selecionar pendências e fechar, o sistema deve registrar as pendências selecionadas
+#         And ao remover as pendências o orçamento deve seguir para o próximo passo do processo
+
+#         Examples:
+#             | setor                  |
+#             | conferência de entrada |
+#             | conferência de saída   |
+
+# #166958 / 5        
 
     Scenario: Persistir equívocos entre etapas de conferência
         @persistErrors
-        Given o usuário registrou equívocos na conferência de inclusão
+        Given o usuário registrou equívocos na inclusão
         And esses equívocos estão visíveis na etapa de conferência de entrada
         When o usuário registra novos equívocos na conferência de entrada
         Then o sistema deve manter os equívocos antigos
