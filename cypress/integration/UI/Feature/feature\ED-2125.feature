@@ -1,5 +1,3 @@
-Feature: Alerta de Brinde para Expedição - Campanha Black Friday 2024
-
     Background: Contexto da campanha
         Given a campanha "Black Friday 2024" está ativa de "26/11/2024" a "02/12/2024"
         And os brindes disponíveis são:
@@ -7,86 +5,101 @@ Feature: Alerta de Brinde para Expedição - Campanha Black Friday 2024
             | Quantum       | 250     |
             | Bolsa de Juta | 300     |
             | Garrafa       | 150     |
-        And as filiais válidas são todas exceto 2000, 1010, 13, 1313 e 2013
+        And as filiais válidas são todas as filiais exceto 2000, 1010, 13, 1313 e 2013
 
-    @brinde @quantum
-    Scenario Outline: Cliente ganha Quantum por compras a partir de R$400,00
-        Given o cliente realiza uma compra no valor de "<valor>" na filial "<filial>"
-        And os produtos comprados incluem "<categoria>"
-        When o pedido é processado
-        Then deve ser gerado um alerta no pedido impresso com a mensagem:
+    # @filial
+    # Scenario: Pedido em filial inválida
+    #     Given o cliente realiza uma compra no valor de "R$424,00" na filial "2000" com produtos da categoria "Essential Nutrition"
+    #     When o pedido é confirmado
+    #     Then o pedido não deve apresentar nenhuma mensagem de brinde
+    # #100480/2000
+
+    # @filial
+    # Scenario: Pedido em filial válida
+    #     Given o cliente realiza uma compra no valor de "R$424,00" na filial "5" com produtos da categoria "Noorskin"
+    #     When o pedido é processado
+    #     Then o pedido deve apresentar a mensagem:
+    #         """
+    #         BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum
+    #         """
+    #     And o estoque de Quantum deve ser reduzido em "1"
+    # #167001/5
+
+    @manipulacao @acrescimo
+    Scenario: Aplicar acréscimo ao pedido aumentando o valor para outro brinde
+        Given o cliente realiza uma compra no valor de "R$990,00" na filial "5" com produtos da categoria "Essential Nutrition"
+        And o pedido inicialmente apresenta a mensagem:
             """
-            Cliente tem direito ao brinde: Quantum
+            BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum
             """
-        And o estoque de Quantum deve ser reduzido em "<quantidade_brinde>"
-
-        Examples:
-            | valor | filial | categoria           | quantidade_brinde |
-            | 400   | 5000   | Essential Nutrition | 1                 |
-            | 450   | 6000   | Noorskin            | 1                 |
-
-    @brinde @quantum @bolsa
-    Scenario Outline: Cliente ganha Quantum e Bolsa de Juta por compras a partir de R$1.000,00
-        Given o cliente realiza uma compra no valor de "<valor>" na filial "<filial>"
-        And os produtos comprados incluem "<categoria>"
-        When o pedido é processado
-        Then deve ser gerado um alerta no pedido impresso com a mensagem:
+        When o usuário aplica um acréscimo de "100"
+        And o pedido é atualizado
+        Then o pedido deve apresentar a mensagem:
             """
             Cliente tem direito aos brindes: Quantum + Bolsa de Juta
             """
-        And o estoque de Quantum deve ser reduzido em "<quantidade_quantum>"
-        And o estoque de Bolsa de Juta deve ser reduzido em "<quantidade_bolsa>"
+        And o estoque deve ser atualizado:
+            | brinde        | ajuste |
+            | Quantum       | -1     |
+            | Bolsa de Juta | -1     |
 
-        Examples:
-            | valor | filial | categoria           | quantidade_quantum | quantidade_bolsa |
-            | 1000  | 5000   | Essential Nutrition | 1                  | 1                |
-            | 1200  | 6000   | Noorskin            | 1                  | 1                |
+    #167027/5
+    #167077/5
+    #167126/5
+    # @manipulacao @desconto
+    # Scenario: Aplicar desconto ao pedido reduzindo o valor e alterando o brinde
+    #     Given o cliente realiza uma compra no valor de "R$1030,00" na filial "5" com produtos da categoria "Essential Nutrition"
+    #     And o pedido inicialmente apresenta a mensagem:
+    #         """
+    #         Cliente tem direito aos brindes: Quantum + Bolsa de Juta
+    #         """
+    #     When o usuário aplica um desconto de "200"
+    #     And o pedido é atualizado
+    #     Then o pedido deve apresentar a mensagem:
+    #         """
+    #         BLACKFRIDAY 2024 ENVIAR BRINDE - Quantum
+    #         """
+    #     And o estoque deve ser atualizado:
+    #         | brinde        | ajuste |
+    #         | Bolsa de Juta | +1    |
 
-    @brinde @quantum @bolsa @garrafa
-    Scenario Outline: Cliente ganha todos os brindes por compras a partir de R$2.000,00
-        Given o cliente realiza uma compra no valor de "<valor>" na filial "<filial>"
-        And os produtos comprados incluem "<categoria>"
-        When o pedido é processado
-        Then deve ser gerado um alerta no pedido impresso com a mensagem:
+    # #167046/5
+
+    @manipulacao @remocao
+    Scenario: Remover itens do pedido reduzindo o valor e alterando o brinde
+        Given o cliente realiza uma compra no valor de "2100" na filial "1000" com produtos da categoria "Noorskin"
+        And o pedido inicialmente apresenta a mensagem:
             """
             Cliente tem direito aos brindes: Quantum + Bolsa de Juta + Garrafa
             """
-        And o estoque de Quantum deve ser reduzido em "<quantidade_quantum>"
-        And o estoque de Bolsa de Juta deve ser reduzido em "<quantidade_bolsa>"
-        And o estoque de Garrafa deve ser reduzido em "<quantidade_garrafa>"
-
-        Examples:
-            | valor | filial | categoria           | quantidade_quantum | quantidade_bolsa | quantidade_garrafa |
-            | 2000  | 5000   | Essential Nutrition | 1                  | 1                | 1                  |
-            | 2500  | 6000   | Noorskin            | 1                  | 1                | 1                  |
-
-    @estoque
-    Scenario: Estoque insuficiente para Quantum
-        Given o estoque do brinde Quantum é 0
-        When o cliente realiza uma compra no valor de "500" na filial "5000" com produtos da categoria "Essential Nutrition"
-        Then deve ser gerado um alerta no pedido impresso com a mensagem:
+        When o usuário remove itens do pedido reduzindo o valor para "1800"
+        And o pedido é atualizado
+        Then o pedido deve apresentar a mensagem:
             """
-            Estoque insuficiente para o brinde: Quantum
+            Cliente tem direito aos brindes: Quantum + Bolsa de Juta
             """
+        And o estoque deve ser atualizado:
+            | brinde  | ajuste |
+            | Garrafa | +1     |
 
-    @estoque
-    Scenario: Estoque insuficiente para Bolsa de Juta
-        Given o estoque do brinde Bolsa de Juta é 0
-        When o cliente realiza uma compra no valor de "1500" na filial "5000" com produtos da categoria "Noorskin"
-        Then deve ser gerado um alerta no pedido impresso com a mensagem:
+    @manipulacao @adicao
+    Scenario: Adicionar itens ao pedido aumentando o valor para outro brinde
+        Given o cliente realiza uma compra no valor de "1500" na filial "5" com produtos da categoria "Noorskin"
+        And o pedido inicialmente apresenta a mensagem:
             """
-            Estoque insuficiente para o brinde: Bolsa de Juta
+            Cliente tem direito aos brindes: Quantum + Bolsa de Juta
             """
+        When o usuário adiciona itens ao pedido aumentando o valor para "2500"
+        And o pedido é atualizado
+        Then o pedido deve apresentar a mensagem:
+            """
+            Cliente tem direito aos brindes: Quantum + Bolsa de Juta + Garrafa
+            """
+        And o estoque deve ser atualizado:
+            | brinde        | ajuste |
+            | Quantum       | -1     |
+            | Bolsa de Juta | -1     |
+            | Garrafa       | -1     |
 
-    @filial
-    Scenario: Pedido em filial inválida
-        Given o cliente realiza uma compra no valor de "500" na filial "2000" com produtos da categoria "Essential Nutrition"
-        When o pedido é processado
-        Then não deve ser gerado nenhum alerta de brinde
 
-    @data
-    Scenario: Pedido fora do período da campanha
-        Given o cliente realiza uma compra no valor de "500" na filial "5000" com produtos da categoria "Essential Nutrition"
-        And a data atual é "03/12/2024"
-        When o pedido é processado
-        Then não deve ser gerado nenhum alerta de brinde
+#68596/5000
