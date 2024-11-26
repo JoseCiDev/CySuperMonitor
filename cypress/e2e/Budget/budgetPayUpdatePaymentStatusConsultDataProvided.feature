@@ -1,7 +1,7 @@
 Feature: Validação de pagamento de pedido e consistência dos dados fornecidos
 
     Background:
-        Given que o usuário está logado no sistema
+        Given que o usuário está na tela de pedidos
 
     Scenario: Validar pagamento de pedido, atualização do status e consistência dos dados fornecidos
         When visualizar o orçamento

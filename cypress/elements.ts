@@ -129,6 +129,12 @@ interface Elements<S = string> {
         customerPhoneToViewRecipesElement: S;
         recipeReceiptChannelViewRecipesElement: S;
         clusterScreenViewRecipesElement:S;
+        linkRecipeRecipeScreen:S;
+        linkRecipeToServiceScreen:S;
+        inputLinkRecipeScreenRecipe:S;
+        inputLinkRecipeServiceScreen:S;
+        saveLinkRecipeBudgetRecipeScreen:S;
+        saveLinkRecipeBudgetServiceScreen:S;
     };
 
     Services: {
@@ -435,8 +441,13 @@ export const elements: Elements = {
         viewRecipeScreenImportRecipesElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > div > ul > li.list-group-item.show-receita',
         customerPhoneToViewRecipesElement: '#despejoDetails > :nth-child(6) > :nth-child(3) > .form-group > div',
         recipeReceiptChannelViewRecipesElement: '#despejoDetails > :nth-child(6) > :nth-child(2) > .form-group > div',
-        clusterScreenViewRecipesElement:'#despejoDetails > div:nth-child(5) > div:nth-child(1) > div > div'
-
+        clusterScreenViewRecipesElement:'#despejoDetails > div:nth-child(5) > div:nth-child(1) > div > div',
+        linkRecipeRecipeScreen:'#mainTableReceitas > tbody > tr:nth-child(1) > td:nth-child(10) > button',
+        linkRecipeToServiceScreen:'#editAtendimento > div:nth-child(2) > div:nth-child(3) > div > div.col.col-sm-8.text-right > button.m-xs.btn.btn-sm.btn-primary.vinc-rec',
+        inputLinkRecipeScreenRecipe:'#modalAtendimentoRec',
+        inputLinkRecipeServiceScreen:'#receitaCod',
+        saveLinkRecipeBudgetRecipeScreen:'#save_receita',
+        saveLinkRecipeBudgetServiceScreen:'#modal-receita-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo'
     },
 
     Services: {

@@ -130,6 +130,12 @@ export const {
     modalCloneRecipeElement,
     recipeCodeColumnElement,
     lastModifiedColumn,
+    linkRecipeRecipeScreen,
+    linkRecipeToServiceScreen,
+    inputLinkRecipeScreenRecipe,
+    inputLinkRecipeServiceScreen,
+    saveLinkRecipeBudgetRecipeScreen,
+    saveLinkRecipeBudgetServiceScreen,
 
 } = el.Recipes;
 
@@ -214,6 +220,7 @@ export const {
     budgetBudgetist,
     BudgetAttendant,
     containerBudgets,
+    modalToLinkRecipeElement,
 
 } = el.Services;
 
@@ -1010,7 +1017,7 @@ Cypress.Commands.add('importRecipe', (options: {
                                 file: file,
                                 recipeNumber: result.recipeNumber,
                                 prescriber: result.prescriber,
-                                potential:result.potential,
+                                potential: result.potential,
                                 patient: result.patient,
                                 attendantResponsibleRecipes: result.attendantResponsibleRecipes,
                                 channelReceiptRecipe: channelReceiptRecipe,
@@ -1021,13 +1028,121 @@ Cypress.Commands.add('importRecipe', (options: {
                                 urgentRecipe: result.urgentRecipe,
                                 clientAlert: result.clientAlert,
                                 controlledMedication: controlledMedication,
-                                noMainContact:noMainContact,
-                                isTheMainContact:isTheMainContact,
-                                mainContactRecipe:mainContactRecipe,
+                                noMainContact: noMainContact,
+                                isTheMainContact: isTheMainContact,
+                                mainContactRecipe: mainContactRecipe,
                                 customerPhone: customerPhone,
-                                
+
                             };
                         });
                 });
         });
 });
+
+/*
+parametros:
+btnVincularReceita elemento passado no parametro
+campo insercao numero orcamento
+numeroOrçamento dataParameters
+numeroFilial dataParameters
+numeroReceita dataParameters
+campoVincularReceita elemento passado no parametro
+*/
+
+
+Cypress.Commands.add(
+    'linkRecipe',
+    (options: {
+        from: 'recipeScreen' | 'attendanceScreen';
+        linkRecipeButton?: string;
+        budgetAndBranchInput?: string;
+        budget?: string;
+        branch?: string;
+        recipe?: string;
+        linkRecipeField?: string;
+    }): ValidationResult => {
+        const {
+            from,
+            linkRecipeButton,
+            budget = dataParameters.Budget.confirmation.orcamentoNumberForSearch,
+            branch = dataParameters.Budget.confirmation.filialNumberForSearch,
+            recipe = dataParameters.Budget.confirmation.recipeNumber,
+            budgetAndBranchInput,
+            linkRecipeField,
+        } = options;
+
+        if (!from) {
+            throw new Error("'from' é obrigatório e deve ser 'recipeScreen' ou 'attendanceScreen'.");
+        }
+
+        // Definição de seletores com base na origem
+        const selectors = {
+            recipeScreen: {
+                button: linkRecipeButton || linkRecipeRecipeScreen,
+                field: linkRecipeField || inputLinkRecipeScreenRecipe,
+                saveLinkRecipe: budgetAndBranchInput || saveLinkRecipeBudgetRecipeScreen,
+            },
+            attendanceScreen: {
+                button: linkRecipeButton || linkRecipeToServiceScreen,
+                field: linkRecipeField || inputLinkRecipeServiceScreen,
+                saveLinkRecipe: budgetAndBranchInput || saveLinkRecipeBudgetServiceScreen,
+            },
+        };
+
+        const elements = selectors[from];
+
+        if (!elements) {
+            throw new Error(`Nenhum seletor encontrado para o contexto '${from}'.`);
+        }
+
+
+
+        // Lógica específica para `attendanceScreen`
+        if (from === 'attendanceScreen') {
+            // Primeiro clique no botão principal
+            cy.getElementAndClick(elements.button);
+          
+            // Espera até o modal estar visível e clique
+            cy.get(btnSuccessModalElement, { timeout: 120000 })
+              .should('be.visible')
+              .click();
+          
+            // AutoComplete e clique
+            cy.getElementAutocompleteTypeAndClick(
+              { [elements.field]: String(recipe) },
+              suggestionAutocomplete
+            );
+          
+            // Confirmação do modal
+            cy.getElementAndClick(modalToLinkRecipeElement);
+          
+            // Clique no botão de sucesso
+            cy.get(btnSuccessModalElement, { timeout: 120000 })
+              .should('be.visible')
+              .click();
+          
+            // Espera até o progresso sumir
+            cy.get(':nth-child(3) > .progress > .progress-bar', { timeout: 120000 })
+              .should('not.be.visible')
+              
+          }
+          
+
+        if (from === 'recipeScreen') {
+            cy.getElementAndType({ [elements.field]: `${budget} (${branch})` });
+        }
+
+        cy.getElementAndClick(elements.saveLinkRecipe);
+
+        return cy.wrap({ success: 'Receita vinculada com sucesso', error: null });
+    }
+);
+
+
+
+
+// importar receita
+// clicar botão vincular receita
+// digitar numero de orcamento no campo autocomplete e selecionar
+// clicar em alterar
+

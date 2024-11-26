@@ -206,7 +206,7 @@ declare global {
        * * comando customizado para inserir tempo de tratamento.
        * @example cy.insertTimeTreatment(timeTreatment)
        */
-      insertTimeTreatment(options?: {timeTreatment?: string | number,}): ValidationResult;
+      insertTimeTreatment(options?: { timeTreatment?: string | number, }): ValidationResult;
 
 
       /**
@@ -369,7 +369,10 @@ declare global {
         installments?: BudgetInstallments[];
       }): ValidationResult;
 
-
+      /**
+       * * comando customizado para validar dados do pagamento
+       * @example cy.validatePaymentData()
+       */
       validatePaymentData(expectedData: {
         telephone: number;
         email: string;
@@ -385,6 +388,20 @@ declare global {
         houseNumber: number;
         addressComplement: string;
       })
+
+      /**
+       * * comando customizado para vincular receita ao orçamento
+       * @example cy.linkRecipe()
+       */
+      linkRecipe(options?: {
+        from: 'recipeScreen' | 'attendanceScreen';
+        linkRecipeButton?: string;
+        budgetAndBranchInput?: string;
+        budget?: string;
+        branch?: string;
+        recipe?: string;
+        linkRecipeField?: string;
+      }):ValidationResult;
     }
   }
 }
