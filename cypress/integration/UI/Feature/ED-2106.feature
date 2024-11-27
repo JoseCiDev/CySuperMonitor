@@ -80,3 +80,10 @@ Feature: Indicar o responsável pela separação de pedidos de injetáveis
         And clica em "Salvar conferência"
         Then o sistema deve atualizar o banco de dados para exibir "Maria Oliveira" como responsável
         And o histórico de alterações deve registrar a mudança de "João Silva" para "Maria Oliveira"
+
+
+
+
+
+#apresentar campo sem preenchimento, esta apresentando com o primeiro usuario selecionado, pode ser que o usuario simplesmente salve com o usuario de separacao errado porque ja vem selecionado.
+#deve ser obrigatorio o preenchimento do campo responsavel pela separacao        

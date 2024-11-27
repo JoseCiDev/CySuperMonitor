@@ -1039,15 +1039,6 @@ Cypress.Commands.add('importRecipe', (options: {
         });
 });
 
-/*
-parametros:
-btnVincularReceita elemento passado no parametro
-campo insercao numero orcamento
-numeroOrçamento dataParameters
-numeroFilial dataParameters
-numeroReceita dataParameters
-campoVincularReceita elemento passado no parametro
-*/
 
 
 Cypress.Commands.add(
@@ -1141,8 +1132,37 @@ Cypress.Commands.add(
 
 
 
-// importar receita
+//importar receita
 // clicar botão vincular receita
 // digitar numero de orcamento no campo autocomplete e selecionar
 // clicar em alterar
+// aguardar barra de load nao estar visivel
+// clicar em ok no modal de confirmacao
+//importar receita-->Atendimento ja esta vinculado a outra receita<--
+// clicar botão vincular receita
+// digitar numero de orcamento no campo autocomplete e selecionar
+// clicar em alterar
+// clica em ok na modal que informa que o orçamento ja possui vinculo com receita
+// retorna erro informando que o orçamento já está vinculado com receita.
 
+//gerenciar receitas
+// clicar botão vincular receita
+// digitar numero de orcamento no campo autocomplete e selecionar
+// clicar em alterar
+// aguardar barra de load nao estar visivel
+// clicar em ok no modal de confirmacao
+//importar receita-->Atendimento ja esta vinculado a outra receita<--
+// clicar botão vincular receita
+// digitar numero de orcamento no campo autocomplete e selecionar
+// clicar em alterar
+// clica em ok na modal que informa que o orçamento ja possui vinculo com receita
+// retorna erro informando que o orçamento já está vinculado com receita.
+
+//atendimento
+// clicar botão vincular receita
+// clicar em ok no modal de informacao de contato
+// digitar numero da receita no campo autocomplete e selecionar
+// clicar em relacionar
+// clicar em ok na modal de confirmaçao
+// aguardar barra de load nao estar visivel
+// clicar em ok na modal que informa sucesso
