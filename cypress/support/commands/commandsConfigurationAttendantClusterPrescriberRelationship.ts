@@ -5,7 +5,7 @@ import {
     elements as el,
     faker,
     dataParameters,
-    SearchRecipe,
+    RecipeSearch,
     mount,
     Messages
 } from '../../import';

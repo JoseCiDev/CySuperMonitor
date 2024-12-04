@@ -1,8 +1,20 @@
+import {
+  BudgetConfirmation,
+  BudgetPayment,
+  RecipeClone,
+  RecipeDetails,
+  RecipeImport,
+  RecipeLink,
+  RecipePharmaceuticalObservation,
+  RecipeSearch,
+  RecipeTechnicalDoubt
+} from "../../import";
+
 export type ValidationResult = Cypress.Chainable<{ error?: string; success?: string; }>
 
 export type ElementTypeAndValueOpcional = {
-  element: string; 
-  value?: string; 
+  element: string;
+  value?: string;
 }[];
 
 export type ConditionalWrite = {
@@ -14,3 +26,6 @@ export type ElementControl = {
   value?: boolean | string;
 }[];
 
+export type Recipe = RecipeImport | RecipeDetails | RecipeSearch | RecipeLink | RecipeClone | RecipePharmaceuticalObservation | RecipeTechnicalDoubt;
+
+export type Budget = BudgetConfirmation | BudgetPayment;

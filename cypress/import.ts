@@ -24,14 +24,26 @@ import 'cypress-wait-until';
 export {
     DataParameters,
     CheckAndThrowError,
-    SearchRecipe,
-    ImportRecipe,
+    RecipeSearch,
+    RecipeImport,
+    RecipeDetails,
+    RecipeLink,
+    RecipeClone,
+    RecipePharmaceuticalObservation,
+    RecipeTechnicalDoubt,
+    BudgetConfirmation,
+    BudgetPayment,
+    BudgetDetails,
+
 } from './DataParameters/Interfaces/interface';
 
 export {
     ValidationResult,
     ElementTypeAndValueOpcional,
     ElementControl,
+    Recipe,
+    Budget,
+    
 } from './DataParameters/Types/types';
 
 export {

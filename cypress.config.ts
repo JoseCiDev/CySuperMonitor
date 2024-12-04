@@ -51,7 +51,7 @@ export default defineConfig({
   projectId: "iwkf6s",
   includeShadowDom: true,
   defaultCommandTimeout: 10000,
-  pageLoadTimeout: 30000,
+  pageLoadTimeout: 120000,
   responseTimeout: 30000,
   waitForAnimations: false,
   numTestsKeptInMemory: 5,

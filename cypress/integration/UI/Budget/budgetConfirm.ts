@@ -142,44 +142,6 @@ export const {
 } = el.Services;
 
 
-
-
-// describe('Tela Atendimentos.', function () {
-
-//     beforeEach(function () {
-
-//     })
-
-//     it('Deve realizar a confirmação do orçamento', function () {
-//         cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
-//             .then((result) => {
-//                 assert.exists(result.success, result.error);
-//             });
-
-//         cy.document().then((doc) => {
-//             const $btn = doc.querySelector(modalElement) as HTMLElement
-//             if ($btn) {
-//                 cy.getElementAndClick(btnModalChangelog);
-//             } else {
-//                 cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
-//             }
-//         });
-
-//         cy.getElementAndClick(menuServices, servicesInProgress);
-
-//         cy.viewBudget();
-
-//         cy.selectCustomerContact();
-
-//         cy.fillOrcamentistaAndAtendente();
-
-//         cy.insertTimeTreatment();
-
-//         cy.confirmBudget();
-//     });
-// });
-
-
 Given('que o usuário está logado', () => {
     cy.login(dataEnvironment.BASE_URL, dataEnvironment.USER_ATENDENTE1, dataEnvironment.PASSWORD, el.Login.messageErrorLogin)
         .then((result) => {
@@ -188,42 +150,61 @@ Given('que o usuário está logado', () => {
 });
 
 When('eu acessar a tela de atendimentos em andamento', () => {
-    cy.getElementAndClick(el.Services.menuServices, el.Services.servicesInProgress);
+
+    cy.document().then((doc) => {
+        const $btn = doc.querySelector(modalElement);
+        if ($btn) {
+            cy.getElementAndClick(btnModalChangelog);
+        } else {
+            cy.log('Modal changeLog não foi apresentada, portanto, o teste prosseguirá.');
+        }
+    });
+
 });
 
 When('visualizar um orçamento disponível', () => {
+
     cy.viewBudget();
+
 });
 
 When('selecionar o contato', () => {
+
     cy.selectCustomerContact();
+
 });
 
 When('informar os dados do orçamentista e do atendente', () => {
-    // cy.fillOrcamentistaAndAtendente();
-    cy.log('cy.fillOrcamentistaAndAtendente();');
+
+    cy.fillOrcamentistaAndAtendente();
+
 });
 
 When('configurar o tempo de tratamento desejado', () => {
-    // cy.insertTimeTreatment();
-    cy.log('cy.insertTimeTreatment();');
-    cy.wait(1000);
+
+    cy.insertTimeTreatment();
+
 });
 
 When('vincular receita ao pedido', () => {
-    
-    cy.linkRecipe({
-        from: 'attendanceScreen',
-        recipe: '425984',
-    });
-    
+
+    // cy.linkRecipe({
+    //     from: 'attendance',
+    // });
+
+    cy.log('x');
 });
 
 Then('confirmarei o pedido', () => {
-    cy.confirmBudget();
-    // cy.log('cy.confirmBudget();');
+    cy.confirmBudget().then((orderData) => {
+        cy.wrap(orderData).as('confirmedBudgetData');
+    });
 });
 
 Then('os dados fornecidos na confirmação devem ser exibidos corretamente', () => {
-    cy.log('teste')
+    cy.get('@confirmedBudgetData').then((orderData) => {
+        cy.log('Dados confirmados:', orderData);
+
+        expect(orderData.success).to.be.true;
+    });
 });

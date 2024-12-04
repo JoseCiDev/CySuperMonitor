@@ -3,7 +3,7 @@
 import {
   elements as el,
   faker,
-  SearchRecipe,
+  RecipeSearch,
   mount,
   validateEmail,
   validatePassword,

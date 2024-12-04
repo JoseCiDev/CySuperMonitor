@@ -60,7 +60,6 @@ export const dataParameters: DataParameters = {
     Recipe: {
         injectablesBranch:['13','1313','2013'],
         import: {
-            recipeNumber: 0,
             file: 'img/recipeExample.jpg',//'img/recipeExample.pdf' 'img/recipeExample.jpg' undefined
             prescriber: faker.helpers.arrayElement(['fabio juca','leonardo higashi','nina sobral','victor sorrentino','elisa urban von damm']),
             suggestionRelationshipPrescriber: true,
@@ -81,7 +80,7 @@ export const dataParameters: DataParameters = {
             customerPhone: 48991888641,
         },
         search: {
-            recipeNumber: undefined,//digitar o numero da receita ou undefined
+            recipeNumber: String([faker.helpers.arrayElement(['426040'])]),//digitar o numero da receita ou undefined
             initialDate: '',//formato da data YYYY-MM-DDThh:mm:ss | Ex:2024-10-01T00:00 ou  ''
             finalDate: '',//formato da data YYYY-MM-DDThh:mm:ss | Ex:2024-10-17T23:59 ou ''
             cluster: undefined,//RecipeCluster.Cluster1 ou undefined
@@ -126,31 +125,31 @@ export const dataParameters: DataParameters = {
 
     Budget: {
         confirmation: {
-            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['168435'])]),
+            orcamentoNumberForSearch: String([faker.helpers.arrayElement(['174799'])]),
             filialNumberForSearch: String([faker.helpers.arrayElement(['5'])]),
+            recipeNumber: String([faker.helpers.arrayElement(['426061'])]),
             typePaymentCourtesyInjectables: BudgetConfirmationTypePaymentCourtesyInjectables.CourtesyComplaintHandling,
             budgetist: 'orcam',
             budgetAttendant: 'adm',
-            recipeNumber: String([faker.helpers.arrayElement(['425558'])]),
             customerContactPhoneNumber: 5548991888641,
-            paymentMethod: BudgetConfirmationPaymentMethod.CreditCards,
+            paymentMethod: BudgetConfirmationPaymentMethod.CreditCard,
             chosenBudget: ChosenBudget.chosenBudget,
             timeTreatment: 30,
             timeRepetition: 0,
             budgetClosingChannel: BudgetClosingChannel.Whatsapp,
-            sendTrackingEmail: false,
-            releaseBudgetForInclusion: false,
-            releaseBudgetCashier: false,
-            cashierObservation: faker.lorem.paragraph(),
+            sendTrackingEmail: true,
+            releaseBudgetForInclusion: true,
+            releaseBudgetCashier: true,
+            cashierObservation: String([faker.helpers.arrayElement(['Observação do caixa'])]),
             detailedSale: true,
             paymentStatus: BudgetConfirmationPaymentStatus.NotPayed,
             address: '.enderecosCli',
-            expeditionObservation: faker.lorem.paragraph(),
-            shippingMethod: BudgetConfirmationShippingMethod.SedexSC,
+            expeditionObservation: String([faker.helpers.arrayElement(['Observação da expedição'])]),
+            shippingMethod: BudgetConfirmationShippingMethod.SedexSc,
             juntocomBudget: String(faker.helpers.arrayElements([107456, 107246])),
             promisedTo: new Date(),
             aromaSachet: BudgetConfirmationAromaSachet.Strawberry,
-            capsuleAroma: BudgetConfirmationCapsuleAroma.OrangeWithMintAndSpearmint,
+            capsuleAroma: BudgetConfirmationCapsuleAroma.Orange,
             generalObservation: faker.lorem.lines(),
             budgetHasRecipeElement: BudgetConfirmationBudgetHasRecipe.Yes,
             urgentBudget: true,

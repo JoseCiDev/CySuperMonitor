@@ -5,7 +5,7 @@
 //     elements as el,
 //     faker,
     
-//     SearchRecipe,
+//     RecipeSearch,
 // } from '../cypress/import';
 
 // const environment = Cypress.env('ENVIRONMENT');

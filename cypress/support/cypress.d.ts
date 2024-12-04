@@ -208,19 +208,6 @@ declare global {
        */
       insertTimeTreatment(options?: { timeTreatment?: string | number, }): ValidationResult;
 
-
-      /**
-       * * comando customizado para vincular recipe ao budget.
-       * @example cy.vincularReceitaOrçamento(buttonLinkRecipeScreenServiceProgress,dataParameters.Recipe.recipeNumber)
-       */
-      linkBudgetRecipe(buttonLink: string, recipeNumber?: number): ValidationResult;
-
-      /**
-       * * comando customizado para desvincular recipe ao budget.
-       * @example cy.desvincularReceitaOrçamento(timeTreatment)
-       */
-      unlinkBudgetRecipe(buttonUnlink: string): Chainable<Element>;
-
       /**
       * * comando customizado para importar orçamentos .
       * @example cy.budgetImport(modalImportacao,numerOrcamento,branchNumber,budgetImport)
@@ -265,6 +252,7 @@ declare global {
       importRecipe(options?: {
         file?: string;
         prescriber?: string;
+        suggestionRelationshipPrescriber?: boolean;
         parameterSearchPatient?: string;
         patient?: string | number;
         channelReceiptRecipe?: string;
@@ -394,14 +382,28 @@ declare global {
        * @example cy.linkRecipe()
        */
       linkRecipe(options?: {
-        from: 'recipeScreen' | 'attendanceScreen';
+        from: 'importRecipe' | 'manageRecipe' | 'attendance';
         linkRecipeButton?: string;
         budgetAndBranchInput?: string;
         budget?: string;
         branch?: string;
         recipe?: string;
         linkRecipeField?: string;
-      }):ValidationResult;
+      }): ValidationResult;
+
+      /**
+       * * comando customizado para vincular capturar dados do orçamento
+       * @example cy.captureBudgetDetails()
+       */
+      captureBudgetDetails();
+
+      /**
+      * * comando customizado para inserir usuario e senha de admin ao editar receita e orçamento
+      * @example cy.authenticateAdminForEdit()
+      */
+      authenticateAdminForEdit(userType);
     }
   }
+
+
 }

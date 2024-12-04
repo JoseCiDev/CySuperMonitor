@@ -31,54 +31,71 @@ import {
     PayBudgetState,
 } from '../../import';
 
+export interface Recipe<S = string> {
+    file?: string;
+    prescriber?: string;
+    patient?: string;
+    cluster?: boolean | RecipeCluster | string;
+    receivingDate?: string;
+    urgentRecipe?: boolean;
+    clientAlert?: boolean;
+    controlledMedication?: boolean;
+}
 
-export interface ImportRecipe<S = string> {
-    recipeNumber: S | number;
-    file: S;
-    prescriber: S;
-    suggestionRelationshipPrescriber: boolean;
-    parameterSearchPatient: BudgetConfirmationPatientSearchParameter;
-    patient: S;
-    channelReceiptRecipe: RecipeReceiptChannel;
-    attendantResponsibleRecipes?: boolean | S;
-    cluster?: boolean | RecipeCluster | S;
-    receivingDate: S;
-    recipeStatus: RecipeStatus;
-    textNoteRecipe: S;
-    urgentRecipe: boolean;
-    clientAlert: boolean;
-    controlledMedication: boolean;
-    noMainContact: boolean;
-    isTheMainContact: boolean;
-    mainContactRecipe: S;
-    customerPhone: number;
-};
+export interface RecipeImport extends Recipe {
+    suggestionRelationshipPrescriber?: boolean; // Made optional
+    parameterSearchPatient?: string;
+    channelReceiptRecipe?: string;
+    attendantResponsibleRecipes?: string;
+    recipeStatus?: string;
+    textNoteRecipe?: string;
+    noMainContact?: boolean;
+    isTheMainContact?: boolean;
+    mainContactRecipe?: string;
+    customerPhone?: number;
+}
 
-export interface SearchRecipe<S = string> {
-    initialDate: S;
-    finalDate: S;
-    cluster: any;
-    channelReceipt: RecipeReceiptChannel;
-    recipeNumber: number | undefined;
-    patient: S;
-    prescriber: S;
-    budget: number | undefined;
-    branch: S;
-    lastModifier: S;
-    budgetist: S;
-    attendantResponsibleRecipes: S;
-    pendency: RecipePendingFilter;
-};
 
-export interface CloneRecipe<S = string> {
-    cloneRecipeWithPharmaceuticalObservation: boolean;
-};
-export interface PharmaceuticalObservationRecipe<S = string> {
+export interface RecipeDetails extends Recipe {
+    recipeNumber: number;
+    attendantResponsible: string;
+    potential: string;
+    lastUpdate: string;
+    budgeist: string;
+}
+
+export interface RecipeSearch<S = string> extends Partial<Recipe> {
+    initialDate?: S;
+    finalDate?: S;
+    channelReceipt?: S | RecipeReceiptChannel;
+    recipeNumber?: S | number;
+    budget?: S | number;
+    branch?: S;
+    lastModifier?: S;
+    budgetist?: S;
+    attendantResponsibleRecipes?: S;
+    pendency?: S | RecipePendingFilter;
+}
+
+export interface RecipeLink<S = string> {
+    from: 'importRecipe' | 'manageRecipe' | 'attendance';
+    linkRecipeButton?: string;
+    budgetAndBranchInput?: string;
+    budget?: string;
+    branch?: string;
+    recipe?: string;
+    linkRecipeField?: string;
+}
+
+export interface RecipeClone<S = string> extends Recipe {
+    cloneRecipeWithPharmaceuticalObservation?: boolean;
+}
+export interface RecipePharmaceuticalObservation<S = string> {
     passwordPharmaceuticalObservation: S;
     textPharmaceuticalObservation: S;
 };
 
-export interface TechnicalDoubtRecipe<S = string> {
+export interface RecipeTechnicalDoubt<S = string> {
     technicalDoubtCategory: TechnicalDoubtCategory;
     technicalQuestionText: S;
     recipientTechnicalDoubt: S;
@@ -90,14 +107,90 @@ export interface TechnicalDoubtRecipe<S = string> {
 
 
 
+export interface BudgetConfirmation<S = string> {
+    orcamentoNumberForSearch?: S | number;
+    filialNumberForSearch?: S | number;
+    typePaymentCourtesyInjectables?: BudgetConfirmationTypePaymentCourtesyInjectables;
+    budgetist?: S;
+    budgetAttendant?: S;
+    recipeNumber?: S | number;
+    customerContactPhoneNumber?: S | number;
+    timeTreatment?: S | number;
+    paymentMethod?: BudgetConfirmationPaymentMethod;
+    chosenBudget?: S;
+    timeRepetition?: number;
+    budgetClosingChannel?: BudgetClosingChannel;
+    sendTrackingEmail?: boolean;
+    releaseBudgetForInclusion?: boolean;
+    releaseBudgetCashier?: boolean;
+    cashierObservation?: S;
+    detailedSale?: boolean;
+    paymentStatus?: BudgetConfirmationPaymentStatus;
+    address?: S;
+    expeditionObservation?: S;
+    shippingMethod?: BudgetConfirmationShippingMethod;
+    juntocomBudget?: S;
+    promisedTo?: Date;
+    aromaSachet?: BudgetConfirmationAromaSachet;
+    capsuleAroma?: BudgetConfirmationCapsuleAroma;
+    generalObservation?: S;
+    budgetHasRecipeElement?: BudgetConfirmationBudgetHasRecipe;
+    urgentBudget?: boolean;
+    automaticMessageTriggering?: boolean;
+}
+
+export interface BudgetPayment<S = string> {
+    paymentMethod?: PayBudgetPaymentMethod;
+    telephone?: number;
+    email?: S;
+    fullName?: S;
+    birthDate?: S;
+    cpf?: number;
+    rg?: number;
+    useRegisteredAddress?: boolean;
+    zipCode?: number;
+    state?: PayBudgetState;
+    city?: S;
+    district?: S;
+    street?: S;
+    houseNumber?: number;
+    addressComplement?: S;
+    isMyDeliveryAddress?: boolean;
+    cardholderName?: S;
+    cpfCnpj?: number;
+    cardNumber?: number;
+    expirationMonth?: PayBudgetCreditCardExpirationMonth;
+    expirationYear?: PayBudgetCreditCardExpirationYear;
+    securityCode?: number;
+    installments?: BudgetInstallments;
+}
+
+export interface BudgetDetails {
+    paymentMethod: string;
+    closingChannel: string;
+    cashierObservation: string;
+    detailedNote: string;
+    paymentStatus: string;
+    address: string;
+    generalObservation: string;
+    shippingMethod: string;
+    deliveryPromiseDate: string;
+    sacheAroma: string;
+    capsuleAroma: string;
+    prescriptionStatus: string;
+    urgentOrder: string;
+}
+
+export interface BudgetFillOrcamentistaAndAtendente {
+    budgetist?: string;
+    budgetAttendant?: string;
+}
+
+export interface BudgetSelectCustomerContact {
+    customerContactPhoneNumber?: string;
+}
 
 
-// markUserUsage: S;
-// responsibleCurrentAnswerTechnicalQuestion: S;
-// textResponseDoubtTechnical: S;
-// valueJuntocom: S;
-// internalObservation: S;
-// receivingDate: S;
 
 
 
@@ -128,11 +221,11 @@ export interface DataParameters<S = string> {
 
     Recipe: {
         injectablesBranch: S[];
-        import: ImportRecipe;
-        search: SearchRecipe;
-        clone: CloneRecipe
-        pharmaceuticalObservation: PharmaceuticalObservationRecipe,
-        technicalDoubt: TechnicalDoubtRecipe,
+        import: RecipeImport;
+        search: RecipeSearch;
+        clone: RecipeClone
+        pharmaceuticalObservation: RecipePharmaceuticalObservation,
+        technicalDoubt: RecipeTechnicalDoubt,
     };
 
     filePath: S;
@@ -194,7 +287,6 @@ export interface DataParameters<S = string> {
             securityCode: number;
             installments: BudgetInstallments;
         },
-
     }
 
     searchBudget: typeof SearchBudget;

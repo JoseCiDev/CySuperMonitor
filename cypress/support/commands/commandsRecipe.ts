@@ -5,9 +5,9 @@ import {
     elements as el,
     faker,
     dataParameters,
-    SearchRecipe,
+    RecipeSearch,
     mount,
-    ImportRecipe,
+    RecipeImport,
     CheckAndThrowError,
     RecipePendingFilter,
     Messages,
@@ -15,6 +15,9 @@ import {
     validationMessages,
     RecipeCluster,
     RecipeReceiptChannel,
+    RecipeClone,
+    RecipeDetails,
+    RecipeLink,
 } from '../../import';
 
 export const {
@@ -130,12 +133,12 @@ export const {
     modalCloneRecipeElement,
     recipeCodeColumnElement,
     lastModifiedColumn,
-    linkRecipeRecipeScreen,
-    linkRecipeToServiceScreen,
-    inputLinkRecipeScreenRecipe,
-    inputLinkRecipeServiceScreen,
-    saveLinkRecipeBudgetRecipeScreen,
-    saveLinkRecipeBudgetServiceScreen,
+    linkRecipeRecipeScreenElement,
+    linkRecipeToServiceScreenElement,
+    inputLinkRecipeScreenRecipeElement,
+    inputLinkRecipeServiceScreenElement,
+    saveLinkRecipeBudgetRecipeScreenElement,
+    saveLinkRecipeBudgetServiceScreenElement,
 
 } = el.Recipes;
 
@@ -221,6 +224,8 @@ export const {
     BudgetAttendant,
     containerBudgets,
     modalToLinkRecipeElement,
+    linkRecipeProgressBarServiceScreenElement,
+
 
 } = el.Services;
 
@@ -247,21 +252,7 @@ export const {
     selectPrescriberFound,
 } = el.Settings;
 
-Cypress.Commands.add('searchRecipe', (options: {
-    initialDate?: string,
-    finalDate?: string,
-    cluster?: RecipeCluster,
-    channelReceipt?: RecipeReceiptChannel,
-    recipeNumber?: number,
-    patient?: string,
-    prescriber?: string,
-    budget?: number,
-    branch?: string,
-    lastModifier?: string,
-    budgetist?: string,
-    attendantResponsibleRecipes?: string,
-    pendency?: string,
-} = {}): ValidationResult => {
+Cypress.Commands.add('searchRecipe', (options: RecipeSearch = {}): ValidationResult => {
 
     const {
         initialDate = dataParameters.Recipe.search.initialDate,
@@ -290,11 +281,18 @@ Cypress.Commands.add('searchRecipe', (options: {
         cy.getElementAndType({ [filterEndDateSearchRecipesElement]: finalDate });
     }
 
-    if (cluster) {
-        cy.get(clusterSearchElement)
-            .type(cluster)
-            .type('{downarrow}')
-            .type('{enter}');
+    if (cluster !== null && cluster !== undefined) {
+        if (typeof cluster === 'string') {
+            cy.get(clusterSearchElement)
+                .type(cluster as string)
+                .type('{downarrow}')
+                .type('{enter}');
+        } else if (typeof cluster === 'object') {
+            cy.get(clusterSearchElement)
+                .type((cluster as RecipeCluster).toString())
+                .type('{downarrow}')
+                .type('{enter}');
+        }
     }
 
     if (pendency) {
@@ -350,9 +348,21 @@ Cypress.Commands.add('searchRecipe', (options: {
         )
     }
 
-    cy.getElementAndClick(buttonSearchRecipesElement);
+    cy.waitUntil(() =>
+        cy.getElementAndClick(buttonSearchRecipesElement)
+    ), {
+        timeout: 60000,
+        interval: 500,
+        errorMsg: 'O elemento não ficou visível a tempo.',
+    };
 
-    cy.captureRecipeDetails(recipeCodeColumnElement);
+    cy.waitUntil(() =>
+        cy.captureRecipeDetails(recipeCodeColumnElement)
+    ), {
+        timeout: 60000,
+        interval: 500,
+        errorMsg: 'O elemento não ficou visível a tempo.',
+    };
 
     return cy.wrap({ success: `Busca de receita realizada com sucesso.` });
 });
@@ -382,9 +392,7 @@ Cypress.Commands.add('viewRecipe', (
     if (closeViewRecipes) cy.getElementAndClick(closeViewRecipes);
 });
 
-Cypress.Commands.add('cloneRecipe', (cloneRecipeElement: string, options: {
-    cloneRecipeWithPharmaceuticalObservation?: boolean,
-} = {}): ValidationResult => {
+Cypress.Commands.add('cloneRecipe', (cloneRecipeElement: string, options: RecipeClone = {}): ValidationResult => {
     const {
         cloneRecipeWithPharmaceuticalObservation = dataParameters.Recipe.clone.cloneRecipeWithPharmaceuticalObservation,
     } = options;
@@ -607,24 +615,24 @@ Cypress.Commands.add('captureRecipeDetails', (tableSelector: string) => {
     };
 
     cy.getElementAndClick(reloadPageButtonElement);
-    cy.wait(1000);
+
     cy.getElementAndClick(lastModifiedColumn);
-    cy.wait(1000);
+
     cy.getElementAndClick(lastModifiedColumn);
 
     return cy.get(`#mainTableReceitas tbody tr`)
         .first()
         .should('exist')
         .then(($row) => {
-            const recipeData = {
+            const recipeData: RecipeDetails = {
                 recipeNumber: extractRecipeNumber($row.find('td.idReceitaCol')),
                 prescriber: extractFieldText($row, 'td:nth-child(7)'),
                 patient: extractFieldText($row, 'td:nth-child(6)'),
                 attendantResponsible: extractFieldText($row, 'td:nth-child(13)'),
                 cluster: extractFieldText($row, 'td:nth-child(11)'),
                 receivingDate: formatDate(extractFieldText($row, 'td:nth-child(8)')),
-                urgentRecipe: extractFieldText($row, 'td.sorting_1') === '' ? 'Desmarcado' : 'Marcado',
-                clientAlert: extractFieldText($row, 'td.sorting_2') === '' ? 'Desmarcado' : 'Marcado',
+                urgentRecipe: extractFieldText($row, 'td.sorting_1') !== '',
+                clientAlert: extractFieldText($row, 'td.sorting_2') !== '',
                 potential: extractFieldText($row, 'td:nth-child(4)').replace('Z', '').trim(),
                 lastUpdate: formatDate(extractFieldText($row, 'td:nth-child(9)')),
                 budgeist: extractFieldText($row, 'td:nth-child(12)') || 'Indefinido',
@@ -639,8 +647,8 @@ Dados da Receita Capturados:
 - Atendente Responsável    : ${recipeData.attendantResponsible}
 - Cluster                  : ${recipeData.cluster}
 - Data de Recebimento      : ${recipeData.receivingDate}
-- Urgente                  : ${recipeData.urgentRecipe}
-- Cliente Alerta           : ${recipeData.clientAlert}
+- Urgente                  : ${recipeData.urgentRecipe ? 'Marcado' : 'Desmarcado'}
+- Cliente Alerta           : ${recipeData.clientAlert ? 'Marcado' : 'Desmarcado'}
 - Potencial                : ${recipeData.potential}
 - Última Alteração         : ${recipeData.lastUpdate}
 - Orçamentista             : ${recipeData.budgeist}
@@ -653,29 +661,11 @@ Dados da Receita Capturados:
         });
 });
 
-Cypress.Commands.add('importRecipe', (options: {
-    file?: string;
-    prescriber?: string;
-    parameterSearchPatient?: string;
-    patient?: string;
-    channelReceiptRecipe?: string;
-    attendantResponsibleRecipes?: string;
-    cluster?: boolean | RecipeCluster | string;
-    receivingDate?: string;
-    recipeStatus?: string;
-    urgentRecipe?: boolean;
-    textNoteRecipe?: string;
-    clientAlert?: boolean;
-    controlledMedication?: boolean;
-    noMainContact?: boolean;
-    isTheMainContact?: boolean;
-    mainContactRecipe?: string;
-    customerPhone?: number
-} = {}): Cypress.Chainable<ValidationResult> => {
-
+Cypress.Commands.add('importRecipe', (options: RecipeImport = {}): Cypress.Chainable<ValidationResult> => {
     const {
         file = dataParameters.Recipe.import.file,
         prescriber = dataParameters.Recipe.import.prescriber,
+        suggestionRelationshipPrescriber = dataParameters.Recipe.import.suggestionRelationshipPrescriber, // Default value provided here
         parameterSearchPatient = dataParameters.Recipe.import.parameterSearchPatient,
         patient = dataParameters.Recipe.import.patient,
         channelReceiptRecipe = dataParameters.Recipe.import.channelReceiptRecipe,
@@ -694,6 +684,7 @@ Cypress.Commands.add('importRecipe', (options: {
         mainContactRecipe = dataParameters.Recipe.import.mainContactRecipe,
         customerPhone = dataParameters.Recipe.import.customerPhone,
     } = options;
+
 
     function tryInsertPrescriber(prescriberName: string) {
         cy.waitUntil(() =>
@@ -1039,130 +1030,103 @@ Cypress.Commands.add('importRecipe', (options: {
         });
 });
 
+Cypress.Commands.add('linkRecipe', (options: RecipeLink): ValidationResult => {
+    const {
+        from,
+        linkRecipeButton,
+        budget = dataParameters.Budget.confirmation.orcamentoNumberForSearch,
+        branch = dataParameters.Budget.confirmation.filialNumberForSearch,
+        recipe = dataParameters.Budget.confirmation.recipeNumber,
+        budgetAndBranchInput,
+        linkRecipeField,
+    } = options;
 
+    const selectors = {
+        importRecipe: {
+            button: linkRecipeButton || linkRecipeRecipeScreenElement,
+            field: linkRecipeField || inputLinkRecipeScreenRecipeElement,
+            saveLinkRecipe: budgetAndBranchInput || saveLinkRecipeBudgetRecipeScreenElement,
+        },
+        manageRecipe: {
+            button: linkRecipeButton || linkRecipeRecipeScreenElement,
+            field: linkRecipeField || inputLinkRecipeScreenRecipeElement,
+            saveLinkRecipe: budgetAndBranchInput || saveLinkRecipeBudgetRecipeScreenElement,
+        },
+        attendance: {
+            button: linkRecipeButton || linkRecipeToServiceScreenElement,
+            field: linkRecipeField || inputLinkRecipeServiceScreenElement,
+            saveLinkRecipe: budgetAndBranchInput || modalToLinkRecipeElement,
+        },
+    };
 
-Cypress.Commands.add(
-    'linkRecipe',
-    (options: {
-        from: 'recipeScreen' | 'attendanceScreen';
-        linkRecipeButton?: string;
-        budgetAndBranchInput?: string;
-        budget?: string;
-        branch?: string;
-        recipe?: string;
-        linkRecipeField?: string;
-    }): ValidationResult => {
-        const {
-            from,
-            linkRecipeButton,
-            budget = dataParameters.Budget.confirmation.orcamentoNumberForSearch,
-            branch = dataParameters.Budget.confirmation.filialNumberForSearch,
-            recipe = dataParameters.Budget.confirmation.recipeNumber,
-            budgetAndBranchInput,
-            linkRecipeField,
-        } = options;
+    const elements = selectors[from];
 
-        if (!from) {
-            throw new Error("'from' é obrigatório e deve ser 'recipeScreen' ou 'attendanceScreen'.");
-        }
+    if (!elements) {
+        throw new Error(`Nenhum seletor encontrado para o contexto '${from}'.`);
+    }
 
-        // Definição de seletores com base na origem
-        const selectors = {
-            recipeScreen: {
-                button: linkRecipeButton || linkRecipeRecipeScreen,
-                field: linkRecipeField || inputLinkRecipeScreenRecipe,
-                saveLinkRecipe: budgetAndBranchInput || saveLinkRecipeBudgetRecipeScreen,
-            },
-            attendanceScreen: {
-                button: linkRecipeButton || linkRecipeToServiceScreen,
-                field: linkRecipeField || inputLinkRecipeServiceScreen,
-                saveLinkRecipe: budgetAndBranchInput || saveLinkRecipeBudgetServiceScreen,
-            },
-        };
+    cy.getElementAndClick(elements.button);
 
-        const elements = selectors[from];
-
-        if (!elements) {
-            throw new Error(`Nenhum seletor encontrado para o contexto '${from}'.`);
-        }
-
-
-
-        // Lógica específica para `attendanceScreen`
-        if (from === 'attendanceScreen') {
-            // Primeiro clique no botão principal
-            cy.getElementAndClick(elements.button);
-          
-            // Espera até o modal estar visível e clique
-            cy.get(btnSuccessModalElement, { timeout: 120000 })
-              .should('be.visible')
-              .click();
-          
-            // AutoComplete e clique
-            cy.getElementAutocompleteTypeAndClick(
-              { [elements.field]: String(recipe) },
-              suggestionAutocomplete
-            );
-          
-            // Confirmação do modal
-            cy.getElementAndClick(modalToLinkRecipeElement);
-          
-            // Clique no botão de sucesso
-            cy.get(btnSuccessModalElement, { timeout: 120000 })
-              .should('be.visible')
-              .click();
-          
-            // Espera até o progresso sumir
-            cy.get(':nth-child(3) > .progress > .progress-bar', { timeout: 120000 })
-              .should('not.be.visible')
-              
-          }
-          
-
-        if (from === 'recipeScreen') {
-            cy.getElementAndType({ [elements.field]: `${budget} (${branch})` });
-        }
+    if (from === 'importRecipe' || from === 'manageRecipe') {
+        cy.getElementAutocompleteTypeAndClick(
+            { [elements.field]: String(`${budget}(${branch})`) },
+            '[data-index="0"]'
+        );
 
         cy.getElementAndClick(elements.saveLinkRecipe);
 
-        return cy.wrap({ success: 'Receita vinculada com sucesso', error: null });
+        return cy.get(barProgressSaveRecipe, { timeout: 120000 })
+            .should('not.be.visible')
+            .then(() => {
+                return cy.get('.bootbox-body', { timeout: 120000 })
+                    .should('be.visible')
+                    .then(($modal) => {
+                        const modalText = $modal.text().trim();
+                        cy.log(modalText);
+
+                        if (modalText.includes("Esta receita já está vinculada com outro atendimento, remova o vinculo para continuar.")) {
+                            throw new Error(modalText);
+                        }
+
+                        cy.getElementAndClick(btnModalMessage);
+                    });
+            });
     }
+
+    if (from === 'attendance') {
+        cy.getElementAndClick(btnSuccessModalElement);
+
+        cy.getElementAutocompleteTypeAndClick(
+            { [elements.field]: String(recipe) },
+            suggestionAutocomplete
+        );
+
+        cy.getElementAndClick(modalToLinkRecipeElement);
+
+        cy.getElementAndClick(btnSuccessModalElement);
+
+        return cy.get(linkRecipeProgressBarServiceScreenElement, { timeout: 120000 })
+            .should('not.be.visible')
+            .then(() => {
+                cy.get(btnModalMessage, { timeout: 120000 })
+                    .should('be.visible')
+                    .then(($modal) => {
+                        const modalText = $modal.text().trim();
+
+                        cy.wait(1000);
+                        cy.waitUntil(() =>
+                            cy.getElementAndClick(btnModalMessage),
+                            {
+                                timeout: 60000,
+                                interval: 500,
+                                errorMsg: 'O botão de contato selecionado não ficou visível a tempo.'
+                            }
+                        );
+                        cy.wait(1000);
+                    });
+            });
+    }
+
+    return cy.wrap({ success: 'Receita vinculada com sucesso' });
+}
 );
-
-
-
-
-//importar receita
-// clicar botão vincular receita
-// digitar numero de orcamento no campo autocomplete e selecionar
-// clicar em alterar
-// aguardar barra de load nao estar visivel
-// clicar em ok no modal de confirmacao
-//importar receita-->Atendimento ja esta vinculado a outra receita<--
-// clicar botão vincular receita
-// digitar numero de orcamento no campo autocomplete e selecionar
-// clicar em alterar
-// clica em ok na modal que informa que o orçamento ja possui vinculo com receita
-// retorna erro informando que o orçamento já está vinculado com receita.
-
-//gerenciar receitas
-// clicar botão vincular receita
-// digitar numero de orcamento no campo autocomplete e selecionar
-// clicar em alterar
-// aguardar barra de load nao estar visivel
-// clicar em ok no modal de confirmacao
-//importar receita-->Atendimento ja esta vinculado a outra receita<--
-// clicar botão vincular receita
-// digitar numero de orcamento no campo autocomplete e selecionar
-// clicar em alterar
-// clica em ok na modal que informa que o orçamento ja possui vinculo com receita
-// retorna erro informando que o orçamento já está vinculado com receita.
-
-//atendimento
-// clicar botão vincular receita
-// clicar em ok no modal de informacao de contato
-// digitar numero da receita no campo autocomplete e selecionar
-// clicar em relacionar
-// clicar em ok na modal de confirmaçao
-// aguardar barra de load nao estar visivel
-// clicar em ok na modal que informa sucesso

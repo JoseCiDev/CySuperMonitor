@@ -129,12 +129,12 @@ interface Elements<S = string> {
         customerPhoneToViewRecipesElement: S;
         recipeReceiptChannelViewRecipesElement: S;
         clusterScreenViewRecipesElement:S;
-        linkRecipeRecipeScreen:S;
-        linkRecipeToServiceScreen:S;
-        inputLinkRecipeScreenRecipe:S;
-        inputLinkRecipeServiceScreen:S;
-        saveLinkRecipeBudgetRecipeScreen:S;
-        saveLinkRecipeBudgetServiceScreen:S;
+        linkRecipeRecipeScreenElement:S;
+        linkRecipeToServiceScreenElement:S;
+        inputLinkRecipeScreenRecipeElement:S;
+        inputLinkRecipeServiceScreenElement:S;
+        saveLinkRecipeBudgetRecipeScreenElement:S;
+        saveLinkRecipeBudgetServiceScreenElement:S;
     };
 
     Services: {
@@ -286,6 +286,7 @@ interface Elements<S = string> {
         paymentScreenSuccessElement: S;
         paymentDateServiceScreenElement: S;
         paymentDataOnServiceScreenElement: S;
+        linkRecipeProgressBarServiceScreenElement:S;
     };
 
     Settings: {
@@ -433,7 +434,7 @@ export const elements: Elements = {
         applySelectedContact: '#apply-cel-btn',
         recipeStatusInput: (recipeStatus: string): string => `input[name="receita_tipo"][value="${recipeStatus}"]`,
         deleteRecipeElement: ':nth-child(1) > .actions-fa > .dropdown > .dropdown-menu > .list-group > .delete-recipe',
-        reloadPageButtonElement: ':nth-child(5) > .col > .btn',
+        reloadPageButtonElement: ':nth-child(3) > .col > .btn',
         cloneRecipeElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.actions-fa.text-center > div > div > ul > li.list-group-item.clone-receita',
         modalCloneRecipeElement: '.bootbox > .modal-dialog > .modal-content > .modal-body',
         recipeCodeColumnElement: '#mainTableReceitas > tbody > tr:nth-child(1) > td.idReceitaCol',
@@ -442,17 +443,17 @@ export const elements: Elements = {
         customerPhoneToViewRecipesElement: '#despejoDetails > :nth-child(6) > :nth-child(3) > .form-group > div',
         recipeReceiptChannelViewRecipesElement: '#despejoDetails > :nth-child(6) > :nth-child(2) > .form-group > div',
         clusterScreenViewRecipesElement:'#despejoDetails > div:nth-child(5) > div:nth-child(1) > div > div',
-        linkRecipeRecipeScreen:'#mainTableReceitas > tbody > tr:nth-child(1) > td:nth-child(10) > button',
-        linkRecipeToServiceScreen:'#editAtendimento > div:nth-child(2) > div:nth-child(3) > div > div.col.col-sm-8.text-right > button.m-xs.btn.btn-sm.btn-primary.vinc-rec',
-        inputLinkRecipeScreenRecipe:'#modalAtendimentoRec',
-        inputLinkRecipeServiceScreen:'#receitaCod',
-        saveLinkRecipeBudgetRecipeScreen:'#save_receita',
-        saveLinkRecipeBudgetServiceScreen:'#modal-receita-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo'
+        linkRecipeRecipeScreenElement:'tbody > :nth-child(1) > :nth-child(10) > .btn',
+        linkRecipeToServiceScreenElement:'.vinc-rec',
+        inputLinkRecipeScreenRecipeElement:'#modalAtendimentoRec',
+        inputLinkRecipeServiceScreenElement:'#receitaCod',
+        saveLinkRecipeBudgetRecipeScreenElement:'#save_receita',
+        saveLinkRecipeBudgetServiceScreenElement:'#modal-receita-add-vinculo > div.modal-dialog > div > div.modal-footer > button.btn.btn-primary.register-vinculo'
     },
 
     Services: {
         menuServices: '#side-menu > :nth-child(8) > :nth-child(1)',
-        servicesInProgress: '.active > .nav-second-level > :nth-child(2) > a',
+        servicesInProgress: ':nth-child(8) > .nav-second-level > :nth-child(2) > a',
         accessWorkFlowService: '.nav-second-level > .active > .nav > li > a',
         parameterSearchBudgetElement: '#select2-tipo-filtro-container',
         cardBudget: '#atendimentos-em-andamento > div.ibox-workflow > div.grid > div > div:nth-child(1) > div > div.container-coluna > ul > li:nth-child(8)',
@@ -534,7 +535,7 @@ export const elements: Elements = {
         textFrameInformationHopscotchConfirmed: '#page-wrapper > div:nth-child(11) > div.col-lg-6.ibox > div.ibox-content > div.infosInclusao',
         budgetBudgetist: '#budgetist',
         BudgetAttendant: '#attendant',
-        homeMenuElement: '#side-menu > :nth-child(5) > a',
+        homeMenuElement: '#side-menu > :nth-child(6) > a',
         searchBudgetByBranchElement: '[placeholder="Filial"]',
         searchAllBudgetsElement: '.busca-atendimentos > :nth-child(2) > input',
         searchButtonElement: '#search-form > .btn',
@@ -599,6 +600,7 @@ export const elements: Elements = {
         paymentScreenSuccessElement: '.success-container-info .text-title',
         paymentDateServiceScreenElement: '.payment-row-item:contains("Atualizado em") strong',
         paymentDataOnServiceScreenElement: '.ibox-content .payment-row',
+        linkRecipeProgressBarServiceScreenElement:'#modal-receita-add-vinculo > div.modal-dialog > div > div.container-fluid > div > div'
 
     },
 
