@@ -646,21 +646,7 @@ Cypress.Commands.add('selectCustomerContact', (options: {
 //             cy.log(`Nenhuma ação realizada para o seletor ${selector}, pois condition não foi especificada.`);
 //         }
 //     };
-//     const typeIfExists = (selector: string, value?: string | number) => {
-//         const stringValue = String(value);
 
-//         if (stringValue) {
-//             cy.get(selector, { timeout: 20000 })
-//                 .then($input => {
-//                     if ($input.length > 0) {
-//                         cy.wrap($input.first())
-//                             .type(stringValue, { force: true });
-//                     } else {
-//                         cy.log(`Elemento ${selector} não encontrado, portanto, não será possível inserir o valor.`);
-//                     }
-//                 });
-//         }
-//     };
 //     const selectIfExists = (selector: string, value?: string) => {
 //         if (value) {
 //             cy.get(selector, { timeout: 20000 })
@@ -680,8 +666,7 @@ Cypress.Commands.add('selectCustomerContact', (options: {
 
 //         if (paymentMethod !== undefined) {
 //             cy.wait(2000);
-//             // cy.getSelectOptionByValue([{ element: paymentMethodElement, value: paymentMethod }]);
-//             cy.get(paymentMethodElement).select(paymentMethod)
+//             cy.getSelectOptionByValue([{ element: paymentMethodElement, value: paymentMethod }]);
 //         };
 
 //         if (chosenBudget !== undefined) {
@@ -724,7 +709,7 @@ Cypress.Commands.add('selectCustomerContact', (options: {
 //         };
 
 //         if (cashierObservation !== undefined) {
-//             typeIfExists(selectors.cashierObservationSelector, cashierObservation);
+//             cy.getElementAndType({ [selectors.cashierObservationSelector]: cashierObservation });
 //         };
 
 //         if (detailedSale !== undefined) {
@@ -747,7 +732,7 @@ Cypress.Commands.add('selectCustomerContact', (options: {
 //         }
 
 //         if (expeditionObservation !== undefined) {
-//             typeIfExists(selectors.expeditionObservationSelector, expeditionObservation);
+//             cy.getElementAndType({ [selectors.expeditionObservationSelector]: expeditionObservation });
 //         };
 
 //         if (shippingMethod !== undefined) {
@@ -769,7 +754,7 @@ Cypress.Commands.add('selectCustomerContact', (options: {
 //         };
 
 //         if (generalObservation !== undefined) {
-//             typeIfExists(selectors.generalObservationSelector, generalObservation);
+//             cy.getElementAndType({ [selectors.generalObservationSelector]: generalObservation });
 //         };
 
 //         if (budgetHasRecipe !== undefined) {
@@ -784,31 +769,36 @@ Cypress.Commands.add('selectCustomerContact', (options: {
 //             cy.get(sendAutomaticBudgetConfirmationMessageElement)
 //                 .uncheck();
 //         };
-
 //     }
 
 //     performCommonActions();
 
-//     return cy.captureBudgetDetails().then((orderData) => {
-//         return cy.getElementAndClick(PreViewBudget, closePreViewBudget, sendconfirmBudget).then(() => {
+//     cy.getElementAndClick(PreViewBudget, closePreViewBudget, sendconfirmBudget);
 
-//             if (cy.get(modalMessage).contains('Amarelinha já confirmada e inclusa, defina usuário e senha para continuar.')) {
-//                 cy.log('Entrou na condição')
+//     return cy.wrap({ success: 'Orçamento confirmado com sucesso!' });
+// });
 
-//                 cy.authenticateAdminForEdit({ userType: 'admin' });
+// Cypress.Commands.add('captureBudgetDetails', () => {
+//     const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
 
-//                 cy.getElementAndClick(btnModalMessage);
+//     return cy.get('#printarea').then(($printArea) => {
+//         const budgetDetails = {
+//             paymentMethod: cleanText($printArea.find('div:contains("FORMA PAGAMENTO:") span.upperBolder').text()),
+//             detailedSale: cleanText($printArea.find('div:contains("NOTA DETALHADA:") span.upperBolder').text()) === 'Sim',
+//             paymentStatus: cleanText($printArea.find('div:contains("SITUAÇÃO PGTO:") span.upperBolder').text()),
+//             address: cleanText($printArea.find('div:contains("Enviar:") span.upperBolder').text()),
+//             shippingMethod: cleanText($printArea.find('div:contains("FORMA ENVIO:") span.upperBolder').text()),
+//             expeditionObservation: cleanText($printArea.find('div:contains("Obs. Expedição:") span.upperBolder').text()),
+//             aromaSachet: cleanText($printArea.find('div:contains("AROMA Sa/Sh:") span.upperBolder').text()),
+//             capsuleAroma: cleanText($printArea.find('div:contains("AROMA P/G/SO/Cap Sub:") span.upperBolder').text()),
+//             generalObservation: cleanText($printArea.find('div:contains("Observações:") span.upperBolder').text()),
+//             budgetHasRecipe: cleanText($printArea.find('div:contains("Possuí Receita:") span.upperBolder').text()) === 'Sim',
+//             promisedTo: cleanText($printArea.find('div:contains("Prometido Para:") span.upperBolder').text()),
+//         };
 
-//             }
-
-//             return cy.wrap({
-//                 success: 'Orçamento confirmado com sucesso!',
-//                 orderData: orderData,
-//             });
-//         });
-
+//         cy.log('Detalhes do orçamento capturados:', budgetDetails);
+//         return cy.wrap(budgetDetails);
 //     });
-
 // });
 
 Cypress.Commands.add('confirmBudget', (options: {
@@ -839,6 +829,7 @@ Cypress.Commands.add('confirmBudget', (options: {
     urgentBudget?: boolean,
     automaticMessageTriggering?: boolean,
 } = {}): ValidationResult => {
+
     const {
         budgetist = dataParameters.Budget.confirmation.budgetist,
         budgetAttendant = dataParameters.Budget.confirmation.budgetAttendant,
@@ -866,6 +857,7 @@ Cypress.Commands.add('confirmBudget', (options: {
         budgetHasRecipe = dataParameters.Budget.confirmation.budgetHasRecipeElement,
         urgentBudget = dataParameters.Budget.confirmation.urgentBudget,
         automaticMessageTriggering = dataParameters.Budget.confirmation.automaticMessageTriggering,
+
     } = options;
 
     const selectors = filialNumberForSearch === '2013' ? {
@@ -882,7 +874,7 @@ Cypress.Commands.add('confirmBudget', (options: {
         aromaSachetSelector: ':nth-child(18) > .col-sm-7 > .form-control',
         capsuleAromaSelector: ':nth-child(19) > .col-sm-7 > .form-control',
         generalObservationSelector: ':nth-child(20) > .col-sm-7 > .form-control',
-        urgentBudgetSelector: ':nth-child(23) > .col-sm-7 > .small-right-space',
+        urgentBudgetSelector: ':nth-child(23) > .col-sm-7 > .small-right-space'
     } : {
         budgetClosingChannelSelector: channelConfirmationBudget,
         sendTrackingEmailSelector: sendEmailTracking,
@@ -897,8 +889,37 @@ Cypress.Commands.add('confirmBudget', (options: {
         aromaSachetSelector: aromaSachetElement,
         capsuleAromaSelector: capsuleAromaElement,
         generalObservationSelector: generalObservationElement,
-        urgentBudgetSelector: urgentBudgetElement,
+        urgentBudgetSelector: urgentBudgetElement
     };
+
+    cy.wrap({
+        budgetist,
+        budgetAttendant,
+        orcamentoNumberForSearch,
+        filialNumberForSearch,
+        typePaymentCourtesyInjectables,
+        paymentMethod,
+        chosenBudget,
+        timeRepetition,
+        budgetClosingChannel,
+        sendTrackingEmail,
+        releaseBudgetForInclusion,
+        releaseBudgetCashier,
+        cashierObservation,
+        detailedSale,
+        paymentStatus,
+        address,
+        expeditionObservation,
+        shippingMethod,
+        juntocomBudget,
+        promisedTo,
+        aromaSachet,
+        capsuleAroma,
+        generalObservation,
+        budgetHasRecipe,
+        urgentBudget,
+        automaticMessageTriggering,
+    }).as('confirmedDetails');
 
     const checkElement = (selector: string, condition?: boolean, isSpecialCase?: boolean) => {
         if (typeof condition === 'boolean') {
@@ -938,21 +959,7 @@ Cypress.Commands.add('confirmBudget', (options: {
             cy.log(`Nenhuma ação realizada para o seletor ${selector}, pois condition não foi especificada.`);
         }
     };
-    const typeIfExists = (selector: string, value?: string | number) => {
-        const stringValue = String(value);
 
-        if (stringValue) {
-            cy.get(selector, { timeout: 20000 })
-                .then($input => {
-                    if ($input.length > 0) {
-                        cy.wrap($input.first())
-                            .type(stringValue, { force: true });
-                    } else {
-                        cy.log(`Elemento ${selector} não encontrado, portanto, não será possível inserir o valor.`);
-                    }
-                });
-        }
-    };
     const selectIfExists = (selector: string, value?: string) => {
         if (value) {
             cy.get(selector, { timeout: 20000 })
@@ -966,27 +973,13 @@ Cypress.Commands.add('confirmBudget', (options: {
                 });
         }
     };
-    const checkIfBoolean = (selector: string, condition?: boolean) => {
-        if (typeof condition === 'boolean') {
-            if (condition) {
-                return cy.get(selector).check({ force: true });
-            } else {
-                return cy.get(selector).uncheck({ force: true });
-            }
-        }
-        return cy.wrap(null);
-    };
-
-    const performFirstStep = () => {
-        cy.log('Iniciando primeira etapa...');
+    const performCommonActions = () => {
 
         cy.getElementAndClick(modalConfirmationBudgetElement);
 
-
         if (paymentMethod !== undefined) {
             cy.wait(2000);
-
-            cy.get(paymentMethodElement).select(paymentMethod)
+            cy.getSelectOptionByValue([{ element: paymentMethodElement, value: paymentMethod }]);
         };
 
         if (chosenBudget !== undefined) {
@@ -997,169 +990,311 @@ Cypress.Commands.add('confirmBudget', (options: {
             cy.getElementAndType({ [insertRepeatTime]: timeRepetition });
         };
 
-        return cy.getElementAndClick(saveDataConfirmationBudget);
+        cy.getElementAndClick(saveDataConfirmationBudget);
 
-    };
+        if (filialNumberForSearch === '2013') {
+            cy.log('Filial 2013 detectada. Selecionando tipo de cortesia para injetáveis.');
 
-    const performSecondStep = () => {
-        cy.log('Iniciando segunda etapa...');
-
-        if (budgetClosingChannel) cy.get(selectors.budgetClosingChannelSelector).select(budgetClosingChannel);
-
-        checkIfBoolean(selectors.sendTrackingEmailSelector, sendTrackingEmail);
-
-        if (cashierObservation) cy.getElementAndType({ [selectors.cashierObservationSelector]: cashierObservation });;
-
-
-        checkIfBoolean(selectors.detailedSaleSelector, detailedSale);
-
-        if (address) cy.get(selectors.addressSelector).click();
-
-        if (expeditionObservation) cy.getElementAndType({ [selectors.expeditionObservationSelector]: expeditionObservation });
-
-        if (shippingMethod) cy.get(selectors.shippingMethodSelector).select(shippingMethod);
-
-        if (promisedTo) cy.get(selectors.promisedToSelector).type(promisedTo.toISOString().split('T')[0], { force: true });
-
-        if (aromaSachet) cy.get(selectors.aromaSachetSelector).select(aromaSachet);
-
-        if (capsuleAroma) cy.get(selectors.capsuleAromaSelector).select(capsuleAroma);
-
-        if (generalObservation) cy.getElementAndType({ [selectors.generalObservationSelector]: expeditionObservation });
-
-
-        checkIfBoolean(selectors.urgentBudgetSelector, urgentBudget);
-
-        return cy.wrap(null);
-    };
-
-    const confirmFinalBudget = (orderData?: BudgetDetails) => {
-        cy.log('Confirmando orçamento...');
-        return cy.getElementAndClick(PreViewBudget, closePreViewBudget, sendconfirmBudget).then(() => {
-
-            if (cy.get(modalMessage).contains('Amarelinha já confirmada e inclusa, defina usuário e senha para continuar.')) {
-
-                cy.authenticateAdminForEdit({ userType: 'admin' });
-
+            if (typePaymentCourtesyInjectables) {
+                cy.get('select[name="id_tipo_pagamento"]')
+                    .select(typePaymentCourtesyInjectables)
+                    .should('have.value', typePaymentCourtesyInjectables)
+                    .then(() => {
+                        cy.log(`Cortesia selecionada: ${typePaymentCourtesyInjectables}`);
+                    });
             }
-            
-        });
-    };
+        }
 
-    return performFirstStep()
-        .then(() => performSecondStep())
-        .then(() => confirmFinalBudget())
-        .then((orderData) => {
-            cy.wrap(orderData).as('confirmedBudgetData'); 
-            return cy.wrap({
-                success: 'Orçamento confirmado com sucesso!',
-                orderData,
-            });// Armazena os dados para uso posterior
-            
-        });
-});
-
-Cypress.Commands.add('captureBudgetDetails', (step: 'all' | 'first-step' | 'second-step' = 'all') => {
-    const extractFieldText = ($element) => {
-        return $element.text().trim();
-    };
-
-    const extractSelectValue = ($select) => {
-        return $select.find('option:selected').text().trim();
-    };
-
-    return cy.get('#modal-placeholder-lg-content').within(() => {
-        const orderData: BudgetDetails = {
-            paymentMethod: '',
-            closingChannel: '',
-            cashierObservation: '',
-            detailedNote: '',
-            paymentStatus: '',
-            address: '',
-            generalObservation: '',
-            shippingMethod: '',
-            deliveryPromiseDate: '',
-            sacheAroma: '',
-            capsuleAroma: '',
-            prescriptionStatus: '',
-            urgentOrder: '',
+        if (budgetClosingChannel !== undefined) {
+            selectIfExists(selectors.budgetClosingChannelSelector, budgetClosingChannel);
         };
 
-        if (step === 'all' || step === 'first-step') {
-            cy.get('select[name="id_registro"]').then(($select) => {
-                orderData.paymentMethod = extractSelectValue($select);
-            });
+        if (sendTrackingEmail !== undefined) {
+            checkElement(selectors.sendTrackingEmailSelector, sendTrackingEmail);
+        };
+
+        if (releaseBudgetForInclusion !== undefined) {
+            checkElement(selectors.releaseBudgetForInclusionSelector, releaseBudgetForInclusion, true);
+        };
+
+        if (releaseBudgetCashier !== undefined) {
+            checkElement(selectors.releaseBudgetCashierSelector, releaseBudgetCashier);
+        };
+
+        if (cashierObservation !== undefined) {
+            cy.getElementAndType({ [selectors.cashierObservationSelector]: cashierObservation });
+        };
+
+        if (detailedSale !== undefined) {
+            checkElement(selectors.detailedSaleSelector, detailedSale);
+        };
+
+        if (paymentStatus !== undefined) {
+            cy.getElementAndCheck([{ element: paymentStatus }]);
+        };
+
+        if (address !== undefined) {
+            cy.get(selectors.addressSelector, { timeout: 10000 })
+                .then(($addressElement) => {
+                    if ($addressElement.length > 0) {
+                        cy.getElementAndClick(selectors.addressSelector);
+                    } else {
+                        throw new Error('Não há endereço disponível para confirmação do orçamento.');
+                    }
+                });
         }
 
-        if (step === 'all' || step === 'second-step') {
-            cy.get('select[name="canal"]').then(($select) => {
-                orderData.closingChannel = extractSelectValue($select);
-            });
+        if (expeditionObservation !== undefined) {
+            cy.getElementAndType({ [selectors.expeditionObservationSelector]: expeditionObservation });
+        };
 
-            cy.get('textarea[name="obscaixa"]').then(($textarea) => {
-                orderData.cashierObservation = extractFieldText($textarea);
-            });
+        if (shippingMethod !== undefined) {
+            selectIfExists(selectors.shippingMethodSelector, shippingMethod);
+        };
 
-            cy.get('input[name="nota_detalhada"]').then(($checkbox) => {
-                orderData.detailedNote = $checkbox.is(':checked') ? 'Sim' : 'Não';
-            });
-
-            cy.get('input[name="pago"]:checked').then(($radio) => {
-                orderData.paymentStatus = extractFieldText($radio.closest('label'));
-            });
-
-            cy.get('a.enderecosCli').first().then(($address) => {
-                orderData.address = extractFieldText($address);
-            });
-
-            cy.get('textarea[name="obsgeral"]').then(($textarea) => {
-                orderData.generalObservation = extractFieldText($textarea);
-            });
-
-            cy.get('select[name="id_forma_envio"]').then(($select) => {
-                orderData.shippingMethod = extractSelectValue($select);
-            });
-
-            cy.get('input[name="prometido"]').then(($input) => {
-                orderData.deliveryPromiseDate = $input.val().trim();
-            });
-
-            cy.get('select[name="aromass"]').then(($select) => {
-                orderData.sacheAroma = extractSelectValue($select);
-            });
-
-            cy.get('select[name="aromapg"]').then(($select) => {
-                orderData.capsuleAroma = extractSelectValue($select);
-            });
-
-            cy.get('input[name="possui_receita"]:checked').then(($radio) => {
-                orderData.prescriptionStatus = extractFieldText($radio.closest('label'));
-            });
-
-            cy.get('input[name="mostrar_urgente"]').then(($checkbox) => {
-                orderData.urgentOrder = $checkbox.is(':checked') ? 'Sim' : 'Não';
-            });
+        if (promisedTo) {
+            cy.getElementAndClick(selectors.promisedToSelector);
+            cy.wait(500);
+            cy.getElementAndClick(selectors.promisedToSelector);
         }
 
-        // Formatar log e registrar os dados capturados
-        cy.log(`Dados capturados (${step}):`, orderData);
+        if (aromaSachet) {
+            cy.getSelectOptionByValue([{ element: selectors.aromaSachetSelector, value: aromaSachet }]);
+        };
 
-        return cy.wrap(orderData);
+        if (capsuleAroma) {
+            cy.getSelectOptionByValue([{ element: selectors.capsuleAromaSelector, value: capsuleAroma }]);
+        };
+
+        if (generalObservation !== undefined) {
+            cy.getElementAndType({ [selectors.generalObservationSelector]: generalObservation });
+        };
+
+        if (budgetHasRecipe !== undefined) {
+            cy.getElementAndCheck([{ element: budgetHasRecipeElement, value: budgetHasRecipe }]);
+        };
+
+        if (urgentBudget !== undefined) {
+            checkElement(selectors.urgentBudgetSelector, urgentBudget);
+        };
+
+        if (automaticMessageTriggering !== undefined) {
+            cy.get(sendAutomaticBudgetConfirmationMessageElement)
+                .uncheck();
+        };
+    }
+
+    performCommonActions();
+
+    cy.getElementAndClick(PreViewBudget, closePreViewBudget, sendconfirmBudget);
+
+    return cy.wrap({
+        success: 'Orçamento confirmado com sucesso!',
+        
     });
 });
 
-Cypress.Commands.add('authenticateAdminForEdit', ({ userType }) => {
-    // Espera e clica no botão "OK" da modal de aviso
-    cy.waitUntil(() =>
 
-        cy.get(okModalMessage)
-            .click(),
-        {
-            timeout: 60000,
-            interval: 500,
-            errorMsg: 'O botão de contato selecionado não ficou visível a tempo.'
-        }
-    );
+Cypress.Commands.add('captureBudgetDetails', () => {
+    const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
+
+    return cy.get('#printarea').then(($printArea) => {
+        // Separação dos dados concatenados
+        const rawText = cleanText($printArea.text());
+
+        // Forma de pagamento
+        const paymentMethodMatch = rawText.match(/FORMA PAGAMENTO:\s*(.+?)\s*(?:NOTA DETALHADA|SITUAÇÃO PGTO:)/);
+        const paymentMethod = paymentMethodMatch ? paymentMethodMatch[1].trim() : '';
+        cy.log('Forma de pagamento capturada:', paymentMethod);
+        // Nota detalhada
+        const detailedSaleMatch = rawText.match(/NOTA DETALHADA:\s*(Sim|Não)/);
+        const detailedSale = detailedSaleMatch ? detailedSaleMatch[1].trim() === 'Sim' : false;
+        cy.log('Nota detalhada capturada:', detailedSale);
+        // Situação de pagamento
+        const paymentStatusMatch = rawText.match(/SITUAÇÃO PGTO:\s*(.+?)\s*(?:Enviar:|FORMA ENVIO:)/);
+        const paymentStatus = paymentStatusMatch ? paymentStatusMatch[1].trim() : '';
+        cy.log('Situação de pagamento capturada:', paymentStatus);
+        // Endereço
+        const addressMatch = rawText.match(/Enviar:\s*(.+?)\s*(?:FORMA ENVIO:|Obs\. Expedição:)/);
+        const address = addressMatch ? addressMatch[1].trim() : '';
+
+        // Forma de envio
+        const shippingMethodMatch = rawText.match(/FORMA ENVIO:\s*(.+?)\s*(?:Obs\. Expedição:|AROMA Sa\/Sh:)/);
+        const shippingMethod = shippingMethodMatch ? shippingMethodMatch[1].trim() : '';
+
+        // Observação da expedição
+        const expeditionObservationMatch = rawText.match(/Obs\. Expedição:\s*(.+?)\s*(?:AROMA Sa\/Sh:|AROMA P\/G\/SO\/Cap Sub:)/);
+        const expeditionObservation = expeditionObservationMatch ? expeditionObservationMatch[1].trim() : '';
+
+        // Aroma do sachê
+        const aromaSachetMatch = rawText.match(/AROMA Sa\/Sh:\s*(.+?)\s*(?:AROMA P\/G\/SO\/Cap Sub:|Observações:)/);
+        const aromaSachet = aromaSachetMatch ? aromaSachetMatch[1].trim() : '';
+
+        // Aroma da cápsula
+        const capsuleAromaMatch = rawText.match(/AROMA P\/G\/SO\/Cap Sub:\s*(.+?)\s*(?:Observações:|Possuí Receita:)/);
+        const capsuleAroma = capsuleAromaMatch ? capsuleAromaMatch[1].trim() : '';
+
+        // Observações gerais
+        const generalObservationMatch = rawText.match(/Observações:\s*(.+?)\s*(?:Possuí Receita:|Prometido Para:)/);
+        const generalObservation = generalObservationMatch ? generalObservationMatch[1].trim() : '';
+
+        // Possui receita
+        const budgetHasRecipeMatch = rawText.match(/Possuí Receita:\s*(Sim|Não)/);
+        const budgetHasRecipe = budgetHasRecipeMatch ? budgetHasRecipeMatch[1].trim() === 'Sim' : false;
+
+        // Data prometida
+        const promisedToMatch = rawText.match(/Prometido Para:\s*(\d{2}\/\d{2}\/\d{4})/);
+        const promisedTo = promisedToMatch ? promisedToMatch[1].trim() : '';
+
+        // Construindo o objeto final com os dados capturados
+        const budgetDetails = {
+            paymentMethod,
+            detailedSale,
+            paymentStatus,
+            address,
+            shippingMethod,
+            expeditionObservation,
+            aromaSachet,
+            capsuleAroma,
+            generalObservation,
+            budgetHasRecipe,
+            promisedTo,
+        };
+
+        cy.log('Detalhes do orçamento capturados:', budgetDetails);
+        return cy.wrap(budgetDetails);
+    });
+});
+
+
+Cypress.Commands.add('validateBudgetDetails', () => {
+    // Recuperar os detalhes fornecidos na confirmação
+    cy.get('@confirmedDetails').then((providedDetails) => {
+        // Capturar os detalhes exibidos na tela
+        cy.captureBudgetDetails().then((capturedDetails) => {
+            cy.log('Detalhes fornecidos:', providedDetails);
+            cy.log('Detalhes capturados:', capturedDetails);
+
+            // Comparar os dados fornecidos com os capturados
+            expect(providedDetails.paymentMethod).to.eq(capturedDetails.paymentMethod, 'Forma de pagamento');
+            expect(providedDetails.detailedSale).to.eq(capturedDetails.detailedSale, 'Nota detalhada');
+            expect(providedDetails.paymentStatus).to.eq(capturedDetails.paymentStatus, 'Situação de pagamento');
+            expect(providedDetails.address).to.eq(capturedDetails.address, 'Endereço');
+            expect(providedDetails.shippingMethod).to.eq(capturedDetails.shippingMethod, 'Forma de envio');
+            expect(providedDetails.expeditionObservation).to.eq(capturedDetails.expeditionObservation, 'Observação de expedição');
+            expect(providedDetails.aromaSachet).to.eq(capturedDetails.aromaSachet, 'Aroma do sachê');
+            expect(providedDetails.capsuleAroma).to.eq(capturedDetails.capsuleAroma, 'Aroma da cápsula');
+            expect(providedDetails.generalObservation).to.eq(capturedDetails.generalObservation, 'Observações gerais');
+            expect(providedDetails.budgetHasRecipe).to.eq(capturedDetails.budgetHasRecipe, 'Possui receita');
+
+            const providedDate = providedDetails.promisedTo
+                ? new Date(providedDetails.promisedTo).toLocaleDateString('pt-BR')
+                : '';
+            expect(providedDate).to.eq(capturedDetails.promisedTo, 'Data prometida');
+        });
+    });
+});
+
+// Cypress.Commands.add('validateBudgetDetails', (expectedDetails) => {
+//     const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
+
+//     // Validar a forma de pagamento
+//     cy.get('#printarea').find('div:contains("FORMA PAGAMENTO:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.paymentMethod);
+//         });
+
+//     // Validar nota detalhada
+//     cy.get('#printarea').find('div:contains("NOTA DETALHADA:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.detailedSale ? 'Sim' : 'Não');
+//         });
+
+//     // Validar situação de pagamento
+//     cy.get('#printarea').find('div:contains("SITUAÇÃO PGTO:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.paymentStatus);
+//         });
+
+//     // Validar endereço de envio
+//     cy.get('#printarea').find('div:contains("Enviar:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.address);
+//         });
+
+//     // Validar forma de envio
+//     cy.get('#printarea').find('div:contains("FORMA ENVIO:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.shippingMethod);
+//         });
+
+//     // Validar observações da expedição
+//     cy.get('#printarea').find('div:contains("Obs. Expedição:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.expeditionObservation);
+//         });
+
+//     // Validar aromas
+//     cy.get('#printarea').find('div:contains("AROMA Sa/Sh:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.aromaSachet);
+//         });
+
+//     cy.get('#printarea').find('div:contains("AROMA P/G/SO/Cap Sub:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.capsuleAroma);
+//         });
+
+//     // Validar observações gerais
+//     cy.get('#printarea').find('div:contains("Observações:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.generalObservation);
+//         });
+
+//     // Validar se possui receita
+//     cy.get('#printarea').find('div:contains("Possuí Receita:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             expect(cleanText(text)).to.eq(expectedDetails.budgetHasRecipe ? 'Sim' : 'Não');
+//         });
+
+//     // Validar data prometida
+//     cy.get('#printarea').find('div:contains("Prometido Para:")')
+//         .find('span.upperBolder')
+//         .invoke('text')
+//         .then((text) => {
+//             const formattedDate = expectedDetails.promisedTo
+//                 ? new Date(expectedDetails.promisedTo).toLocaleDateString('pt-BR')
+//                 : '';
+//             expect(cleanText(text)).to.eq(formattedDate);
+//         });
+
+//     cy.log('Validação dos dados exibidos concluída com sucesso.');
+// });
+
+
+Cypress.Commands.add('authenticateAdminForEdit', ({ userType, password }) => {
+    // Espera e clica no botão "OK" da modal de aviso
+    cy.getElementAndClick(okModalMessage);
 
     // Seleciona o tipo de usuário (admin ou farmacêutico)
     const userSelector = userType === 'admin'
@@ -1173,34 +1308,17 @@ Cypress.Commands.add('authenticateAdminForEdit', ({ userType }) => {
         : '#farma-auth-send-btn';
 
     // Insere o usuário
-    cy.get('#select2-admin-to-auth-container', { timeout: 20000 }) // Abre o Select2
-        .click()
-        .then(() => {
-            cy.get('input.select2-search__field', { timeout: 20000 }) // Campo de busca
-                .type('adm') // Digita o termo
-                .wait(1000) // Aguarda o carregamento da lista
-                .then(() => {
-                    // Pressiona seta para baixo e Enter para selecionar
-                    cy.get('input.select2-search__field', { timeout: 20000 }) // Garante o foco no campo
-                        .type('{downarrow}') // Move para a primeira opção
-                        .type('{enter}'); // Seleciona a opção
-                });
-        });
+    cy.getElementAutocompleteTypeAndClick(
+        { [userSelector]: 'adm' },
+        suggestionAutocomplete
+    );
 
     // Insere a senha
-    cy.getElementAndType({ ['#password-admin-auth']: '!@' });
+    cy.getElementAndType({ [passwordSelector]: '!@' });
 
     // Clica no botão "Aplicar"
-    cy.getElementAndClick(applyButtonSelector) // Realiza o clique no botão
-        .then(() => {
-            // Aguarda o seletor h2 carregar e verifica o texto
-            cy.get(
-                '#page-wrapper > div.wrapper.border-bottom.white-bg.page-heading > div:nth-child(1) > div > h2',
-                { timeout: 120000 } // Aguarda até 10 segundos para o elemento aparecer
-            )
-                .should('be.visible') // Garante que o elemento está visível
-                .and('contain.text', 'Visualizando Atendimento Encerrado'); // Verifica se contém o texto esperado
-        });
+    cy.getElementAndClick(applyButtonSelector);
+
 });
 
 

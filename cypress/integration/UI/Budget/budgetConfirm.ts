@@ -171,7 +171,7 @@ When('visualizar um orçamento disponível', () => {
 When('selecionar o contato', () => {
 
     cy.selectCustomerContact();
-
+    
 });
 
 When('informar os dados do orçamentista e do atendente', () => {
@@ -196,15 +196,12 @@ When('vincular receita ao pedido', () => {
 });
 
 Then('confirmarei o pedido', () => {
-    cy.confirmBudget().then((orderData) => {
-        cy.wrap(orderData).as('confirmedBudgetData');
-    });
+    cy.confirmBudget({
+    }).as('providedDetails'); // Armazenar os dados confirmados para validação posterior
 });
 
 Then('os dados fornecidos na confirmação devem ser exibidos corretamente', () => {
-    cy.get('@confirmedBudgetData').then((orderData) => {
-        cy.log('Dados confirmados:', orderData);
-
-        expect(orderData.success).to.be.true;
+    cy.get('@providedDetails').then((providedDetails) => {
+        cy.validateBudgetDetails(providedDetails);
     });
 });

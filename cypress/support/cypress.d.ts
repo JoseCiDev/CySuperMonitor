@@ -395,13 +395,15 @@ declare global {
        * * comando customizado para vincular capturar dados do orçamento
        * @example cy.captureBudgetDetails()
        */
-      captureBudgetDetails();
+      validateBudgetDetails(expectedDetails);
 
       /**
       * * comando customizado para inserir usuario e senha de admin ao editar receita e orçamento
       * @example cy.authenticateAdminForEdit()
       */
       authenticateAdminForEdit(userType);
+
+      captureBudgetDetails()
     }
   }
 
