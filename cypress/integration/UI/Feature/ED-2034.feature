@@ -6,14 +6,12 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         Then o sistema deve salvar a "<tipoConferencia>" com sucesso
 
         Examples:
-            | setor       | tipoConferencia            |
-            | backoffice  | conferência do backoffice  |
-            | atendimento | conferência do atendimento |
-            | inclusão    | conferência da inclusão    |
-            | entrada     | conferência de entrada     |
-            | saída       | conferência de saída       |
-
-    #341738 / 1000 <> 425984
+            | orcamentoFilial         | setor       | tipoConferencia            |
+            | 341738 / 1000 <> 425984 | atendimento | conferência do backoffice  |
+            |                         | atendimento | conferência do atendimento |
+            |                         | inclusão    | conferência da inclusão    |
+            |                         | entrada     | conferência de entrada     |
+            |                         | saída       | conferência de saída       |
 
     Scenario Outline: Desfazer conferência por setor
         @undoConference
@@ -115,7 +113,73 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         Then o sistema deve exibir o botão adicionar desabilitado
         And não é possível realizar o click
 
+    @multiUserValidation
+    Scenario: Registro de conferência por um usuário e tentativa de registro por outro
+        Given o usuário "Usuário A" registrou uma conferência no setor "<setor>"
+        When o "Usuário B" tenta registrar outra conferência no mesmo setor sem recarregar a página
+        Then o sistema deve impedir o registro pelo "Usuário B"
+        And exibir uma mensagem informando que a conferência já foi registrada
+
+        Examples:
+            | setor                  |
+            | backoffice             |
+            | atendimento            |
+            | conferência de entrada |
+            | conferência de saída   |
+
+    @recordObservation @removeAndReinsert
+    Scenario Outline: Inserir, remover e reinserir observação e imagem
+        Given o usuário está no modal de registro de equívocos
+        When o usuário adiciona a observação "<observacao>"
+        And o usuário anexa a imagem "<imagem>"
+        Then o sistema deve salvar a observação "<observacao>" e a imagem "<imagem>"
+
+        When o usuário remove a observação e a imagem adicionadas
+        Then o sistema não deve exibir observação ou imagem anexada
+
+        Examples:
+            | observacao                           | imagem             |
+            | Primeira observação sobre o equívoco | primeiraImagem.png |
+            | Segunda observação sobre o equívoco  | segundaImagem.png  |
+            | Terceira observação sobre o equívoco | terceiraImagem.png |
+
+    @logGeneration @registerConference
+    Scenario Outline: Registrar log detalhado para ações de conferência
+        Given o usuário está na tela de "<setor>"
+        When o usuário registra uma conferência de "<tipoConferencia>"
+        Then o sistema deve salvar a "<tipoConferencia>" com sucesso
+        And o log do pedido deve exibir:
+            | Observação   | Quem Inseriu         | Data   | Horário |
+            | <observacao> | <usuarioResponsavel> | <data> | <hora>  |
+
+        Examples:
+            | setor       | tipoConferencia            | observacao                                     | usuarioResponsavel | data       | hora  |
+            | backoffice  | conferência do backoffice  | Conferência Realizada (Backoffice)             | João Silva         | 05/12/2024 | 15:30 |
+            | atendimento | conferência do atendimento | Conferência Realizada (Atendimento)            | Maria Oliveira     | 05/12/2024 | 15:45 |
+            | inclusão    | conferência da inclusão    | Inclusão Realizada (Inclusao)                  | Pedro Lima         | 05/12/2024 | 16:00 |
+            | entrada     | conferência de entrada     | Conferência Realizada (Conferencia de Entrada) | Ana Santos         | 05/12/2024 | 16:15 |
+            | saída       | conferência de saída       | Conferência Realizada (Conferencia de Saida)   | Lucas Costa        | 05/12/2024 | 16:30 |
+
+    @logValidation @markPending
+    Scenario Outline: Registrar log detalhado ao marcar pendências
+        Given o usuário está na tela de "<setor>"
+        When o usuário clica no botão "Marcar Pendências"
+        Then o log do pedido deve exibir:
+            | Observação   | Quem Inseriu         | Data   | Horário |
+            | <observacao> | <usuarioResponsavel> | <data> | <hora>  |
+
+        Examples:
+            | setor                  | observacao                       | usuarioResponsavel | data       | hora  |
+            | conferência de entrada | Pendências registradas (Entrada) | Ana Santos         | 05/12/2024 | 18:00 |
+            | conferência de saída   | Pendências registradas (Saida)   | Lucas Costa        | 05/12/2024 | 18:15 |
+
+
 
 
 #registrar conferencia com um usuario e tentar registrar com outro usuario sem recarregar a pagina
-#e possivel desfazer a conferencia do backoffice e atendimento?
+#e possivel desfazer a conferencia do backoffice e atendimento?Nao
+
+
+
+
+faço insercao de imagem, obeservacao e registro, no passo posterior ao visualizar equivoco nao vejo a imagem
