@@ -6,12 +6,14 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         Then o sistema deve salvar a "<tipoConferencia>" com sucesso
 
         Examples:
-            | orcamentoFilial         | setor       | tipoConferencia            |
-            | 341738 / 1000 <> 425984 | atendimento | conferência do backoffice  |
-            |                         | atendimento | conferência do atendimento |
-            |                         | inclusão    | conferência da inclusão    |
-            |                         | entrada     | conferência de entrada     |
-            |                         | saída       | conferência de saída       |
+            | setor       | tipoConferencia            |
+            | atendimento | conferência do backoffice  |
+            | atendimento | conferência do atendimento |
+            | inclusão    | conferência da inclusão    |
+            | entrada     | conferência de entrada     |
+            | saída       | conferência de saída       |
+
+    #179414/5
 
     Scenario Outline: Desfazer conferência por setor
         @undoConference
@@ -19,13 +21,14 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         And há uma "<tipoConferencia>" já registrada
         When o usuário desfaz a "<tipoConferencia>"
         Then a "<tipoConferencia>" deve ser desfeita com sucesso
+        And no banco de dados os registros de conferencia devem receber data e hora da exclusão softdelete
 
         Examples:
-            | telaDesfazer | tipoConferencia         |
-            | inclusão     | conferência da inclusão |
+            | telaDesfazer           | tipoConferencia                  |
+            | conferência da entrada | conferência da inclusão          |
+            | conferência da saída   | conferência da entrada           |
+            | conferência da saída   | conferência da saída finalizados |
 
-    #165533 / 5
-    #341885 / 1000
 
     Scenario: Registrar equívoco com observações e imagens
         @recordError
@@ -34,6 +37,7 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         When o usuário adiciona a observação "Orçamento selecionou ativo equivocadamente"
         And anexa o arquivo "ativoIncorreto.png"
         Then o sistema deve salvar o equívoco junto com a observação e a imagem
+        And no banco de dados deve ser armazenado observacao e imagem inseridos
 
 
     Scenario: Validar caracteres especiais em observações
@@ -42,7 +46,7 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         When o usuário insere "Erro nos dados 💾 com @tags!"
         Then o sistema não deve aceitar os caracteres especiais e emojis
         And deve apresentar somente letras ao exibir a observação inserida
-    #341763 / 1000
+
 
     Scenario: Limitar caracteres em observações
         @validateCharacterLimit
@@ -81,14 +85,15 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
         When o usuário clica no botão "Marcar Pendências"
         Then um modal deve ser aberto com as pendências possíveis de serem registradas
         And ao selecionar pendências e fechar, o sistema deve registrar as pendências selecionadas
+        And no banco de dados deve ser armazenado as pendencias apontadas inseridos
         And ao remover as pendências o orçamento deve seguir para o próximo passo do processo
+        And no banco de dados as pendencias criadas devem receber valor em pendencia_resolvida
 
         Examples:
             | setor                  |
             | conferência de entrada |
             | conferência de saída   |
 
-    #166958 / 5
 
     Scenario: Persistir equívocos entre etapas de conferência
         @persistErrors
