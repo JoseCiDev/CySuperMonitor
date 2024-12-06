@@ -882,7 +882,7 @@ Cypress.Commands.add('confirmBudget', (options: {
         releaseBudgetCashierSelector: releaseBudgetCashierElement,
         cashierObservationSelector: cashierObservationElement,
         detailedSaleSelector: detailedSaleElement,
-        addressSelector: address,
+        addressSelector: '.enderecosCli',
         expeditionObservationSelector: expeditionObservationElement,
         shippingMethodSelector: shippingMethodElement,
         promisedToSelector: promisedToElement,
@@ -1090,7 +1090,7 @@ Cypress.Commands.add('confirmBudget', (options: {
 
     return cy.wrap({
         success: 'Orçamento confirmado com sucesso!',
-        
+
     });
 });
 
@@ -1099,21 +1099,23 @@ Cypress.Commands.add('captureBudgetDetails', () => {
     const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
 
     return cy.get('#printarea').then(($printArea) => {
-        // Separação dos dados concatenados
         const rawText = cleanText($printArea.text());
 
         // Forma de pagamento
         const paymentMethodMatch = rawText.match(/FORMA PAGAMENTO:\s*(.+?)\s*(?:NOTA DETALHADA|SITUAÇÃO PGTO:)/);
         const paymentMethod = paymentMethodMatch ? paymentMethodMatch[1].trim() : '';
         cy.log('Forma de pagamento capturada:', paymentMethod);
+
         // Nota detalhada
         const detailedSaleMatch = rawText.match(/NOTA DETALHADA:\s*(Sim|Não)/);
         const detailedSale = detailedSaleMatch ? detailedSaleMatch[1].trim() === 'Sim' : false;
         cy.log('Nota detalhada capturada:', detailedSale);
-        // Situação de pagamento
-        const paymentStatusMatch = rawText.match(/SITUAÇÃO PGTO:\s*(.+?)\s*(?:Enviar:|FORMA ENVIO:)/);
+
+        // Situação de pagamento (extrair apenas 'Pago' ou 'Não pago')
+        const paymentStatusMatch = rawText.match(/SITUAÇÃO PGTO:\s*(Pago|Não pago)/);
         const paymentStatus = paymentStatusMatch ? paymentStatusMatch[1].trim() : '';
         cy.log('Situação de pagamento capturada:', paymentStatus);
+
         // Endereço
         const addressMatch = rawText.match(/Enviar:\s*(.+?)\s*(?:FORMA ENVIO:|Obs\. Expedição:)/);
         const address = addressMatch ? addressMatch[1].trim() : '';
@@ -1146,7 +1148,6 @@ Cypress.Commands.add('captureBudgetDetails', () => {
         const promisedToMatch = rawText.match(/Prometido Para:\s*(\d{2}\/\d{2}\/\d{4})/);
         const promisedTo = promisedToMatch ? promisedToMatch[1].trim() : '';
 
-        // Construindo o objeto final com os dados capturados
         const budgetDetails = {
             paymentMethod,
             detailedSale,
@@ -1168,19 +1169,105 @@ Cypress.Commands.add('captureBudgetDetails', () => {
 
 
 Cypress.Commands.add('validateBudgetDetails', () => {
-    // Recuperar os detalhes fornecidos na confirmação
     cy.get('@confirmedDetails').then((providedDetails) => {
-        // Capturar os detalhes exibidos na tela
+        // Captura os endereços exibidos no elemento .enderecosCli
+        cy.get('.enderecosCli')
+            .should('exist') // Garante que ao menos um endereço está presente
+            .each(($el, index, $list) => {
+                cy.log(`Elemento ${index + 1}:`, $el.text());
+            })
+            .then(($elements) => {
+                // Captura os endereços do DOM
+                const capturedAddresses = Array.from($elements).map((el) => {
+                    if (el instanceof HTMLElement) {
+                        const text = el.textContent?.trim() || '';
+                        cy.log('Endereço capturado:', text); // Log para depuração
+                        return text;
+                    }
+                    return '';
+                });
+
+                cy.pause();
+
+                // Converte o(s) endereço(s) fornecido(s) para um array, caso seja string única
+                const expectedAddresses = Array.isArray(providedDetails.address)
+                    ? providedDetails.address
+                    : [providedDetails.address];
+
+                // Ordenar os arrays para comparar sem considerar a ordem
+                const sortedExpected = [...expectedAddresses].sort();
+                const sortedCaptured = [...capturedAddresses].sort();
+
+                cy.log('Endereços esperados:', sortedExpected);
+                cy.log('Endereços capturados:', sortedCaptured);
+
+                // Valida os endereços capturados
+                expect(sortedCaptured).to.deep.equal(sortedExpected, 'Validação dos endereços do pedido');
+            });
+
+        // Outras validações
+        cy.log('Detalhes fornecidos:', providedDetails);
         cy.captureBudgetDetails().then((capturedDetails) => {
-            cy.log('Detalhes fornecidos:', providedDetails);
             cy.log('Detalhes capturados:', capturedDetails);
 
-            // Comparar os dados fornecidos com os capturados
-            expect(providedDetails.paymentMethod).to.eq(capturedDetails.paymentMethod, 'Forma de pagamento');
+            // Mapeia os valores do enum para o texto esperado
+            const paymentStatusMapping: Record<BudgetConfirmationPaymentStatus, string> = {
+                [BudgetConfirmationPaymentStatus.NotPayed]: "Não pago",
+                [BudgetConfirmationPaymentStatus.payed]: "Pago",
+            };
+
+            const paymentMethodMapping: Record<BudgetConfirmationPaymentMethod, string> = {
+                [BudgetConfirmationPaymentMethod.VisitArrangement]: "Agendamento de Visita",
+                [BudgetConfirmationPaymentMethod.ArrangementVisitSpreadsheet]: "Planilha de Agendamento",
+                [BudgetConfirmationPaymentMethod.BankSlip]: "Boleto Bancário",
+                [BudgetConfirmationPaymentMethod.BankSlipReleaseWithoutPayment]: "Boleto Sem Pagamento",
+                [BudgetConfirmationPaymentMethod.PatientBankSlipBox]: "Boleto no Caixa do Paciente",
+                [BudgetConfirmationPaymentMethod.PrescriberBankSlipBox]: "Boleto no Caixa do Prescritor",
+                [BudgetConfirmationPaymentMethod.InstallmentBankSlip]: "Boleto Parcelado",
+                [BudgetConfirmationPaymentMethod.CreditCard]: "Cartão de Crédito",
+                [BudgetConfirmationPaymentMethod.GpeCardAwaitingPayment]: "Cartão GPE - Aguardando Pagamento",
+                [BudgetConfirmationPaymentMethod.GpeCardReleaseWithoutPayment]: "Cartão GPE - Sem Pagamento",
+                [BudgetConfirmationPaymentMethod.Check]: "Cheque",
+                [BudgetConfirmationPaymentMethod.Courtesy]: "Cortesia",
+                [BudgetConfirmationPaymentMethod.Deposit]: "Depósito",
+                [BudgetConfirmationPaymentMethod.Cash]: "Dinheiro",
+                [BudgetConfirmationPaymentMethod.Other]: "Outros",
+                [BudgetConfirmationPaymentMethod.Pix]: "PIX",
+            };
+
+            const shippingMethodMapping: Record<BudgetConfirmationShippingMethod, string> = {
+                [BudgetConfirmationShippingMethod.CounterHkm]: "Balcão HKM",
+                [BudgetConfirmationShippingMethod.CounterSmart]: "Balcão SMART",
+                [BudgetConfirmationShippingMethod.PostalFree]: "Correios - Envio Grátis",
+                [BudgetConfirmationShippingMethod.International]: "Correios - Internacional",
+                [BudgetConfirmationShippingMethod.Sedex10]: "Correios - Sedex 10",
+                [BudgetConfirmationShippingMethod.Sedex10Courtesy]: "Correios - Sedex 10 CORTESIA",
+                [BudgetConfirmationShippingMethod.Sedex12]: "Correios - Sedex 12",
+                [BudgetConfirmationShippingMethod.Sedex12Courtesy]: "Correios - Sedex 12 Cortesia",
+                [BudgetConfirmationShippingMethod.SedexFloripa]: "Correios - Sedex Floripa",
+                [BudgetConfirmationShippingMethod.SedexOtherStates]: "Correios - Sedex OUTROS ESTADOS",
+                [BudgetConfirmationShippingMethod.SedexSc]: "Correios - Sedex SC",
+                [BudgetConfirmationShippingMethod.AirShipping]: "Envio Aéreo",
+                [BudgetConfirmationShippingMethod.ShippingPeMt]: "Envio PE e MT",
+                [BudgetConfirmationShippingMethod.ShippingPeMtFree]: "Envio PE e MT grátis",
+                [BudgetConfirmationShippingMethod.ExpeditionHkm]: "Expedição HKM",
+                [BudgetConfirmationShippingMethod.ExpeditionSmart]: "Expedição SMART",
+                [BudgetConfirmationShippingMethod.EmployeePickup]: "Funcionário - Retirada Recepção",
+                [BudgetConfirmationShippingMethod.EmployeeSedex]: "Funcionário - Sedex",
+                [BudgetConfirmationShippingMethod.Delivery]: "Tele-entrega",
+                [BudgetConfirmationShippingMethod.CarrierQuality]: "Transportadora - Quality",
+                [BudgetConfirmationShippingMethod.CarrierQualityFree]: "Transportadora - Quality (Grátis)",
+            };
+
+            const providedPaymentMethod = paymentMethodMapping[providedDetails.paymentMethod] || providedDetails.paymentMethod;
+            const providedPaymentStatus = paymentStatusMapping[providedDetails.paymentStatus] || providedDetails.paymentStatus;
+            const providedShippingMethod = shippingMethodMapping[providedDetails.shippingMethod] || providedDetails.shippingMethod;
+
+            // Comparar os demais detalhes
+            expect(providedPaymentMethod).to.eq(capturedDetails.paymentMethod, 'Forma de pagamento');
             expect(providedDetails.detailedSale).to.eq(capturedDetails.detailedSale, 'Nota detalhada');
-            expect(providedDetails.paymentStatus).to.eq(capturedDetails.paymentStatus, 'Situação de pagamento');
-            expect(providedDetails.address).to.eq(capturedDetails.address, 'Endereço');
-            expect(providedDetails.shippingMethod).to.eq(capturedDetails.shippingMethod, 'Forma de envio');
+            expect(providedPaymentStatus).to.eq(capturedDetails.paymentStatus, 'Situação de pagamento');
+            expect(providedShippingMethod).to.eq(capturedDetails.shippingMethod, 'Forma de envio');
             expect(providedDetails.expeditionObservation).to.eq(capturedDetails.expeditionObservation, 'Observação de expedição');
             expect(providedDetails.aromaSachet).to.eq(capturedDetails.aromaSachet, 'Aroma do sachê');
             expect(providedDetails.capsuleAroma).to.eq(capturedDetails.capsuleAroma, 'Aroma da cápsula');
@@ -1195,100 +1282,86 @@ Cypress.Commands.add('validateBudgetDetails', () => {
     });
 });
 
-// Cypress.Commands.add('validateBudgetDetails', (expectedDetails) => {
-//     const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
 
-//     // Validar a forma de pagamento
-//     cy.get('#printarea').find('div:contains("FORMA PAGAMENTO:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.paymentMethod);
-//         });
+// Cypress.Commands.add('validateBudgetDetails', () => {
+//     cy.get('@confirmedDetails').then((providedDetails) => {
+//         cy.captureBudgetDetails().then((capturedDetails) => {
+//             cy.log('Detalhes fornecidos:', providedDetails);
+//             cy.log('Detalhes capturados:', capturedDetails);
 
-//     // Validar nota detalhada
-//     cy.get('#printarea').find('div:contains("NOTA DETALHADA:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.detailedSale ? 'Sim' : 'Não');
-//         });
+//             // Mapear e traduzir valores das enums para texto amigável
+//             const paymentStatusMapping: Record<BudgetConfirmationPaymentStatus, string> = {
+//                 [BudgetConfirmationPaymentStatus.NotPayed]: "Não pago",
+//                 [BudgetConfirmationPaymentStatus.payed]: "Pago",
+//             };
 
-//     // Validar situação de pagamento
-//     cy.get('#printarea').find('div:contains("SITUAÇÃO PGTO:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.paymentStatus);
-//         });
+//             const paymentMethodMapping: Record<BudgetConfirmationPaymentMethod, string> = {
+//                 [BudgetConfirmationPaymentMethod.VisitArrangement]: "Agendamento de Visita",
+//                 [BudgetConfirmationPaymentMethod.ArrangementVisitSpreadsheet]: "Planilha de Agendamento",
+//                 [BudgetConfirmationPaymentMethod.BankSlip]: "Boleto Bancário",
+//                 [BudgetConfirmationPaymentMethod.BankSlipReleaseWithoutPayment]: "Boleto Sem Pagamento",
+//                 [BudgetConfirmationPaymentMethod.PatientBankSlipBox]: "Boleto no Caixa do Paciente",
+//                 [BudgetConfirmationPaymentMethod.PrescriberBankSlipBox]: "Boleto no Caixa do Prescritor",
+//                 [BudgetConfirmationPaymentMethod.InstallmentBankSlip]: "Boleto Parcelado",
+//                 [BudgetConfirmationPaymentMethod.CreditCard]: "Cartão de Crédito",
+//                 [BudgetConfirmationPaymentMethod.GpeCardAwaitingPayment]: "Cartão GPE - Aguardando Pagamento",
+//                 [BudgetConfirmationPaymentMethod.GpeCardReleaseWithoutPayment]: "Cartão GPE - Sem Pagamento",
+//                 [BudgetConfirmationPaymentMethod.Check]: "Cheque",
+//                 [BudgetConfirmationPaymentMethod.Courtesy]: "Cortesia",
+//                 [BudgetConfirmationPaymentMethod.Deposit]: "Depósito",
+//                 [BudgetConfirmationPaymentMethod.Cash]: "Dinheiro",
+//                 [BudgetConfirmationPaymentMethod.Other]: "Outros",
+//                 [BudgetConfirmationPaymentMethod.Pix]: "PIX",
+//             };
 
-//     // Validar endereço de envio
-//     cy.get('#printarea').find('div:contains("Enviar:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.address);
-//         });
+//             const shippingMethodMapping: Record<BudgetConfirmationShippingMethod, string> = {
+//                 [BudgetConfirmationShippingMethod.CounterHkm]: "Balcão HKM",
+//                 [BudgetConfirmationShippingMethod.CounterSmart]: "Balcão SMART",
+//                 [BudgetConfirmationShippingMethod.PostalFree]: "Correios - Envio Grátis",
+//                 [BudgetConfirmationShippingMethod.International]: "Correios - Internacional",
+//                 [BudgetConfirmationShippingMethod.Sedex10]: "Correios - Sedex 10",
+//                 [BudgetConfirmationShippingMethod.Sedex10Courtesy]: "Correios - Sedex 10 CORTESIA",
+//                 [BudgetConfirmationShippingMethod.Sedex12]: "Correios - Sedex 12",
+//                 [BudgetConfirmationShippingMethod.Sedex12Courtesy]: "Correios - Sedex 12 Cortesia",
+//                 [BudgetConfirmationShippingMethod.SedexFloripa]: "Correios - Sedex Floripa",
+//                 [BudgetConfirmationShippingMethod.SedexOtherStates]: "Correios - Sedex OUTROS ESTADOS",
+//                 [BudgetConfirmationShippingMethod.SedexSc]: "Correios - Sedex SC",
+//                 [BudgetConfirmationShippingMethod.AirShipping]: "Envio Aéreo",
+//                 [BudgetConfirmationShippingMethod.ShippingPeMt]: "Envio PE e MT",
+//                 [BudgetConfirmationShippingMethod.ShippingPeMtFree]: "Envio PE e MT grátis",
+//                 [BudgetConfirmationShippingMethod.ExpeditionHkm]: "Expedição HKM",
+//                 [BudgetConfirmationShippingMethod.ExpeditionSmart]: "Expedição SMART",
+//                 [BudgetConfirmationShippingMethod.EmployeePickup]: "Funcionário - Retirada Recepção",
+//                 [BudgetConfirmationShippingMethod.EmployeeSedex]: "Funcionário - Sedex",
+//                 [BudgetConfirmationShippingMethod.Delivery]: "Tele-entrega",
+//                 [BudgetConfirmationShippingMethod.CarrierQuality]: "Transportadora - Quality",
+//                 [BudgetConfirmationShippingMethod.CarrierQualityFree]: "Transportadora - Quality (Grátis)",
+//             };
 
-//     // Validar forma de envio
-//     cy.get('#printarea').find('div:contains("FORMA ENVIO:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.shippingMethod);
-//         });
+//             // Traduzir os valores antes de comparar
+//             const providedPaymentMethod = paymentMethodMapping[providedDetails.paymentMethod] || providedDetails.paymentMethod;
+//             const providedPaymentStatus = paymentStatusMapping[providedDetails.paymentStatus] || providedDetails.paymentStatus;
+//             const providedShippingMethod = shippingMethodMapping[providedDetails.shippingMethod] || providedDetails.shippingMethod;
 
-//     // Validar observações da expedição
-//     cy.get('#printarea').find('div:contains("Obs. Expedição:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.expeditionObservation);
-//         });
+//             // Comparar os dados fornecidos com os capturados
+//             expect(providedPaymentMethod).to.eq(capturedDetails.paymentMethod, 'Forma de pagamento');
+//             expect(providedDetails.detailedSale).to.eq(capturedDetails.detailedSale, 'Nota detalhada');
+//             expect(providedPaymentStatus).to.eq(capturedDetails.paymentStatus, 'Situação de pagamento');
+//             expect(providedDetails.address).to.eq(capturedDetails.address, 'Endereço');
+//             expect(providedShippingMethod).to.eq(capturedDetails.shippingMethod, 'Forma de envio');
+//             expect(providedDetails.expeditionObservation).to.eq(capturedDetails.expeditionObservation, 'Observação de expedição');
+//             expect(providedDetails.aromaSachet).to.eq(capturedDetails.aromaSachet, 'Aroma do sachê');
+//             expect(providedDetails.capsuleAroma).to.eq(capturedDetails.capsuleAroma, 'Aroma da cápsula');
+//             expect(providedDetails.generalObservation).to.eq(capturedDetails.generalObservation, 'Observações gerais');
+//             expect(providedDetails.budgetHasRecipe).to.eq(capturedDetails.budgetHasRecipe, 'Possui receita');
 
-//     // Validar aromas
-//     cy.get('#printarea').find('div:contains("AROMA Sa/Sh:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.aromaSachet);
-//         });
-
-//     cy.get('#printarea').find('div:contains("AROMA P/G/SO/Cap Sub:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.capsuleAroma);
-//         });
-
-//     // Validar observações gerais
-//     cy.get('#printarea').find('div:contains("Observações:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.generalObservation);
-//         });
-
-//     // Validar se possui receita
-//     cy.get('#printarea').find('div:contains("Possuí Receita:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             expect(cleanText(text)).to.eq(expectedDetails.budgetHasRecipe ? 'Sim' : 'Não');
-//         });
-
-//     // Validar data prometida
-//     cy.get('#printarea').find('div:contains("Prometido Para:")')
-//         .find('span.upperBolder')
-//         .invoke('text')
-//         .then((text) => {
-//             const formattedDate = expectedDetails.promisedTo
-//                 ? new Date(expectedDetails.promisedTo).toLocaleDateString('pt-BR')
+//             // Normalizar e comparar a data prometida
+//             const providedDate = providedDetails.promisedTo
+//                 ? new Date(providedDetails.promisedTo).toLocaleDateString('pt-BR')
 //                 : '';
-//             expect(cleanText(text)).to.eq(formattedDate);
+//             expect(providedDate).to.eq(capturedDetails.promisedTo, 'Data prometida');
 //         });
-
-//     cy.log('Validação dos dados exibidos concluída com sucesso.');
+//     });
 // });
 
 
