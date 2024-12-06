@@ -287,6 +287,7 @@ interface Elements<S = string> {
         paymentDateServiceScreenElement: S;
         paymentDataOnServiceScreenElement: S;
         linkRecipeProgressBarServiceScreenElement:S;
+        confirmedOrderDeliveryAddressElement:S;
     };
 
     Settings: {
@@ -600,8 +601,8 @@ export const elements: Elements = {
         paymentScreenSuccessElement: '.success-container-info .text-title',
         paymentDateServiceScreenElement: '.payment-row-item:contains("Atualizado em") strong',
         paymentDataOnServiceScreenElement: '.ibox-content .payment-row',
-        linkRecipeProgressBarServiceScreenElement:'#modal-receita-add-vinculo > div.modal-dialog > div > div.container-fluid > div > div'
-
+        linkRecipeProgressBarServiceScreenElement:'#modal-receita-add-vinculo > div.modal-dialog > div > div.container-fluid > div > div',
+        confirmedOrderDeliveryAddressElement:'.enderecosCli',
     },
 
     Settings: {

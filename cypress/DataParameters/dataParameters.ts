@@ -143,7 +143,7 @@ export const dataParameters: DataParameters = {
             cashierObservation: String([faker.helpers.arrayElement(['Observação do caixa'])]),
             detailedSale: true,
             paymentStatus: BudgetConfirmationPaymentStatus.NotPayed,
-            address: '.enderecosCli',
+            address: 1,
             expeditionObservation: String([faker.helpers.arrayElement(['Observação da expedição'])]),
             shippingMethod: BudgetConfirmationShippingMethod.SedexSc,
             juntocomBudget: String(faker.helpers.arrayElements([107456, 107246])),

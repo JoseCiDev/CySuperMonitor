@@ -313,7 +313,7 @@ declare global {
         cashierObservation?: string,
         detailedSale?: boolean,
         paymentStatus?: PaymentStatus,
-        address?: string,
+        address?: number,
         expeditionObservation?: string,
         shippingMethod?: BudgetConfirmationShippingMethod,
         juntocomBudget?: string,

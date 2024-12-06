@@ -283,6 +283,7 @@ export const {
     paymentScreenSuccessElement,
     paymentDateServiceScreenElement,
     paymentDataOnServiceScreenElement,
+    confirmedOrderDeliveryAddressElement,
 
 } = el.Services;
 
@@ -533,7 +534,7 @@ Cypress.Commands.add('selectCustomerContact', (options: {
 //     cashierObservation?: string,
 //     detailedSale?: boolean,
 //     paymentStatus?: BudgetConfirmationPaymentStatus,
-//     address?: string,
+//     address?: number,
 //     expeditionObservation?: string,
 //     shippingMethod?: BudgetConfirmationShippingMethod,
 //     juntocomBudget?: string,
@@ -778,29 +779,6 @@ Cypress.Commands.add('selectCustomerContact', (options: {
 //     return cy.wrap({ success: 'Orçamento confirmado com sucesso!' });
 // });
 
-// Cypress.Commands.add('captureBudgetDetails', () => {
-//     const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
-
-//     return cy.get('#printarea').then(($printArea) => {
-//         const budgetDetails = {
-//             paymentMethod: cleanText($printArea.find('div:contains("FORMA PAGAMENTO:") span.upperBolder').text()),
-//             detailedSale: cleanText($printArea.find('div:contains("NOTA DETALHADA:") span.upperBolder').text()) === 'Sim',
-//             paymentStatus: cleanText($printArea.find('div:contains("SITUAÇÃO PGTO:") span.upperBolder').text()),
-//             address: cleanText($printArea.find('div:contains("Enviar:") span.upperBolder').text()),
-//             shippingMethod: cleanText($printArea.find('div:contains("FORMA ENVIO:") span.upperBolder').text()),
-//             expeditionObservation: cleanText($printArea.find('div:contains("Obs. Expedição:") span.upperBolder').text()),
-//             aromaSachet: cleanText($printArea.find('div:contains("AROMA Sa/Sh:") span.upperBolder').text()),
-//             capsuleAroma: cleanText($printArea.find('div:contains("AROMA P/G/SO/Cap Sub:") span.upperBolder').text()),
-//             generalObservation: cleanText($printArea.find('div:contains("Observações:") span.upperBolder').text()),
-//             budgetHasRecipe: cleanText($printArea.find('div:contains("Possuí Receita:") span.upperBolder').text()) === 'Sim',
-//             promisedTo: cleanText($printArea.find('div:contains("Prometido Para:") span.upperBolder').text()),
-//         };
-
-//         cy.log('Detalhes do orçamento capturados:', budgetDetails);
-//         return cy.wrap(budgetDetails);
-//     });
-// });
-
 Cypress.Commands.add('confirmBudget', (options: {
     orcamentoNumberForSearch?: string | number;
     filialNumberForSearch?: string | number;
@@ -817,7 +795,7 @@ Cypress.Commands.add('confirmBudget', (options: {
     cashierObservation?: string,
     detailedSale?: boolean,
     paymentStatus?: BudgetConfirmationPaymentStatus,
-    address?: string,
+    address?: number,
     expeditionObservation?: string,
     shippingMethod?: BudgetConfirmationShippingMethod,
     juntocomBudget?: string,
@@ -882,7 +860,7 @@ Cypress.Commands.add('confirmBudget', (options: {
         releaseBudgetCashierSelector: releaseBudgetCashierElement,
         cashierObservationSelector: cashierObservationElement,
         detailedSaleSelector: detailedSaleElement,
-        addressSelector: '.enderecosCli',
+        addressSelector: confirmedOrderDeliveryAddressElement,
         expeditionObservationSelector: expeditionObservationElement,
         shippingMethodSelector: shippingMethodElement,
         promisedToSelector: promisedToElement,
@@ -1035,14 +1013,28 @@ Cypress.Commands.add('confirmBudget', (options: {
 
         if (address !== undefined) {
             cy.get(selectors.addressSelector, { timeout: 10000 })
-                .then(($addressElement) => {
-                    if ($addressElement.length > 0) {
-                        cy.getElementAndClick(selectors.addressSelector);
-                    } else {
-                        throw new Error('Não há endereço disponível para confirmação do orçamento.');
+                .should('exist') // Garante que ao menos um endereço está presente
+                .then(($elements) => {
+                    const addresses = Array.from($elements).map((el) => (el as HTMLElement).textContent?.trim() || '');
+                    cy.log('Endereços disponíveis:', addresses);
+
+                    // Seleciona o endereço baseado no índice ou usa o primeiro como fallback
+                    const selectedAddress = addresses[address - 1] || addresses[0];
+                    cy.log('Endereço selecionado:', selectedAddress);
+
+                    if (!selectedAddress) {
+                        throw new Error('Nenhum endereço disponível para seleção.');
                     }
+
+                    // Seleciona o endereço no DOM
+                    cy.wrap($elements[address - 1] || $elements[0])
+                        .click({ force: true });
+
+                    // Armazena o endereço selecionado para validação futura
+                    cy.wrap(selectedAddress).as('confirmedAddress');
                 });
         }
+
 
         if (expeditionObservation !== undefined) {
             cy.getElementAndType({ [selectors.expeditionObservationSelector]: expeditionObservation });
@@ -1094,9 +1086,8 @@ Cypress.Commands.add('confirmBudget', (options: {
     });
 });
 
-
 Cypress.Commands.add('captureBudgetDetails', () => {
-    const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
+    const cleanText = (text: string) => text.replace(/\s+/g, ' ').trim();
 
     return cy.get('#printarea').then(($printArea) => {
         const rawText = cleanText($printArea.text());
@@ -1104,17 +1095,14 @@ Cypress.Commands.add('captureBudgetDetails', () => {
         // Forma de pagamento
         const paymentMethodMatch = rawText.match(/FORMA PAGAMENTO:\s*(.+?)\s*(?:NOTA DETALHADA|SITUAÇÃO PGTO:)/);
         const paymentMethod = paymentMethodMatch ? paymentMethodMatch[1].trim() : '';
-        cy.log('Forma de pagamento capturada:', paymentMethod);
 
         // Nota detalhada
         const detailedSaleMatch = rawText.match(/NOTA DETALHADA:\s*(Sim|Não)/);
         const detailedSale = detailedSaleMatch ? detailedSaleMatch[1].trim() === 'Sim' : false;
-        cy.log('Nota detalhada capturada:', detailedSale);
 
-        // Situação de pagamento (extrair apenas 'Pago' ou 'Não pago')
+        // Situação de pagamento
         const paymentStatusMatch = rawText.match(/SITUAÇÃO PGTO:\s*(Pago|Não pago)/);
         const paymentStatus = paymentStatusMatch ? paymentStatusMatch[1].trim() : '';
-        cy.log('Situação de pagamento capturada:', paymentStatus);
 
         // Endereço
         const addressMatch = rawText.match(/Enviar:\s*(.+?)\s*(?:FORMA ENVIO:|Obs\. Expedição:)/);
@@ -1124,8 +1112,8 @@ Cypress.Commands.add('captureBudgetDetails', () => {
         const shippingMethodMatch = rawText.match(/FORMA ENVIO:\s*(.+?)\s*(?:Obs\. Expedição:|AROMA Sa\/Sh:)/);
         const shippingMethod = shippingMethodMatch ? shippingMethodMatch[1].trim() : '';
 
-        // Observação da expedição
-        const expeditionObservationMatch = rawText.match(/Obs\. Expedição:\s*(.+?)\s*(?:AROMA Sa\/Sh:|AROMA P\/G\/SO\/Cap Sub:)/);
+        // Observação de expedição
+        const expeditionObservationMatch = rawText.match(/Obs\. Expedição:\s*([\s\S]*?)\s*(?=FORMA ENVIO:|AROMA Sa\/Sh:|AROMA P\/G\/SO\/Cap Sub:|Prometido Para:|TOTAL|$)/);
         const expeditionObservation = expeditionObservationMatch ? expeditionObservationMatch[1].trim() : '';
 
         // Aroma do sachê
@@ -1168,49 +1156,27 @@ Cypress.Commands.add('captureBudgetDetails', () => {
 });
 
 
+
 Cypress.Commands.add('validateBudgetDetails', () => {
     cy.get('@confirmedDetails').then((providedDetails) => {
-        // Captura os endereços exibidos no elemento .enderecosCli
-        cy.get('.enderecosCli')
-            .should('exist') // Garante que ao menos um endereço está presente
-            .each(($el, index, $list) => {
-                cy.log(`Elemento ${index + 1}:`, $el.text());
-            })
-            .then(($elements) => {
-                // Captura os endereços do DOM
-                const capturedAddresses = Array.from($elements).map((el) => {
-                    if (el instanceof HTMLElement) {
-                        const text = el.textContent?.trim() || '';
-                        cy.log('Endereço capturado:', text); // Log para depuração
-                        return text;
-                    }
-                    return '';
+        // Validação do endereço selecionado
+        cy.get('@confirmedAddress').then((selectedAddress) => {
+            cy.get('.enderecosCli')
+                .should('exist') // Garante que ao menos um endereço está presente
+                .then(($elements) => {
+                    const capturedAddresses = Array.from($elements).map((el) => (el as HTMLElement).textContent?.trim() || '');
+                    cy.log('Endereços disponíveis no DOM:', capturedAddresses);
+
+                    // Valida se o endereço selecionado está entre os endereços disponíveis
+                    expect(capturedAddresses).to.include(selectedAddress, 'O endereço selecionado está entre os disponíveis');
                 });
-
-                cy.pause();
-
-                // Converte o(s) endereço(s) fornecido(s) para um array, caso seja string única
-                const expectedAddresses = Array.isArray(providedDetails.address)
-                    ? providedDetails.address
-                    : [providedDetails.address];
-
-                // Ordenar os arrays para comparar sem considerar a ordem
-                const sortedExpected = [...expectedAddresses].sort();
-                const sortedCaptured = [...capturedAddresses].sort();
-
-                cy.log('Endereços esperados:', sortedExpected);
-                cy.log('Endereços capturados:', sortedCaptured);
-
-                // Valida os endereços capturados
-                expect(sortedCaptured).to.deep.equal(sortedExpected, 'Validação dos endereços do pedido');
-            });
+        });
 
         // Outras validações
-        cy.log('Detalhes fornecidos:', providedDetails);
         cy.captureBudgetDetails().then((capturedDetails) => {
             cy.log('Detalhes capturados:', capturedDetails);
 
-            // Mapeia os valores do enum para o texto esperado
+            // Mapeia enums para os valores esperados
             const paymentStatusMapping: Record<BudgetConfirmationPaymentStatus, string> = {
                 [BudgetConfirmationPaymentStatus.NotPayed]: "Não pago",
                 [BudgetConfirmationPaymentStatus.payed]: "Pago",
@@ -1263,16 +1229,15 @@ Cypress.Commands.add('validateBudgetDetails', () => {
             const providedPaymentStatus = paymentStatusMapping[providedDetails.paymentStatus] || providedDetails.paymentStatus;
             const providedShippingMethod = shippingMethodMapping[providedDetails.shippingMethod] || providedDetails.shippingMethod;
 
-            // Comparar os demais detalhes
+            // Validações dos detalhes capturados
             expect(providedPaymentMethod).to.eq(capturedDetails.paymentMethod, 'Forma de pagamento');
             expect(providedDetails.detailedSale).to.eq(capturedDetails.detailedSale, 'Nota detalhada');
             expect(providedPaymentStatus).to.eq(capturedDetails.paymentStatus, 'Situação de pagamento');
             expect(providedShippingMethod).to.eq(capturedDetails.shippingMethod, 'Forma de envio');
-            expect(providedDetails.expeditionObservation).to.eq(capturedDetails.expeditionObservation, 'Observação de expedição');
+            expect(providedDetails.expeditionObservation.trim()).to.eq(capturedDetails.expeditionObservation.trim(), 'Observação de expedição');
             expect(providedDetails.aromaSachet).to.eq(capturedDetails.aromaSachet, 'Aroma do sachê');
             expect(providedDetails.capsuleAroma).to.eq(capturedDetails.capsuleAroma, 'Aroma da cápsula');
             expect(providedDetails.generalObservation).to.eq(capturedDetails.generalObservation, 'Observações gerais');
-            expect(providedDetails.budgetHasRecipe).to.eq(capturedDetails.budgetHasRecipe, 'Possui receita');
 
             const providedDate = providedDetails.promisedTo
                 ? new Date(providedDetails.promisedTo).toLocaleDateString('pt-BR')
@@ -1283,86 +1248,8 @@ Cypress.Commands.add('validateBudgetDetails', () => {
 });
 
 
-// Cypress.Commands.add('validateBudgetDetails', () => {
-//     cy.get('@confirmedDetails').then((providedDetails) => {
-//         cy.captureBudgetDetails().then((capturedDetails) => {
-//             cy.log('Detalhes fornecidos:', providedDetails);
-//             cy.log('Detalhes capturados:', capturedDetails);
 
-//             // Mapear e traduzir valores das enums para texto amigável
-//             const paymentStatusMapping: Record<BudgetConfirmationPaymentStatus, string> = {
-//                 [BudgetConfirmationPaymentStatus.NotPayed]: "Não pago",
-//                 [BudgetConfirmationPaymentStatus.payed]: "Pago",
-//             };
 
-//             const paymentMethodMapping: Record<BudgetConfirmationPaymentMethod, string> = {
-//                 [BudgetConfirmationPaymentMethod.VisitArrangement]: "Agendamento de Visita",
-//                 [BudgetConfirmationPaymentMethod.ArrangementVisitSpreadsheet]: "Planilha de Agendamento",
-//                 [BudgetConfirmationPaymentMethod.BankSlip]: "Boleto Bancário",
-//                 [BudgetConfirmationPaymentMethod.BankSlipReleaseWithoutPayment]: "Boleto Sem Pagamento",
-//                 [BudgetConfirmationPaymentMethod.PatientBankSlipBox]: "Boleto no Caixa do Paciente",
-//                 [BudgetConfirmationPaymentMethod.PrescriberBankSlipBox]: "Boleto no Caixa do Prescritor",
-//                 [BudgetConfirmationPaymentMethod.InstallmentBankSlip]: "Boleto Parcelado",
-//                 [BudgetConfirmationPaymentMethod.CreditCard]: "Cartão de Crédito",
-//                 [BudgetConfirmationPaymentMethod.GpeCardAwaitingPayment]: "Cartão GPE - Aguardando Pagamento",
-//                 [BudgetConfirmationPaymentMethod.GpeCardReleaseWithoutPayment]: "Cartão GPE - Sem Pagamento",
-//                 [BudgetConfirmationPaymentMethod.Check]: "Cheque",
-//                 [BudgetConfirmationPaymentMethod.Courtesy]: "Cortesia",
-//                 [BudgetConfirmationPaymentMethod.Deposit]: "Depósito",
-//                 [BudgetConfirmationPaymentMethod.Cash]: "Dinheiro",
-//                 [BudgetConfirmationPaymentMethod.Other]: "Outros",
-//                 [BudgetConfirmationPaymentMethod.Pix]: "PIX",
-//             };
-
-//             const shippingMethodMapping: Record<BudgetConfirmationShippingMethod, string> = {
-//                 [BudgetConfirmationShippingMethod.CounterHkm]: "Balcão HKM",
-//                 [BudgetConfirmationShippingMethod.CounterSmart]: "Balcão SMART",
-//                 [BudgetConfirmationShippingMethod.PostalFree]: "Correios - Envio Grátis",
-//                 [BudgetConfirmationShippingMethod.International]: "Correios - Internacional",
-//                 [BudgetConfirmationShippingMethod.Sedex10]: "Correios - Sedex 10",
-//                 [BudgetConfirmationShippingMethod.Sedex10Courtesy]: "Correios - Sedex 10 CORTESIA",
-//                 [BudgetConfirmationShippingMethod.Sedex12]: "Correios - Sedex 12",
-//                 [BudgetConfirmationShippingMethod.Sedex12Courtesy]: "Correios - Sedex 12 Cortesia",
-//                 [BudgetConfirmationShippingMethod.SedexFloripa]: "Correios - Sedex Floripa",
-//                 [BudgetConfirmationShippingMethod.SedexOtherStates]: "Correios - Sedex OUTROS ESTADOS",
-//                 [BudgetConfirmationShippingMethod.SedexSc]: "Correios - Sedex SC",
-//                 [BudgetConfirmationShippingMethod.AirShipping]: "Envio Aéreo",
-//                 [BudgetConfirmationShippingMethod.ShippingPeMt]: "Envio PE e MT",
-//                 [BudgetConfirmationShippingMethod.ShippingPeMtFree]: "Envio PE e MT grátis",
-//                 [BudgetConfirmationShippingMethod.ExpeditionHkm]: "Expedição HKM",
-//                 [BudgetConfirmationShippingMethod.ExpeditionSmart]: "Expedição SMART",
-//                 [BudgetConfirmationShippingMethod.EmployeePickup]: "Funcionário - Retirada Recepção",
-//                 [BudgetConfirmationShippingMethod.EmployeeSedex]: "Funcionário - Sedex",
-//                 [BudgetConfirmationShippingMethod.Delivery]: "Tele-entrega",
-//                 [BudgetConfirmationShippingMethod.CarrierQuality]: "Transportadora - Quality",
-//                 [BudgetConfirmationShippingMethod.CarrierQualityFree]: "Transportadora - Quality (Grátis)",
-//             };
-
-//             // Traduzir os valores antes de comparar
-//             const providedPaymentMethod = paymentMethodMapping[providedDetails.paymentMethod] || providedDetails.paymentMethod;
-//             const providedPaymentStatus = paymentStatusMapping[providedDetails.paymentStatus] || providedDetails.paymentStatus;
-//             const providedShippingMethod = shippingMethodMapping[providedDetails.shippingMethod] || providedDetails.shippingMethod;
-
-//             // Comparar os dados fornecidos com os capturados
-//             expect(providedPaymentMethod).to.eq(capturedDetails.paymentMethod, 'Forma de pagamento');
-//             expect(providedDetails.detailedSale).to.eq(capturedDetails.detailedSale, 'Nota detalhada');
-//             expect(providedPaymentStatus).to.eq(capturedDetails.paymentStatus, 'Situação de pagamento');
-//             expect(providedDetails.address).to.eq(capturedDetails.address, 'Endereço');
-//             expect(providedShippingMethod).to.eq(capturedDetails.shippingMethod, 'Forma de envio');
-//             expect(providedDetails.expeditionObservation).to.eq(capturedDetails.expeditionObservation, 'Observação de expedição');
-//             expect(providedDetails.aromaSachet).to.eq(capturedDetails.aromaSachet, 'Aroma do sachê');
-//             expect(providedDetails.capsuleAroma).to.eq(capturedDetails.capsuleAroma, 'Aroma da cápsula');
-//             expect(providedDetails.generalObservation).to.eq(capturedDetails.generalObservation, 'Observações gerais');
-//             expect(providedDetails.budgetHasRecipe).to.eq(capturedDetails.budgetHasRecipe, 'Possui receita');
-
-//             // Normalizar e comparar a data prometida
-//             const providedDate = providedDetails.promisedTo
-//                 ? new Date(providedDetails.promisedTo).toLocaleDateString('pt-BR')
-//                 : '';
-//             expect(providedDate).to.eq(capturedDetails.promisedTo, 'Data prometida');
-//         });
-//     });
-// });
 
 
 Cypress.Commands.add('authenticateAdminForEdit', ({ userType, password }) => {

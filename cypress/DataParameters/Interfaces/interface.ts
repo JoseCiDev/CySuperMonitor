@@ -126,7 +126,7 @@ export interface BudgetConfirmation<S = string> {
     cashierObservation?: S;
     detailedSale?: boolean;
     paymentStatus?: BudgetConfirmationPaymentStatus;
-    address?: S;
+    address?: number;
     expeditionObservation?: S;
     shippingMethod?: BudgetConfirmationShippingMethod;
     juntocomBudget?: S;
@@ -250,7 +250,7 @@ export interface DataParameters<S = string> {
             cashierObservation: S;
             detailedSale: boolean,
             paymentStatus: BudgetConfirmationPaymentStatus,
-            address: S;
+            address: number;
             expeditionObservation: S;
             shippingMethod: BudgetConfirmationShippingMethod;
             juntocomBudget: S;
