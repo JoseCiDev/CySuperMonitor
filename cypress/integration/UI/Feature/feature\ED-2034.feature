@@ -13,8 +13,6 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
             | entrada     | conferência de entrada     |
             | saída       | conferência de saída       |
 
-    #179414/5
-
     Scenario Outline: Desfazer conferência por setor
         @undoConference
         Given o usuário está na tela de "<telaDesfazer>"
@@ -177,14 +175,3 @@ Feature: Gerenciar e Registrar Conferências e Equívocos
             | setor                  | observacao                       | usuarioResponsavel | data       | hora  |
             | conferência de entrada | Pendências registradas (Entrada) | Ana Santos         | 05/12/2024 | 18:00 |
             | conferência de saída   | Pendências registradas (Saida)   | Lucas Costa        | 05/12/2024 | 18:15 |
-
-
-
-
-#registrar conferencia com um usuario e tentar registrar com outro usuario sem recarregar a pagina
-#e possivel desfazer a conferencia do backoffice e atendimento?Nao
-
-
-
-
-faço insercao de imagem, obeservacao e registro, no passo posterior ao visualizar equivoco nao vejo a imagem
