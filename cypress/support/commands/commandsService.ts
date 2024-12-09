@@ -1113,7 +1113,7 @@ Cypress.Commands.add('captureBudgetDetails', () => {
         const shippingMethod = shippingMethodMatch ? shippingMethodMatch[1].trim() : '';
 
         // Observação de expedição
-        const expeditionObservationMatch = rawText.match(/Obs\. Expedição:\s*([\s\S]*?)\s*(?=FORMA ENVIO:|AROMA Sa\/Sh:|AROMA P\/G\/SO\/Cap Sub:|Prometido Para:|TOTAL|$)/);
+        const expeditionObservationMatch = rawText.match(/Obs\. Expedição:\s*([\s\S]*?)\s*(?=O R Ç A M E N T O|AROMA Sa\/Sh:|Prometido Para:|$)/);
         const expeditionObservation = expeditionObservationMatch ? expeditionObservationMatch[1].trim() : '';
 
         // Aroma do sachê
@@ -1121,20 +1121,22 @@ Cypress.Commands.add('captureBudgetDetails', () => {
         const aromaSachet = aromaSachetMatch ? aromaSachetMatch[1].trim() : '';
 
         // Aroma da cápsula
-        const capsuleAromaMatch = rawText.match(/AROMA P\/G\/SO\/Cap Sub:\s*(.+?)\s*(?:Observações:|Possuí Receita:)/);
+        const capsuleAromaMatch = rawText.match(/AROMA P\/G\/SO\/Cap Sub:\s*([^\d]+?)(?:\s+Dias Trat:|$)/);
         const capsuleAroma = capsuleAromaMatch ? capsuleAromaMatch[1].trim() : '';
 
+
         // Observações gerais
-        const generalObservationMatch = rawText.match(/Observações:\s*(.+?)\s*(?:Possuí Receita:|Prometido Para:)/);
+        const generalObservationMatch = rawText.match(/Observações:\s*([\s\S]*?)\s*(?:Possuí Receita:|Prometido Para:|$)/);
         const generalObservation = generalObservationMatch ? generalObservationMatch[1].trim() : '';
+
 
         // Possui receita
         const budgetHasRecipeMatch = rawText.match(/Possuí Receita:\s*(Sim|Não)/);
         const budgetHasRecipe = budgetHasRecipeMatch ? budgetHasRecipeMatch[1].trim() === 'Sim' : false;
 
         // Data prometida
-        const promisedToMatch = rawText.match(/Prometido Para:\s*(\d{2}\/\d{2}\/\d{4})/);
-        const promisedTo = promisedToMatch ? promisedToMatch[1].trim() : '';
+        const promisedToMatch = rawText.match(/Prometido Para:\s*([\d\/]+)/);
+        const promisedTo = promisedToMatch && promisedToMatch[1] !== '30/12/1899' ? promisedToMatch[1].trim() : '';
 
         const budgetDetails = {
             paymentMethod,
@@ -1242,7 +1244,12 @@ Cypress.Commands.add('validateBudgetDetails', () => {
             const providedDate = providedDetails.promisedTo
                 ? new Date(providedDetails.promisedTo).toLocaleDateString('pt-BR')
                 : '';
-            expect(providedDate).to.eq(capturedDetails.promisedTo, 'Data prometida');
+
+            if (!capturedDetails.promisedTo) {
+                throw new Error('A Data Prometida não foi capturada. Verifique o texto bruto ou a estrutura do HTML.');
+            }
+            expect(providedDate).to.eq(capturedDetails.promisedTo, `Data prometida: Esperada ${providedDate}, Capturada ${capturedDetails.promisedTo}`);
+
         });
     });
 });
